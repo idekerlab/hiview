@@ -1,0 +1,8 @@
+{
+  "extends":      "airbnb",
+  "rules":        {
+        "semi":   [0, "always"],
+        "quotes": ["error", "single"],
+        "comma-dangle": ["error", "only-multiline"]
+    }
+}
