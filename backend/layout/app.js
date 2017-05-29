@@ -2,6 +2,10 @@ const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 
+// Endpoints
+const {getLayouts} = require('./api/layout')
+
+
 app.use(bodyParser.urlencoded({
   extended: false
 }))
@@ -20,6 +24,9 @@ const STATUS_MESSAGE = {
 router.get('/', (req, res) => {
    res.status(200).json(STATUS_MESSAGE)
 })
+
+
+router.route('/layouts').get(getLayouts)
 
 
 app.use('/v1', router)
