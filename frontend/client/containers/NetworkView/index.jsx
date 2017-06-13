@@ -88,7 +88,8 @@ function mapStateToProps(state) {
     uiState: state.app_manager.ui_state,
     styles: state.visual_styles,
     currentVs: state.app_manager.current_vs,
-    datasource: state.app_manager.datasource,
+
+    datasource: state.datasource,
 
     network: state.network,
 

@@ -26,7 +26,8 @@ class NetworkPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      updating: false
+      updating: false,
+      networkUrl: ''
     };
   }
 
@@ -76,7 +77,7 @@ class NetworkPanel extends Component {
       const curNetId = this.props.currentNetwork.id
       const netUrl = this.props.trees[curNetId].url
       const networkProp = this.props.network
-      const networkData = networkProp.get(netUrl)
+      const networkData = networkProp.get(this.state.networkUrl)
       const root = networkData.data.rootId
 
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
@@ -111,15 +112,20 @@ class NetworkPanel extends Component {
 
   // Initialize
   componentWillMount() {
-    const url = this.props.trees[this.props.currentNetwork.id].url
-    this.props.networkActions.fetchNetworkFromUrl(url)
+    // const url = this.props.trees[this.props.currentNetwork.id].url
+    const server = this.props.datasource.get('serverUrl')
+    const uuid = this.props.datasource.get('uuid')
+    const url = 'http://ci-dev-serv.ucsd.edu:3001/ndex2cyjs/' + uuid + '?server=test'
 
+    this.setState({networkUrl: url})
+    this.props.networkActions.fetchNetworkFromUrl(url)
   }
 
   componentWillReceiveProps(nextProps) {
     const nextNet = nextProps.currentNetwork
     const newUrl = nextProps.trees[nextNet.id].url
     const network = this.props.network.get(newUrl)
+
 
     if (network === undefined || network === null) {
 
@@ -132,37 +138,43 @@ class NetworkPanel extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
 
+    console.log("Should update?  ############################")
+
     if (nextProps.commands.target === 'subnet') {
       return false
     }
 
-    const curNet = this.props.currentNetwork
-    const nextNet = nextProps.currentNetwork
+    // const curNet = this.props.currentNetwork
+    // const nextNet = nextProps.currentNetwork
+    //
+    // const curNetId = curNet.id
+    // const nextNetId = nextNet.id
 
-    const curNetId = curNet.id
-    const nextNetId = nextNet.id
-
-    if (curNetId === nextNetId && nextProps.network.get('loading') === this.props.network.get('loading')) {
+    if (nextProps.network.get('loading') === this.props.network.get('loading')) {
       // Check commands difference
+      console.log('...Still loading...')
       if (this.props.commands !== nextProps.commands) {
         return true
       }
 
       return false
+    } else {
+      console.log('*****************LOADED!!!!!!!!!!!!!!!!!!')
     }
 
-    const newUrl = nextProps.trees[nextNetId].url
-    const network = nextProps.network.get(newUrl)
+    console.log("%%%%%% Need to update!!")
 
-    if (network === undefined) {
-      return false
-    }
+    // const newUrl = nextProps.trees[nextNetId].url
+    // const network = nextProps.network.get(newUrl)
+    //
+    // if (network === undefined) {
+    //   return false
+    // }
 
     return true
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("##################################################################################################################RENDERED!!!!!!!!!")
 
     this.props.messageActions.setMessage('Neural network browser is ready!')
 
@@ -307,10 +319,12 @@ class NetworkPanel extends Component {
   })
 
   render() {
-    console.log('**** MAIN VIEW ============================================================== Custom node select function called! ========');
+    console.log('**** MAIN VIEW rendering =================== ========');
     console.log(this.props)
 
     const loading = this.props.network.get('loading')
+
+    console.log('**** Network loading = ' + loading)
 
     if (loading) {
       return (<Loading/>)
@@ -330,10 +344,10 @@ class NetworkPanel extends Component {
       height: '100%'
     };
 
-    const curNetId = this.props.currentNetwork.id
-    const url = this.props.trees[curNetId].url
+    // const curNetId = this.props.currentNetwork.id
+    // const url = this.props.trees[curNetId].url
     const networkProp = this.props.network
-    const networkData = networkProp.get(url)
+    const networkData = networkProp.get(this.state.networkUrl)
 
     // Default layout
     const rendOpts = {

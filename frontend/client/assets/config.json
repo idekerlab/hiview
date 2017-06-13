@@ -2,8 +2,7 @@
   "title": "Ontology Viewer",
   "backendServices": {
     "db": "http://deep-cell.ucsd.edu:9200",
-    "simulator": "http://deep-cell.ucsd.edu:8888",
-    "cxtool": "http://localhost:3001/ndex2cyjs/965468f2-3a6d-11e7-8f50-0ac135e8bacf"
+    "simulator": "http://deep-cell.ucsd.edu:8888"
   },
 
   "defaultNetwork": "go",
@@ -31,8 +30,7 @@
             "color": "rgb(0,204,153)"
           }
         }
-      },
-      "url": "http://ci-dev-serv.ucsd.edu:3001/ndex2cyjs/20bcb48f-3e6b-11e7-baf1-0660b7976219?server=test"
+      }
     }
   }
 }

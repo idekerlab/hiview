@@ -55,15 +55,6 @@ export default class ClosableAppBar extends Component {
         <AppBar
           title={this.props.title}
           onLeftIconButtonTouchTap={this.openMenu}
-          children={
-            <NetworkSelector
-              messageActions={this.props.messageActions}
-              trees={this.props.trees}
-              currentNetwork={this.props.currentNetwork}
-              currentNetworkActions={this.props.currentNetworkActions}
-              propertyActions={this.props.propertyActions}
-            />
-          }
         >
         </AppBar>
       )

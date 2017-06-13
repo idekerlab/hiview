@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
-import * as Colors from 'material-ui/styles/colors'
 
 import {browserHistory} from 'react-router'
 import style from './style.css'

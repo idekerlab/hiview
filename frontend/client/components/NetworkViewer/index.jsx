@@ -108,6 +108,8 @@ export default class NetworkViewer extends Component {
           rawInteractionsActions={rawInteractionsActions}
 
           idmapActions={this.props.idmapActions}
+
+          datasource={this.props.datasource}
         />
 
         <Commands

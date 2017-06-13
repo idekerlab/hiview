@@ -41,7 +41,7 @@
 .title {
     height: 10em;
     display: flex;
-    max-width: 800px;
+    max-width: 1500px;
     min-width: 750px;
     align-items: center;
     justify-content: center;
@@ -145,7 +145,10 @@
 }
 
 .dataSource {
+
 }
+
 .source {
   margin-left: 1em;
+    width: 700px;
 }

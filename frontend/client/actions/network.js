@@ -208,7 +208,7 @@ const applyLayout = (layoutMap, network) => {
       //   node.position.y = newPos[1]*3
       // }
     } else {
-      console.log('ERRRRRRRRRRRR: ' + node.data.id)
+      // console.log('ERRRRRRRRRRRR: ' + node.data.id)
     }
   })
 
