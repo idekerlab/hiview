@@ -11,7 +11,7 @@ class OntologySelector extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      uuid: '',
+      uuid: '20bcb48f-3e6b-11e7-baf1-0660b7976219',
       serverUrl: props.dataSource.get('serverUrl')
     }
   }
