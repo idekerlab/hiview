@@ -5,9 +5,13 @@ const STATUS_MESSAGE = {
   algorithms: ['d3-cluster', 'd3-tree']
 }
 
+
+
 const getLayouts = (req, res) => {
   res.json(STATUS_MESSAGE)
 }
+
+
 
 module.exports.getLayouts = getLayouts
 

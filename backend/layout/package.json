@@ -1,12 +1,12 @@
 {
-  "name": "cy-layout",
+  "name": "d3-layout",
   "version": "1.0.0",
-  "description": "## Introduction This is a node.js based simple service to generate layout for the given graph.",
+  "description": "A Node.js based simple service to layout given graph.",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Keiichiro Ono",
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.17.2",

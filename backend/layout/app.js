@@ -1,9 +1,12 @@
 const express = require('express')
-const app = express()
 const bodyParser = require('body-parser')
+
+const app = express()
 
 // Endpoints
 const {getLayouts} = require('./api/layout')
+
+const {applyCluster} = require('./api/d3-cluster-layout')
 
 
 app.use(bodyParser.urlencoded({
@@ -27,6 +30,7 @@ router.get('/', (req, res) => {
 
 
 router.route('/layouts').get(getLayouts)
+router.route('/layouts/cluster').post(applyCluster)
 
 
 app.use('/v1', router)
