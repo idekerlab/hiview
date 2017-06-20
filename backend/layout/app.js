@@ -5,14 +5,15 @@ const app = express()
 
 // Endpoints
 const {getLayouts} = require('./api/layout')
-
-const {applyCluster} = require('./api/d3-cluster-layout')
-
+const {applyLayout} = require('./api/d3-cluster-layout')
 
 app.use(bodyParser.urlencoded({
   extended: false
 }))
-app.use(bodyParser.json())
+
+app.use(bodyParser.json({
+  limit: '1tb' // Max size of the data
+}))
 
 
 const port = process.env.PORT || 8888
@@ -30,7 +31,7 @@ router.get('/', (req, res) => {
 
 
 router.route('/layouts').get(getLayouts)
-router.route('/layouts/cluster').post(applyCluster)
+router.route('/layouts/cluster').post(applyLayout)
 
 
 app.use('/v1', router)

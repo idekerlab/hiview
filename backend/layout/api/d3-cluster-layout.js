@@ -1,5 +1,7 @@
 const d3Hierarchy = require('d3-hierarchy')
 
+const {convert} = require('./cxToD3')
+
 // Wrapper for D3 Cluster Layout
 
 const LAYOUT_FINISHED = {
@@ -9,9 +11,13 @@ const LAYOUT_FINISHED = {
 const applyLayout = (req, res) => {
 
   const cx = req.body
-  const edges = cx.filter(element => (element.edges !== undefined))
-  res.json(edges[0].edges)
+  res.json(convert(cx, 1988))
 }
 
 
-module.exports.applyCluster = applyLayout
+const doLayout = (edges) => {
+
+}
+
+
+module.exports.applyLayout = applyLayout
