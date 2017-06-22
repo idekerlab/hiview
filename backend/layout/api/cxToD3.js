@@ -1,66 +1,36 @@
 const d3Hierarchy = require('d3-hierarchy')
 
-const convert = (treeEdges, rootId) => {
 
-  console.log('---------Convert----------')
+const clusterLayout = (treeEdges, rootId, circular=false) => {
 
   const d3Edges = getEdges(rootId, treeEdges)
-
   const d3Tree = getTree(d3Edges)
   applyCluster(d3Tree)
 
-
-  //TODO: extract locations
-  const layoutList = []
-
-  // Extract here
-
-  return layoutList
+  return extractPositions(d3Tree, circular)
 }
 
-// const getNodeSet = edges => {
-//   const nodes = new Set()
-//
-//   edges.forEach(edge => {
-//     const source = edge.s
-//     const target = edge.t
-//     nodes.add(source)
-//     nodes.add(target)
-//   })
-//
-//   console.log('Size = ' + nodes.size)
-//
-//   return nodes
-// }
 
 const getEdges = (rootId, edges) => {
 
-  const csv = []
-  csv.push({
+  // Root node
+  const table = []
+  table.push({
     id: rootId,
     parentId: ''
   })
 
   edges.forEach(edge => {
-    csv.push({
+    table.push({
       id: edge.s,
       parentId: edge.t
     })
   })
 
-  console.log('Length = ' + csv.length)
-
-  return csv
+  return table
 }
 
 
-/**
- * From a
- *
- * @param rootId
- * @param tree
- * @returns {{}}
- */
 const getTree = edges => {
 
   return d3Hierarchy
@@ -82,4 +52,42 @@ const applyCluster = d3Tree => {
   layout(d3Tree)
 }
 
-module.exports.convert = convert
+const extractPositions = (d3Tree, circular) => {
+  return walk(d3Tree, [], circular)
+}
+
+const project = (x, y) => {
+  const angle = (x - 90) / 180 * Math.PI
+  const radius = y
+  return [
+    radius * Math.cos(angle),
+    radius * Math.sin(angle),
+    angle
+  ];
+}
+
+const walk = (node, cartesianLayout, circular) => {
+
+  let newPos = [node.x, node.y]
+  if(circular) {
+    newPos = project(node.x, node.y)
+  }
+
+  const position = {
+    node: node.id,
+    x: newPos[0],
+    y: newPos[1]
+  }
+
+  cartesianLayout.push(position)
+
+  const children = node.children
+
+  if (children !== undefined && children.length !== 0) {
+    children.forEach(child => walk(child, cartesianLayout, circular))
+  }
+  return cartesianLayout
+}
+
+
+module.exports.clusterLayout = clusterLayout

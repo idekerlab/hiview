@@ -1,30 +1,22 @@
-const d3Hierarchy = require('d3-hierarchy')
+const {clusterLayout} = require('./cxToD3')
 
-const {convert} = require('./cxToD3')
+const CIRCULAR = 'circular'
 
-// Wrapper for D3 Cluster Layout
 
-const LAYOUT_FINISHED = {
-  message: 'Layout finished'
-}
-
-const applyLayout = (req, res) => {
+const applyClusterLayout = (req, res) => {
   const edges = req.body
   const root = req.query.root
 
+  const layoutType = req.params.style
+  let isCircular = false
+  if(layoutType !== undefined && layoutType === CIRCULAR ) {
+    isCircular = true
+  }
 
-  const d3Tree = convert(edges, root)
-  console.log(d3Tree.children)
+  const cartesianLayout = clusterLayout(edges, root, isCircular)
 
-
-
-  res.json(d3Tree)
+  res.json(cartesianLayout)
 }
 
 
-const doLayout = (edges) => {
-
-}
-
-
-module.exports.applyLayout = applyLayout
+module.exports.applyClusterLayout = applyClusterLayout
