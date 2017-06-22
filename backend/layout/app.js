@@ -4,6 +4,7 @@ const bodyParser = require('body-parser')
 const app = express()
 
 // Endpoints
+const {filter} = require('./api/cxFilter')
 const {getLayouts} = require('./api/layout')
 const {applyLayout} = require('./api/d3-cluster-layout')
 
@@ -16,7 +17,7 @@ app.use(bodyParser.json({
 }))
 
 
-const port = process.env.PORT || 8888
+const port = process.env.PORT || 8000
 const router = express.Router()
 
 const STATUS_MESSAGE = {
@@ -30,6 +31,7 @@ router.get('/', (req, res) => {
 })
 
 
+router.route('/filter/:type').post(filter)
 router.route('/layouts').get(getLayouts)
 router.route('/layouts/cluster').post(applyLayout)
 

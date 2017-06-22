@@ -1,50 +1,54 @@
 const d3Hierarchy = require('d3-hierarchy')
 
-const convert = (cx, rootId) => {
+const convert = (treeEdges, rootId) => {
 
   console.log('---------Convert----------')
-  const edges = cx.filter(element => (element.edges !== undefined))
 
-  if(edges === undefined || edges === null) {
-    return {}
-  }
+  const d3Edges = getEdges(rootId, treeEdges)
 
-  const es = edges[0].edges
+  const d3Tree = getTree(d3Edges)
+  applyCluster(d3Tree)
 
-  const d3Edges = getEdges(rootId.toString(), es)
 
-  return getTree(d3Edges)
+  //TODO: extract locations
+  const layoutList = []
+
+  // Extract here
+
+  return layoutList
 }
 
-const getNodeSet = edges => {
-  const nodes = new Set()
-
-  edges.forEach(edge => {
-    const source = edge.s
-    const target = edge.t
-    nodes.add(source)
-    nodes.add(target)
-  })
-
-  console.log('Size = ' + nodes.size)
-
-  return nodes
-}
+// const getNodeSet = edges => {
+//   const nodes = new Set()
+//
+//   edges.forEach(edge => {
+//     const source = edge.s
+//     const target = edge.t
+//     nodes.add(source)
+//     nodes.add(target)
+//   })
+//
+//   console.log('Size = ' + nodes.size)
+//
+//   return nodes
+// }
 
 const getEdges = (rootId, edges) => {
 
   const csv = []
   csv.push({
-    name: rootId,
-    parent: ''
+    id: rootId,
+    parentId: ''
   })
 
   edges.forEach(edge => {
     csv.push({
-      name: edge.s.toString(),
-      parent: edge.t.toString()
+      id: edge.s,
+      parentId: edge.t
     })
   })
+
+  console.log('Length = ' + csv.length)
 
   return csv
 }
@@ -58,20 +62,24 @@ const getEdges = (rootId, edges) => {
  * @returns {{}}
  */
 const getTree = edges => {
-  console.log(edges)
 
-  const d3tree = d3Hierarchy
+  return d3Hierarchy
     .stratify()
-    .id(function(d) {
-      return d.name;
+    .id(d => (d.id))
+    .parentId(d => (d.parentId))(edges)
+}
+
+const applyCluster = d3Tree => {
+
+  const layout = d3Hierarchy
+    .cluster()
+    .size([360, 1600])
+    .separation((a, b) => {
+      return (a.parent === b.parent ? 1: 2) / a.depth
     })
-    .parentId(function(d) {
-      return d.parent;
-    })(edges);
 
-  console.log(d3tree)
-
-  return d3tree
+  // Apply layout and generate (x,y) positions
+  layout(d3Tree)
 }
 
 module.exports.convert = convert

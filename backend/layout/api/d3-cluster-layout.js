@@ -9,9 +9,16 @@ const LAYOUT_FINISHED = {
 }
 
 const applyLayout = (req, res) => {
+  const edges = req.body
+  const root = req.query.root
 
-  const cx = req.body
-  res.json(convert(cx, 1988))
+
+  const d3Tree = convert(edges, root)
+  console.log(d3Tree.children)
+
+
+
+  res.json(d3Tree)
 }
 
 
