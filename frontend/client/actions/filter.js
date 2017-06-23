@@ -1,6 +1,3 @@
-// For a given CX, filter the result based on attributes.
-
-
 const attributeFilter = (attr, attrName, value) => {
   if (attr.n === attrName && attr.v === value) {
     return true
@@ -9,7 +6,7 @@ const attributeFilter = (attr, attrName, value) => {
   }
 }
 
-const filterByAffribute = (cx, type, attrName, value) => {
+export default filterByAffribute = (cx, type, attrName, value) => {
 
   let attributes = []
   let objects = []
@@ -54,16 +51,3 @@ const filterByAffribute = (cx, type, attrName, value) => {
 
 }
 
-const filter = (req, res) => {
-
-  const cx = req.body
-  const attrName = req.query.name
-  const value = req.query.value
-  const type = req.params.type
-  const filtered = filterByAffribute(cx, type, attrName, value)
-
-
-  res.json(filterByAffribute(cx, type, attrName, value))
-}
-
-module.exports.filter = filter
