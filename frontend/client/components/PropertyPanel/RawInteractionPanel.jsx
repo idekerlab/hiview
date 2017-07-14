@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import FloatingActionButton from 'material-ui/FloatingActionButton';
-import CyViewer from 'cy-viewer'
+import CyNetworkViewer from 'cy-network-viewer'
+import CytoscapeJsRenderer from 'cytoscapejs-renderer'
 
 import FlatButton from 'material-ui/FlatButton';
 
@@ -84,8 +85,9 @@ class RawInteractionPanel extends Component {
 
     if(!this.props.loading) {
 
+      const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
       return (
-          <CyViewer
+          <Viewer
             key="subNetworkView"
             network={this.props.subnet}
             networkType={'cyjs'}

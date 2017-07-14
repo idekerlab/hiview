@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 import {browserHistory} from 'react-router'
 
-import CyViewer from 'cy-viewer'
+import CyNetworkViewer from 'cy-network-viewer'
+import CytoscapeJsRenderer from 'cytoscapejs-renderer'
 
 import CirclePacking from '../CirclePacking'
 
@@ -17,8 +18,13 @@ import {Map} from 'immutable'
 
 import * as d3Hierarchy from 'd3-hierarchy'
 
+import getVisualStyle from './style-factory'
 
 const MYGENE_URL = 'http://mygene.info/v3'
+
+
+// Create a Viewer with Cytoscpae.js renderer
+const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
 
 class NetworkPanel extends Component {
@@ -55,8 +61,6 @@ class NetworkPanel extends Component {
       return
     }
 
-    console.log('-------------> type: ' + nodeType)
-
     if (nodeType === 'Gene') {
       this.setGeneProps()
       return
@@ -64,9 +68,6 @@ class NetworkPanel extends Component {
     // From NDEx to CYJS converter
     const linkKey = 'ndex_internalLink'
     const baseUrl = 'http://ci-dev-serv.ucsd.edu:3001/ndex2cyjs/'
-
-    console.log('====== Node selected: ');
-    console.log(props)
 
     const link = baseUrl + props[linkKey] + '?server=test'
     console.log(link);
@@ -84,14 +85,12 @@ class NetworkPanel extends Component {
 
       const startNode = nodeIds[0]
       const endNode = root
-      console.log('*************** PATH from: ' + startNode + ' ==============>  ' + endNode)
       this.props.commandActions.findPath({startId: startNode, endId: endNode})
 
       // const options = this.props.trees[this.props.currentNetwork.id].searchOptions
       // this.props.propertyActions.fetchEntry(props.id, options)
 
       // Directly set prop from node attributes
-      const url = 'http://public.ndexbio.org/v2/network/67ef6390-297a-11e7-8f50-0ac135e8bacf'
       this.props.rawInteractionsActions.fetchInteractionsFromUrl(link)
       this.props.propertyActions.setProperty(props.id, props, 'term')
     }, 0)
@@ -137,9 +136,6 @@ class NetworkPanel extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-
-    console.log("Should update?  ############################")
-
     if (nextProps.commands.target === 'subnet') {
       return false
     }
@@ -158,11 +154,7 @@ class NetworkPanel extends Component {
       }
 
       return false
-    } else {
-      console.log('*****************LOADED!!!!!!!!!!!!!!!!!!')
     }
-
-    console.log("%%%%%% Need to update!!")
 
     // const newUrl = nextProps.trees[nextNetId].url
     // const network = nextProps.network.get(newUrl)
@@ -203,136 +195,18 @@ class NetworkPanel extends Component {
     )
   }
 
-  getVisualStyle = (minSize, maxSize) => ({
-    style: [
-      {
-        "selector": "node",
-        "css": {
-          "content": "data(Label)",
-          "text-valign": "center",
-          "text-halign": "right",
-          "shape": "ellipse",
-          "color": "#666666",
-          "background-color": '#AAAAAA',
-          "height": 5,
-          "width": 5,
-          "text-opacity": 0.8,
-          'text-wrap': 'wrap',
-          'z-index': 1,
-          'text-margin-x': 2,
-          'text-rotation': 'data(angle)',
-          'min-zoomed-font-size': '0.2em'
-        }
-      }, {
-      //   "selector": 'node[Size <= 5]',
-      //   "css": {
-      //     'visibility': 'hidden'
-      //   }
-      // }, {
-        "selector": 'node[angle <= ' + (Math.PI + Math.PI * 1.5) + '][angle >=' + (Math.PI + Math.PI/2.0) + ']',
-        "css": {
-          "text-halign": "left",
-
-        }
-      }, {
-        "selector": "node[Gene_or_Term = 'Gene']",
-        "css": {
-          "font-size": 1,
-          'text-rotation': 0,
-          'visibility': 'hidden'
-        }
-      }, {
-        "selector": "node[Gene_or_Term = 'Term']",
-        "css": {
-          'font-size': 'mapData(Size,' + minSize + ',' + maxSize + ', 0.1, 20)',
-          height: 'mapData(Size,' + minSize + ',' + maxSize + ', 6, 50)',
-          width: 'mapData(Size,' + minSize + ',' + maxSize + ', 6, 50)',
-          "background-color": "#607D8B"
-        }
-      }, {
-        "selector": "node[isRoot = 'True']",
-        "css": {
-          'font-size': '3em',
-          "background-color": 'darkorange',
-          "color": "darkorange"
-        }
-      }, {
-        "selector": "node:selected",
-        "css": {
-          "background-color": 'orange',
-          "font-size": '1em',
-          "color": 'orange',
-          "text-opacity": 1,
-          'z-index': 999,
-          'visibility': 'visible'
-        }
-      }, {
-        "selector": "edge",
-        "css": {
-          "width": 1.0,
-          'opacity': 0.2,
-          'mid-target-arrow-shape': 'triangle',
-          'mid-target-arrow-color': '#777777',
-          "line-color": "#777777"
-        }
-      }, {
-        "selector": "edge[EdgeType = 'Gene-Term']",
-        "css": {
-          "line-color": 'teal',
-          'opacity': 0.2,
-          'mid-target-arrow-shape': 'none',
-          width: 0.2
-        }
-      }, {
-        "selector": "edge:selected",
-        "css": {
-          "line-color": 'orange',
-          'mid-target-arrow-color': 'orange',
-          'target-arrow-color': 'orange',
-          "width": 3,
-          'z-index': 999,
-          'opacity': 1
-        }
-      }, {
-        "selector": ".focused",
-        "css": {
-          "background-color": "teal",
-          "font-size": '4em',
-          "color": "teal",
-          "text-opacity": 1,
-          'text-max-width': '500px',
-          'z-index': 999,
-          "min-zoomed-font-size": 0,
-          width: 50,
-          height: 50
-        }
-      }, {
-        "selector": ".faded",
-        "css": {
-          "background-color": "black",
-          "line-color": "black",
-          color: "black",
-          opacity: 0.2
-        }
-      }
-    ]
-  })
 
   render() {
-    console.log('**** MAIN VIEW rendering =================== ========');
-    console.log(this.props)
-
     const loading = this.props.network.get('loading')
+    const networkProp = this.props.network
+    const networkData = networkProp.get(this.state.networkUrl)
 
-    console.log('**** Network loading = ' + loading)
-
-    if (loading) {
+    if (loading || networkData === undefined) {
       return (<Loading/>)
     }
 
     let commands = this.props.commands
     if (commands.target === 'subnet') {
-      console.log("%%%%%ignore")
       commands = Map({command: '', parameters: {}})
     }
 
@@ -344,23 +218,26 @@ class NetworkPanel extends Component {
       height: '100%'
     };
 
-    // const curNetId = this.props.currentNetwork.id
-    // const url = this.props.trees[curNetId].url
-    const networkProp = this.props.network
-    const networkData = networkProp.get(this.state.networkUrl)
 
     // Default layout
     const rendOpts = {
       layout: 'preset'
     }
 
-    if (networkData === undefined) {
-      return (<Loading/>)
-    }
+    const style = getVisualStyle(networkData.data.minSize, networkData.data.maxSize)
 
-    const style = this.getVisualStyle(networkData.data.minSize, networkData.data.maxSize)
-
-    return (<CyViewer key="mainView" network={networkData} networkType={'cyjs'} style={networkAreaStyle} networkStyle={style} eventHandlers={this.getCustomEventHandlers()} command={commands} rendererOptions={rendOpts}/>)
+    return (
+      <Viewer
+        key="mainView"
+        network={networkData}
+        networkType={'cyjs'}
+        style={networkAreaStyle}
+        networkStyle={style}
+        eventHandlers={this.getCustomEventHandlers()}
+        command={commands}
+        rendererOptions={rendOpts}
+      />
+    )
   }
 
   getTree = (root, tree) => {
