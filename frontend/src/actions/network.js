@@ -1,6 +1,8 @@
 import * as d3Hierarchy from 'd3-hierarchy'
+import cytoscape from 'cytoscape'
 
 export const FETCH_NETWORK = 'FETCH_NETWORK'
+
 const fetchNetwork = url => {
   return {
     type: FETCH_NETWORK,
@@ -37,6 +39,17 @@ const filterEdges = network => {
   return network
 }
 
+const filterNodes = network => {
+  const nodes = []
+  network.elements.nodes.forEach(node => {
+    if (node.data.Gene_or_Term === 'Term') {
+      nodes.push(node)
+    }
+  })
+
+  network.elements.nodes = nodes
+  return network
+}
 
 export const fetchNetworkFromUrl = url => {
 
@@ -46,11 +59,39 @@ export const fetchNetworkFromUrl = url => {
     return fetchNet(url)
       .then(response => (response.json()))
       .then(rawCyjs => (filterEdges(rawCyjs)))
+      .then(rawCyjs => (filterNodes(rawCyjs)))
+      .then(rawCyjs => (filterLeafs(rawCyjs)))
       .then(json => (layout(json)))
       .then(network => dispatch(receiveNetwork(url, network)))
   }
 }
 
+
+const filterLeafs = network => {
+  const cy = cytoscape({
+    elements: network.elements
+  })
+
+  const toBeRemovedNodes = cy.filter((element, i) => {
+
+    if( element.isNode() && element.degree() === 1){
+      return true;
+    }
+    return false;
+  });
+
+  console.log('TOTAL: ' + network.elements.nodes.length)
+  console.log('FILTERED: ' + toBeRemovedNodes.length)
+
+  const toBeRemovedEdges = cy.nodes().edgesWith(toBeRemovedNodes)
+  cy.remove(toBeRemovedEdges)
+  cy.remove(toBeRemovedNodes)
+
+  network.elements.nodes = cy.nodes().jsons();
+  network.elements.edges = cy.edges().jsons();
+
+  return network
+}
 
 const findRoot = network => {
   const nodes = network.elements.nodes

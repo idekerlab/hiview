@@ -16,12 +16,12 @@ export const DEF_VISUAL_STYLE = [
   {
     selector: 'edge',
     style: {
-      'line-color': '#aaaaaa',
-      'width': 1,
+      'line-color': '#777777',
+      'width': 2,
       'label': 'data(interaction)',
       'font-size': '0.11em',
       'font-family': 'Roboto, sans-serif',
-      'text-opacity': 0.3
+      'text-opacity': 1
     }
   },
   {

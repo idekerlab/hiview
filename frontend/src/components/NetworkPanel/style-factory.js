@@ -65,7 +65,7 @@ const getVisualStyle = (minSize, maxSize) => ({
       "selector": "edge",
       "css": {
         "width": 1.0,
-        'opacity': 0.2,
+        'opacity': 1,
         'mid-target-arrow-shape': 'triangle',
         'mid-target-arrow-color': '#777777',
         "line-color": "#777777"

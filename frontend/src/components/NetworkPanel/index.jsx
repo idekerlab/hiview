@@ -1,31 +1,17 @@
 import React, {Component} from 'react'
 import {browserHistory} from 'react-router'
-
 import CyNetworkViewer from 'cy-network-viewer'
 import CytoscapeJsRenderer from 'cytoscapejs-renderer'
 
-import CirclePacking from '../CirclePacking'
-
 import Loading from '../Loading'
-
-import ErrorIcon from 'material-ui/svg-icons/alert/error-outline'
-import BackIcon from 'material-ui/svg-icons/navigation/arrow-back'
-import FlatButton from 'material-ui/FlatButton'
-
-import style from './style.css'
-
 import {Map} from 'immutable'
-
-import * as d3Hierarchy from 'd3-hierarchy'
-
 import getVisualStyle from './style-factory'
 
 const MYGENE_URL = 'http://mygene.info/v3'
+const CXTOOL_URL = 'http://localhost:3001/ndex2cyjs/'
 
 
-// Create a Viewer with Cytoscpae.js renderer
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
-
 
 class NetworkPanel extends Component {
 
@@ -67,16 +53,11 @@ class NetworkPanel extends Component {
     }
     // From NDEx to CYJS converter
     const linkKey = 'ndex_internalLink'
-    const baseUrl = 'http://ci-dev-serv.ucsd.edu:3001/ndex2cyjs/'
-
-    const link = baseUrl + props[linkKey] + '?server=test'
-    console.log(link);
+    const link = CXTOOL_URL + props[linkKey] + '?server=test'
 
     window.setTimeout(() => {
       // Path finding
 
-      const curNetId = this.props.currentNetwork.id
-      const netUrl = this.props.trees[curNetId].url
       const networkProp = this.props.network
       const networkData = networkProp.get(this.state.networkUrl)
       const root = networkData.data.rootId
@@ -84,11 +65,7 @@ class NetworkPanel extends Component {
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
       const startNode = nodeIds[0]
-      const endNode = root
-      this.props.commandActions.findPath({startId: startNode, endId: endNode})
-
-      // const options = this.props.trees[this.props.currentNetwork.id].searchOptions
-      // this.props.propertyActions.fetchEntry(props.id, options)
+      this.props.commandActions.findPath({startId: startNode, endId: root})
 
       // Directly set prop from node attributes
       this.props.rawInteractionsActions.fetchInteractionsFromUrl(link)
@@ -112,10 +89,8 @@ class NetworkPanel extends Component {
   // Initialize
   componentWillMount() {
     // const url = this.props.trees[this.props.currentNetwork.id].url
-    const server = this.props.datasource.get('serverUrl')
     const uuid = this.props.datasource.get('uuid')
-    const url = 'http://ci-dev-serv.ucsd.edu:3001/ndex2cyjs/' + uuid + '?server=test'
-
+    const url = CXTOOL_URL + uuid + '?server=test'
     this.setState({networkUrl: url})
     this.props.networkActions.fetchNetworkFromUrl(url)
   }
@@ -140,12 +115,6 @@ class NetworkPanel extends Component {
       return false
     }
 
-    // const curNet = this.props.currentNetwork
-    // const nextNet = nextProps.currentNetwork
-    //
-    // const curNetId = curNet.id
-    // const nextNetId = nextNet.id
-
     if (nextProps.network.get('loading') === this.props.network.get('loading')) {
       // Check commands difference
       console.log('...Still loading...')
@@ -155,14 +124,6 @@ class NetworkPanel extends Component {
 
       return false
     }
-
-    // const newUrl = nextProps.trees[nextNetId].url
-    // const network = nextProps.network.get(newUrl)
-    //
-    // if (network === undefined) {
-    //   return false
-    // }
-
     return true
   }
 
@@ -173,26 +134,6 @@ class NetworkPanel extends Component {
     window.setTimeout(() => {
       this.props.messageActions.setMessage('Ontology Viewer v0.1')
     }, 3000)
-  }
-
-  getError() {
-    return (
-      <div className={style.container}>
-        <h1>A Problem Occurred While Downloading Data</h1>
-        <h2>Possible Causes:</h2>
-        <h3>Invalid URL</h3>
-        <h3>Invalid NDEx ID</h3>
-        <h3>Remote server is down</h3>
-        <ErrorIcon color={'#ff0033'} style={{
-          width: '40%',
-          height: '40%'
-        }}/>
-
-        <FlatButton label="Back to Data Source Selector" labelPosition='after' labelStyle={{
-          fontWeight: 700
-        }} icon={< BackIcon />} onClick={this.handleBack}/>
-      </div>
-    )
   }
 
 
@@ -240,73 +181,6 @@ class NetworkPanel extends Component {
     )
   }
 
-  getTree = (root, tree) => {
-    const nodes = tree.elements.nodes
-    let rootId = null;
-
-    for (let node of nodes) {
-      if (node.data.name === root) {
-        rootId = node.data.id
-        break
-      }
-    }
-
-    const csv = []
-    csv.push({name: rootId, parent: ""})
-
-    const edges = tree.elements.edges
-    edges.forEach(edge => {
-      const source = edge.data.source
-      const target = edge.data.target
-
-      csv.push({name: source, parent: target})
-    })
-
-    console.log('********** ROOT: ' + rootId)
-    const d3tree = d3Hierarchy.stratify().id(function(d) {
-      return d.name;
-    }).parentId(function(d) {
-      return d.parent;
-    })(csv);
-
-    console.log(d3tree)
-
-    const layout = d3Hierarchy.tree().size([800, 800]).separation(function(a, b) {
-      return (a.parent == b.parent
-        ? 1
-        : 2) / a.depth;
-    });
-
-    layout(d3tree)
-    console.log('---------- Done! -------------')
-    console.log(d3tree)
-
-    const layoutMap = {}
-    this.walk(d3tree, layoutMap)
-
-    console.log(layoutMap)
-    return layoutMap
-  }
-
-  applyLayout = (layoutMap, network) => {
-    const nodes = network.elements.nodes
-    nodes.forEach(node => {
-      node.position.x = layoutMap[node.data.id][0]
-      node.position.y = layoutMap[node.data.id][1]
-    })
-  }
-
-  walk = (node, layoutMap) => {
-    const children = node.children
-    if (children === undefined || children.length === 0) {
-      console.log("Tree node = " + node.id)
-
-      layoutMap[node.id] = [node.x, node.y]
-      return
-    } else {
-      children.forEach(child => this.walk(child, layoutMap))
-    }
-  }
 }
 
 export default NetworkPanel
