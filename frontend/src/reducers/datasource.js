@@ -2,7 +2,7 @@ import { handleActions } from 'redux-actions'
 import { Map } from 'immutable'
 
 const defaultState = Map({
-  uuid: '20bcb48f-3e6b-11e7-baf1-0660b7976219',
+  uuid: 'c848905a-8edb-11e7-9743-0660b7976219',
   serverUrl: 'http://test.ndexbio.org'
 })
 

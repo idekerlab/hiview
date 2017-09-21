@@ -1,13 +1,6 @@
 import React, {Component} from 'react'
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import CyNetworkViewer from 'cy-network-viewer'
 import CytoscapeJsRenderer from 'cytoscapejs-renderer'
-
-import FlatButton from 'material-ui/FlatButton';
-
-
-
-import FilterPanel from './FilterPanel'
 
 
 class RawInteractionPanel extends Component {

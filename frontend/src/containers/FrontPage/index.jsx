@@ -7,14 +7,11 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import TopPage from '../../components/TopPage/index'
 import * as dataSourceActions from '../../actions/datasource'
 
-import style from './style.css'
 
 class FrontPage extends Component {
 
   render() {
 
-    console.log('---------------DSA')
-    console.log(this.props)
     return (
       <MuiThemeProvider>
         <TopPage

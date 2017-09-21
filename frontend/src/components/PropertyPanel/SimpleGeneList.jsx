@@ -1,8 +1,7 @@
 import React, {Component, PropTypes} from 'react'
 
 import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
-import OpenIcon from 'material-ui/svg-icons/action/open-in-new'
+import ListSubheader from 'material-ui/List/ListSubheader'
 
 class SimpleGeneList extends Component {
 
@@ -17,7 +16,7 @@ class SimpleGeneList extends Component {
 
       <div>
         <List>
-          <Subheader>Assigned Genes:</Subheader>
+          <ListSubheader>Assigned Genes:</ListSubheader>
 
           {
             genes.map((gene, i) => {

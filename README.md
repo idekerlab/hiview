@@ -3,6 +3,7 @@ The universal hierarchical data viewer
 
 ## Current Status
 * 5/26/2017 - Moved code base to lab account.
+* 9/20/2017 - Updated for new version
 
 (TBD)
 

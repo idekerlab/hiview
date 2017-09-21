@@ -5,10 +5,10 @@ import ClosableAppBar from '../ClosableAppBar'
 import NetworkPanel from '../NetworkPanel'
 import PropertyPanel from '../PropertyPanel'
 import Errorbar from 'material-ui/Snackbar';
-import SearchPanel from '../SearchPanel'
 
 import Commands from '../Commands'
 import style from './style.css'
+
 
 
 
@@ -117,21 +117,6 @@ export default class NetworkViewer extends Component {
           uiState={uiState}
         />
 
-        <SearchPanel
-          search={search}
-          searchActions={searchActions}
-          uiStateActions={uiStateActions}
-          commandActions={commandActions}
-
-          backendServices={config.get('backendServices').toJS()}
-          trees={config.get('trees').toJS()}
-          currentNetwork={this.props.currentNetwork.toJS()}
-
-          queryGenesActions={this.props.queryGenesActions}
-          queryGenes={this.props.queryGenes}
-
-          uiState={uiState}
-        />
 
         <PropertyPanel
           commands={commands}

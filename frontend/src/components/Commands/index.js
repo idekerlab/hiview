@@ -1,15 +1,36 @@
 import React, {Component} from 'react'
+import MainMenu from '../MainMenu'
+import Drawer from 'material-ui/Drawer'
+
 import classnames from 'classnames'
 
 import style from './style.css'
 
-import FloatingActionButton from 'material-ui/FloatingActionButton'
-import FitContent from 'material-ui/svg-icons/maps/zoom-out-map'
-import ZoomIn from 'material-ui/svg-icons/action/zoom-in'
-import ZoomOut from 'material-ui/svg-icons/action/zoom-out'
+import Button from 'material-ui/Button'
+
+// Icons
+import FitContent from 'material-ui-icons/ZoomOutMap'
+import ZoomIn from 'material-ui-icons/ZoomIn'
+import ZoomOut from 'material-ui-icons/ZoomOut'
+import Settings from 'material-ui-icons/Settings'
 
 
-export default class Commands extends Component {
+const dStyle = {
+  padding: 10,
+}
+
+class Commands extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      open: false,
+    }
+  }
+
+  handleOpenMenu = () => {
+    this.setState({open: !this.state.open})
+  }
 
   handleZoomIn = event => {
     this.props.commandActions.zoomIn()
@@ -25,33 +46,78 @@ export default class Commands extends Component {
 
   render() {
 
+    const buttonStyle = {
+      width: '2.8em',
+      height: '2.8em',
+    }
+
     const uiState = this.props.uiState
 
-    if(!uiState.get('showCommands')) {
+    if (!uiState.get('showCommands')) {
       return (<div></div>)
     }
 
     return (
-      <div className={classnames(style.bar, style.grid)}>
-        <FloatingActionButton
-          className={style.command}
-          onTouchTap={this.handleZoomIn}
+      <div>
+
+        <Drawer
+          docked={false}
+          open={this.state.open}
+          onRequestChange={(open) => this.setState({open})}
+          style={dStyle}
+          width={400}
         >
-          <ZoomIn />
-        </FloatingActionButton>
-        <FloatingActionButton
-          className={style.command}
-          onTouchTap={this.handleZoomOut}
-        >
-          <ZoomOut />
-        </FloatingActionButton>
-        <FloatingActionButton
-          className={style.command}
-          onTouchTap={this.handleFit}
-        >
-          <FitContent />
-        </FloatingActionButton>
+          <MainMenu
+            uiState={uiState}
+          />
+        </Drawer>
+
+        <div className={classnames(style.bar, style.grid)}>
+          <Button
+            fab
+            color="primary"
+            aria-label="zoom in"
+            style={buttonStyle}
+            className={style.command}
+            onClick={this.handleZoomIn}
+          >
+            <ZoomIn
+            />
+          </Button>
+          <Button
+            fab
+            color="primary"
+            aria-label="zoom out"
+            style={buttonStyle}
+            className={style.command}
+            onClick={this.handleZoomOut}
+          >
+            <ZoomOut/>
+          </Button>
+          <Button
+            fab
+            color="primary"
+            aria-label="fit"
+            style={buttonStyle}
+            className={style.command}
+            onClick={this.handleFit}
+          >
+            <FitContent/>
+          </Button>
+
+          <Button
+            fab
+            aria-label="settings"
+            style={buttonStyle}
+            className={style.command}
+            onClick={this.handleOpenMenu}
+          >
+            <Settings/>
+          </Button>
+        </div>
       </div>
     )
   }
 }
+
+export default Commands

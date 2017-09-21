@@ -3,13 +3,10 @@ import React, {Component} from 'react'
 import MainMenu from '../MainMenu'
 
 import AppBar from 'material-ui/AppBar'
-import IconButton from 'material-ui/IconButton';
-import MenuIcon from 'material-ui/svg-icons/navigation/menu';
+import IconButton from 'material-ui/IconButton'
+import MenuIcon from 'material-ui-icons/Menu'
 
 import Drawer from 'material-ui/Drawer'
-
-
-import NetworkSelector from '../NetworkSelector'
 
 
 const dStyle = {
@@ -54,7 +51,6 @@ export default class ClosableAppBar extends Component {
       return (
         <AppBar
           title={this.props.title}
-          onLeftIconButtonTouchTap={this.openMenu}
         >
         </AppBar>
       )

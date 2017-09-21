@@ -2,16 +2,36 @@ import React, {Component} from 'react'
 import {browserHistory} from 'react-router'
 import CyNetworkViewer from 'cy-network-viewer'
 import CytoscapeJsRenderer from 'cytoscapejs-renderer'
+import {CircularProgress} from 'material-ui/Progress';
 
-import Loading from '../Loading'
+
 import {Map} from 'immutable'
-import getVisualStyle from './style-factory'
 
 const MYGENE_URL = 'http://mygene.info/v3'
 const CXTOOL_URL = 'http://localhost:3001/ndex2cyjs/'
-
+// const SAMPLE1 = 'https://gist.githubusercontent.com/keiono/edec04ea9940863094c0d7b398026ee9/raw/740c10cdcbf7ea2f20b097b8340be560b19ee1e6/hivew-sample1.cyjs'
 
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
+
+const progressStyle = {
+  position: 'fixed',
+  top: 0,
+  left: 0,
+  height: '100%',
+  width: '100%',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: 'white',
+  backgroundColor: 'rgba(0,0,0,0.2)',
+  zIndex: 1000,
+}
+
+const styles = theme => ({
+  progress: progressStyle,
+});
+
 
 class NetworkPanel extends Component {
 
@@ -19,7 +39,7 @@ class NetworkPanel extends Component {
     super(props);
     this.state = {
       updating: false,
-      networkUrl: ''
+      networkUrl: '',
     };
   }
 
@@ -32,6 +52,7 @@ class NetworkPanel extends Component {
   }
 
   selectNodes = (nodeIds, nodeProps) => {
+    console.log('====== Custom NODE select function called! ========');
     const node = nodeIds[0]
     const props = nodeProps[node]
 
@@ -39,7 +60,7 @@ class NetworkPanel extends Component {
 
     // Get node type:
 
-    const nodeTypeTag = 'Gene_or_Term'
+    const nodeTypeTag = 'NodeType'
     const nodeType = props[nodeTypeTag]
 
     if (nodeType === null || nodeType === undefined) {
@@ -65,10 +86,10 @@ class NetworkPanel extends Component {
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
       const startNode = nodeIds[0]
-      this.props.commandActions.findPath({startId: startNode, endId: root})
+      // this.props.commandActions.findPath({startId: startNode, endId: root})
 
       // Directly set prop from node attributes
-      this.props.rawInteractionsActions.fetchInteractionsFromUrl(link)
+      // this.props.rawInteractionsActions.fetchInteractionsFromUrl(link)
       this.props.propertyActions.setProperty(props.id, props, 'term')
     }, 0)
   }
@@ -91,6 +112,7 @@ class NetworkPanel extends Component {
     // const url = this.props.trees[this.props.currentNetwork.id].url
     const uuid = this.props.datasource.get('uuid')
     const url = CXTOOL_URL + uuid + '?server=test'
+
     this.setState({networkUrl: url})
     this.props.networkActions.fetchNetworkFromUrl(url)
   }
@@ -107,7 +129,8 @@ class NetworkPanel extends Component {
       if (nextNet.id !== this.props.currentNetwork.id) {
         this.props.networkActions.fetchNetworkFromUrl(newUrl)
       }
-    } else {}
+    } else {
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -143,7 +166,14 @@ class NetworkPanel extends Component {
     const networkData = networkProp.get(this.state.networkUrl)
 
     if (loading || networkData === undefined) {
-      return (<Loading/>)
+      return (
+        <div style={progressStyle}>
+          <h2>Loading.  Please wait...</h2>
+          <CircularProgress
+            size={600}
+          />
+        </div>
+      )
     }
 
     let commands = this.props.commands
@@ -156,16 +186,16 @@ class NetworkPanel extends Component {
       top: 0,
       left: 0,
       width: '100%',
-      height: '100%'
+      height: '100%',
     };
 
 
     // Default layout
     const rendOpts = {
-      layout: 'preset'
+      layout: 'preset',
     }
 
-    const style = getVisualStyle(networkData.data.minSize, networkData.data.maxSize)
+    // const style = getVisualStyle(networkData.data.minSize, networkData.data.maxSize)
 
     return (
       <Viewer
@@ -173,7 +203,7 @@ class NetworkPanel extends Component {
         network={networkData}
         networkType={'cyjs'}
         style={networkAreaStyle}
-        networkStyle={style}
+        // networkStyle={style}
         eventHandlers={this.getCustomEventHandlers()}
         command={commands}
         rendererOptions={rendOpts}
@@ -182,5 +212,6 @@ class NetworkPanel extends Component {
   }
 
 }
+
 
 export default NetworkPanel

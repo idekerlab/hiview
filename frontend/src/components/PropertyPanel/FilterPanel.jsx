@@ -1,33 +1,16 @@
 import React, {Component} from 'react'
+import {List, ListItem} from 'material-ui/List'
 
-import {List, ListItem} from 'material-ui/List';
-import FilterIcon from 'material-ui/svg-icons/image/tune';
-import EdgeTypeIcon from 'material-ui/svg-icons/editor/format-list-bulleted';
-import SliderIcon from 'material-ui/svg-icons/device/network-cell';
+import FilterIcon from 'material-ui-icons/Tune'
+import EdgeTypeIcon from 'material-ui-icons/FormatListBulleted'
+import SliderIcon from 'material-ui-icons/NetworkCell'
 
-import ContentSend from 'material-ui/svg-icons/content/send';
-import Subheader from 'material-ui/Subheader';
-import Toggle from 'material-ui/Toggle';
-
-import Checkbox from 'material-ui/Checkbox';
-
-
-import Slider from 'material-ui/Slider';
+import Checkbox from 'material-ui/Checkbox'
 
 const style = {
   width: '100%',
   background: '#FAFAFA',
   zIndex: 1000
-}
-
-const contentStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-  background: 'black',
-  color: 'white',
-  margin: 0,
-  padding: '0.5em'
 }
 
 const edgeTypes = [
@@ -85,13 +68,13 @@ class FilterPanel extends Component {
                     key={1}
                     hoverColor={"white"}
                   >
-                    <Slider
-                      style={sliderStyle}
-                      axis="x"
-                      defaultValue={0}
-                      onChange={(event, value) => this.valueSet(event, value)}
-                      onDragStop={this.filterByScore}
-                    />
+                    {/*<Slide*/}
+                      {/*style={sliderStyle}*/}
+                      {/*axis="x"*/}
+                      {/*defaultValue={0}*/}
+                      {/*onChange={(event, value) => this.valueSet(event, value)}*/}
+                      {/*onDragStop={this.filterByScore}*/}
+                    {/*/>*/}
                   </ListItem>
                 ]}
               />

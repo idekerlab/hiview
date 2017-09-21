@@ -6,7 +6,7 @@ export const FETCH_NETWORK = 'FETCH_NETWORK'
 const fetchNetwork = url => {
   return {
     type: FETCH_NETWORK,
-    url
+    url,
   }
 }
 
@@ -16,7 +16,7 @@ const receiveNetwork = (url, json) => {
   return {
     type: RECEIVE_NETWORK,
     url,
-    network: json
+    network: json,
   }
 }
 
@@ -25,8 +25,8 @@ const fetchNet = url => {
 }
 
 /**
-* remove unnecessary edges for visualization
-*/
+ * remove unnecessary edges for visualization
+ */
 const filterEdges = network => {
   const edges = []
   network.elements.edges.forEach(edge => {
@@ -58,10 +58,10 @@ export const fetchNetworkFromUrl = url => {
 
     return fetchNet(url)
       .then(response => (response.json()))
-      .then(rawCyjs => (filterEdges(rawCyjs)))
-      .then(rawCyjs => (filterNodes(rawCyjs)))
-      .then(rawCyjs => (filterLeafs(rawCyjs)))
-      .then(json => (layout(json)))
+      // .then(rawCyjs => (filterEdges(rawCyjs)))
+      // .then(rawCyjs => (filterNodes(rawCyjs)))
+      // .then(rawCyjs => (filterLeafs(rawCyjs)))
+      // .then(json => (layout(json)))
       .then(network => dispatch(receiveNetwork(url, network)))
   }
 }
@@ -69,12 +69,12 @@ export const fetchNetworkFromUrl = url => {
 
 const filterLeafs = network => {
   const cy = cytoscape({
-    elements: network.elements
+    elements: network.elements,
   })
 
   const toBeRemovedNodes = cy.filter((element, i) => {
 
-    if( element.isNode() && element.degree() === 1){
+    if (element.isNode() && element.degree() === 1) {
       return true;
     }
     return false;
@@ -101,7 +101,7 @@ const findRoot = network => {
 
   let rootId = null
 
-  for (let i = 0; i<nodes.length; i++) {
+  for (let i = 0; i < nodes.length; i++) {
     const node = nodes[i]
     const isRoot = node.data.isRoot
     const name = node.data.name
@@ -111,7 +111,7 @@ const findRoot = network => {
     }
 
     const size = node.data.Size
-    if(size !== undefined) {
+    if (size !== undefined) {
       node.data.Size = parseInt(size)
 
       if (minSize === null) {
@@ -160,7 +160,7 @@ const getTree = (rootId, tree) => {
   const csv = []
   csv.push({
     name: rootId,
-    parent: ""
+    parent: '',
   })
 
   const edges = tree.elements.edges
@@ -170,7 +170,7 @@ const getTree = (rootId, tree) => {
 
     csv.push({
       name: source,
-      parent: target
+      parent: target,
     })
   })
 
@@ -178,10 +178,10 @@ const getTree = (rootId, tree) => {
 
   const d3tree = d3Hierarchy
     .stratify()
-    .id(function(d) {
+    .id(function (d) {
       return d.name;
     })
-    .parentId(function(d) {
+    .parentId(function (d) {
       return d.parent;
     })(csv);
 
@@ -191,7 +191,7 @@ const getTree = (rootId, tree) => {
     .cluster()
     .size([360, 1600])
     .separation((a, b) => {
-      return (a.parent === b.parent ? 1: 2) / a.depth
+      return (a.parent === b.parent ? 1 : 2) / a.depth
     });
 
   layout(d3tree)
@@ -213,7 +213,7 @@ const applyLayout = (layoutMap, network) => {
 
       let depth = position[2]
 
-      if(depth === undefined) {
+      if (depth === undefined) {
         depth = 0
       }
 
@@ -226,12 +226,12 @@ const applyLayout = (layoutMap, network) => {
       if (node.data.Size === 1 || depth > 1) {
         let angle = newPos[2]
         // let angle = newPos[2]*180/Math.PI
-        if(angle <= Math.PI * 1.5 && angle >= Math.PI/2.0) {
-            angle = angle + Math.PI
-            // if(node.data.Size === 1) {
-            //   node.position.x = -1205
-            //   node.position.y = newPos[1] * 12
-            // }
+        if (angle <= Math.PI * 1.5 && angle >= Math.PI / 2.0) {
+          angle = angle + Math.PI
+          // if(node.data.Size === 1) {
+          //   node.position.x = -1205
+          //   node.position.y = newPos[1] * 12
+          // }
         } else {
           // if(node.data.Size === 1) {
           //   node.position.x = 1205
@@ -262,7 +262,7 @@ const project = (x, y) => {
   return [
     radius * Math.cos(angle),
     radius * Math.sin(angle),
-    angle
+    angle,
   ];
 }
 
@@ -270,9 +270,9 @@ const project2 = (x, y) => {
   const angle = (x - 90) / 180 * Math.PI
   const radius = y
   return [
-    radius * Math.cos(angle*2),
-    radius * Math.sin(angle*2),
-    angle
+    radius * Math.cos(angle * 2),
+    radius * Math.sin(angle * 2),
+    angle,
   ];
 }
 
@@ -292,8 +292,8 @@ const walk = (node, layoutMap) => {
 export const idMapping = json => {
 
   fetch(url, {
-      method: "POST"
-    })
+    method: 'POST',
+  })
     .then(response => (response.json()))
     .then(json => {
       dispatch(receiveNetwork(url, json))
@@ -304,6 +304,6 @@ export const DELETE_NETWORK = 'DELETE_NETWORK'
 const deleteNetwork = url => {
   return {
     type: DELETE_NETWORK,
-    url
+    url,
   }
 }

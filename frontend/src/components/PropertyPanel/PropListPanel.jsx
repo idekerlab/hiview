@@ -1,8 +1,6 @@
 import React, {Component, PropTypes} from 'react'
 
 import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
-import OpenIcon from 'material-ui/svg-icons/action/open-in-new'
 
 class PropListPanel extends Component {
 

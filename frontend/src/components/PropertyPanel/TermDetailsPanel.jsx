@@ -1,9 +1,10 @@
 import React, {Component} from 'react'
-import {Tabs, Tab} from 'material-ui/Tabs';
 
 import Divider from 'material-ui/Divider';
 
 import TitleBar from './TitleBar'
+import Tabs, { Tab } from 'material-ui/Tabs';
+
 
 import RawInteractionPanel from './RawInteractionPanel'
 import PropListPanel from './PropListPanel'
@@ -25,8 +26,9 @@ class TermDetailsPanel extends Component {
     this.state = {
       subtree: {},
       scoreFilter: 1.0,
-      subnet: {}
-    };
+      subnet: {},
+      selectedTab: 0
+    }
   }
 
   componentDidMount() {}
@@ -45,17 +47,12 @@ class TermDetailsPanel extends Component {
   }
 
   render() {
-    console.log("%%%%%%%%%%%%%%%% Rendering Term Panel")
-    console.log(this.props)
-    console.log("Raw interactions:")
     const raw = this.props.rawInteractions.toJS();
-
     const interactions = raw.interactions
 
     // Term property
     const details = this.props.currentProperty
     if (details === undefined || details === null || details.id === null || details.id === undefined) {
-      console.log("%%%%%%%%%%%%%%%% EMPTY---------------Panel")
       return (
         <div></div>
       )
@@ -86,34 +83,36 @@ class TermDetailsPanel extends Component {
 
     const keys = Object.keys(data)
 
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@ render PANEL @@@@@@@@@@@@@@@@@@@@")
-
     return (
         <div>
-          <RawInteractionPanel
-              subnet={interactions}
-              selectedTerm={this.props.currentProperty.id}
-              handleClose={this.props.handleClose}
-              commandActions={this.props.commandActions}
-              loading={this.props.currentProperty.loading}
-          />
+          {/*<RawInteractionPanel*/}
+              {/*subnet={interactions}*/}
+              {/*selectedTerm={this.props.currentProperty.id}*/}
+              {/*handleClose={this.props.handleClose}*/}
+              {/*commandActions={this.props.commandActions}*/}
+              {/*loading={this.props.currentProperty.loading}*/}
+          {/*/>*/}
 
-          <Tabs>
+          <Tabs value={this.state.selectedTab} onChange={this.handleChange}>
             <Tab label="Term Details">
               <TitleBar title={entry.name}/>
 
               <Divider/>
 
-              <PropListPanel data={entry}/>
+              {/*<PropListPanel data={entry}/>*/}
             </Tab>
             <Tab label="Assigned Genes">
-              <SimpleGeneList genes={nodeList}/>
+              {/*<SimpleGeneList genes={nodeList}/>*/}
             </Tab>
             <Tab label="Interactions">
             </Tab>
           </Tabs>
         </div>
     )
+  }
+
+  handleChange = (event, value) => {
+    this.setState({ selectedTab: value })
   }
 
   _handleTouchTap = id => {

@@ -3,13 +3,21 @@ import {browserHistory} from 'react-router'
 
 import classnames from 'classnames'
 
-import {List, ListItem} from 'material-ui/List';
+import List, {
+  ListItem,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
+  ListSubheader,
+} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
-import Settings from 'material-ui/svg-icons/action/settings'
-import HomeIcon from 'material-ui/svg-icons/action/home'
 
-import HelpIcon from 'material-ui/svg-icons/action/help-outline';
-import Toggle from 'material-ui/Toggle';
+import Settings from 'material-ui-icons/Settings'
+import HomeIcon from 'material-ui-icons/Home'
+import HelpIcon from 'material-ui-icons/HelpOutline';
+
+import Switch from 'material-ui/Switch';
+
 
 import style from './style.css'
 import logo from '../../assets/images/cytoscape-logo-orange.svg'
@@ -63,113 +71,63 @@ export default class MainMenu extends Component {
 
 
   render() {
-    let url = this.props.networkId
-    let network = undefined
-
-    if (url === undefined || url === null || url === '') {
-      // URL is not available
-      url = ''
-    } else {
-      network = this.props.networks.get(url)
-    }
-
-    let name = 'N/A'
-    let ndexMetadata = []
-    if (network !== undefined) {
-      // Case 1: NDEx network
-      const ndexProps = network.get('cxData')
-      if (ndexProps !== undefined) {
-        ndexMetadata = this.extractNdexData(ndexProps)
-      }
-
-      const data = network.get('data')
-      if (data !== undefined) {
-      }
-    }
 
     const uiState = this.props.uiState
-    const showAppBar = uiState.get('showAppBar')
+
     const showCommands = uiState.get('showCommands')
     const showSearchWindow = uiState.get('showSearchWindow')
 
-    const styles = this.props.styles
-    const {currentVsActions, backgroundColorActions,
-      backgroundColor, currentVs} = this.props
-
     return (
-      <div>
+      <div style={{width: '400px'}}>
         <div className={classnames(style.grid, style.top)}>
-          <img
-            className={style.icon}
-            src={logo}
-          />
           <h1 className={style.title}>
-            Ontology Viewer v1.0
+            HiView v0.1
           </h1>
         </div>
 
 
-        <Divider />
+        <Divider/>
 
 
         <List>
-          <ListItem
-            key={1}
-            primaryText="Settings"
-            leftIcon={<Settings />}
-            initiallyOpen={true}
-            primaryTogglesNestedList={true}
-            nestedItems={[
-              <ListItem
-                key={1}
-                primaryText="Navigation buttons"
-                rightToggle={
-                  <Toggle
-                    ref="commands"
-                    toggled={showCommands}
-                    onToggle={this.handleShowCommands}
-                  />
-                }
-              />,
-              <ListItem
-                key={2}
-                primaryText="Toolbar"
-                rightToggle={
-                  <Toggle
-                    ref="appBar"
-                    toggled={showAppBar}
-                    onToggle={this.handleShowAppBar}
-                  />
-                }
-              />,
-              <ListItem
-              key={3}
-              primaryText="Search Window"
-              rightToggle={
-              <Toggle
-                ref="searchWindow"
-                toggled={showSearchWindow}
-                onToggle={this.handleShowSearchWindow}
+
+
+          <ListItem>
+            <ListItemIcon>
+              <Settings />
+            </ListItemIcon>
+            <ListItemText primary="Settings" />
+            <ListItemSecondaryAction>
+              <Switch
+                onClick={this.handleShowCommands}
               />
-            }
-              />
-            ]}
-          />
+            </ListItemSecondaryAction>
+          </ListItem>
+
         </List>
 
         <Divider />
 
         <List>
           <ListItem
-            primaryText="Help"
-            leftIcon={<HelpIcon />}
-            onTouchTap={this.handleHelp}
-          />
+            button
+            onClick={this.handleHelp}
+          >
+            <ListItemIcon>
+              <HelpIcon/>
+            </ListItemIcon>
+            <ListItemText primary='Help'/>
+          </ListItem>
+
           <ListItem
-            primaryText="Back to home"
-            leftIcon={<HomeIcon />}
-            onTouchTap={this.handleHome}
-          />
+            button
+            onClick={this.handleHome}
+          >
+            <ListItemIcon>
+              <HomeIcon/>
+            </ListItemIcon>
+            <ListItemText primary='Home'/>
+          </ListItem>
         </List>
       </div>
 

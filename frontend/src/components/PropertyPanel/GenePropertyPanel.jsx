@@ -6,14 +6,8 @@ import Divider from 'material-ui/Divider';
 import TitleBar from './TitleBar'
 import PropListPanel from './PropListPanel'
 
-import RawInteractionPanel from './RawInteractionPanel'
-import GeneList from './GeneList'
-import Immutable from 'immutable'
-import FilterPanel from './FilterPanel'
-
 
 import Loading from '../Loading'
-import OpenIcon from 'material-ui/svg-icons/action/open-in-new'
 
 import * as d3Scale from 'd3-scale'
 import * as d3ScaleChromatic from 'd3-scale-chromatic'

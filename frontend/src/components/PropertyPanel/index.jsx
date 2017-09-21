@@ -1,15 +1,10 @@
 import React, {Component} from 'react'
 import Drawer from 'material-ui/Drawer'
-import ClixoDetails from './ClixoDetails'
-import GoDetails from './GoDetails'
-
 import TermDetailsPanel from './TermDetailsPanel'
 import GenePropertyPanel from './GenePropertyPanel'
-
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import CloseIcon from 'material-ui-icons/Close'
 
 const MAX_WIDTH = 800
-
 
 
 class PropertyPanel extends Component {
@@ -17,13 +12,13 @@ class PropertyPanel extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      open: false
+      open: false,
     };
   }
 
   handleClose = () => {
     this.setState({
-      open: false
+      open: false,
     })
   }
 
@@ -39,9 +34,9 @@ class PropertyPanel extends Component {
     console.log('--------- Opening props ------------')
     console.log(this.props)
 
-    if (selected !== selectedNew || currentProperty !== newProperty ) {
+    if (selected !== selectedNew || currentProperty !== newProperty) {
       this.setState({
-        open: true
+        open: true,
       })
     }
   }
@@ -52,14 +47,15 @@ class PropertyPanel extends Component {
     const currentNet = this.props.currentNetwork.id
 
     let w = window.innerWidth * 0.35
-    if(w >= MAX_WIDTH) {
+    if (w >= MAX_WIDTH) {
       w = MAX_WIDTH
     }
 
     return (
       <Drawer
         width={w}
-        openSecondary={true}
+        type="persistent"
+        anchor={'right'}
         open={this.state.open}>
 
 
@@ -82,13 +78,13 @@ class PropertyPanel extends Component {
   getPanel = curNet => {
 
     // Do not return any component if nothing is selected.
-    if(this.props.currentProperty.id === null) {
-      return(<div></div>)
+    if (this.props.currentProperty.id === null) {
+      return (<div></div>)
     }
 
     const propType = this.props.currentProperty.propType
 
-    if(propType === 'term') {
+    if (propType === 'term') {
       return (
         <TermDetailsPanel
           {...this.props}
@@ -101,7 +97,7 @@ class PropertyPanel extends Component {
         />
       )
     } else {
-      return(<div><h2>Unknown prop type</h2></div>)
+      return (<div><h2>Unknown prop type</h2></div>)
     }
   }
 

@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 
 import TextField from 'material-ui/TextField';
-import FlatButton from 'material-ui/FlatButton';
+import Button from 'material-ui/Button'
+
 
 import {browserHistory} from 'react-router'
 import style from './style.css'
@@ -11,7 +12,8 @@ class OntologySelector extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      uuid: '20bcb48f-3e6b-11e7-baf1-0660b7976219',
+      // uuid: '20bcb48f-3e6b-11e7-baf1-0660b7976219',
+      uuid: 'c848905a-8edb-11e7-9743-0660b7976219',
       serverUrl: props.dataSource.get('serverUrl')
     }
   }
@@ -38,9 +40,6 @@ class OntologySelector extends Component {
 
   render() {
 
-    console.log("--------Front prop ----------")
-    console.log(this.props)
-
     return (
       <div className={style.dataSource}>
         <TextField
@@ -60,7 +59,7 @@ class OntologySelector extends Component {
 
         <section className={style.start}>
 
-          <FlatButton
+          <Button
             className={style.startButton}
             label="Start"
             onClick={this.handleStart}
