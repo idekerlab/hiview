@@ -7,10 +7,10 @@ import TitleBar from './TitleBar'
 import PropListPanel from './PropListPanel'
 
 
-import Loading from '../Loading'
-
 import * as d3Scale from 'd3-scale'
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
+
+import {CircularProgress} from 'material-ui/Progress';
 
 const colorFunction = d3Scale.scaleOrdinal(d3ScaleChromatic.schemeDark2)
 
@@ -46,7 +46,7 @@ class GenePropertyPanel extends Component {
 
     // Loading
     if(details.loading) {
-      return(<Loading style={descriptionStyle} />)
+      return(<CircularProgress />)
     }
 
     const data = details.data

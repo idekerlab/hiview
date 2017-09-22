@@ -13,7 +13,8 @@ class OntologySelector extends Component {
     super(props)
     this.state = {
       // uuid: '20bcb48f-3e6b-11e7-baf1-0660b7976219',
-      uuid: 'c848905a-8edb-11e7-9743-0660b7976219',
+      // uuid: 'c848905a-8edb-11e7-9743-0660b7976219',
+      uuid: 'fbc9753b-98d1-11e7-9743-0660b7976219',
       serverUrl: props.dataSource.get('serverUrl')
     }
   }

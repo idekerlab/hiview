@@ -4,13 +4,12 @@ import Divider from 'material-ui/Divider';
 
 import TitleBar from './TitleBar'
 import Tabs, { Tab } from 'material-ui/Tabs';
+import {CircularProgress} from 'material-ui/Progress';
 
 
 import RawInteractionPanel from './RawInteractionPanel'
 import PropListPanel from './PropListPanel'
 import SimpleGeneList from './SimpleGeneList'
-
-import Loading from '../Loading'
 
 
 const descriptionStyle = {
@@ -60,7 +59,7 @@ class TermDetailsPanel extends Component {
 
     // Loading
     if (details.loading) {
-      return (<Loading style={descriptionStyle}/>)
+      return (<CircularProgress />)
     }
 
     const data = details.data

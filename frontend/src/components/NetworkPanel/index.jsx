@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {browserHistory} from 'react-router'
 import CyNetworkViewer from 'cy-network-viewer'
-import CytoscapeJsRenderer from 'cytoscapejs-renderer'
+import {CytoscapeJsRenderer, SigmaRenderer} from 'cytoscapejs-renderer'
 import {CircularProgress} from 'material-ui/Progress';
 
 
@@ -11,7 +11,8 @@ const MYGENE_URL = 'http://mygene.info/v3'
 const CXTOOL_URL = 'http://localhost:3001/ndex2cyjs/'
 // const SAMPLE1 = 'https://gist.githubusercontent.com/keiono/edec04ea9940863094c0d7b398026ee9/raw/740c10cdcbf7ea2f20b097b8340be560b19ee1e6/hivew-sample1.cyjs'
 
-const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
+const Viewer = CyNetworkViewer(SigmaRenderer)
+// const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
 const progressStyle = {
   position: 'fixed',
