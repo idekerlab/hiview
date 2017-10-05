@@ -58,7 +58,7 @@ export const fetchNetworkFromUrl = url => {
 
     return fetchNet(url)
       .then(response => (response.json()))
-      .then(rawCyjs => (filterEdges(rawCyjs)))
+      // .then(rawCyjs => (filterEdges(rawCyjs)))
       // .then(rawCyjs => (filterNodes(rawCyjs)))
       // .then(rawCyjs => (filterLeafs(rawCyjs)))
       // .then(json => (layout(json)))
