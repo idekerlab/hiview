@@ -18,7 +18,6 @@ ReactDOM.render(
   <Provider store={store}>
 
     <Router history={history}>
-
       <Route
         component={FrontPage}
         path="/"
@@ -27,6 +26,5 @@ ReactDOM.render(
         component={NetworkView}
         path="/app"
       />
-
     </Router>
   </Provider>, document.getElementById('root'))

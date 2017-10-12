@@ -3,31 +3,47 @@ import React, {Component} from 'react'
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button'
 
+import { withStyles } from 'material-ui/styles';
+
+
 
 import {browserHistory} from 'react-router'
 import style from './style.css'
 
+const DEFAULT_UUID = 'fbc9753b-98d1-11e7-9743-0660b7976219'
+
+
+const styles = theme => ({
+  textField: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+    width: 600,
+    fontSize: '2em'
+  },
+});
+
+
 class OntologySelector extends Component {
+
+
 
   constructor(props) {
     super(props)
     this.state = {
-      // uuid: '20bcb48f-3e6b-11e7-baf1-0660b7976219',
-      // uuid: 'c848905a-8edb-11e7-9743-0660b7976219',
-      uuid: 'fbc9753b-98d1-11e7-9743-0660b7976219',
-      serverUrl: props.dataSource.get('serverUrl')
+      uuid: DEFAULT_UUID,
+      serverUrl: props.dataSource.get('serverUrl'),
     }
   }
 
   handleUuidChange = event => {
     this.setState({
-      uuid: event.target.value
+      uuid: event.target.value,
     })
   }
 
   handleUrlChange = event => {
     this.setState({
-      url: event.target.value
+      url: event.target.value,
     })
   }
 
@@ -40,35 +56,38 @@ class OntologySelector extends Component {
   }
 
   render() {
+    const { classes } = this.props;
 
     return (
-      <div className={style.dataSource}>
+      <div className={style.row2}>
         <TextField
-          className={style.source}
-          hintText='e.g. http://test.ndexbio.org'
-          floatingLabelText='NDEx Server URL'
+          className={classes.textField}
+          placeholder='e.g. http://test.ndexbio.org'
+          label='NDEx Server URL'
+          margin="normal"
           value={this.state.serverUrl}
           onChange={this.handleUrlChange}
         />
 
         <TextField
-          className={style.source}
-          floatingLabelText="UUID of the main hierarchy"
+          className={classes.textField}
+          label="UUID of the main hierarchy"
           value={this.state.uuid}
+          margin="normal"
           onChange={this.handleUuidChange}
         />
 
-        <section className={style.start}>
+        <Button
+          raised
+          color="primary"
+          onClick={this.handleStart}
+        >
+          Start
+        </Button>
 
-          <Button
-            className={style.startButton}
-            label="Start"
-            onClick={this.handleStart}
-          />
-        </section>
       </div>
     )
   }
 }
 
-export default OntologySelector
+export default withStyles(styles)(OntologySelector);
