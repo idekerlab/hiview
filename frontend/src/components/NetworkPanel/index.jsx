@@ -54,8 +54,12 @@ class NetworkPanel extends Component {
 
   selectNodes = (nodeIds, nodeProps) => {
     console.log('====== Custom NODE select function called! ========');
-    const node = nodeIds[0]
-    const props = nodeProps[node]
+    console.log(nodeIds);
+    console.log(nodeProps);
+
+    // First node in the selection
+    const nodeId = nodeIds[0]
+    const props = nodeProps[nodeId].props
 
     // There are two cases: Gene or term
 
