@@ -4,7 +4,7 @@
 
     display: grid;
     grid-template-columns: 1fr 4fr 1fr;
-    grid-template-rows: 300px auto 3em;
+    grid-template-rows: 15% 30% auto 3em;
     background: #FFFFFF;
 }
 
@@ -27,7 +27,7 @@
 
 .row3 {
     background: #aaaaaa;
-    grid-row: 3;
+    grid-row: 4;
     grid-column: 1/4;
     height: 100%;
     align-self: stretch;
