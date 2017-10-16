@@ -68,25 +68,6 @@ export default class NetworkViewer extends Component {
     return (
 
       <div style={this.props.style}>
-        <ClosableAppBar
-          title={message.get('message')}
-          messageActions={messageActions}
-          networkId={networkId}
-          networks={networks}
-          uiState={uiState}
-          uiStateActions={uiStateActions}
-          styles={styles}
-          currentVsActions={currentVsActions}
-          currentVs={currentVs}
-          backgroundColorActions={backgroundColorActions}
-          backgroundColor={backgroundColor}
-          datasource={datasource}
-          trees={config.get('trees').toJS()}
-          currentNetwork={this.props.currentNetwork.toJS()}
-          currentNetworkActions={this.props.currentNetworkActions}
-
-          propertyActions={propertyActions}
-        />
 
         <NetworkPanel
           networkActions={networkActions}

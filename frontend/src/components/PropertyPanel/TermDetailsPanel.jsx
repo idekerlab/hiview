@@ -84,13 +84,13 @@ class TermDetailsPanel extends Component {
 
     return (
         <div>
-          {/*<RawInteractionPanel*/}
-              {/*subnet={interactions}*/}
-              {/*selectedTerm={this.props.currentProperty.id}*/}
-              {/*handleClose={this.props.handleClose}*/}
-              {/*commandActions={this.props.commandActions}*/}
-              {/*loading={this.props.currentProperty.loading}*/}
-          {/*/>*/}
+          <RawInteractionPanel
+              subnet={interactions}
+              selectedTerm={this.props.currentProperty.id}
+              handleClose={this.props.handleClose}
+              commandActions={this.props.commandActions}
+              loading={this.props.currentProperty.loading}
+          />
 
           <Tabs value={this.state.selectedTab} onChange={this.handleChange}>
             <Tab label="Term Details">

@@ -44,6 +44,25 @@ class PropertyPanel extends Component {
 
   render() {
 
+    const drawerStyle = {
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center'
+  }
+
+    const closeIconPanelStyle = {
+      display: 'inline-flex',
+      alignItems: 'center',
+      width: '100%',
+      height: '3em',
+      backgroundColor: 'teal'
+    }
+
+    const closeIconStyle = {
+      marginLeft: '0.7em',
+      alignSelf: 'center'
+    }
+
     const currentNet = this.props.currentNetwork.id
 
     let w = window.innerWidth * 0.35
@@ -53,17 +72,19 @@ class PropertyPanel extends Component {
 
     return (
       <Drawer
-        width={w}
+        style={drawerStyle}
         type="persistent"
         anchor={'right'}
         open={this.state.open}>
 
 
+        <div style={closeIconPanelStyle}>
         <CloseIcon
-          style={{position: 'fixed', top: '0.7em', marginLeft: '0.7em', zIndex: 1200}}
+          style={closeIconStyle}
           onClick={this.handleClose}
           color={'white'}
         />
+        </div>
 
         {this.getPanel(currentNet)}
 
