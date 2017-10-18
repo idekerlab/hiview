@@ -47,21 +47,22 @@ class PropertyPanel extends Component {
     const drawerStyle = {
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center'
-  }
+      alignItems: 'center',
+    }
 
     const closeIconPanelStyle = {
       display: 'inline-flex',
       alignItems: 'center',
       width: '100%',
       height: '3em',
-      backgroundColor: 'teal'
+      backgroundColor: 'teal',
     }
 
     const closeIconStyle = {
       marginLeft: '0.7em',
-      alignSelf: 'center'
+      alignSelf: 'center',
     }
+
 
     const currentNet = this.props.currentNetwork.id
 
@@ -70,24 +71,40 @@ class PropertyPanel extends Component {
       w = MAX_WIDTH
     }
 
+    const drawerContentsStyle = {
+      width: w
+    }
+
+    const titleStyle = {
+      fontWeight: 300,
+      fontSize: '2em',
+      color: 'white',
+      marginLeft: '0.5em'
+    }
+
+
     return (
       <Drawer
+        width={w}
         style={drawerStyle}
         type="persistent"
         anchor={'right'}
         open={this.state.open}>
 
 
-        <div style={closeIconPanelStyle}>
-        <CloseIcon
-          style={closeIconStyle}
-          onClick={this.handleClose}
-          color={'white'}
-        />
+        <div style={drawerContentsStyle}>
+          <div style={closeIconPanelStyle}>
+            <CloseIcon
+              style={closeIconStyle}
+              onClick={this.handleClose}
+              color={'white'}
+            />
+            <div style={titleStyle}>{this.props.currentProperty.data.Label}</div>
+          </div>
+
+          {this.getPanel(currentNet)}
+
         </div>
-
-        {this.getPanel(currentNet)}
-
       </Drawer>
     )
   }

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import CyNetworkViewer from 'cy-network-viewer'
-import CytoscapeJsRenderer from 'cytoscapejs-renderer'
+import {CytoscapeJsRenderer} from 'cytoscapejs-renderer'
 
 
 class RawInteractionPanel extends Component {
@@ -43,7 +43,7 @@ class RawInteractionPanel extends Component {
 
     const style = {
       width: '100%',
-      height: '40em',
+      height: '50em',
       background: '#000000'
     }
 
@@ -67,7 +67,7 @@ class RawInteractionPanel extends Component {
       return (<div></div>)
     }
 
-
+    // Style of
     const networkAreaStyle = {
       width: '100%',
       height: '100%',
@@ -101,21 +101,21 @@ class RawInteractionPanel extends Component {
     style: [ {
       "selector" : "node",
       "css" : {
-        "width" : 15.0,
+        "width" : 2.0,
+        "height" : 2.0,
         "text-valign" : "center",
-        "text-halign" : "right",
+        "text-halign" : "center",
         "shape" : "ellipse",
-        "color" : "white",
-        "background-color" : "#CCCCCC",
-        "height" : 15.0,
-        "font-size" : '3em',
+        "color" : "#EFEFEF",
+        "background-color" : "#FFFFFF",
+        "font-size" : '0.2em',
         "content" : "data(name)",
       }
     }, {
       "selector" : "node:selected",
       "css" : {
-        "background-color" : "red",
-        "font-size" : "4em",
+        "background-color" : "orange",
+        "font-size" : "0.4em",
         "color" : "orange",
         content: "data(name)",
         "text-max-width": '200px'
@@ -123,15 +123,16 @@ class RawInteractionPanel extends Component {
     }, {
       "selector" : "edge",
       "css" : {
-        "width" : "mapData(weight, 1.0, 8.0, 1, 10)",
+        "width" : 0.1,
+        // "width" : "mapData(weight, 1.0, 8.0, 1, 10)",
         "line-color": 'white',
-        "opacity": 0.8
+        "opacity": 0.6
       }
     }, {
       "selector" : "edge:selected",
       "css" : {
         "line-color" : "rgb(255,0,0)",
-        "width": 14
+        "width": 1
       }
     } ]
   })

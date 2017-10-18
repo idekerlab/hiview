@@ -46,6 +46,8 @@ class TermDetailsPanel extends Component {
   }
 
   render() {
+
+
     const raw = this.props.rawInteractions.toJS();
     const interactions = raw.interactions
 
@@ -94,11 +96,11 @@ class TermDetailsPanel extends Component {
 
           <Tabs value={this.state.selectedTab} onChange={this.handleChange}>
             <Tab label="Term Details">
-              <TitleBar title={entry.name}/>
+              <TitleBar title={data.Label}/>
 
               <Divider/>
 
-              {/*<PropListPanel data={entry}/>*/}
+              <PropListPanel data={entry}/>
             </Tab>
             <Tab label="Assigned Genes">
               {/*<SimpleGeneList genes={nodeList}/>*/}

@@ -9,7 +9,7 @@ import {Map} from 'immutable'
 
 const MYGENE_URL = 'http://mygene.info/v3'
 const CXTOOL_URL = 'http://localhost:3001/ndex2cyjs/'
-// const SAMPLE1 = 'https://gist.githubusercontent.com/keiono/edec04ea9940863094c0d7b398026ee9/raw/740c10cdcbf7ea2f20b097b8340be560b19ee1e6/hivew-sample1.cyjs'
+const NDEX_LINK_TAG = 'ndex_internalLink'
 
 const Viewer = CyNetworkViewer(SigmaRenderer)
 // const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
@@ -78,23 +78,29 @@ class NetworkPanel extends Component {
       return
     }
     // From NDEx to CYJS converter
-    const linkKey = 'ndex_internalLink'
-    const link = CXTOOL_URL + props[linkKey] + '?server=test'
+    const linkEdntry = props[NDEX_LINK_TAG]
+    if(linkEdntry === undefined) {
+      return
+    }
+
+    const linkId = linkEdntry.split('(')[1].replace(')', '')
+
+    const link = CXTOOL_URL + linkId + '?server=test'
 
     window.setTimeout(() => {
       // Path finding
 
-      const networkProp = this.props.network
-      const networkData = networkProp.get(this.state.networkUrl)
-      const root = networkData.data.rootId
+      // const networkProp = this.props.network
+      // const networkData = networkProp.get(this.state.networkUrl)
+      // const root = networkData.data.rootId
 
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
-      const startNode = nodeIds[0]
+      // const startNode = nodeIds[0]
       // this.props.commandActions.findPath({startId: startNode, endId: root})
 
       // Directly set prop from node attributes
-      // this.props.rawInteractionsActions.fetchInteractionsFromUrl(link)
+      this.props.rawInteractionsActions.fetchInteractionsFromUrl(link)
       this.props.propertyActions.setProperty(props.id, props, 'term')
     }, 0)
   }
@@ -192,6 +198,7 @@ class NetworkPanel extends Component {
       left: 0,
       width: '100%',
       height: '100%',
+      backgroundColor: '#888899'
     };
 
 
