@@ -72,7 +72,8 @@ class PropertyPanel extends Component {
     }
 
     const drawerContentsStyle = {
-      width: w
+      width: w,
+      height: '100%'
     }
 
     const titleStyle = {

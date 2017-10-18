@@ -101,8 +101,8 @@ class RawInteractionPanel extends Component {
     style: [ {
       "selector" : "node",
       "css" : {
-        "width" : 2.0,
-        "height" : 2.0,
+        "width" : 0.5,
+        "height" : 0.5,
         "text-valign" : "center",
         "text-halign" : "center",
         "shape" : "ellipse",
@@ -124,7 +124,6 @@ class RawInteractionPanel extends Component {
       "selector" : "edge",
       "css" : {
         "width" : 0.1,
-        // "width" : "mapData(weight, 1.0, 8.0, 1, 10)",
         "line-color": 'white',
         "opacity": 0.6
       }

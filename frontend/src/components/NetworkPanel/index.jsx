@@ -44,11 +44,11 @@ class NetworkPanel extends Component {
     };
   }
 
-  setGeneProps = () => {
+  setGeneProps = geneName => {
     // Just fetch property
     const myGeneUrl = MYGENE_URL + '/query?q='
-    const qUrl = myGeneUrl + props.name
-    this.props.propertyActions.fetchPropertyFromUrl(props.id, qUrl, 'gene')
+    const qUrl = myGeneUrl + geneName + '&fields=all&size=1'
+    this.props.propertyActions.fetchPropertyFromUrl(geneName, qUrl, 'gene')
 
   }
 
@@ -74,7 +74,7 @@ class NetworkPanel extends Component {
     }
 
     if (nodeType === 'Gene') {
-      this.setGeneProps()
+      this.setGeneProps(props.Label)
       return
     }
     // From NDEx to CYJS converter
@@ -198,7 +198,7 @@ class NetworkPanel extends Component {
       left: 0,
       width: '100%',
       height: '100%',
-      backgroundColor: '#888899'
+      backgroundColor: '#F0F0F0'
     };
 
 

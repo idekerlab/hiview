@@ -10,7 +10,7 @@ import Commands from '../Commands'
 import style from './style.css'
 
 
-
+import SimpleSearch from '../SimpleSearch'
 
 /*
   Main Ontology DAG viewer
@@ -110,6 +110,9 @@ export default class NetworkViewer extends Component {
           rawInteractions={this.props.rawInteractions}
           rawInteractionsActions={this.props.rawInteractionsActions}
         />
+
+
+        <SimpleSearch />
 
         <Errorbar
           className={style.errorbar}

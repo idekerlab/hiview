@@ -6,6 +6,8 @@ import Divider from 'material-ui/Divider';
 import TitleBar from './TitleBar'
 import PropListPanel from './PropListPanel'
 
+import PropTreePanel from './PropTreePanel'
+
 
 import * as d3Scale from 'd3-scale'
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
@@ -50,20 +52,24 @@ class GenePropertyPanel extends Component {
     }
 
     const data = details.data
-    const parts = details.url.split('/')
-    const id = parts[parts.length-1]
+    const id = details.id
 
     if(data === undefined || data === null) {
         return(<div>no data</div>)
     }
 
-    const entry = data
+    if(data.hits === undefined || data.hits.length === 0) {
+      return(<div>no data</div>)
+    }
 
+    const entry = data.hits[0]
+
+    console.log(entry)
     return (
-      <div>
+      <div style={{height: '100%'}}>
 
         <TitleBar
-          title={entry.symbol}
+          title={entry.name}
           geneId={id}
         />
         <div style={descriptionStyle}>
@@ -73,8 +79,10 @@ class GenePropertyPanel extends Component {
 
         < Divider/>
 
-        <PropListPanel data={entry}/>
 
+        <PropTreePanel
+          tree={entry}
+        />
       </div>
     )
   }

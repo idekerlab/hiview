@@ -10,7 +10,7 @@ import { withStyles } from 'material-ui/styles';
 import {browserHistory} from 'react-router'
 import style from './style.css'
 
-const DEFAULT_UUID = 'fbc9753b-98d1-11e7-9743-0660b7976219'
+const DEFAULT_UUID = '7ae8907a-b395-11e7-b629-0660b7976219'
 
 
 const styles = theme => ({
