@@ -130,7 +130,6 @@ export default class MainMenu extends Component {
           </ListItem>
         </List>
       </div>
-
     )
   }
 }

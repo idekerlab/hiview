@@ -61,20 +61,19 @@ export default class ClosableAppBar extends Component {
 
     const {
       uiState, uiStateActions, networks, networkId,
-      styles, currentVsActions, backgroundColorActions,
-      backgroundColor, currentVs, datasource, trees
-    } = this.props
+      styles, currentVsActions, currentVs} = this.props
 
-
+    console.log('Settings----------------')
     return (
       <div>
 
         {this.getBar()}
 
         <Drawer
-          docked={false}
+          type="persistent"
+          anchor={'left'}
           open={this.state.open}
-          onRequestChange={(open) => this.setState({open})}
+          // onRequestChange={(open) => this.setState({open})}
           style={dStyle}
           width={400}
         >

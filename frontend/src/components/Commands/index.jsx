@@ -61,7 +61,7 @@ class Commands extends Component {
       <div>
 
         <Drawer
-          docked={false}
+          anchor={'left'}
           open={this.state.open}
           onRequestChange={(open) => this.setState({open})}
           style={dStyle}
