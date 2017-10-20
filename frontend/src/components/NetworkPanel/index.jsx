@@ -8,7 +8,8 @@ import {CircularProgress} from 'material-ui/Progress';
 import {Map} from 'immutable'
 
 const MYGENE_URL = 'http://mygene.info/v3'
-const CXTOOL_URL = 'http://localhost:3001/ndex2cyjs/'
+// const CXTOOL_URL = 'http://localhost:3001/ndex2cyjs/'
+const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
 const NDEX_LINK_TAG = 'ndex_internalLink'
 
 const Viewer = CyNetworkViewer(SigmaRenderer)
@@ -198,7 +199,7 @@ class NetworkPanel extends Component {
       left: 0,
       width: '100%',
       height: '100%',
-      background: '#999999'
+      background: '#666666'
       // background: 'radial-gradient(circle closest-side, #f1f1f1, #aaaaaa 130%)'
     };
 

@@ -84,6 +84,11 @@ class TermDetailsPanel extends Component {
 
     const keys = Object.keys(data)
 
+    console.log("############# Prop [anel _______________________")
+    console.log(data)
+
+    const title = data.name
+
     return (
         <div>
           <RawInteractionPanel
@@ -96,11 +101,15 @@ class TermDetailsPanel extends Component {
 
           <Tabs value={this.state.selectedTab} onChange={this.handleChange}>
             <Tab label="Term Details">
-              <TitleBar title={data.Label}/>
 
-              <Divider/>
+              <div>
+                <h1>TEST</h1>
+                <TitleBar title={title}/>
 
-              <PropListPanel data={entry}/>
+                <Divider/>
+
+                {/*<PropListPanel data={entry}/>*/}
+              </div>
             </Tab>
             <Tab label="Assigned Genes">
               {/*<SimpleGeneList genes={nodeList}/>*/}
