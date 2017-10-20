@@ -1,23 +1,27 @@
 import React from 'react'
-
-import OntologySelector from './OntologySelector'
+import SourceSelector from './SourceSelector'
 
 import style from './style.css'
+
 
 const TopPage = props => (
   <div className={style.container}>
 
-    <div className={style.row1}>
-      <div className={style.titleText}>
-        HiView &alpha;
-      </div>
+    <div className={style.menubar}/>
 
-      <div className={style.subtitle}>
-        Universal browser for hierarchical data
+    <div className={style.row1}>
+      <div className={style.title}>
+        <div className={style.titleText}>
+          HiView &alpha;
+        </div>
+
+        <div className={style.subtitle}>
+          Universal browser for hierarchical data
+        </div>
       </div>
     </div>
 
-    <OntologySelector
+    <SourceSelector
       {...props}
     />
 

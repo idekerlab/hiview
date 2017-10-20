@@ -49,6 +49,14 @@ export default () => ({
         use: [
           { loader: 'url-loader' }
         ]
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|svg)$/,
+        use: [
+          {
+            loader: 'file-loader'
+          }
+        ]
       }
     ]
   },

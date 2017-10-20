@@ -23,7 +23,7 @@ const styles = theme => ({
 });
 
 
-class OntologySelector extends Component {
+class SourceSelector extends Component {
 
 
 
@@ -90,4 +90,4 @@ class OntologySelector extends Component {
   }
 }
 
-export default withStyles(styles)(OntologySelector);
+export default withStyles(styles)(SourceSelector);
