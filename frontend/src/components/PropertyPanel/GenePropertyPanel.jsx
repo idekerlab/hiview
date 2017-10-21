@@ -66,7 +66,7 @@ class GenePropertyPanel extends Component {
 
     console.log(entry)
     return (
-      <div style={{height: '100%'}}>
+      <div style={{height: '100%', width: this.props.width}}>
 
         <TitleBar
           title={entry.name}

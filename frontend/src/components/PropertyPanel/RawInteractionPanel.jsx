@@ -19,13 +19,13 @@ class RawInteractionPanel extends Component {
   //
   //   if(nextProps.selectedTerm === this.props.selectedTerm) {
   //
-  //     if(nextProps.loading !== this.props.loading) {
-  //       return true
-  //     }
-  //
-  //     if(nextProps.commands !== undefined) {
-  //       return true
-  //     }
+  //     // if(nextProps.loading !== this.props.loading) {
+  //     //   return true
+  //     // }
+  //     //
+  //     // if(nextProps.commands !== undefined) {
+  //     //   return true
+  //     // }
   //
   //     return false;
   //   }

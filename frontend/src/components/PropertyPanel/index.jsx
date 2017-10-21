@@ -4,7 +4,8 @@ import TermDetailsPanel from './TermDetailsPanel'
 import GenePropertyPanel from './GenePropertyPanel'
 import CloseIcon from 'material-ui-icons/Close'
 
-const MAX_WIDTH = 800
+const MAX_WIDTH = 800.0
+const MIN_WIDTH = 300.0
 
 
 class PropertyPanel extends Component {
@@ -30,10 +31,6 @@ class PropertyPanel extends Component {
     const currentProperty = this.props.currentProperty
     const newProperty = nextProps.currentProperty
 
-
-    console.log('--------- Opening props ------------')
-    console.log(this.props)
-
     if (selected !== selectedNew || currentProperty !== newProperty) {
       this.setState({
         open: true,
@@ -47,7 +44,7 @@ class PropertyPanel extends Component {
     const drawerStyle = {
       display: 'flex',
       flexDirection: 'column',
-      alignItems: 'center',
+      maxWidth: MAX_WIDTH
     }
 
     const closeIconPanelStyle = {
@@ -63,17 +60,22 @@ class PropertyPanel extends Component {
       alignSelf: 'center',
     }
 
-
     const currentNet = this.props.currentNetwork.id
 
     let w = window.innerWidth * 0.35
-    if (w >= MAX_WIDTH) {
+
+
+    if (w > MAX_WIDTH) {
       w = MAX_WIDTH
     }
 
+    if(w < MIN_WIDTH) {
+      w = MIN_WIDTH
+    }
+
     const drawerContentsStyle = {
-      width: w,
-      height: '100%'
+      width: '100%',
+      height: '100%',
     }
 
     const titleStyle = {
@@ -83,6 +85,7 @@ class PropertyPanel extends Component {
       marginLeft: '0.5em'
     }
 
+    console.log(w)
 
     return (
       <Drawer
@@ -91,7 +94,6 @@ class PropertyPanel extends Component {
         type="persistent"
         anchor={'right'}
         open={this.state.open}>
-
 
         <div style={drawerContentsStyle}>
           <div style={closeIconPanelStyle}>
@@ -103,7 +105,7 @@ class PropertyPanel extends Component {
             <div style={titleStyle}>{this.props.currentProperty.data.Label}</div>
           </div>
 
-          {this.getPanel(currentNet)}
+          {this.getPanel(w)}
 
         </div>
       </Drawer>
@@ -114,7 +116,7 @@ class PropertyPanel extends Component {
   /**
    * Currently supporting two types of networks only.
    */
-  getPanel = curNet => {
+  getPanel = (w) => {
 
     // Do not return any component if nothing is selected.
     if (this.props.currentProperty.id === null) {
@@ -133,6 +135,7 @@ class PropertyPanel extends Component {
       return (
         <GenePropertyPanel
           {...this.props}
+          width={w}
         />
       )
     } else {

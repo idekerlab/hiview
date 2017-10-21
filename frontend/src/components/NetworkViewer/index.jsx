@@ -111,8 +111,12 @@ export default class NetworkViewer extends Component {
           rawInteractionsActions={this.props.rawInteractionsActions}
         />
 
+        <SimpleSearch
+          datasource={this.props.datasource.toJS()}
+          network={network.toJS()}
+          commandActions={commandActions}
+        />
 
-        <SimpleSearch />
 
         <Errorbar
           className={style.errorbar}

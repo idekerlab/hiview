@@ -1,4 +1,7 @@
 import React, {Component} from 'react'
+import PropTypes from 'prop-types';
+import { withStyles } from 'material-ui/styles';
+
 
 import Divider from 'material-ui/Divider';
 
@@ -11,6 +14,9 @@ import RawInteractionPanel from './RawInteractionPanel'
 import PropListPanel from './PropListPanel'
 import SimpleGeneList from './SimpleGeneList'
 
+import SubsystemPanel from './SubsystemPanel'
+
+import TabContainer from './TabContainer'
 
 const descriptionStyle = {
   background: '#BEBEB4',
@@ -99,24 +105,24 @@ class TermDetailsPanel extends Component {
               loading={this.props.currentProperty.loading}
           />
 
-          <Tabs value={this.state.selectedTab} onChange={this.handleChange}>
-            <Tab label="Term Details">
+          <div>
+            <Tabs value={this.state.selectedTab} onChange={this.handleChange}>
+              <Tab label="Subsystem Details"/>
+              <Tab label="Assigned Genes"/>
+              <Tab label="Interactions"/>
+            </Tabs>
+          </div>
 
-              <div>
-                <h1>TEST</h1>
-                <TitleBar title={title}/>
-
-                <Divider/>
-
-                {/*<PropListPanel data={entry}/>*/}
-              </div>
-            </Tab>
-            <Tab label="Assigned Genes">
-              {/*<SimpleGeneList genes={nodeList}/>*/}
-            </Tab>
-            <Tab label="Interactions">
-            </Tab>
-          </Tabs>
+          {
+            this.state.selectedTab === 0 &&
+            <TabContainer>
+              <SubsystemPanel
+                title={title}
+                description={'N/A'}
+              />
+            </TabContainer>}
+          {this.state.selectedTab === 1 && <TabContainer>N/A</TabContainer>}
+          {this.state.selectedTab === 2 && <TabContainer>N/A</TabContainer>}
         </div>
     )
   }

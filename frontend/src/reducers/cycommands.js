@@ -38,4 +38,8 @@ export default handleActions({
     parameters: action.payload,
     target: action.payload.target
   }),
+  ZOOM_TO_NODE: (state, action) => ({
+    command: 'zoomToNode',
+    parameters: action.payload
+  }),
 }, defaultState)

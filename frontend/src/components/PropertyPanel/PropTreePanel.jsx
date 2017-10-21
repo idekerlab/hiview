@@ -14,21 +14,13 @@ export default class PropTreePanel extends Component {
 
   render() {
 
-    const treeAreaStyle = {
-      backgroundColor: 'red',
-      height: 'inherit'
-    }
 
     const nodeStyle = {
       color: '#444444',
       fontSize: '1.2em',
-      // lineHeight: '2em',
-      // marginBottom: '1em',
-      // overflowY: 'hidden'
-
     }
+
     const innerStyle = {
-      overflowY: 'hidden',
       borderRadius: 0,
 
     }

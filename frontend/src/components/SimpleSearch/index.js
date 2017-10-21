@@ -3,16 +3,7 @@ import React, {Component} from 'react'
 import TextField from 'material-ui/TextField';
 import Button from 'material-ui/Button'
 
-import { withStyles } from 'material-ui/styles';
-
-const styles = theme => ({
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 600,
-    fontSize: '2em'
-  },
-});
+import {withStyles} from 'material-ui/styles';
 
 
 class SimpleSearch extends Component {
@@ -20,21 +11,118 @@ class SimpleSearch extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      query: ''
+      query: '',
+      name2id: null
     }
   }
 
 
-  handleQueryChange = event => {
+  handleChange = event => {
     this.setState({
-      url: event.target.value,
-    })
+      query: event.target.value
+    });
   }
 
-  handleSearch = event => {
-    this.setState({
-      url: event.target.value,
+  handleKey = event => {
+    if (event.key === 'Enter') {
+      this.search()
+    }
+  }
+
+  handleStart = event => {
+    this.search()
+  }
+
+  search() {
+
+    const query = this.state.query
+    console.log("Q = " + query)
+
+    let index = this.state.index
+
+    if(index === null || index === undefined) {
+      index = this.runIndexer()
+      this.setState({index: index})
+    }
+
+    const nodeId = index.get(query)
+
+    console.log("TARGET_______________> " + nodeId)
+
+    if(nodeId !== undefined) {
+      this.props.commandActions.zoomToNode(nodeId)
+    }
+
+  }
+
+  createIndex = network => {
+
+    const name2id = new Map()
+
+    const nodes = network.elements.nodes
+    let i = nodes.length
+    while(i--) {
+      const node = nodes[i]
+      name2id.set(node.data.name, node.data.id)
+    }
+
+    this.name2id = name2id
+
+    console.log('(((((((((((((((((((((((((( ready')
+    console.log(name2id)
+
+    return name2id
+  }
+
+
+  componentWillReceiveProps(nextProps) {
+    const uuid = this.props.datasource.uuid
+    const uuidNew = nextProps.datasource.uuid
+
+    if(uuid !== uuidNew) {
+      // Need to re-index
+
+      const networkKeys = Object.keys(nextProps.network)
+
+      let network = null
+
+      networkKeys.forEach(key => {
+        if(key.includes(uuid)) {
+          console.log("FOUND@@")
+          console.log(uuid)
+          console.log(key)
+          network = this.props.network[key]
+        }
+      })
+
+      if(network !== undefined) {
+        this.createIndex(network)
+      }
+    }
+  }
+
+  componentDidMount() {
+    this.runIndexer()
+  }
+
+  runIndexer() {
+    const uuid = this.props.datasource.uuid
+    const networkKeys = Object.keys(this.props.network)
+
+    let network = null
+    networkKeys.forEach(key => {
+      if(key.includes(uuid)) {
+        console.log("0FOUND@@")
+        console.log(uuid)
+        console.log(key)
+        network = this.props.network[key]
+      }
     })
+
+    if(network !== undefined && network !== null) {
+      return this.createIndex(network)
+    }
+
   }
 
   render() {
@@ -48,8 +136,8 @@ class SimpleSearch extends Component {
       width: '50em',
       justifyContent: 'flex-start',
       alignItems: 'center',
-    height: '3em',
-    //   background: 'rgba(222,222,222,0.8)',
+      height: '3em',
+      //   background: 'rgba(222,222,222,0.8)',
       padding: '0.8em'
     }
 
@@ -61,7 +149,8 @@ class SimpleSearch extends Component {
           label='Search Terms/Genes (exact match only)'
           margin="normal"
           value={this.state.serverUrl}
-          onChange={this.handleUrlChange}
+          onChange={this.handleChange}
+          onKeyPress={this.handleKey}
         />
 
         <Button
