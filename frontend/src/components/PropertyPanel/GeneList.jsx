@@ -1,66 +1,43 @@
-import React, {Component, PropTypes} from 'react'
+import React, {Component} from 'react'
 
-import {List, ListItem} from 'material-ui/List';
-import Subheader from 'material-ui/Subheader';
+import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List'
 import OpenIcon from 'material-ui-icons/OpenInNew'
-
 
 
 class GeneList extends Component {
 
   render() {
-
     let genes = this.props.genes
-    if(genes === undefined || genes === null) {
+    if (genes === undefined || genes === null) {
       genes = []
     }
 
+    console.log(genes.sort())
     return (
 
       <List>
-        <Subheader>Assigned Genes:</Subheader>
-
         {
-          genes.map((gene, i) => {
-            return (
-              <ListItem
-                key={i}
-                hoverColor={'#80CBC4'}
-                primaryTogglesNestedList={true}
-                primaryText={gene['symbol']}
-                nestedItems={[
-                  <ListItem
-                    key={1}
-                    hoverColor={'#FFFFFF'}
-                    secondaryText={"Description"}
-                    primaryText={gene.name}
-                  />,
-                  <ListItem
-                    key={2}
-                    hoverColor={'#FFFFFF'}
-                    secondaryText={'SGD ID'}
-                    primaryText={gene.sgdid}
-                    leftIcon={
-                      <OpenIcon
-                        color={"#42A5F5"}
-                        onTouchTap={this._handleTouchTap.bind(this, gene.sgdid)}
-                      />
-                    }
-                  />
-                ]}
-              />
-            )
-          })
+          genes.map((gene, i) =>
+
+            (<ListItem
+              button
+              onClick={this.handleClick(gene)}
+              key={i}
+            >
+              <ListItemIcon>
+                <OpenIcon/>
+              </ListItemIcon>
+              <ListItemText primary={gene}/>
+            </ListItem>))
         }
       </List>
     )
   }
 
-  _handleTouchTap = id => {
-    window.open('http://www.yeastgenome.org/locus/' + id);
+  handleClick = gene => () => {
+    window.open(`http://www.genecards.org/cgi-bin/carddisp.pl?gene=${gene}`)
   }
 
 }
-
 
 export default GeneList

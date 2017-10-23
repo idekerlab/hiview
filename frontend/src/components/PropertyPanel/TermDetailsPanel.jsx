@@ -18,6 +18,8 @@ import SubsystemPanel from './SubsystemPanel'
 
 import TabContainer from './TabContainer'
 
+import GeneList from './GeneList'
+
 const descriptionStyle = {
   background: '#BEBEB4',
   padding: '0.2em'
@@ -76,7 +78,7 @@ class TermDetailsPanel extends Component {
 
     let subnet = null
 
-    let nodeList = []
+    let geneList = []
     if (data === undefined) {
       entry = {}
     } else {
@@ -84,14 +86,9 @@ class TermDetailsPanel extends Component {
       subnet = interactions
 
       if(subnet !== null && subnet !== undefined) {
-        nodeList = subnet.elements.nodes.map(node=>(node.data.name))
+        geneList = subnet.elements.nodes.map(node=>(node.data.name))
       }
     }
-
-    const keys = Object.keys(data)
-
-    console.log("############# Prop [anel _______________________")
-    console.log(data)
 
     const title = data.name
 
@@ -121,7 +118,13 @@ class TermDetailsPanel extends Component {
                 description={'N/A'}
               />
             </TabContainer>}
-          {this.state.selectedTab === 1 && <TabContainer>N/A</TabContainer>}
+          {
+            this.state.selectedTab === 1 &&
+            <TabContainer>
+              <GeneList
+                genes={geneList}
+              />
+            </TabContainer>}
           {this.state.selectedTab === 2 && <TabContainer>N/A</TabContainer>}
         </div>
     )
