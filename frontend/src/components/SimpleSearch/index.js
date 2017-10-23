@@ -38,6 +38,10 @@ class SimpleSearch extends Component {
     const query = this.state.query
     console.log("Q = " + query)
 
+    if(query === undefined || query === '') {
+      return
+    }
+
     let index = this.state.index
 
     if(index === null || index === undefined) {
@@ -45,7 +49,7 @@ class SimpleSearch extends Component {
       this.setState({index: index})
     }
 
-    const nodeId = index.get(query)
+    const nodeId = index.get(query.toUpperCase())
 
     console.log("TARGET_______________> " + nodeId)
 
@@ -63,13 +67,17 @@ class SimpleSearch extends Component {
     let i = nodes.length
     while(i--) {
       const node = nodes[i]
-      name2id.set(node.data.name, node.data.id)
+
+      const labelUpper = node.data.Label.toUpperCase()
+
+      name2id.set(labelUpper, node.data.id)
     }
 
     this.name2id = name2id
 
     console.log('(((((((((((((((((((((((((( ready')
     console.log(name2id)
+
 
     return name2id
   }

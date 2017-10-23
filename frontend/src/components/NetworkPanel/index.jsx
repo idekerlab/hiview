@@ -62,6 +62,19 @@ class NetworkPanel extends Component {
     const nodeId = nodeIds[0]
     const props = nodeProps[nodeId].props
 
+
+    // Check hidden node
+    const hidden = props.Hidden
+
+    if(hidden) {
+
+      console.log('This is hidden------------------------------------------')
+      const original = props.Original_Name
+      this.props.commandActions.zoomToNode(original.toString())
+      return
+
+
+    }
     // There are two cases: Gene or term
 
     // Get node type:
