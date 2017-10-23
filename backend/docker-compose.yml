@@ -1,29 +1,6 @@
 version: '2'
 services:
-  elasticsearch:
-    build: ./elastic
-    ports:
-      - "9200:9200"
-      - "9300:9300"
-    volumes:
-      - deep-cell:/usr/share/elasticsearch/data
-
-  predictor:
-    build: ./predictor
-    ports:
-      - "8888:8888"
-
-  go-util:
-    build: ./gene-ontology
-    ports:
-      - "5000:5000"
-
   static:
     build: ./webserver
     ports:
       - "80:80"
-
-
-volumes:
-  deep-cell:
-    driver: local
