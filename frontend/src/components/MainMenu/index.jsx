@@ -1,26 +1,19 @@
 import React, {Component} from 'react'
-import {browserHistory} from 'react-router'
 
 import classnames from 'classnames'
 
 import List, {
   ListItem,
   ListItemIcon,
-  ListItemSecondaryAction,
   ListItemText,
-  ListSubheader,
 } from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 
-import Settings from 'material-ui-icons/Settings'
 import HomeIcon from 'material-ui-icons/Home'
 import HelpIcon from 'material-ui-icons/HelpOutline';
 
-import Switch from 'material-ui/Switch';
-
 
 import style from './style.css'
-import logo from '../../assets/images/cytoscape-logo-orange.svg'
 
 
 // TODO: Split into smaller sub-menus
@@ -84,27 +77,6 @@ export default class MainMenu extends Component {
             HiView v0.1
           </h1>
         </div>
-
-
-        <Divider/>
-
-
-        <List>
-
-
-          <ListItem>
-            <ListItemIcon>
-              <Settings />
-            </ListItemIcon>
-            <ListItemText primary="Settings" />
-            <ListItemSecondaryAction>
-              <Switch
-                onClick={this.handleShowCommands}
-              />
-            </ListItemSecondaryAction>
-          </ListItem>
-
-        </List>
 
         <Divider />
 

@@ -26,7 +26,7 @@ const TopPage = props => (
     />
 
     <footer className={style.row3}>
-      <a href='http://www.cytoscape.org/' target='_blank'>
+      <a href='https://github.com/idekerlab/hiview' target='_blank'>
         &copy; 2017 University of California, San Diego Trey Ideker Lab
       </a>
     </footer>
