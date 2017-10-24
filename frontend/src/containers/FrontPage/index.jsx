@@ -3,8 +3,6 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
 import 'typeface-roboto'
-import Typography from 'material-ui/Typography'
-
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles'
 
 import TopPage from '../../components/TopPage/index'
