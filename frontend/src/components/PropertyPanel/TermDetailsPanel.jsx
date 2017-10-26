@@ -1,18 +1,10 @@
 import React, {Component} from 'react'
-import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
 
-
-import Divider from 'material-ui/Divider';
-
-import TitleBar from './TitleBar'
 import Tabs, { Tab } from 'material-ui/Tabs';
 import {CircularProgress} from 'material-ui/Progress';
 
 
 import RawInteractionPanel from './RawInteractionPanel'
-import PropListPanel from './PropListPanel'
-import SimpleGeneList from './SimpleGeneList'
 
 import SubsystemPanel from './SubsystemPanel'
 

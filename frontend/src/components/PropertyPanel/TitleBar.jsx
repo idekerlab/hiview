@@ -1,6 +1,9 @@
-import React, {Component} from 'react'
+import React from 'react'
+import OpenIcon from 'material-ui-icons/OpenInNew'
 
-const style = {
+import style from './style.css'
+
+const baseStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -11,22 +14,54 @@ const style = {
   minHeight: '3em',
 }
 
-const descriptionStyle = {
-  color: '#555555',
-  fontSize: '1.2em'
+const titleStyle = {
+  color: '#333333',
+  fontSize: '2.5em',
+  fontWeight: 700,
+  lineHeight: 1.2,
+  margin: 0,
+  padding: 0,
+}
+
+const subtitleStyle = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  color: '#777777',
+  fontSize: '2em',
+  padding: '0.5em',
+  fontWeight: 400
+}
+
+
+const titleContainerStyle = {
+  textAlign: 'center',
+  margin: 0,
+  padding: '0.5em'
 }
 
 const TitleBar = props => (
-  <div style={style}>
-    <h1 style={{textAlign: 'center', lineHeight: 1.3}}>
-      {props.title}
-    </h1>
+  <div style={baseStyle}>
 
-    <div style={descriptionStyle}>
-      Description: {props.description}
+    <div style={titleContainerStyle}>
+      <div style={titleStyle}>
+        {props.title}
+      </div>
+
+      <div style={subtitleStyle}>
+        <OpenIcon
+          className={style.linkIcon}
+          onClick={handleClick(props.geneSymbol)}/>{props.geneSymbol} ({props.geneId})
+      </div>
+
     </div>
   </div>
 )
+
+
+const handleClick = gene => () => {
+  window.open(`http://www.genecards.org/cgi-bin/carddisp.pl?gene=${gene}`)
+}
 
 
 export default TitleBar

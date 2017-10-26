@@ -4,9 +4,11 @@ import {List, ListItem} from 'material-ui/List';
 import Divider from 'material-ui/Divider';
 
 import TitleBar from './TitleBar'
-import PropListPanel from './PropListPanel'
 
 import PropTreePanel from './PropTreePanel'
+
+import CoreGenePropPanel from './CoreGenePropPanel'
+
 
 
 import * as d3Scale from 'd3-scale'
@@ -18,7 +20,10 @@ const colorFunction = d3Scale.scaleOrdinal(d3ScaleChromatic.schemeDark2)
 
 const descriptionStyle = {
   background: '#BEBEB4',
-  padding: '1em'
+  padding: '1em',
+  color: '#333333',
+  fontSize: '1.1em',
+  fontWeight: 300
 }
 
 const disabledStyle = {
@@ -64,25 +69,39 @@ class GenePropertyPanel extends Component {
 
     const entry = data.hits[0]
 
+
+    const labelStyle = {
+      fontWeight: 700,
+      fontSize: '1em',
+      color: '#444444',
+      paddingBottom: '0.5em'
+    }
+
     console.log(entry)
     return (
-      <div style={{height: '100%', width: this.props.width}}>
+
+      <div style={{width: this.props.width}}>
 
         <TitleBar
           title={entry.name}
-          geneId={id}
+          geneId={entry._id}
+          geneSymbol={entry.symbol}
         />
+
         <div style={descriptionStyle}>
-          <h3>{entry.summary}</h3>
+          <div style={labelStyle}>Summary:</div>
+          {entry.summary}
         </div>
 
 
-        < Divider/>
-
-
-        <PropTreePanel
-          tree={entry}
+        <CoreGenePropPanel
+          geneInfo={entry}
         />
+
+
+        {/*<PropTreePanel*/}
+          {/*tree={entry}*/}
+        {/*/>*/}
       </div>
     )
   }

@@ -1,0 +1,9 @@
+.linkIcon {
+    margin-right: 0.8em;
+    color: #222222;
+}
+
+.linkIcon:hover {
+    color: teal;
+    font-weight: 700;
+}
