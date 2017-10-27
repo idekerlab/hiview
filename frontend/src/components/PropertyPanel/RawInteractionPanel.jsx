@@ -11,45 +11,37 @@ class RawInteractionPanel extends Component {
     };
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //
-  //   if(nextProps.selectedTerm === undefined || this.props.selectedTerm === undefined) {
-  //     return false
-  //   }
-  //
-  //   if(nextProps.selectedTerm === this.props.selectedTerm) {
-  //
-  //     // if(nextProps.loading !== this.props.loading) {
-  //     //   return true
-  //     // }
-  //     //
-  //     // if(nextProps.commands !== undefined) {
-  //     //   return true
-  //     // }
-  //
-  //     return false;
-  //   }
-  //
-  //
-  //
-  //   return true
-  // }
+  shouldComponentUpdate(nextProps, nextState) {
+
+    if(nextProps.selectedTerm === undefined || this.props.selectedTerm === undefined) {
+      return false
+    }
+
+    if(this.props.subnet !== nextProps.subnet) {
+      return true
+    }
+
+    if(nextProps.selectedTerm === this.props.selectedTerm) {
+
+      console.log("** Same selected term")
+      if(nextProps.loading !== this.props.loading) {
+        return true
+      }
+
+      return false;
+    }
+
+    return true
+  }
 
 
   render() {
-
-    console.log("%%%%%%%%%%%%%%%% Rendering RAW=====================================")
-    console.log(this.props)
-
     const style = {
       width: '100%',
       height: '50em',
       background: '#000000'
     }
 
-    const iconStyle = {
-      color: 'white',
-    }
 
     return (
       <div style={style}>
@@ -62,8 +54,11 @@ class RawInteractionPanel extends Component {
 
   getMainContents = () => {
 
-    console.log("%%%%%%%%%%%%%%%% Rendering Main contents =====================================")
+    console.log("%%%%%%%%%%%%%%%% Rendering Raw interaction panel =====================================")
+    console.log(this.props)
+
     if(this.props.subnet === null || this.props.subnet === undefined) {
+      console.log('--------empty')
       return (<div></div>)
     }
 
@@ -141,7 +136,15 @@ class RawInteractionPanel extends Component {
     const node = nodeIds[0]
     const props = nodeProps[node]
 
-    console.log('RAW ============================================================== Custom node select function called! ========');
+    const newSelectionState = {
+      networkId: 'raw',
+      nodeId: node,
+      nodeProps: props
+    }
+
+    this.props.selectionActions.selectNode(newSelectionState)
+
+    console.log('RAW2 ============================================================== Custom node select function called! ========');
     console.log('Selected Node ID: ' + node)
     console.log(props)
   }

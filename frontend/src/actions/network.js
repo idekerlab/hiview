@@ -62,8 +62,30 @@ export const fetchNetworkFromUrl = url => {
       // .then(rawCyjs => (filterNodes(rawCyjs)))
       // .then(rawCyjs => (filterLeafs(rawCyjs)))
       // .then(json => (layout(json)))
+      .then(json => (createLabel2IdMap(json)))
       .then(network => dispatch(receiveNetwork(url, network)))
   }
+}
+
+const createLabel2IdMap = network => {
+  console.log("$$$$$$$$$$$$$$$$$$$$$$ net loaded")
+  console.log(network)
+
+
+  const nodes = network.elements.nodes
+  console.log(nodes)
+
+  const label2id = {}
+  let i = nodes.length
+  while(i--) {
+    const nodeData = nodes[i].data
+    label2id[nodeData.Label] = nodeData.id
+  }
+
+  console.log(label2id)
+  network['label2id'] = label2id
+
+  return network
 }
 
 

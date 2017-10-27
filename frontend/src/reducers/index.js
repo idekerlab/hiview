@@ -22,6 +22,8 @@ import query_genes from './query-genes'
 import message from './message'
 import idmap from './idmap'
 
+import selection from './selection'
+
 
 // Application states
 const app_manager = combineReducers({
@@ -34,7 +36,8 @@ const app_manager = combineReducers({
   ui_state,
   search,
   query_genes,
-  message
+  message,
+  selection
 })
 
 

@@ -26,13 +26,13 @@ import * as messageActions from '../../actions/message'
 import * as rawInteractionsActions from '../../actions/raw-interactions'
 
 import * as idmapActions from '../../actions/idmap'
+import * as selectionActions from '../../actions/selection'
 
 
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 
 import teal from 'material-ui/colors/teal'
 import red from 'material-ui/colors/red'
-
 
 const theme = createMuiTheme({
   palette: {
@@ -63,7 +63,6 @@ class NetworkView extends Component {
 
     return (
       <MuiThemeProvider theme={theme}>
-
         <NetworkViewer
           {...this.props}
           networkId={networkId}
@@ -71,7 +70,6 @@ class NetworkView extends Component {
         />
       </MuiThemeProvider>
     )
-
   }
 
 }
@@ -100,6 +98,7 @@ function mapStateToProps(state) {
     'message': state.app_manager.message,
 
     'idmap': state.idmap,
+    'selection': state.app_manager.selection,
 
   }
 
@@ -133,6 +132,8 @@ function mapDispatchToProps(dispatch) {
     'queryGenesActions': bindActionCreators(queryGenesActions, dispatch),
 
     'messageActions': bindActionCreators(messageActions, dispatch),
+
+    'selectionActions': bindActionCreators(selectionActions, dispatch),
   }
 
 }

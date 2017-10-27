@@ -4,11 +4,9 @@ import CyNetworkViewer from 'cy-network-viewer'
 import {CytoscapeJsRenderer, SigmaRenderer} from 'cytoscapejs-renderer'
 import {CircularProgress} from 'material-ui/Progress';
 
-
 import {Map} from 'immutable'
 
 const MYGENE_URL = 'http://mygene.info/v3'
-// const CXTOOL_URL = 'http://localhost:3001/ndex2cyjs/'
 const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
 const NDEX_LINK_TAG = 'ndex_internalLink'
 
@@ -62,6 +60,14 @@ class NetworkPanel extends Component {
     const nodeId = nodeIds[0]
     const props = nodeProps[nodeId].props
 
+    const newSelectionState = {
+      networkId: 'main',
+      nodeId: nodeId,
+      nodeProps: props
+    }
+
+    this.props.selectionActions.selectNode(newSelectionState)
+
 
     // Check hidden node
     const hidden = props.Hidden
@@ -110,6 +116,7 @@ class NetworkPanel extends Component {
 
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
+
       // const startNode = nodeIds[0]
       // this.props.commandActions.findPath({startId: startNode, endId: root})
 
@@ -143,22 +150,59 @@ class NetworkPanel extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log("WILL NEW SELECTION!!!!!!!!!!!!!")
+    console.log(this.props)
+    console.log(newUrl)
+
     const nextNet = nextProps.currentNetwork
     const newUrl = nextProps.trees[nextNet.id].url
     const network = this.props.network.get(newUrl)
 
 
-    if (network === undefined || network === null) {
+    if (newUrl !== undefined && (network === undefined || network === null)) {
+
+      console.log("LOADING_!!!!!!!!!!!!!")
 
       // Need to fetch network data
       if (nextNet.id !== this.props.currentNetwork.id) {
         this.props.networkActions.fetchNetworkFromUrl(newUrl)
       }
     } else {
+      // Check selection state
+      const newSelection = nextProps.selection
+      const selection = this.props.selection
+
+      const nextRawSelection = newSelection.get('raw')
+      const rawSelection = selection.get('raw')
+      if(rawSelection === undefined || nextRawSelection === undefined) {
+        return
+      }
+
+      const newId = nextRawSelection.nodeId
+      const originalId = rawSelection.nodeId
+
+      if(newId !== originalId) {
+        console.log("NEW SELECTION!!!!!!!!!!!!!")
+        const geneName = nextRawSelection.nodeProps.name
+        console.log(geneName)
+        const networkProp = this.props.network
+        const networkData = networkProp.get(this.state.networkUrl)
+        const targetNodeId = networkData.label2id[geneName]
+        console.log("Target==========> " + targetNodeId)
+        this.props.commandActions.zoomToNode(targetNodeId)
+      }
     }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    console.log("Checking should!!!!!!!!!!!!")
+    console.log(nextProps.selection)
+
+    // if(nextProps.selection.get('raw') !== this.props.selection.get('raw')) {
+    //   console.log("Should update&&------------------------")
+    //   return true
+    // }
+
     if (nextProps.commands.target === 'subnet') {
       return false
     }

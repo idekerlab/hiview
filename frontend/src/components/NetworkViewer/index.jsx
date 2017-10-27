@@ -38,19 +38,16 @@ export default class NetworkViewer extends Component {
     });
   };
 
-  componentWillReceiveProps(nextProps) {
-  }
 
   render() {
 
     const {
-      networks,
       networkActions,
       commands, commandActions,
       events, eventActions, networkId, uiState, uiStateActions,
-      styles, currentVs, currentVsActions, backgroundColorActions,
       backgroundColor, vsActions, datasource, currentProperty, propertyActions,
-      searchActions, search, network, config, message, messageActions, rawInteractionsActions, rawInteractions
+      searchActions, search, network, config, message, messageActions,
+      rawInteractionsActions, rawInteractions, selection, selectionActions
 
     } = this.props
 
@@ -62,7 +59,7 @@ export default class NetworkViewer extends Component {
     }
 
 
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ UI")
+    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ prop panelUI")
     console.log(this.props)
 
     return (
@@ -91,6 +88,9 @@ export default class NetworkViewer extends Component {
           idmapActions={this.props.idmapActions}
 
           datasource={this.props.datasource}
+
+          selection={selection}
+          selectionActions={selectionActions}
         />
 
         <Commands
@@ -109,6 +109,8 @@ export default class NetworkViewer extends Component {
           backendServices={config.get('backendServices').toJS()}
           rawInteractions={this.props.rawInteractions}
           rawInteractionsActions={this.props.rawInteractionsActions}
+          selection={selection}
+          selectionActions={selectionActions}
         />
 
         <SimpleSearch

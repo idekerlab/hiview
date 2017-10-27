@@ -92,6 +92,9 @@ class TermDetailsPanel extends Component {
               handleClose={this.props.handleClose}
               commandActions={this.props.commandActions}
               loading={this.props.currentProperty.loading}
+
+              selection={this.props.selection}
+              selectionActions={this.props.selectionActions}
           />
 
           <div>
