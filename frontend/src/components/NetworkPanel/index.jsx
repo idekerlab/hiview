@@ -256,7 +256,7 @@ class NetworkPanel extends Component {
       left: 0,
       width: '100%',
       height: '100%',
-      background: '#666666'
+      background: '#FFFFFF'
       // background: 'radial-gradient(circle closest-side, #f1f1f1, #aaaaaa 130%)'
     };
 
