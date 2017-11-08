@@ -21,7 +21,8 @@ const styles = theme => ({
 
 const EXAMPLE_UUIDS = {
   'Large hierarchy': '7ae8907a-b395-11e7-b629-0660b7976219',
-  'Small hierarchy': 'c6e1786f-b91b-11e7-82da-0660b7976219'
+  'Small hierarchy': 'f2847aa2-c0ed-11e7-a3af-0660b7976219',
+  'Small hierarchy (new)': 'e17bbf30-c321-11e7-9379-0660b7976219'
 }
 
 

@@ -54,11 +54,7 @@ class RawInteractionPanel extends Component {
 
   getMainContents = () => {
 
-    console.log("%%%%%%%%%%%%%%%% Rendering Raw interaction panel =====================================")
-    console.log(this.props)
-
     if(this.props.subnet === null || this.props.subnet === undefined) {
-      console.log('--------empty')
       return (<div></div>)
     }
 
