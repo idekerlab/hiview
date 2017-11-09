@@ -2,6 +2,10 @@ import React, {Component} from 'react'
 import CyNetworkViewer from 'cy-network-viewer'
 import {CytoscapeJsRenderer} from 'cytoscapejs-renderer'
 
+import * as d3Interpolate from 'd3-interpolate'
+import * as d3ScaleChromatic from 'd3-scale-chromatic'
+import * as d3Scale from 'd3-scale'
+
 
 class RawInteractionPanel extends Component {
 
@@ -38,8 +42,8 @@ class RawInteractionPanel extends Component {
   render() {
     const style = {
       width: '100%',
-      height: '50em',
-      background: '#000000'
+      height: '45em',
+      background: '#555555'
     }
 
 
@@ -88,35 +92,51 @@ class RawInteractionPanel extends Component {
 
   }
 
-  getStyle = () => ({
+  getStyle = () => {
+
+    // This is the generator for custom styling
+
+    console.log("???????????????????????????????????????????????????????????????????????SUBNET for Style")
+    console.log(this.props.subnet)
+
+    const similarityMin = this.props.subnet.data['RF score min']
+    const similarityMax = this.props.subnet.data['RF score max']
+
+    const colorScale = d3Scale
+      .scaleSequential(d3Scale.interpolateInferno)
+      .domain([similarityMin, similarityMax])
+
+    return {
     style: [ {
       "selector" : "node",
       "css" : {
-        "width" : 0.5,
-        "height" : 0.5,
+        "width" : 0.6,
+        "height" : 0.6,
         "text-valign" : "center",
         "text-halign" : "center",
         "shape" : "ellipse",
-        "color" : "#EFEFEF",
-        "background-color" : "#FFFFFF",
-        "font-size" : '0.2em',
-        "content" : "data(name)",
+        "color" : "#FFFFFF",
+        "background-color" : "#777777",
+        "font-size" : 2,
+        'min-zoomed-font-size': 9,
+        "label" : "data(name)",
       }
     }, {
       "selector" : "node:selected",
       "css" : {
-        "background-color" : "orange",
+        "background-color" : "white",
         "font-size" : "0.4em",
-        "color" : "orange",
-        content: "data(name)",
+        "color" : "white",
+        label: "data(name)",
         "text-max-width": '200px'
       }
     }, {
       "selector" : "edge",
       "css" : {
-        "width" : 0.1,
-        "line-color": 'white',
-        "opacity": 0.6
+        "width" : 'mapData(RF_score,' + similarityMin +',' + similarityMax + ', 0.1, 0.7)',
+        'line-color': (d) => (colorScale(d.data('RF_score'))),
+        // opacity: 'mapData(RF_score,' + similarityMin +',' + similarityMax + ', 0.01, 0.7)',
+        opacity: 0.7
       }
     }, {
       "selector" : "edge:selected",
@@ -125,7 +145,8 @@ class RawInteractionPanel extends Component {
         "width": 1
       }
     } ]
-  })
+  }
+  }
 
 
   selectNodes = (nodeIds, nodeProps) => {
@@ -149,6 +170,8 @@ class RawInteractionPanel extends Component {
     console.log('====== Custom edge select function called! ========');
     console.log('Selected Edge ID: ' + edgeIds)
     console.log(edgeProps)
+
+    // Expand edge
   }
 
 // Then use it as a custom handler

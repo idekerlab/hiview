@@ -3,6 +3,7 @@ import Drawer from 'material-ui/Drawer'
 import TermDetailsPanel from './TermDetailsPanel'
 import GenePropertyPanel from './GenePropertyPanel'
 
+
 import CloseIcon from 'material-ui-icons/Close'
 
 const MAX_WIDTH = 800.0
@@ -77,7 +78,7 @@ class PropertyPanel extends Component {
       alignSelf: 'center',
     }
 
-    const barColor = (propType === PANEL_TYPES.GENE) ? 'orange' : 'teal'
+    const barColor = (propType === PANEL_TYPES.GENE) ? 'orange' : '#888888'
     const barTitle = (propType === PANEL_TYPES.GENE) ? 'Gene Details' : 'Term Details'
     console.log(propType)
     console.log(PANEL_TYPES.GENE)

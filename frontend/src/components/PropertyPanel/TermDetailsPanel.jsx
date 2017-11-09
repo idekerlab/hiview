@@ -9,6 +9,7 @@ import RawInteractionPanel from './RawInteractionPanel'
 import SubsystemPanel from './SubsystemPanel'
 
 import TabContainer from './TabContainer'
+import LegendPanel from './LegendPanel'
 
 import GeneList from './GeneList'
 
@@ -83,6 +84,10 @@ class TermDetailsPanel extends Component {
     }
 
     const title = data.name
+    let networkProps = {}
+    if(interactions !== undefined) {
+      networkProps = interactions.data
+    }
 
     return (
         <div>
@@ -95,6 +100,10 @@ class TermDetailsPanel extends Component {
 
               selection={this.props.selection}
               selectionActions={this.props.selectionActions}
+          />
+
+          <LegendPanel
+            networkProps={networkProps}
           />
 
           <div>
