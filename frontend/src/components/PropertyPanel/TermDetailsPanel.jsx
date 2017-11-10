@@ -10,6 +10,8 @@ import SubsystemPanel from './SubsystemPanel'
 
 import TabContainer from './TabContainer'
 import LegendPanel from './LegendPanel'
+import {EdgeFilter} from '../Filters'
+
 
 import GeneList from './GeneList'
 
@@ -105,6 +107,9 @@ class TermDetailsPanel extends Component {
           <LegendPanel
             networkProps={networkProps}
           />
+
+          <EdgeFilter />
+
 
           <div>
             <Tabs value={this.state.selectedTab} onChange={this.handleChange}>

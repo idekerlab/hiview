@@ -33,12 +33,30 @@ export default () => ({
       },
       {
         test: /\.css$/,
+        exclude: /node_modules\/rc-slider/,
         use: [
-          { loader: 'style-loader' },
+          {
+            loader: 'style-loader',
+          },
           {
             loader: 'css-loader',
             options: {
               modules: true
+            }
+          },
+        ]
+      },
+      {
+        test: /\.css/,
+        include: /node_modules\/rc-slider/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: false
             }
           }
         ]

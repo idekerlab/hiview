@@ -1,13 +1,9 @@
 import React, {Component} from 'react'
-
 import * as d3Selection from 'd3-selection'
-
-import * as d3Interpolate from 'd3-interpolate'
-import * as d3ScaleChromatic from 'd3-scale-chromatic'
 import * as d3Array from 'd3-array'
 import * as d3Scale from 'd3-scale'
 
-const legendStyle = {
+const legendPanelStyle = {
   display: 'flex',
   flexDirection: 'column',
   color: '#555555',
@@ -16,7 +12,7 @@ const legendStyle = {
   padding: '0.8em'
 }
 
-const height = 40
+const BAR_HEIGHT = 35
 
 
 class LegendPanel extends Component {
@@ -30,7 +26,7 @@ class LegendPanel extends Component {
     const svg = d3Selection
       .select(svgLegend)
       .attr('width', parentWidth)
-      .attr('height', height)
+      .attr('height', BAR_HEIGHT)
       .append("g")
 
     const colorScale = d3Scale.scaleSequential(d3Scale.interpolateInferno)
@@ -46,7 +42,7 @@ class LegendPanel extends Component {
         return i;
       })
       .attr('y', 0)
-      .attr('height', height)
+      .attr('height', BAR_HEIGHT)
       .attr('width', 1)
       .style('fill', function (d, i) {
         return colorScale(d);
@@ -69,7 +65,7 @@ class LegendPanel extends Component {
     }
 
     return (
-      <div ref={container=> this.container = container} style={legendStyle}>
+      <div ref={container=> this.container = container} style={legendPanelStyle}>
         <svg ref={legend => this.legend = legend}></svg>
 
         <div style={minMaxStyle}>

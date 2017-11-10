@@ -136,7 +136,10 @@ class RawInteractionPanel extends Component {
         "width" : 'mapData(RF_score,' + similarityMin +',' + similarityMax + ', 0.1, 0.7)',
         'line-color': (d) => (colorScale(d.data('RF_score'))),
         // opacity: 'mapData(RF_score,' + similarityMin +',' + similarityMax + ', 0.01, 0.7)',
-        opacity: 0.7
+        opacity: 0.6,
+        'curve-style': 'bezier',
+        // 'control-point-distance': '5',
+        // 'control-point-weight': '0.1'
       }
     }, {
       "selector" : "edge:selected",
