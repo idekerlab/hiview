@@ -6,6 +6,19 @@ import 'rc-slider/assets/index.css'
 import Checkbox from 'material-ui/Checkbox';
 import {FormGroup, FormControlLabel} from 'material-ui/Form';
 
+import ListSubheader from 'material-ui/List/ListSubheader';
+import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
+import Collapse from 'material-ui/transitions/Collapse';
+
+import ExpandLess from 'material-ui-icons/ExpandLess';
+import ExpandMore from 'material-ui-icons/ExpandMore';
+
+import FilterIcon from 'material-ui-icons/Filter';
+import EqualizerIcon from 'material-ui-icons/Equalizer';
+
+
+import ContinuousFilter from './ContinuousFilter'
+
 
 const filterPanelStyle = {
   width: '100%',
@@ -37,6 +50,7 @@ class EdgeFilter extends Component {
     super(props);
     this.state = {
       value: 50,
+      open: true
     };
   }
 
@@ -53,58 +67,75 @@ class EdgeFilter extends Component {
 
 
   handleChange = name => event => {
-    this.setState({ [name]: event.target.checked });
+    this.setState({[name]: event.target.checked});
+  }
+
+  handleClick() {
+
   }
 
   render() {
 
+    const filters = this.props.filters.toJS()
+
+    let primaryFilter = null
+
+
+    console.log(filters)
+    let filterNames = Object.keys(filters)
+
+    filterNames.forEach(name => {
+      if(filters[name].isPrimary) {
+        primaryFilter = name
+      }
+    })
+
+    filterNames = filterNames.filter(name => (name !== primaryFilter))
+
+
+    if (filterNames === undefined) {
+      return (<div></div>)
+    }
+
     return (
       <div style={filterPanelStyle}>
 
-        <h3>
-          Edge Filter:
-        </h3>
+        <List subheader={<ListSubheader>Filters</ListSubheader>}>
 
-        <div style={sliderRowStyle}>
-          <FormControlLabel
-            style={{width: '40%'}}
-            control={
-              <Checkbox
-                checked={this.state.checkedA}
-                onChange={this.handleChange('checkedA')}
-                value="checkedA"
-              />
-            }
-            label="Edge Type 1"
-          />
-          <SliderWithTooltip
-            style={{width: '80%'}}
-            tipFormatter={percentFormatter}
-            tipProps={{overlayClassName: 'Score'}}
-            onChange={this.onSliderChange}
-            trackStyle={{backgroundColor: 'teal'}}
-          />
-        </div>
-        <div style={sliderRowStyle}>
-          <FormControlLabel
-            style={{width: '40%'}}
-            control={
-              <Checkbox
-                checked={this.state.checkedB}
-                onChange={this.handleChange('checkedB')}
-                value="checkedB"
-              />
-            }
-            label="Edge Type 2"
-          />
-          <SliderWithTooltip
-            style={{width: '80%'}}
-            tipFormatter={percentFormatter}
-            tipProps={{overlayClassName: 'Score'}}
-            onChange={this.onSliderChange}
-            trackStyle={{backgroundColor: 'teal'}}
-          />
-        </div>
+          <ListItem>
+            <ListItemIcon>
+              <FilterIcon />
+            </ListItemIcon>
+            <ListItemText inset primary="Primary Filter" />
+            <ContinuousFilter
+              key={primaryFilter}
+              label={primaryFilter}
+            />
+          </ListItem>
+
+          <ListItem button onClick={this.handleClick}>
+            <ListItemIcon>
+              <EqualizerIcon />
+            </ListItemIcon>
+            <ListItemText inset primary="Edge Filters" />
+            {this.state.open ? <ExpandLess /> : <ExpandMore />}
+          </ListItem>
+
+          <Collapse in={this.state.open} transitionDuration="auto" unmountOnExit>
+
+          {
+            filterNames.map(filterName => (
+              <ListItem>
+                <ContinuousFilter
+                  key={filterName}
+                  label={filterName}
+                />
+              </ListItem>
+            ))
+          }
+
+          </Collapse>
+        </List>
       </div>
     )
   }

@@ -8,6 +8,7 @@ import cy_events from './cy-events'
 import ui_state from './ui-state'
 import datasource from './datasource'
 import property from './property'
+import filters from './filters'
 
 import search from './search'
 import network from './network'
@@ -49,6 +50,7 @@ export default combineReducers({
   config,
   datasource,
   raw_interactions,
-  idmap
+  idmap,
+  filters
 }
 )

@@ -28,15 +28,15 @@ import * as rawInteractionsActions from '../../actions/raw-interactions'
 import * as idmapActions from '../../actions/idmap'
 import * as selectionActions from '../../actions/selection'
 
+import * as filtersActions from '../../actions/filters'
 
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 
-import teal from 'material-ui/colors/teal'
-import red from 'material-ui/colors/red'
+import {lightBlue, red} from 'material-ui/colors'
 
 const theme = createMuiTheme({
   palette: {
-    primary: teal,
+    primary: lightBlue,
     error: red,
   },
 });
@@ -99,6 +99,7 @@ function mapStateToProps(state) {
 
     'idmap': state.idmap,
     'selection': state.app_manager.selection,
+    'filters': state.filters,
 
   }
 
@@ -134,6 +135,8 @@ function mapDispatchToProps(dispatch) {
     'messageActions': bindActionCreators(messageActions, dispatch),
 
     'selectionActions': bindActionCreators(selectionActions, dispatch),
+
+    'filtersActions': bindActionCreators(filtersActions, dispatch),
   }
 
 }

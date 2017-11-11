@@ -47,7 +47,8 @@ export default class NetworkViewer extends Component {
       events, eventActions, networkId, uiState, uiStateActions,
       backgroundColor, vsActions, datasource, currentProperty, propertyActions,
       searchActions, search, network, config, message, messageActions,
-      rawInteractionsActions, rawInteractions, selection, selectionActions
+      rawInteractionsActions, rawInteractions, selection, selectionActions,
+      filters, filtersActions
 
     } = this.props
 
@@ -111,6 +112,8 @@ export default class NetworkViewer extends Component {
           rawInteractionsActions={this.props.rawInteractionsActions}
           selection={selection}
           selectionActions={selectionActions}
+          filters={filters}
+          filtersActions={filtersActions}
         />
 
         <SimpleSearch

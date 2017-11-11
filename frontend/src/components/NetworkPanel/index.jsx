@@ -150,9 +150,7 @@ class NetworkPanel extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("WILL NEW SELECTION!!!!!!!!!!!!!")
     console.log(this.props)
-    console.log(newUrl)
 
     const nextNet = nextProps.currentNetwork
     const newUrl = nextProps.trees[nextNet.id].url
@@ -161,7 +159,6 @@ class NetworkPanel extends Component {
 
     if (newUrl !== undefined && (network === undefined || network === null)) {
 
-      console.log("LOADING_!!!!!!!!!!!!!")
 
       // Need to fetch network data
       if (nextNet.id !== this.props.currentNetwork.id) {
@@ -182,13 +179,10 @@ class NetworkPanel extends Component {
       const originalId = rawSelection.nodeId
 
       if(newId !== originalId) {
-        console.log("NEW SELECTION!!!!!!!!!!!!!")
         const geneName = nextRawSelection.nodeProps.name
-        console.log(geneName)
         const networkProp = this.props.network
         const networkData = networkProp.get(this.state.networkUrl)
         const targetNodeId = networkData.label2id[geneName]
-        console.log("Target==========> " + targetNodeId)
         this.props.commandActions.zoomToNode(targetNodeId)
       }
     }
