@@ -1,16 +1,18 @@
 import {ADD_FILTER, SET_VALUE, REMOVE_FILTER, ENABLE_FILTER} from '../actions/filters'
 import {List, Map} from 'immutable'
 
-const defState = Map({
-});
 
-const createNumericalFilter = (min, max, value = 0, isPimary = false) => (
+const defState = Map({});
+
+const createNumericalFilter = (name, min, max, value = 0, isPimary = false, enabled = false, type = 'continuous') => (
   {
-    enabled: false,
+    name,
+    enabled,
     value,
     min,
     max,
-    isPimary
+    isPimary,
+    type,
   }
 )
 
@@ -21,12 +23,13 @@ export default function filterState(state = defState, action) {
 
     case ADD_FILTER:
 
-      console.log("(((((((((((((((((((((( FILTER ADD")
+      console.log('(((((((((((((((((((((( FILTER ADD')
       console.log(action)
       const newFilter = action.payload
       return state.set(
         newFilter.attributeName,
-        createNumericalFilter(newFilter.min, newFilter.max, newFilter.value, newFilter.isPrimary)
+        createNumericalFilter(newFilter.attributeName, newFilter.min, newFilter.max,
+          newFilter.value, newFilter.isPrimary, newFilter.enabled, newFilter.type),
       )
 
     case SET_VALUE:

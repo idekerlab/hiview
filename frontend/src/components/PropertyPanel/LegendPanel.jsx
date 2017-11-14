@@ -12,7 +12,7 @@ const legendPanelStyle = {
   padding: '0.8em'
 }
 
-const BAR_HEIGHT = 35
+const BAR_HEIGHT = 20
 
 
 class LegendPanel extends Component {

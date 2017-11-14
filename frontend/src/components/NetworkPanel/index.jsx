@@ -76,7 +76,7 @@ class NetworkPanel extends Component {
 
       console.log('This is hidden------------------------------------------')
       const original = props.Original_Name
-      this.props.commandActions.zoomToNode(original.toString())
+      // this.props.commandActions.zoomToNode(original.toString())
       return
 
 
@@ -183,7 +183,7 @@ class NetworkPanel extends Component {
         const networkProp = this.props.network
         const networkData = networkProp.get(this.state.networkUrl)
         const targetNodeId = networkData.label2id[geneName]
-        this.props.commandActions.zoomToNode(targetNodeId)
+        // this.props.commandActions.zoomToNode(targetNodeId)
       }
     }
   }

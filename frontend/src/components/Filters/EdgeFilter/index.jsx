@@ -84,8 +84,15 @@ class EdgeFilter extends Component {
     console.log(filters)
     let filterNames = Object.keys(filters)
 
+    if(filterNames.length === 0) {
+      return (<div></div>)
+    }
+
+
     filterNames.forEach(name => {
-      if(filters[name].isPrimary) {
+      const isPrimary = filters[name].isPimary
+
+      if(isPrimary) {
         primaryFilter = name
       }
     })
@@ -97,6 +104,10 @@ class EdgeFilter extends Component {
       return (<div></div>)
     }
 
+    if(primaryFilter === null) {
+      primaryFilter = 'Unknown'
+    }
+
     return (
       <div style={filterPanelStyle}>
 
@@ -106,14 +117,23 @@ class EdgeFilter extends Component {
             <ListItemIcon>
               <FilterIcon />
             </ListItemIcon>
-            <ListItemText inset primary="Primary Filter" />
             <ContinuousFilter
               key={primaryFilter}
               label={primaryFilter}
+              min={Number(filters[primaryFilter].min)}
+              max={Number(filters[primaryFilter].max)}
+              value={Number(filters[primaryFilter].max)}
+              enabled={filters[primaryFilter].enabled}
+              step={0.01}
+              filtersActions={this.props.filtersActions}
             />
           </ListItem>
 
-          <ListItem button onClick={this.handleClick}>
+          <ListItem
+            button
+            onClick={this.handleClick}
+            key={'parent'}
+          >
             <ListItemIcon>
               <EqualizerIcon />
             </ListItemIcon>
@@ -125,9 +145,10 @@ class EdgeFilter extends Component {
 
           {
             filterNames.map(filterName => (
-              <ListItem>
+              <ListItem
+                key={filterName}
+              >
                 <ContinuousFilter
-                  key={filterName}
                   label={filterName}
                 />
               </ListItem>

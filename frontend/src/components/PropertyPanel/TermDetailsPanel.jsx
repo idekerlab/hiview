@@ -34,18 +34,40 @@ class TermDetailsPanel extends Component {
   }
 
   componentDidUpdate() {
-    this.createFilter()
+    this.createFilter(this.props.rawInteractions)
+  }
+
+  componentDidMount() {
+    this.createFilter(this.props.rawInteractions)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // this.createFilter(nextProps.rawInteractions)
+
   }
 
 
   shouldComponentUpdate(nextProps, nextState) {
+    console.log('SHOULD CALLED(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((')
     const raw = this.props.rawInteractions;
     const newRaw = nextProps.rawInteractions;
 
+    const filters = this.props.filters
+    const newFilters = nextProps.filters
+
+    console.log(this.props.filters)
+    console.log(nextProps)
     if (raw === newRaw) {
-      return false
+      console.log("NO need to up")
+
+      if(filters.size === 0 && newFilters.size !== 0) {
+        return true
+      } else {
+        return false
+      }
     }
 
+    console.log("up called")
     return true
 
   }
@@ -63,10 +85,10 @@ class TermDetailsPanel extends Component {
     })
   }
 
-  createFilter = () => {
+  createFilter = (rawInteractions) => {
     console.log('NEXTPROPFILTER%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
     console.log(this.props)
-    const raw = this.props.rawInteractions.toJS();
+    const raw = rawInteractions.toJS();
     const network = raw.interactions
 
 
@@ -113,29 +135,25 @@ class TermDetailsPanel extends Component {
 
     }
 
-
-
     for (let [key, value] of Object.entries(edgeTypes)){
       if(value.type === 'numeric') {
 
         const isPrimary = (mainEdgeType === key)
-
-        console.log('* ' + mainEdgeType)
-        console.log('** ' + key)
-        console.log(isPrimary)
 
         this.props.filtersActions.addFilter({
           attributeName: key,
           min: value.min,
           max: value.max,
           value: value.min,
-          isPrimary: isPrimary
+          isPrimary: isPrimary,
+          enabled: isPrimary
         })
       }
 
     }
 
   }
+
 
   render() {
     const raw = this.props.rawInteractions.toJS();
@@ -179,7 +197,6 @@ class TermDetailsPanel extends Component {
     }
 
 
-
     return (
       <div>
         <RawInteractionPanel
@@ -191,6 +208,8 @@ class TermDetailsPanel extends Component {
 
           selection={this.props.selection}
           selectionActions={this.props.selectionActions}
+
+          filters={this.props.filters}
         />
 
         <LegendPanel
@@ -199,6 +218,7 @@ class TermDetailsPanel extends Component {
 
         <EdgeFilter
           filters={this.props.filters}
+          filtersActions={this.props.filtersActions}
         />
 
 
@@ -234,9 +254,6 @@ class TermDetailsPanel extends Component {
     this.setState({selectedTab: value})
   }
 
-  _handleTouchTap = id => {
-    window.open('http://amigo.geneontology.org/amigo/term/' + id);
-  }
 }
 
 export default TermDetailsPanel

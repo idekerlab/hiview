@@ -51,7 +51,6 @@ class SimpleSearch extends Component {
 
     const nodeId = index.get(query.toUpperCase())
 
-    console.log("TARGET_______________> " + nodeId)
 
     if(nodeId !== undefined) {
       this.props.commandActions.zoomToNode(nodeId)

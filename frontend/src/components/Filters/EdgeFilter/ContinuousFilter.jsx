@@ -24,12 +24,18 @@ class ContinuousFilter extends Component {
     super(props);
     this.state = {
       value: 0,
-      enabled: false
+      enabled: props.enabled
     };
   }
 
   onSliderChange = value => {
     this.setState({value});
+
+    this.props.filtersActions.setValue({
+      attributeName: this.props.label,
+      value
+    })
+    console.log(this.state.value)
   }
 
   filterSelected = value => {
@@ -56,9 +62,12 @@ class ContinuousFilter extends Component {
         />
         <SliderWithTooltip
           style={{width: '65%'}}
-          tipProps={{overlayClassName: 'Score'}}
           onChange={this.onSliderChange}
           disabled={!this.state.enabled}
+          defaultValue={this.props.value}
+          min={this.props.min}
+          max={this.props.max}
+          step={this.props.step}
         />
       </div>
     )

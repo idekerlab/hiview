@@ -6,6 +6,7 @@ import * as d3Interpolate from 'd3-interpolate'
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
 import * as d3Scale from 'd3-scale'
 
+const PATTERN = /[ -]/g
 
 class RawInteractionPanel extends Component {
 
@@ -17,6 +18,11 @@ class RawInteractionPanel extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
 
+    if(this.props.subnet === undefined || this.props.subnet === null) {
+      return false
+    }
+
+
     if(nextProps.selectedTerm === undefined || this.props.selectedTerm === undefined) {
       return false
     }
@@ -27,11 +33,9 @@ class RawInteractionPanel extends Component {
 
     if(nextProps.selectedTerm === this.props.selectedTerm) {
 
-      console.log("** Same selected term")
       if(nextProps.loading !== this.props.loading) {
         return true
       }
-
       return false;
     }
 
@@ -43,7 +47,7 @@ class RawInteractionPanel extends Component {
     const style = {
       width: '100%',
       height: '45em',
-      background: '#555555'
+      background: '#000000'
     }
 
 
@@ -54,6 +58,69 @@ class RawInteractionPanel extends Component {
 
       </div>
     )
+  }
+
+  addExtraEdges(network) {
+
+    const filters = this.props.filters.toJS()
+    const filterNames = Object.keys(filters)
+
+    console.log(filters)
+    let primaryFilterName = ''
+    filterNames.forEach(filterName => {
+      if(filters[filterName].isPrimary) {
+        primaryFilterName = filterName
+      }
+    })
+
+    const edges = network.elements.edges
+    const newEdges = []
+
+    let i = edges.length
+    while(i--) {
+      const edge = edges[i]
+
+      const edgeData = edge.data
+      const keys = Object.keys(edgeData)
+
+
+
+      let primaryEdge = {}
+
+      let j = keys.length
+      while(j--) {
+        const key = keys[j]
+        if(key === 'id' || key === 'source' || key === 'target') {
+          continue
+        }
+
+        const value = edgeData[key]
+        if(!value) {
+          continue
+        }
+
+        const newKey = key.replace(PATTERN, '_')
+        const newEdge = {
+          data: {
+            id: edgeData.id + '-' + key,
+            source: edgeData.source,
+            target: edgeData.target,
+          }
+        }
+
+
+        newEdge.data[newKey] = edgeData[key]
+        if(newKey === primaryFilterName) {
+          newEdges.unshift(newEdge)
+        } else {
+          newEdges.push(newEdge)
+        }
+      }
+
+
+    }
+    return newEdges
+
   }
 
   getMainContents = () => {
@@ -74,15 +141,23 @@ class RawInteractionPanel extends Component {
     if(!this.props.loading) {
 
       const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
+
+      const networkStyle = this.getStyle()
+      const newNet = this.props.subnet
+      newNet.elements.edges = this.addExtraEdges(newNet, '')
+
+
+      console.log(networkStyle)
+
       return (
           <Viewer
             key="subNetworkView"
             network={this.props.subnet}
             networkType={'cyjs'}
-            networkStyle={this.getStyle()}
+            networkStyle={networkStyle}
             style={networkAreaStyle}
             eventHandlers={this.getCustomEventHandlers()}
-            rendererOptions={{layout: 'concentric'}}
+            rendererOptions={{layout: 'cose-bilkent'}}
             command={this.props.commands}
           />
       )
@@ -95,10 +170,6 @@ class RawInteractionPanel extends Component {
   getStyle = () => {
 
     // This is the generator for custom styling
-
-    console.log("???????????????????????????????????????????????????????????????????????SUBNET for Style")
-    console.log(this.props.subnet)
-
     const similarityMin = this.props.subnet.data['RF score min']
     const similarityMax = this.props.subnet.data['RF score max']
 
@@ -110,15 +181,14 @@ class RawInteractionPanel extends Component {
     style: [ {
       "selector" : "node",
       "css" : {
-        "width" : 0.6,
-        "height" : 0.6,
+        "width" : 1,
+        "height" : 1,
         "text-valign" : "center",
         "text-halign" : "center",
         "shape" : "ellipse",
         "color" : "#FFFFFF",
-        "background-color" : "#777777",
-        "font-size" : 2,
-        'min-zoomed-font-size': 9,
+        "background-color" : "#eeeeee",
+        "font-size" : 12,
         "label" : "data(name)",
       }
     }, {
@@ -133,13 +203,30 @@ class RawInteractionPanel extends Component {
     }, {
       "selector" : "edge",
       "css" : {
-        "width" : 'mapData(RF_score,' + similarityMin +',' + similarityMax + ', 0.1, 0.7)',
-        'line-color': (d) => (colorScale(d.data('RF_score'))),
-        // opacity: 'mapData(RF_score,' + similarityMin +',' + similarityMax + ', 0.01, 0.7)',
-        opacity: 0.6,
+        // width: 3,
+        "width" : 'mapData(RF_score,' + similarityMin +',' + similarityMax + ', 1, 30)',
+        // 'line-color': (d) => {
+        //
+        //   if(d.data('RF_score') === undefined) {
+        //     return '#aaaaaa'
+        //   }
+        //   return colorScale(d.data('RF_score'))
+        // },
+        'line-color': 'teal',
+        'line-style': d => {
+          if(d.data('RF_score') === undefined) {
+            return 'dotted'
+          } else {
+            return 'solid'
+          }
+        },
+        opacity: 'mapData(RF_score,' + similarityMin +',' + similarityMax + ', 0.4, 0.95)',
+        // opacity: 0.6,
         'curve-style': 'bezier',
+        'edge-distances': 'node-position',
+        // 'control-point-distance': '2',
         // 'control-point-distance': '5',
-        // 'control-point-weight': '0.1'
+        // 'control-point-weight': '0.5'
       }
     }, {
       "selector" : "edge:selected",
