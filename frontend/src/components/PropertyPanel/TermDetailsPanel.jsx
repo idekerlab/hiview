@@ -146,8 +146,17 @@ class TermDetailsPanel extends Component {
           max: value.max,
           value: value.min,
           isPrimary: isPrimary,
-          enabled: isPrimary
+          enabled: isPrimary,
+          type: 'continuous'
         })
+      } else if(value.type === 'boolean') {
+        this.props.filtersActions.addFilter({
+          attributeName: key,
+          isPrimary: false,
+          enabled: false,
+          type: 'boolean'
+        })
+
       }
 
     }

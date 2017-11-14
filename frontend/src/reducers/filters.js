@@ -22,9 +22,6 @@ export default function filterState(state = defState, action) {
   switch (action.type) {
 
     case ADD_FILTER:
-
-      console.log('(((((((((((((((((((((( FILTER ADD')
-      console.log(action)
       const newFilter = action.payload
       return state.set(
         newFilter.attributeName,
@@ -34,7 +31,11 @@ export default function filterState(state = defState, action) {
 
     case SET_VALUE:
       const filter = state.get(action.payload.attributeName)
-      filter.value = action.payload.value
+      if(filter.type === 'continuous') {
+        filter.value = action.payload.value
+      } else {
+        filter.enabled = action.payload.enabled
+      }
       return state.set(action.payload.attributeName, filter)
     case REMOVE_FILTER:
       return state.delete(action.payload)

@@ -39,7 +39,7 @@
     "webpack-dev-server": "^2.9.4"
   },
   "dependencies": {
-    "@blueprintjs/core": "^1.32.0",
+    "@blueprintjs/core": "^1.33.0",
     "cy-network-viewer": "^0.1.0",
     "cytoscape": "^3.2.5",
     "cytoscapejs-renderer": "^0.1.0",
@@ -51,7 +51,7 @@
     "d3-scale-chromatic": "^1.1.1",
     "d3-selection": "^1.1.0",
     "immutable": "^3.8.2",
-    "material-ui": "^1.0.0-beta.20",
+    "material-ui": "^1.0.0-beta.21",
     "material-ui-icons": "^1.0.0-beta.17",
     "prop-types": "^15.6.0",
     "rc-slider": "^8.4.0",

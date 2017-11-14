@@ -18,6 +18,13 @@ import EqualizerIcon from 'material-ui-icons/Equalizer';
 
 
 import ContinuousFilter from './ContinuousFilter'
+import BooleanFilter from './BooleanFilter'
+
+
+const FILTER_TYPES = {
+  CONTINUOUS: 'continuous',
+  BOOLEAN: 'boolean'
+}
 
 
 const filterPanelStyle = {
@@ -84,7 +91,7 @@ class EdgeFilter extends Component {
     console.log(filters)
     let filterNames = Object.keys(filters)
 
-    if(filterNames.length === 0) {
+    if (filterNames.length === 0) {
       return (<div></div>)
     }
 
@@ -92,7 +99,7 @@ class EdgeFilter extends Component {
     filterNames.forEach(name => {
       const isPrimary = filters[name].isPimary
 
-      if(isPrimary) {
+      if (isPrimary) {
         primaryFilter = name
       }
     })
@@ -104,7 +111,7 @@ class EdgeFilter extends Component {
       return (<div></div>)
     }
 
-    if(primaryFilter === null) {
+    if (primaryFilter === null) {
       primaryFilter = 'Unknown'
     }
 
@@ -115,7 +122,7 @@ class EdgeFilter extends Component {
 
           <ListItem>
             <ListItemIcon>
-              <FilterIcon />
+              <FilterIcon/>
             </ListItemIcon>
             <ContinuousFilter
               key={primaryFilter}
@@ -135,30 +142,58 @@ class EdgeFilter extends Component {
             key={'parent'}
           >
             <ListItemIcon>
-              <EqualizerIcon />
+              <EqualizerIcon/>
             </ListItemIcon>
-            <ListItemText inset primary="Edge Filters" />
-            {this.state.open ? <ExpandLess /> : <ExpandMore />}
+            <ListItemText inset primary="Edge Filters"/>
+            {this.state.open ? <ExpandLess/> : <ExpandMore/>}
           </ListItem>
 
           <Collapse in={this.state.open} transitionDuration="auto" unmountOnExit>
 
-          {
-            filterNames.map(filterName => (
-              <ListItem
-                key={filterName}
-              >
-                <ContinuousFilter
-                  label={filterName}
-                />
-              </ListItem>
-            ))
-          }
+            {
+              filterNames.map(filterName => (
+                <ListItem
+                  key={filterName}
+                >
+                  {this.getFilter(filters[filterName])}
+                </ListItem>
+              ))
+            }
 
           </Collapse>
         </List>
       </div>
     )
+  }
+
+  getFilter(filter) {
+
+    const filterType = filter.type
+
+    if (filterType === FILTER_TYPES.CONTINUOUS) {
+      return (
+        <ContinuousFilter
+          key={filter.name}
+          label={filter.name}
+          min={Number(filter.min)}
+          max={Number(filter.max)}
+          value={Number(filter.max)}
+          enabled={filter.enabled}
+          step={0.01}
+          filtersActions={this.props.filtersActions}
+        />
+      )
+    } else if(filterType === FILTER_TYPES.BOOLEAN) {
+      return(
+        <BooleanFilter
+          key={filter.name}
+          label={filter.name}
+          enabled={filter.enabled}
+          filtersActions={this.props.filtersActions}
+        />
+      )
+
+    }
   }
 }
 
