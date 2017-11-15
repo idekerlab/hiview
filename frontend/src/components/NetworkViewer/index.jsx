@@ -60,9 +60,6 @@ export default class NetworkViewer extends Component {
     }
 
 
-    console.log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ prop panelUI")
-    console.log(this.props)
-
     return (
 
       <div style={this.props.style}>
@@ -101,8 +98,10 @@ export default class NetworkViewer extends Component {
 
 
         <PropertyPanel
-          commands={commands}
-          commandActions={commandActions}
+          // commands={commands}
+          // commandActions={commandActions}
+          interactionsCommands={this.props.interactionsCommands}
+          interactionsCommandActions={this.props.interactionsCommandActions}
           events={events}
           currentProperty={currentProperty}
           currentNetwork={this.props.currentNetwork.toJS()}

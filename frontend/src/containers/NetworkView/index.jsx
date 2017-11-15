@@ -31,6 +31,8 @@ import * as selectionActions from '../../actions/selection'
 import * as filtersActions from '../../actions/filters'
 import * as interactionStyleActions from '../../actions/interaction-style'
 
+import * as interactionsCommandsActions from '../../actions/commands-interactions'
+
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 
 import {lightBlue, red} from 'material-ui/colors'
@@ -82,6 +84,7 @@ function mapStateToProps(state) {
     'currentProperty': state.app_manager.current_property,
     'search': state.app_manager.search,
     'commands': state.app_manager.commands,
+    'interactionsCommands': state.app_manager.interactions_commands,
     'events': state.app_manager.cy_events,
     'uiState': state.app_manager.ui_state,
     'styles': state.visual_styles,
@@ -122,6 +125,7 @@ function mapDispatchToProps(dispatch) {
 
     'networkSourceActions': bindActionCreators(networkSourceActions, dispatch),
     'commandActions': bindActionCreators(commandActions, dispatch),
+    'interactionsCommandActions': bindActionCreators(interactionsCommandsActions, dispatch),
     'eventActions': bindActionCreators(eventActions, dispatch),
     'uiStateActions': bindActionCreators(uiStateActions, dispatch),
     'vsActions': bindActionCreators(vsActions, dispatch),

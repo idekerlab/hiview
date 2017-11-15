@@ -18,7 +18,6 @@ class BooleanFilter extends Component {
 
 
   filterSelected = value => {
-    console.log("Boolean SELECTED!!!")
     const currentValue = this.props.enabled
     this.props.filtersActions.setValue({
       attributeName: this.props.label,

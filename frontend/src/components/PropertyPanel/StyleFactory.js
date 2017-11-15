@@ -28,8 +28,14 @@ const BASE_STYLE = {
   nodeSelected: {
     'selector': 'node:selected',
     'css': {
-      'background-color': '#EFEFEF',
-      'color': 'orange',
+      'shape': 'ellipse',
+      'width': 40,
+      'height': 40,
+      'text-valign': 'bottom',
+      'text-halign': 'left',
+      'font-size': 18,
+      'background-color': '#FFFFFF',
+      'color': '#dbfffc',
     },
   },
   edge: {

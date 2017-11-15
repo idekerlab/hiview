@@ -13,6 +13,7 @@ import interaction_style from './interaction-style'
 
 import search from './search'
 import network from './network'
+import interactions_commands from './commands-interactions'
 
 // Raw interaction data
 import raw_interactions from './raw-interactions'
@@ -39,7 +40,8 @@ const app_manager = combineReducers({
   search,
   query_genes,
   message,
-  selection
+  selection,
+  interactions_commands
 })
 
 

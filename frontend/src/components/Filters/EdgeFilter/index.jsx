@@ -99,9 +99,7 @@ class EdgeFilter extends Component {
 
     filters.forEach(filter => {
       const isPrimary = filter.isPrimary
-      console.log(isPrimary)
       if(isPrimary) {
-        console.log("!!!!!!!!found: " + filter.attributeName)
         primaryFilter = filter
       } else {
         filterNames.push(filter.attributeName)
@@ -111,7 +109,6 @@ class EdgeFilter extends Component {
 
     const sortedNames = filterNames.sort()
 
-    console.log(primaryFilter)
 
     return (
       <div style={filterPanelStyle}>
@@ -149,7 +146,7 @@ class EdgeFilter extends Component {
           <Collapse in={this.state.open} transitionDuration="auto" unmountOnExit>
 
             {
-              filterNames.map(filterName => (
+              sortedNames.map(filterName => (
                 <ListItem
                   key={filterName}
                 >
