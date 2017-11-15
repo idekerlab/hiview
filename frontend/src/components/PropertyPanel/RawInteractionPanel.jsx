@@ -8,6 +8,24 @@ import * as d3Scale from 'd3-scale'
 
 const PATTERN = /[ -]/g
 
+// Style of this component's area
+const style = {
+  width: '100%',
+  height: '45em',
+  background: '#000000'
+}
+
+// Style of
+const networkAreaStyle = {
+  width: '100%',
+  height: '100%',
+  top: 0,
+  right: 0,
+  position: 'relative'
+}
+
+const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
+
 class RawInteractionPanel extends Component {
 
   constructor(props) {
@@ -17,45 +35,40 @@ class RawInteractionPanel extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-
-    if(this.props.subnet === undefined || this.props.subnet === null) {
-      return false
-    }
-
-
-    if(nextProps.selectedTerm === undefined || this.props.selectedTerm === undefined) {
-      return false
-    }
-
-    if(this.props.subnet !== nextProps.subnet) {
-      return true
-    }
-
-    if(nextProps.selectedTerm === this.props.selectedTerm) {
-
-      if(nextProps.loading !== this.props.loading) {
-        return true
-      }
-      return false;
-    }
+    //
+    // if(nextProps.selectedTerm === undefined || this.props.selectedTerm === undefined) {
+    //   return false
+    // }
+    //
+    // if(this.props.subnet !== nextProps.subnet) {
+    //   return true
+    // }
+    //
+    // if(nextProps.selectedTerm === this.props.selectedTerm) {
+    //
+    //   if(nextProps.loading !== this.props.loading) {
+    //     return true
+    //   }
+    //   return false;
+    // }
 
     return true
   }
 
+  componentDidMount() {
+
+  }
+
+  componentWillReceiveProps(nextProps) {
+
+  }
+
 
   render() {
-    const style = {
-      width: '100%',
-      height: '45em',
-      background: '#000000'
-    }
-
 
     return (
       <div style={style}>
-
         {this.getMainContents()}
-
       </div>
     )
   }
@@ -125,117 +138,30 @@ class RawInteractionPanel extends Component {
 
   getMainContents = () => {
 
-    if(this.props.subnet === null || this.props.subnet === undefined) {
+    const newNet = this.props.subnet
+    const visualStyle = this.props.networkStyle
+
+    if(newNet === null || newNet === undefined || visualStyle === null) {
       return (<div></div>)
     }
 
-    // Style of
-    const networkAreaStyle = {
-      width: '100%',
-      height: '100%',
-      top: 0,
-      right: 0,
-      position: 'relative'
-    }
+    // newNet.elements.edges = this.addExtraEdges(newNet, '')
 
-    if(!this.props.loading) {
+    console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++VS")
+    console.log(visualStyle)
+    return (
+      <Viewer
+        key="subNetworkView"
+        network={this.props.subnet}
+        networkType={'cyjs'}
+        networkStyle={visualStyle}
+        style={networkAreaStyle}
+        eventHandlers={this.getCustomEventHandlers()}
+        rendererOptions={{layout: 'cose-bilkent'}}
+        command={this.props.commands}
+      />
+    )
 
-      const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
-
-      const networkStyle = this.getStyle()
-      const newNet = this.props.subnet
-      newNet.elements.edges = this.addExtraEdges(newNet, '')
-
-
-      console.log(networkStyle)
-
-      return (
-          <Viewer
-            key="subNetworkView"
-            network={this.props.subnet}
-            networkType={'cyjs'}
-            networkStyle={networkStyle}
-            style={networkAreaStyle}
-            eventHandlers={this.getCustomEventHandlers()}
-            rendererOptions={{layout: 'cose-bilkent'}}
-            command={this.props.commands}
-          />
-      )
-    } else {
-      return (<h2>Loading networks...</h2>)
-    }
-
-  }
-
-  getStyle = () => {
-
-    // This is the generator for custom styling
-    const similarityMin = this.props.subnet.data['RF score min']
-    const similarityMax = this.props.subnet.data['RF score max']
-
-    const colorScale = d3Scale
-      .scaleSequential(d3Scale.interpolateInferno)
-      .domain([similarityMin, similarityMax])
-
-    return {
-    style: [ {
-      "selector" : "node",
-      "css" : {
-        "width" : 1,
-        "height" : 1,
-        "text-valign" : "center",
-        "text-halign" : "center",
-        "shape" : "ellipse",
-        "color" : "#FFFFFF",
-        "background-color" : "#eeeeee",
-        "font-size" : 12,
-        "label" : "data(name)",
-      }
-    }, {
-      "selector" : "node:selected",
-      "css" : {
-        "background-color" : "white",
-        "font-size" : "0.4em",
-        "color" : "white",
-        label: "data(name)",
-        "text-max-width": '200px'
-      }
-    }, {
-      "selector" : "edge",
-      "css" : {
-        // width: 3,
-        "width" : 'mapData(RF_score,' + similarityMin +',' + similarityMax + ', 1, 30)',
-        // 'line-color': (d) => {
-        //
-        //   if(d.data('RF_score') === undefined) {
-        //     return '#aaaaaa'
-        //   }
-        //   return colorScale(d.data('RF_score'))
-        // },
-        'line-color': 'teal',
-        'line-style': d => {
-          if(d.data('RF_score') === undefined) {
-            return 'dotted'
-          } else {
-            return 'solid'
-          }
-        },
-        opacity: 'mapData(RF_score,' + similarityMin +',' + similarityMax + ', 0.4, 0.95)',
-        // opacity: 0.6,
-        'curve-style': 'bezier',
-        'edge-distances': 'node-position',
-        // 'control-point-distance': '2',
-        // 'control-point-distance': '5',
-        // 'control-point-weight': '0.5'
-      }
-    }, {
-      "selector" : "edge:selected",
-      "css" : {
-        "line-color" : "rgb(255,0,0)",
-        "width": 1
-      }
-    } ]
-  }
   }
 
 

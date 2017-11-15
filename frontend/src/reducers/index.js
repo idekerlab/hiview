@@ -9,6 +9,7 @@ import ui_state from './ui-state'
 import datasource from './datasource'
 import property from './property'
 import filters from './filters'
+import interaction_style from './interaction-style'
 
 import search from './search'
 import network from './network'
@@ -51,6 +52,6 @@ export default combineReducers({
   datasource,
   raw_interactions,
   idmap,
-  filters
-}
-)
+  filters,
+  interaction_style
+})

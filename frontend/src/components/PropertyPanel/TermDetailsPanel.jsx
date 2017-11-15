@@ -15,6 +15,8 @@ import {EdgeFilter} from '../Filters'
 
 import GeneList from './GeneList'
 
+import * as StyleFactory from './StyleFactory'
+
 
 const MAIN_EDGE_TAG = 'Main Feature'
 
@@ -33,40 +35,52 @@ class TermDetailsPanel extends Component {
     }
   }
 
+
+  addStyle(rawInteractions) {
+    const networkStyle = StyleFactory.createStyle(rawInteractions)
+
+    this.props.interactionStyleActions.addStyle({
+      name: 'defaultStyle',
+      style: networkStyle,
+    })
+  }
+
   componentDidUpdate() {
-    this.createFilter(this.props.rawInteractions)
+    // this.createFilter(this.props.rawInteractions)
   }
 
   componentDidMount() {
-    this.createFilter(this.props.rawInteractions)
+    // this.createFilter(this.props.rawInteractions)
   }
 
   componentWillReceiveProps(nextProps) {
     // this.createFilter(nextProps.rawInteractions)
+    if(nextProps.rawInteractions !== this.props.rawInteractions) {
+      this.addStyle(nextProps.rawInteractions)
+    }
 
   }
 
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log('SHOULD CALLED(((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((((')
-    const raw = this.props.rawInteractions;
-    const newRaw = nextProps.rawInteractions;
-
-    const filters = this.props.filters
-    const newFilters = nextProps.filters
-
-    console.log(this.props.filters)
-    console.log(nextProps)
-    if (raw === newRaw) {
-      console.log("NO need to up")
-
-      if(filters.size === 0 && newFilters.size !== 0) {
-        return true
-      } else {
-        return false
-      }
-    }
-
+    // const raw = this.props.rawInteractions;
+    // const newRaw = nextProps.rawInteractions;
+    //
+    // const filters = this.props.filters
+    // const newFilters = nextProps.filters
+    //
+    // console.log(this.props.filters)
+    // console.log(nextProps)
+    // if (raw === newRaw) {
+    //   console.log("NO need to up")
+    //
+    //   if(filters.size === 0 && newFilters.size !== 0) {
+    //     return true
+    //   } else {
+    //     return false
+    //   }
+    // }
+    //
     console.log("up called")
     return true
 
@@ -86,9 +100,11 @@ class TermDetailsPanel extends Component {
   }
 
   createFilter = (rawInteractions) => {
-    console.log('NEXTPROPFILTER%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-    console.log(this.props)
     const raw = rawInteractions.toJS();
+    if(raw.loading || raw.interactions === null) {
+      return
+    }
+
     const network = raw.interactions
 
 
@@ -98,7 +114,7 @@ class TermDetailsPanel extends Component {
 
     let mainEdgeType = null
 
-    if (network !== undefined && network.data !== undefined) {
+    if (network !== null && network.data !== null) {
       mainEdgeType = network.data[MAIN_EDGE_TAG].replace(PATTERN, '_')
 
 
@@ -168,6 +184,11 @@ class TermDetailsPanel extends Component {
     const raw = this.props.rawInteractions.toJS();
     const interactions = raw.interactions
 
+    // Loading
+    if (raw.loading) {
+      return (<CircularProgress/>)
+    }
+
     // Term property
     const details = this.props.currentProperty
     if (details === undefined || details === null || details.id === null || details.id === undefined) {
@@ -176,10 +197,6 @@ class TermDetailsPanel extends Component {
       )
     }
 
-    // Loading
-    if (details.loading) {
-      return (<CircularProgress/>)
-    }
 
     const data = details.data
 
@@ -201,10 +218,14 @@ class TermDetailsPanel extends Component {
 
     const title = data.name
     let networkProps = {}
-    if (interactions !== undefined) {
+    if (interactions !== undefined && interactions !== null) {
       networkProps = interactions.data
     }
 
+    const visualStyle = this.props.interactionStyle.get('defaultStyle')
+    if(visualStyle !== null && visualStyle !== undefined) {
+      visualStyle.name = 'defaultStyle'
+    }
 
     return (
       <div>
@@ -213,12 +234,14 @@ class TermDetailsPanel extends Component {
           selectedTerm={this.props.currentProperty.id}
           handleClose={this.props.handleClose}
           commandActions={this.props.commandActions}
-          loading={this.props.currentProperty.loading}
+          loading={raw.loading}
 
           selection={this.props.selection}
           selectionActions={this.props.selectionActions}
 
           filters={this.props.filters}
+          interactionStyleActions={this.props.interactionStyleActions}
+          networkStyle={visualStyle}
         />
 
         <LegendPanel

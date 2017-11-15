@@ -29,6 +29,7 @@ import * as idmapActions from '../../actions/idmap'
 import * as selectionActions from '../../actions/selection'
 
 import * as filtersActions from '../../actions/filters'
+import * as interactionStyleActions from '../../actions/interaction-style'
 
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 
@@ -100,6 +101,7 @@ function mapStateToProps(state) {
     'idmap': state.idmap,
     'selection': state.app_manager.selection,
     'filters': state.filters,
+    'interactionStyle': state.interaction_style,
 
   }
 
@@ -137,6 +139,7 @@ function mapDispatchToProps(dispatch) {
     'selectionActions': bindActionCreators(selectionActions, dispatch),
 
     'filtersActions': bindActionCreators(filtersActions, dispatch),
+    'interactionStyleActions': bindActionCreators(interactionStyleActions, dispatch),
   }
 
 }
