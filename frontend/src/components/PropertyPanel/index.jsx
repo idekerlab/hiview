@@ -6,7 +6,7 @@ import GenePropertyPanel from './GenePropertyPanel'
 
 import CloseIcon from 'material-ui-icons/Close'
 
-const MAX_WIDTH = 800.0
+const MAX_WIDTH = 900.0
 const MIN_WIDTH = 300.0
 
 
@@ -49,7 +49,7 @@ class PropertyPanel extends Component {
 
   getWidth = () => {
 
-    let w = window.innerWidth * 0.35
+    let w = window.innerWidth * 0.40
 
     if (w > MAX_WIDTH) {
       w = MAX_WIDTH

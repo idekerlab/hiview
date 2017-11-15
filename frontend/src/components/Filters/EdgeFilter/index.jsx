@@ -79,59 +79,57 @@ class EdgeFilter extends Component {
 
   handleClick() {
 
+    this.setState({
+      open: !this.state.open,
+    });
   }
 
   render() {
 
-    const filters = this.props.filters.toJS()
-
-    let primaryFilter = null
+    const filters = this.props.filters
 
 
-    console.log(filters)
-    let filterNames = Object.keys(filters)
-
-    if (filterNames.length === 0) {
+    if (filters === null || filters.length === 0) {
       return (<div></div>)
     }
 
+    let primaryFilter = null
+    const filterNames = []
+    const filterMap = {}
 
-    filterNames.forEach(name => {
-      const isPrimary = filters[name].isPimary
-
-      if (isPrimary) {
-        primaryFilter = name
+    filters.forEach(filter => {
+      const isPrimary = filter.isPrimary
+      console.log(isPrimary)
+      if(isPrimary) {
+        console.log("!!!!!!!!found: " + filter.attributeName)
+        primaryFilter = filter
+      } else {
+        filterNames.push(filter.attributeName)
+        filterMap[filter.attributeName] = filter
       }
     })
 
-    filterNames = filterNames.filter(name => (name !== primaryFilter))
+    const sortedNames = filterNames.sort()
 
-
-    if (filterNames === undefined) {
-      return (<div></div>)
-    }
-
-    if (primaryFilter === null) {
-      primaryFilter = 'Unknown'
-    }
+    console.log(primaryFilter)
 
     return (
       <div style={filterPanelStyle}>
 
-        <List subheader={<ListSubheader>Filters</ListSubheader>}>
+        <List>
 
           <ListItem>
             <ListItemIcon>
               <FilterIcon/>
             </ListItemIcon>
             <ContinuousFilter
-              key={primaryFilter}
-              label={primaryFilter}
-              min={Number(filters[primaryFilter].min)}
-              max={Number(filters[primaryFilter].max)}
-              value={Number(filters[primaryFilter].max)}
-              enabled={filters[primaryFilter].enabled}
-              step={0.01}
+              key={primaryFilter.attributeName}
+              label={primaryFilter.attributeName}
+              min={Number(primaryFilter.min)}
+              max={Number(primaryFilter.max)}
+              value={Number(primaryFilter.max)}
+              enabled={primaryFilter.enabled}
+              step={0.001}
               filtersActions={this.props.filtersActions}
             />
           </ListItem>
@@ -155,7 +153,7 @@ class EdgeFilter extends Component {
                 <ListItem
                   key={filterName}
                 >
-                  {this.getFilter(filters[filterName])}
+                  {this.getFilter(filterMap[filterName])}
                 </ListItem>
               ))
             }
@@ -173,8 +171,8 @@ class EdgeFilter extends Component {
     if (filterType === FILTER_TYPES.CONTINUOUS) {
       return (
         <ContinuousFilter
-          key={filter.name}
-          label={filter.name}
+          key={filter.attributeName}
+          label={filter.attributeName}
           min={Number(filter.min)}
           max={Number(filter.max)}
           value={Number(filter.max)}
@@ -186,8 +184,8 @@ class EdgeFilter extends Component {
     } else if(filterType === FILTER_TYPES.BOOLEAN) {
       return(
         <BooleanFilter
-          key={filter.name}
-          label={filter.name}
+          key={filter.attributeName}
+          label={filter.attributeName}
           enabled={filter.enabled}
           filtersActions={this.props.filtersActions}
         />

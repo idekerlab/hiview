@@ -147,8 +147,6 @@ class RawInteractionPanel extends Component {
 
     // newNet.elements.edges = this.addExtraEdges(newNet, '')
 
-    console.log("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++VS")
-    console.log(visualStyle)
     return (
       <Viewer
         key="subNetworkView"

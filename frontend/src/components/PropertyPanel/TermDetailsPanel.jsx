@@ -17,10 +17,10 @@ import GeneList from './GeneList'
 
 import * as StyleFactory from './StyleFactory'
 
+import GroupSelector from '../GroupSelector'
+import CirclePacking from "../CirclePacking/index";
 
-const MAIN_EDGE_TAG = 'Main Feature'
 
-const PATTERN = /[ -]/g
 
 
 class TermDetailsPanel extends Component {
@@ -99,85 +99,6 @@ class TermDetailsPanel extends Component {
     })
   }
 
-  createFilter = (rawInteractions) => {
-    const raw = rawInteractions.toJS();
-    if(raw.loading || raw.interactions === null) {
-      return
-    }
-
-    const network = raw.interactions
-
-
-    // 1. Extract props from network data
-
-    const edgeTypes = {}
-
-    let mainEdgeType = null
-
-    if (network !== null && network.data !== null) {
-      mainEdgeType = network.data[MAIN_EDGE_TAG].replace(PATTERN, '_')
-
-
-      for (let [key, value] of Object.entries(network.data)) {
-
-        if (key === MAIN_EDGE_TAG) {
-          continue
-        }
-
-
-        console.log(key + ' = ' + value)
-
-        const keyParts = key.split(' ')
-        const suffix = keyParts[keyParts.length - 1]
-        console.log(suffix)
-
-        const realKey = key.replace(suffix, '').trim()
-        console.log('RZeal key = ' + realKey)
-
-        const edgeTypeName = realKey.replace(PATTERN, '_')
-        const currentValue = edgeTypes[edgeTypeName]
-        if (currentValue === undefined) {
-          const newEntry = {}
-          newEntry[suffix] = value
-          edgeTypes[edgeTypeName] = newEntry
-        } else {
-          currentValue[suffix] = value
-          edgeTypes[edgeTypeName] = currentValue
-        }
-      }
-
-      console.log(edgeTypes)
-
-
-    }
-
-    for (let [key, value] of Object.entries(edgeTypes)){
-      if(value.type === 'numeric') {
-
-        const isPrimary = (mainEdgeType === key)
-
-        this.props.filtersActions.addFilter({
-          attributeName: key,
-          min: value.min,
-          max: value.max,
-          value: value.min,
-          isPrimary: isPrimary,
-          enabled: isPrimary,
-          type: 'continuous'
-        })
-      } else if(value.type === 'boolean') {
-        this.props.filtersActions.addFilter({
-          attributeName: key,
-          isPrimary: false,
-          enabled: false,
-          type: 'boolean'
-        })
-
-      }
-
-    }
-
-  }
 
 
   render() {
@@ -186,7 +107,19 @@ class TermDetailsPanel extends Component {
 
     // Loading
     if (raw.loading) {
-      return (<CircularProgress/>)
+      const loadingStyle = {
+        display: 'flex',
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
+
+      }
+      return (
+        <div style={loadingStyle}>
+          < CircularProgress size={300} thickness={2} />
+        </div>
+      )
     }
 
     // Term property
@@ -248,8 +181,13 @@ class TermDetailsPanel extends Component {
           networkProps={networkProps}
         />
 
+        <GroupSelector
+          groups={raw.groups}
+          commandActions={this.props.commandActions}
+        />
+
         <EdgeFilter
-          filters={this.props.filters}
+          filters={raw.filters}
           filtersActions={this.props.filtersActions}
         />
 

@@ -4,6 +4,7 @@ import {Map} from 'immutable'
 const defState = Map({
   loading: false,
   interactions: null,
+  filters: null
 })
 
 export default function networkState(state = defState, action) {
@@ -17,6 +18,8 @@ export default function networkState(state = defState, action) {
       return state
         .set('loading', false)
         .set('interactions', action.network)
+        .set('filters', action.filters)
+        .set('groups', action.groups)
 
     default:
       return state
