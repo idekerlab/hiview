@@ -110,7 +110,6 @@ class PropertyPanel extends Component {
 
     return (
       <Drawer
-        width={w}
         style={drawerStyle}
         type="persistent"
         anchor={'right'}

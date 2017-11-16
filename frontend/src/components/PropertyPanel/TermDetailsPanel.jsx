@@ -189,6 +189,7 @@ class TermDetailsPanel extends Component {
 
         <EdgeFilter
           filters={raw.filters}
+          commandActions={this.props.interactionsCommandActions}
           filtersActions={this.props.filtersActions}
         />
 

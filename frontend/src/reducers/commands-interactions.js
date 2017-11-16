@@ -14,4 +14,8 @@ export default handleActions({
     command: 'unselect',
     parameters: action.payload
   }),
+  FILTER_EDGES: (state, action) => ({
+    command: 'filter',
+    parameters: action.payload
+  }),
 }, defaultState)

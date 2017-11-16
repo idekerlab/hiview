@@ -101,7 +101,6 @@ class GroupSelector extends Component {
             groupNames.map(group => {
 
               const color = colorMap(i++)
-              console.log(color)
               const avatarStyle = {
                 margin: 0,
                 color: '#333333',

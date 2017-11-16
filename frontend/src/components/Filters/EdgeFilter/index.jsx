@@ -128,6 +128,7 @@ class EdgeFilter extends Component {
               enabled={primaryFilter.enabled}
               step={0.001}
               filtersActions={this.props.filtersActions}
+              commandActions={this.props.commandActions}
             />
           </ListItem>
 

@@ -38,10 +38,24 @@ class ContinuousFilter extends Component {
     console.log(this.state.value)
   }
 
+  onAfterChange= value => {
+
+    console.log(value)
+
+
+    this.props.commandActions.filterEdges({
+      options: {
+        type: 'numeric',
+        range: '[RF_score > ' + value + ']'
+      }
+    })
+  }
+
   filterSelected = value => {
     console.log("SELECTED!!!")
     const currentValue = this.state.enabled
     this.setState({enabled: !currentValue});
+    console.log(this.state.value)
 
   }
 
@@ -62,12 +76,13 @@ class ContinuousFilter extends Component {
         />
         <SliderWithTooltip
           style={{width: '65%'}}
-          onChange={this.onSliderChange}
+          // onChange={this.onSliderChange}
           disabled={!this.state.enabled}
           defaultValue={this.props.value}
           min={this.props.min}
           max={this.props.max}
           step={this.props.step}
+          onAfterChange={this.onAfterChange}
         />
       </div>
     )

@@ -1,6 +1,8 @@
 const MAIN_EDGE_TAG = 'Main Feature'
 
 const PATTERN = /[ -]/g
+import { createAction } from 'redux-actions'
+
 
 
 export const FETCH_INTERACTIONS = 'FETCH_INTERACTIONS'
@@ -197,3 +199,8 @@ const addExtraEdges = netAndFilter => {
   return newEdges
 
 }
+
+// For filters
+
+export const SET_VALUE = 'SET_VALUE'
+export const setValue = createAction(SET_VALUE)

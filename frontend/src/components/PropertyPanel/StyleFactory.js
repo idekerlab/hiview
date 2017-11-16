@@ -55,17 +55,22 @@ const BASE_STYLE = {
       'width': 1,
     },
   },
+  dark: {
+    "selector": ".dark",
+    "css": {
+      "background-color": "black",
+      "line-color": "#777777",
+      color: "black",
+      opacity: 0.2,
+      width: 0.5
+    },
+  }
 }
 
 
 export const createStyle = originalNetwork => {
 
-  const defaultStyle = {
-    'style': [BASE_STYLE.node, BASE_STYLE.nodeSelected, BASE_STYLE.edge, BASE_STYLE.edgeSelected],
-  }
-
   const network = originalNetwork.toJS()
-
 
   if (network.loading) {
     return null
@@ -90,7 +95,7 @@ export const createStyle = originalNetwork => {
 
   const edgeStyle = BASE_STYLE.edge
 
-  edgeStyle.css['width'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.5, 4)`
+  edgeStyle.css['width'] = `mapData(RF_score,${similarityMin},${similarityMax}, 1, 5)`
   edgeStyle.css['line-color'] = (d) => {
     if (d.data('RF_score') === undefined) {
       return '#aaaaaa'
@@ -99,7 +104,7 @@ export const createStyle = originalNetwork => {
     }
   }
 
-  edgeStyle.css['opacity'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.4, 0.95)`
+  edgeStyle.css['opacity'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.4, 0.9)`
   edgeStyle.css['display'] = (d) => {
 
     if (d.data('RF_score') === undefined) {
@@ -109,6 +114,8 @@ export const createStyle = originalNetwork => {
   }
 
   return {
-    'style': [BASE_STYLE.node, BASE_STYLE.nodeSelected, edgeStyle, BASE_STYLE.edgeSelected],
+    'style': [
+      BASE_STYLE.node, BASE_STYLE.nodeSelected,
+      edgeStyle, BASE_STYLE.edgeSelected, BASE_STYLE.dark],
   }
 }
