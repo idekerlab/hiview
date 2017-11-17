@@ -28,42 +28,6 @@ const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
 class RawInteractionPanel extends Component {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-    };
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    //
-    // if(nextProps.selectedTerm === undefined || this.props.selectedTerm === undefined) {
-    //   return false
-    // }
-    //
-    // if(this.props.subnet !== nextProps.subnet) {
-    //   return true
-    // }
-    //
-    // if(nextProps.selectedTerm === this.props.selectedTerm) {
-    //
-    //   if(nextProps.loading !== this.props.loading) {
-    //     return true
-    //   }
-    //   return false;
-    // }
-
-    return true
-  }
-
-  componentDidMount() {
-
-  }
-
-  componentWillReceiveProps(nextProps) {
-
-  }
-
-
   render() {
 
     return (
@@ -145,8 +109,6 @@ class RawInteractionPanel extends Component {
       return (<div></div>)
     }
 
-    // newNet.elements.edges = this.addExtraEdges(newNet, '')
-
     return (
       <Viewer
         key="subNetworkView"
@@ -162,6 +124,9 @@ class RawInteractionPanel extends Component {
 
   }
 
+  componentDidUpdate() {
+    console.log('Raw Updated')
+  }
 
   selectNodes = (nodeIds, nodeProps) => {
     const node = nodeIds[0]
@@ -174,24 +139,24 @@ class RawInteractionPanel extends Component {
     }
 
     this.props.selectionActions.selectNode(newSelectionState)
-
-    console.log('RAW2 ============================================================== Custom node select function called! ========');
-    console.log('Selected Node ID: ' + node)
-    console.log(props)
   }
 
   selectEdges = (edgeIds, edgeProps) => {
-    console.log('====== Custom edge select function called! ========');
-    console.log('Selected Edge ID: ' + edgeIds)
     console.log(edgeProps)
+  }
 
-    // Expand edge
+  commandFinished = (lastCommand, status = {}) => {
+    console.log('Raw interaction: Command Finished: ' + lastCommand);
+    console.log(status);
+
+    this.props.commandActions.clearCommand()
   }
 
 // Then use it as a custom handler
   getCustomEventHandlers = () => ({
     selectNodes: this.selectNodes,
-    selectEdges: this.selectEdges
+    selectEdges: this.selectEdges,
+    commandFinished: this.commandFinished
   })
 }
 

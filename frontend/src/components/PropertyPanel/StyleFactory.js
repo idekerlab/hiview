@@ -15,8 +15,6 @@ const BASE_STYLE = {
       'width': 40,
       'height': 15,
       'shape': 'roundrectangle',
-      // 'border-width': 1,
-      // 'border-color': '#EEEEEE',
       'text-valign': 'center',
       'text-halign': 'center',
       'color': '#FFFFFF',
@@ -55,14 +53,10 @@ const BASE_STYLE = {
       'width': 1,
     },
   },
-  dark: {
-    "selector": ".dark",
-    "css": {
-      "background-color": "black",
-      "line-color": "#777777",
-      color: "black",
-      opacity: 0.2,
-      width: 0.5
+  hidden: {
+    selector: '.hidden',
+    css: {
+      display: 'none'
     },
   }
 }
@@ -116,6 +110,6 @@ export const createStyle = originalNetwork => {
   return {
     'style': [
       BASE_STYLE.node, BASE_STYLE.nodeSelected,
-      edgeStyle, BASE_STYLE.edgeSelected, BASE_STYLE.dark],
+      edgeStyle, BASE_STYLE.edgeSelected, BASE_STYLE.hidden],
   }
 }

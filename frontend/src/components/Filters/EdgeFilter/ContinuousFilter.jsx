@@ -9,7 +9,6 @@ import {FormControlLabel} from 'material-ui/Form';
 
 const SliderWithTooltip = createSliderWithTooltip(Slider)
 
-
 const sliderRowStyle = {
   padding: '1em',
   width: '100%',
@@ -39,24 +38,24 @@ class ContinuousFilter extends Component {
   }
 
   onAfterChange= value => {
-
-    console.log(value)
-
-
     this.props.commandActions.filterEdges({
       options: {
         type: 'numeric',
-        range: '[RF_score > ' + value + ']'
+        range: '[' + this.props.label + ' >= ' + value + ']'
       }
     })
   }
 
   filterSelected = value => {
-    console.log("SELECTED!!!")
     const currentValue = this.state.enabled
     this.setState({enabled: !currentValue});
-    console.log(this.state.value)
 
+  }
+
+  componentDidUpdate() {
+  }
+
+  componentWillReceiveProps(nextProps) {
   }
 
   render() {
@@ -76,7 +75,6 @@ class ContinuousFilter extends Component {
         />
         <SliderWithTooltip
           style={{width: '65%'}}
-          // onChange={this.onSliderChange}
           disabled={!this.state.enabled}
           defaultValue={this.props.value}
           min={this.props.min}

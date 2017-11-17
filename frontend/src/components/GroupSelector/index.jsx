@@ -69,8 +69,9 @@ class GroupSelector extends Component {
     }
   }
 
-  handleToggle = value => () => {
+  handleToggle = value => event => {
 
+    const checked = event.target.checked
     const geneIds = this.props.groups[value]
     if(geneIds === undefined || geneIds.length === 0) {
       return
@@ -81,7 +82,11 @@ class GroupSelector extends Component {
 
 
     const selectedColor = colorMap(Object.keys(this.props.groups).indexOf(value))
-    this.props.commandActions.selectNodes({idList: geneIds, selectedColor: selectedColor})
+    if(checked) {
+      this.props.commandActions.selectNodes({idList: geneIds, selectedColor: selectedColor})
+    } else {
+      this.props.commandActions.unselectNodes({idList: geneIds})
+    }
   };
 
   render() {

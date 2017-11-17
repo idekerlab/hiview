@@ -86,6 +86,10 @@ const createFilter = network => {
 
   const filters = []
 
+  const edges = network.elements.edges
+  let edgeCount = edges.length
+
+
   // 1. Extract props from network data
   const edgeTypes = {}
   let mainEdgeType = network.data[MAIN_EDGE_TAG].replace(PATTERN, '_')
@@ -111,9 +115,27 @@ const createFilter = network => {
     }
   }
 
+
   for (let [key, value] of Object.entries(edgeTypes)) {
     if (value.type === 'numeric') {
       const isPrimary = (mainEdgeType === key)
+
+      let th = null
+      if(isPrimary) {
+        // Find best threshold
+        let values = new Array(edgeCount)
+        while(edgeCount--) {
+          const edge = edges[edgeCount]
+          values[edgeCount] = edge.data[key]
+        }
+
+        values.sort()
+        const thPosition = parseInt(edges.length * 0.9, 10)
+        th = values[thPosition]
+      }
+
+
+      console.log("TH ===============> " + th)
 
       filters.push({
         attributeName: key,
@@ -122,7 +144,8 @@ const createFilter = network => {
         value: value.min,
         isPrimary: isPrimary,
         enabled: isPrimary,
-        type: 'continuous'
+        type: 'continuous',
+        threshold: th
       })
     } else if (value.type === 'boolean') {
       filters.push({

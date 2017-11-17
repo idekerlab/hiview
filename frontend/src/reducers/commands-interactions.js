@@ -18,4 +18,5 @@ export default handleActions({
     command: 'filter',
     parameters: action.payload
   }),
+  CLEAR_COMMAND: (state, action) => (defaultState),
 }, defaultState)

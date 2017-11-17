@@ -166,8 +166,10 @@ class TermDetailsPanel extends Component {
           subnet={interactions}
           selectedTerm={this.props.currentProperty.id}
           handleClose={this.props.handleClose}
-          // commandActions={this.props.interactionsCommandActions}
+
+          commandActions={this.props.interactionsCommandActions}
           commands={this.props.interactionsCommands}
+
           loading={raw.loading}
 
           selection={this.props.selection}
@@ -190,6 +192,7 @@ class TermDetailsPanel extends Component {
         <EdgeFilter
           filters={raw.filters}
           commandActions={this.props.interactionsCommandActions}
+          commands={this.props.interactionsCommands}
           filtersActions={this.props.filtersActions}
         />
 

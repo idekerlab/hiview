@@ -124,11 +124,13 @@ class EdgeFilter extends Component {
               label={primaryFilter.attributeName}
               min={Number(primaryFilter.min)}
               max={Number(primaryFilter.max)}
-              value={Number(primaryFilter.max)}
+              value={primaryFilter.threshold}
               enabled={primaryFilter.enabled}
               step={0.001}
               filtersActions={this.props.filtersActions}
               commandActions={this.props.commandActions}
+              commands={this.props.commands}
+              isPrimary={true}
             />
           </ListItem>
 
