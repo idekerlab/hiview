@@ -189,12 +189,12 @@ class TermDetailsPanel extends Component {
           commandActions={this.props.interactionsCommandActions}
         />
 
-        <EdgeFilter
-          filters={raw.filters}
-          commandActions={this.props.interactionsCommandActions}
-          commands={this.props.interactionsCommands}
-          filtersActions={this.props.filtersActions}
-        />
+        {/*<EdgeFilter*/}
+          {/*filters={raw.filters}*/}
+          {/*commandActions={this.props.interactionsCommandActions}*/}
+          {/*commands={this.props.interactionsCommands}*/}
+          {/*filtersActions={this.props.filtersActions}*/}
+        {/*/>*/}
 
 
         <div>

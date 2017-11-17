@@ -31,32 +31,24 @@ const styles = theme => ({
   listSection: {
     background: 'inherit',
   },
-  orangeAvatar: {
-    margin: 0,
-    color: '#fff',
-    height: 10,
-    width: 10,
-    backgroundColor: deepOrange[500],
-  },
 });
 
 const baseStyle = {
   width: '100%',
-  padding: '1em',
-  color: '#333333'
+  color: '#333333',
+  margin: 0,
 }
 
 const titleStyle = {
   color: '#111111',
-  fontWeight: 400
+  fontWeight: 400,
+  paddingLeft: '1em'
 }
 
 class GroupSelector extends Component {
 
 
   handleChange = name => event => {
-
-
 
     const checked = event.target.checked
     const toBeSelected = this.props.groups[name]
@@ -76,7 +68,6 @@ class GroupSelector extends Component {
     if(geneIds === undefined || geneIds.length === 0) {
       return
     }
-
 
     console.log(geneIds)
 

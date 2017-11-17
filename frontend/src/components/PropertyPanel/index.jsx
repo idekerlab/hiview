@@ -64,25 +64,26 @@ class PropertyPanel extends Component {
 
   render() {
 
-    const propType = this.props.currentProperty.propType
+    // Width of this UI panel
+    const w = this.getWidth()
 
+    const propType = this.props.currentProperty.propType
+    const label = this.props.currentProperty.data.Label
 
     const drawerStyle = {
       display: 'flex',
       flexDirection: 'column',
-      maxWidth: MAX_WIDTH
+      maxWidth: MAX_WIDTH,
     }
 
     const closeIconStyle = {
       marginLeft: '0.7em',
       alignSelf: 'center',
+      color: '#777777'
     }
 
-    const barColor = (propType === PANEL_TYPES.GENE) ? 'orange' : '#888888'
-    const barTitle = (propType === PANEL_TYPES.GENE) ? 'Gene Details' : 'Term Details'
-    console.log(propType)
-    console.log(PANEL_TYPES.GENE)
-    console.log(barColor)
+    const barColor = (propType === PANEL_TYPES.GENE) ? 'orange' : '#FAFAFA'
+    const barTitle = label
 
     const closeIconPanelStyle = {
       display: 'inline-flex',
@@ -94,19 +95,17 @@ class PropertyPanel extends Component {
     }
 
     const drawerContentsStyle = {
-      width: '100%',
+      width: w,
       height: '100%',
     }
 
     const titleStyle = {
-      color: 'white',
-      fontSize: '1.5em',
+      color: '#333333',
+      fontSize: '1.3em',
       fontWeight: 500,
-      textAlign: '1em',
-      marginLeft: '1em'
+      paddingLeft: '0.8em',
     }
 
-    const w = this.getWidth()
 
     return (
       <Drawer
@@ -121,7 +120,6 @@ class PropertyPanel extends Component {
             <CloseIcon
               style={closeIconStyle}
               onClick={this.handleClose}
-              color={'white'}
             />
             <div style={titleStyle}>{barTitle}</div>
           </div>

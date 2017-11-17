@@ -9,10 +9,10 @@ const legendPanelStyle = {
   color: '#555555',
   fontFamily: 'Roboto',
   background: 'white',
-  padding: '0.8em'
+  padding: 0
 }
 
-const BAR_HEIGHT = 20
+const BAR_HEIGHT = 18
 
 
 class LegendPanel extends Component {
@@ -23,9 +23,10 @@ class LegendPanel extends Component {
     const parentWidth = this.container.parentNode.clientWidth
 
 
+
     const svg = d3Selection
       .select(svgLegend)
-      .attr('width', parentWidth)
+      .attr('width', parentWidth* 0.9)
       .attr('height', BAR_HEIGHT)
       .append("g")
 
@@ -43,7 +44,8 @@ class LegendPanel extends Component {
       })
       .attr('y', 0)
       .attr('height', BAR_HEIGHT)
-      .attr('width', 1)
+      .attr('width', 2)
+      .attr('stroke', 0)
       .style('fill', function (d, i) {
         return colorScale(d);
       })
@@ -57,20 +59,23 @@ class LegendPanel extends Component {
     let min = 0
     let max = 1
     if(minRaw !== undefined) {
-      min = Number(minRaw).toFixed(4)
+      min = Number(minRaw).toFixed(3)
     }
 
     if(minRaw !== undefined) {
-      max = Number(maxRaw).toFixed(4)
+      max = Number(maxRaw).toFixed(3)
     }
 
     return (
       <div ref={container=> this.container = container} style={legendPanelStyle}>
-        <svg ref={legend => this.legend = legend}></svg>
 
         <div style={minMaxStyle}>
-          <div style={minStyle}>{min}</div>
           <div style={titleStyle}>Similarity Score</div>
+        </div>
+
+        <div style={barStyle}>
+          <div style={minStyle}>{min}</div>
+          <svg ref={legend => this.legend = legend}></svg>
           <div style={maxStyle}>{max}</div>
         </div>
       </div>
@@ -78,30 +83,43 @@ class LegendPanel extends Component {
   }
 }
 
+const barStyle = {
+  display: 'inline-flex',
+  width: '100%',
+  color: '#333333',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontSize: '0.5em'
+
+
+}
+
+
 const minMaxStyle = {
   display: 'inline-flex',
   width: '100%',
-  marginTop: '0.3em',
-  color: '#666666',
+  alignItems: 'center',
+  color: '#333333',
+  justifyContent: 'center'
 }
 
 const minStyle = {
-  marginRight: 'auto'
+  paddingRight: '0.5em'
 
 }
 
 const maxStyle = {
-  marginLeft: 'auto'
+  paddingLeft: '0.5em'
 }
 
 const titleStyle = {
-  color: '#777777',
-  fontFace: 'Roboto',
-  fontSize: '1.2em',
-  fontWeight: 500,
-  textAlign: 'center'
-}
 
+  color: '#444444',
+  fontFace: 'Roboto',
+  fontSize: '1em',
+  fontWeight: 500,
+  padding: '0.3em'
+}
 
 
 export default LegendPanel
