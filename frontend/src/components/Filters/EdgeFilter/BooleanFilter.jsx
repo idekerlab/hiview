@@ -34,6 +34,7 @@ class BooleanFilter extends Component {
           style={{width: '95%'}}
           control={
             <Checkbox
+              style={{width: '1em', height: '1em'}}
               checked={this.props.enabled}
               onChange={this.filterSelected}
               value={this.props.label}

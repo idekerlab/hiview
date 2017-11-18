@@ -63,9 +63,11 @@ class ContinuousFilter extends Component {
 
       <div style={sliderRowStyle}>
         <FormControlLabel
-          style={{width: '25%'}}
+          style={{width: '40%'}}
           control={
             <Checkbox
+              style={{width: '1em', height: '1em'}}
+
               checked={this.state.enabled}
               onChange={this.filterSelected}
               value={this.props.label}
@@ -74,7 +76,7 @@ class ContinuousFilter extends Component {
           label={this.props.label}
         />
         <SliderWithTooltip
-          style={{width: '65%'}}
+          style={{width: '58%'}}
           disabled={!this.state.enabled}
           defaultValue={this.props.value}
           min={this.props.min}

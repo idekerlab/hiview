@@ -38,8 +38,6 @@ const styles = theme => ({
   }
 });
 
-const baseStyle = {
-}
 
 const titleStyle = {
   color: '#111111',

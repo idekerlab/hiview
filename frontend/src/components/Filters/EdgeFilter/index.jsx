@@ -30,6 +30,11 @@ const styles = theme => ({
     position: 'relative',
     overflow: 'auto',
   },
+  listItemLarge: {
+    height: '1.3em',
+    margin: 0,
+    padding: '0.3em'
+  },
   listItem: {
     height: '1em',
     margin: 0,
@@ -59,16 +64,8 @@ class EdgeFilter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: 50,
       open: true
-    };
-  }
-
-  onSliderChange = (value) => {
-    log(value);
-    this.setState({
-      value,
-    });
+    }
   }
 
   onAfterChange = (value) => {
@@ -80,10 +77,12 @@ class EdgeFilter extends Component {
     this.setState({[name]: event.target.checked});
   }
 
-  handleClick() {
+  handleClick = (event) => {
+
+    const isOpen = this.state.open
 
     this.setState({
-      open: !this.state.open,
+      open: !isOpen
     });
   }
 
@@ -116,7 +115,7 @@ class EdgeFilter extends Component {
     return (
       <div className={classes.root}>
         <List>
-          <ListItem className={classes.listItem}>
+          <ListItem className={classes.listItemLarge}>
             <ContinuousFilter
               key={primaryFilter.attributeName}
               label={primaryFilter.attributeName}
@@ -133,6 +132,7 @@ class EdgeFilter extends Component {
           </ListItem>
 
           <ListItem
+            className={classes.listItemLarge}
             button
             onClick={this.handleClick}
             key={'parent'}
@@ -140,7 +140,7 @@ class EdgeFilter extends Component {
             <ListItemIcon>
               <EqualizerIcon/>
             </ListItemIcon>
-            <ListItemText inset primary="Edge Filters"/>
+            <ListItemText inset primary="Other Edge Filters"/>
             {this.state.open ? <ExpandLess/> : <ExpandMore/>}
           </ListItem>
 

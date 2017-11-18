@@ -163,8 +163,9 @@ class TermDetailsPanel extends Component {
 
     const filterPanelStyle = {
       display: 'inline-flex',
-      maxHeight: '22em',
-      width: '100%'
+      maxHeight: '17em',
+      width: '100%',
+      paddingTop: '1em'
     }
 
     return (
@@ -191,18 +192,21 @@ class TermDetailsPanel extends Component {
           networkProps={networkProps}
         />
 
+        <LayoutSelector />
+
         <div style={filterPanelStyle}>
           <GroupSelector
             groups={raw.groups}
             commandActions={this.props.interactionsCommandActions}
           />
 
-            <EdgeFilter
-              filters={raw.filters}
-              commandActions={this.props.interactionsCommandActions}
-              commands={this.props.interactionsCommands}
-              filtersActions={this.props.filtersActions}
-            />
+
+          <EdgeFilter
+            filters={raw.filters}
+            commandActions={this.props.interactionsCommandActions}
+            commands={this.props.interactionsCommands}
+            filtersActions={this.props.filtersActions}
+          />
         </div>
 
         <div>

@@ -12,7 +12,7 @@ const PATTERN = /[ -]/g
 // Style of this component's area
 const style = {
   width: '100%',
-  height: '40em',
+  height: '34em',
   background: '#000000'
 }
 

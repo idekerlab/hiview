@@ -23,18 +23,26 @@ import Select from 'material-ui/Select';
 
 
 import Button from 'material-ui/Button';
+import ApplyIcon from 'material-ui-icons/Refresh';
+
 
 
 // Base style
 const styles = theme => ({
   root: {
     width: '100%',
-    height: '3em',
-    color: '#333333'
+    color: '#333333',
+    display: 'inline-flex',
   },
   formControl: {
-    margin: theme.spacing.unit,
+    // margin: theme.spacing.unit,
+    width: '70%',
+    padding: '1em'
   },
+  button: {
+    margin: theme.spacing.unit,
+    height: '1em'
+  }
 })
 
 
@@ -53,15 +61,19 @@ class LayoutSelector extends Component {
     };
   }
 
+  handleChange = name => event => {
+    this.setState({ [name]: event.target.value });
+  };
+
   render() {
     const { classes } = this.props
 
     return(
       <div className={classes.root}>
         <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="age-simple">Layout Algorithm</InputLabel>
           <Select
             value={this.state.layout}
+            onChange={this.handleChange('layout')}
             autoWidth
           >
             <MenuItem value={10}>COSE</MenuItem>
@@ -69,8 +81,13 @@ class LayoutSelector extends Component {
             <MenuItem value={30}>Cocentric</MenuItem>
             <MenuItem value={40}>Preset</MenuItem>
           </Select>
-          <FormHelperText>Auto width</FormHelperText>
+          <FormHelperText>Select a layout algorithm</FormHelperText>
         </FormControl>
+
+        <Button className={classes.button} raised color='primary'>
+          Apply
+          <ApplyIcon/>
+        </Button>
       </div>
     )
   }
