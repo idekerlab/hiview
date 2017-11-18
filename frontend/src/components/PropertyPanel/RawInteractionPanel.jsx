@@ -6,12 +6,13 @@ import * as d3Interpolate from 'd3-interpolate'
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
 import * as d3Scale from 'd3-scale'
 
+
 const PATTERN = /[ -]/g
 
 // Style of this component's area
 const style = {
   width: '100%',
-  height: '45em',
+  height: '40em',
   background: '#000000'
 }
 

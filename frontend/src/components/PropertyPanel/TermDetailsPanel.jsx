@@ -21,6 +21,7 @@ import GroupSelector from '../GroupSelector'
 import CirclePacking from "../CirclePacking/index";
 
 
+import LayoutSelector from '../LayoutSelector'
 
 
 class TermDetailsPanel extends Component {
@@ -160,6 +161,12 @@ class TermDetailsPanel extends Component {
       visualStyle.name = 'defaultStyle'
     }
 
+    const filterPanelStyle = {
+      display: 'inline-flex',
+      maxHeight: '22em',
+      width: '100%'
+    }
+
     return (
       <div>
         <RawInteractionPanel
@@ -184,18 +191,19 @@ class TermDetailsPanel extends Component {
           networkProps={networkProps}
         />
 
-        <GroupSelector
-          groups={raw.groups}
-          commandActions={this.props.interactionsCommandActions}
-        />
+        <div style={filterPanelStyle}>
+          <GroupSelector
+            groups={raw.groups}
+            commandActions={this.props.interactionsCommandActions}
+          />
 
-        {/*<EdgeFilter*/}
-          {/*filters={raw.filters}*/}
-          {/*commandActions={this.props.interactionsCommandActions}*/}
-          {/*commands={this.props.interactionsCommands}*/}
-          {/*filtersActions={this.props.filtersActions}*/}
-        {/*/>*/}
-
+            <EdgeFilter
+              filters={raw.filters}
+              commandActions={this.props.interactionsCommandActions}
+              commands={this.props.interactionsCommands}
+              filtersActions={this.props.filtersActions}
+            />
+        </div>
 
         <div>
           <Tabs value={this.state.selectedTab} onChange={this.handleChange}>

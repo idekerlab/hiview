@@ -21,27 +21,30 @@ const colorMap = d3Scale.scaleOrdinal(d3Scale.schemeCategory20)
 
 const styles = theme => ({
   root: {
-    width: '100%',
-    maxWidth: 300,
+    width: '30%',
     background: theme.palette.background.paper,
-    position: 'relative',
     overflow: 'auto',
-    maxHeight: 200,
+    minWidth: '14em',
+    color: '#333333',
+    position: 'relative',
   },
   listSection: {
     background: 'inherit',
   },
+  listItem: {
+    height: '1.3em',
+    margin: 0,
+    padding: '0.2em'
+  }
 });
 
 const baseStyle = {
-  width: '100%',
-  color: '#333333',
-  margin: 0,
 }
 
 const titleStyle = {
   color: '#111111',
   fontWeight: 400,
+  fontSize: '1em',
   paddingLeft: '1em'
 }
 
@@ -49,7 +52,6 @@ class GroupSelector extends Component {
 
 
   handleChange = name => event => {
-
     const checked = event.target.checked
     const toBeSelected = this.props.groups[name]
 
@@ -69,8 +71,6 @@ class GroupSelector extends Component {
       return
     }
 
-    console.log(geneIds)
-
 
     const selectedColor = colorMap(Object.keys(this.props.groups).indexOf(value))
     if(checked) {
@@ -88,19 +88,22 @@ class GroupSelector extends Component {
     let i = 0
 
     return(
-      <div style={baseStyle}>
+      <div className={classes.root}>
         <div style={titleStyle}>
           Assigned gene selector:
         </div>
-        <List className={classes.root}>
+
+        <List>
           {
             groupNames.map(group => {
 
               const color = colorMap(i++)
               const avatarStyle = {
-                margin: 0,
-                color: '#333333',
+                // margin: 0,
+                color: '#FFFFFF',
                 backgroundColor: color,
+                height: '1.2em',
+                width: '1.2em'
               }
 
               return (
@@ -116,11 +119,9 @@ class GroupSelector extends Component {
                     tabIndex={-1}
                     disableRipple
                   />
+                  <Avatar style={avatarStyle}>{this.props.groups[group].length}</Avatar>
                   <ListItemText primary={group} />
 
-                  <ListItemSecondaryAction>
-                    <Avatar style={avatarStyle} />
-                  </ListItemSecondaryAction>
                 </ListItem>
               )
             })

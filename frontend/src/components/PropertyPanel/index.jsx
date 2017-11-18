@@ -90,7 +90,7 @@ class PropertyPanel extends Component {
       justifyContent: 'flex-start',
       alignItems: 'center',
       width: '100%',
-      height: '3em',
+      height: '2.5em',
       backgroundColor: barColor
     }
 

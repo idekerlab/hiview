@@ -3,22 +3,18 @@ import React, {Component} from 'react'
 import Slider, {createSliderWithTooltip} from 'rc-slider'
 import 'rc-slider/assets/index.css'
 
-import Checkbox from 'material-ui/Checkbox';
-import {FormGroup, FormControlLabel} from 'material-ui/Form';
-
-import ListSubheader from 'material-ui/List/ListSubheader';
 import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
 import Collapse from 'material-ui/transitions/Collapse';
 
 import ExpandLess from 'material-ui-icons/ExpandLess';
 import ExpandMore from 'material-ui-icons/ExpandMore';
-
 import FilterIcon from 'material-ui-icons/Filter';
 import EqualizerIcon from 'material-ui-icons/Equalizer';
 
-
 import ContinuousFilter from './ContinuousFilter'
 import BooleanFilter from './BooleanFilter'
+
+import { withStyles } from 'material-ui/styles';
 
 
 const FILTER_TYPES = {
@@ -27,13 +23,20 @@ const FILTER_TYPES = {
 }
 
 
-const filterPanelStyle = {
-  width: '100%',
-  padding: '1em',
-  borderTop: '1px #777777 Solid',
-  borderBottom: '1px #777777 Solid'
+const styles = theme => ({
+  root: {
+    width: '100%',
+    background: theme.palette.background.paper,
+    position: 'relative',
+    overflow: 'auto',
+  },
+  listItem: {
+    height: '1em',
+    margin: 0,
+    padding: '0.2em'
+  }
+});
 
-}
 
 const log = (value) => {
   console.log(value)
@@ -86,8 +89,8 @@ class EdgeFilter extends Component {
 
   render() {
 
+    const { classes } = this.props
     const filters = this.props.filters
-
 
     if (filters === null || filters.length === 0) {
       return (<div></div>)
@@ -111,14 +114,9 @@ class EdgeFilter extends Component {
 
 
     return (
-      <div style={filterPanelStyle}>
-
+      <div className={classes.root}>
         <List>
-
-          <ListItem>
-            <ListItemIcon>
-              <FilterIcon/>
-            </ListItemIcon>
+          <ListItem className={classes.listItem}>
             <ContinuousFilter
               key={primaryFilter.attributeName}
               label={primaryFilter.attributeName}
@@ -151,6 +149,7 @@ class EdgeFilter extends Component {
             {
               sortedNames.map(filterName => (
                 <ListItem
+                  className={classes.listItem}
                   key={filterName}
                 >
                   {this.getFilter(filterMap[filterName])}
@@ -198,4 +197,4 @@ class EdgeFilter extends Component {
   }
 }
 
-export default EdgeFilter
+export default withStyles(styles)(EdgeFilter);
