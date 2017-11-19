@@ -192,7 +192,9 @@ class TermDetailsPanel extends Component {
           networkProps={networkProps}
         />
 
-        <LayoutSelector />
+        <LayoutSelector
+          commandActions={this.props.interactionsCommandActions}
+        />
 
         <div style={filterPanelStyle}>
           <GroupSelector

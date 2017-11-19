@@ -17,7 +17,7 @@ const BASE_STYLE = {
       'shape': 'roundrectangle',
       'text-valign': 'center',
       'text-halign': 'center',
-      'color': '#FFFFFF',
+      'color': '#EEEEEE',
       'background-color': '#000000',
       'font-size': 9,
       'label': 'data(name)',
@@ -26,14 +26,11 @@ const BASE_STYLE = {
   nodeSelected: {
     'selector': 'node:selected',
     'css': {
-      'shape': 'ellipse',
-      'width': 40,
-      'height': 40,
-      'text-valign': 'bottom',
-      'text-halign': 'left',
-      'font-size': 18,
+      'width': 64,
+      'height': 30,
+      'font-size': 14,
+      color: '#FFFFFF',
       'background-color': '#FFFFFF',
-      'color': '#dbfffc',
     },
   },
   edge: {
@@ -50,13 +47,14 @@ const BASE_STYLE = {
     'selector': 'edge:selected',
     'css': {
       'line-color': 'rgb(255,0,0)',
-      'width': 1,
+      'width': 5,
     },
   },
   hidden: {
     selector: '.hidden',
     css: {
-      display: 'none'
+      // display: 'none',
+      visibility: 'hidden'
     },
   }
 }
@@ -89,7 +87,7 @@ export const createStyle = originalNetwork => {
 
   const edgeStyle = BASE_STYLE.edge
 
-  edgeStyle.css['width'] = `mapData(RF_score,${similarityMin},${similarityMax}, 1, 5)`
+  edgeStyle.css['width'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.3, 5)`
   edgeStyle.css['line-color'] = (d) => {
     if (d.data('RF_score') === undefined) {
       return '#aaaaaa'
@@ -98,7 +96,7 @@ export const createStyle = originalNetwork => {
     }
   }
 
-  edgeStyle.css['opacity'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.4, 0.9)`
+  edgeStyle.css['opacity'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.3, 0.9)`
   edgeStyle.css['display'] = (d) => {
 
     if (d.data('RF_score') === undefined) {

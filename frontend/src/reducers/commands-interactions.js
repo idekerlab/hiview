@@ -18,5 +18,9 @@ export default handleActions({
     command: 'filter',
     parameters: action.payload
   }),
+  APPLY_LAYOUT: (state, action) => ({
+    command: 'layout',
+    parameters: action.payload
+  }),
   CLEAR_COMMAND: (state, action) => (defaultState),
 }, defaultState)

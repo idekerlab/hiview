@@ -16,7 +16,7 @@ import Avatar from 'material-ui/Avatar'
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
 import * as d3Scale from 'd3-scale'
 
-const colorMap = d3Scale.scaleOrdinal(d3Scale.schemeCategory20)
+const colorMap = d3Scale.scaleOrdinal(d3Scale.schemeCategory20c)
 
 
 const styles = theme => ({
@@ -32,7 +32,7 @@ const styles = theme => ({
     background: 'inherit',
   },
   listItem: {
-    height: '1.3em',
+    height: '1.8em',
     margin: 0,
     padding: '0.2em'
   }

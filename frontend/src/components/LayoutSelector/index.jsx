@@ -48,8 +48,11 @@ const styles = theme => ({
 
 const LAYOUTS = {
   PRESET: 'preset',
-  COSE: 'cose',
-  GRID: 'grid'
+  COSE: 'cose-bilkent',
+  GRID: 'grid',
+  CIRCLE: 'circle',
+  COCENTRIC: 'concentric',
+  BREADTHFIRST: 'breadthfirst'
 }
 
 
@@ -63,7 +66,16 @@ class LayoutSelector extends Component {
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
-  };
+  }
+
+  handleClick = event => {
+    const layoutName = this.state.layout
+    this.props.commandActions.applyLayout({
+      name: layoutName,
+      options: {}
+
+    })
+  }
 
   render() {
     const { classes } = this.props
@@ -76,15 +88,21 @@ class LayoutSelector extends Component {
             onChange={this.handleChange('layout')}
             autoWidth
           >
-            <MenuItem value={10}>COSE</MenuItem>
-            <MenuItem value={20}>Circular</MenuItem>
-            <MenuItem value={30}>Cocentric</MenuItem>
-            <MenuItem value={40}>Preset</MenuItem>
+            <MenuItem value={LAYOUTS.COSE}>COSE (Force-Directed Layout)</MenuItem>
+            <MenuItem value={LAYOUTS.GRID}>Grid</MenuItem>
+            <MenuItem value={LAYOUTS.CIRCLE}>Circle</MenuItem>
+            <MenuItem value={LAYOUTS.COCENTRIC}>Cocentric</MenuItem>
+            <MenuItem value={LAYOUTS.BREADTHFIRST}>Breadthfirst</MenuItem>
           </Select>
           <FormHelperText>Select a layout algorithm</FormHelperText>
         </FormControl>
 
-        <Button className={classes.button} raised color='primary'>
+        <Button
+          className={classes.button}
+          raised
+          color='primary'
+          onClick={this.handleClick}
+        >
           Apply
           <ApplyIcon/>
         </Button>

@@ -20,10 +20,10 @@ const styles = theme => ({
 });
 
 const EXAMPLE_UUIDS = {
+  'Small hierarchy': 'a5a8e7db-ca94-11e7-9379-0660b7976219',
   'Large hierarchy': '7ae8907a-b395-11e7-b629-0660b7976219',
-  'Small hierarchy': 'f2847aa2-c0ed-11e7-a3af-0660b7976219',
-  'Small hierarchy (new)': 'dd5d6072-c4d2-11e7-9379-0660b7976219',
-  'Small hierarchy (new updated)': 'a5a8e7db-ca94-11e7-9379-0660b7976219'
+  // 'Small hierarchy': 'f2847aa2-c0ed-11e7-a3af-0660b7976219',
+  // 'Small hierarchy (new)': 'dd5d6072-c4d2-11e7-9379-0660b7976219',
 }
 
 
