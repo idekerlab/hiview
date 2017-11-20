@@ -1,56 +1,63 @@
-import React from 'react'
-import TitleBar from './TitleBar'
-import Divider from 'material-ui/Divider';
-
+import React, {Component} from 'react'
 import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List'
 import OpenIcon from 'material-ui-icons/OpenInNew'
+import InfoIcon from 'material-ui-icons/InfoOutline'
 
 const descriptionStyle = {
   color: '#555555',
-  fontFamily: 'Roboto'
+  fontFamily: 'Roboto',
 }
 
-const SubsystemPanel = props => {
+const GO_LINK = 'http://amigo.geneontology.org/amigo/term/'
 
 
-  const termData = props.selectedTerm.data
+class SubsystemPanel extends Component {
 
-  const keys = Object.keys(termData)
 
-  const filtered = keys.filter(key => {
-    return (key.startsWith('Display'))
-  })
+  render() {
+    const termData = this.props.selectedTerm.data
+    const keys = Object.keys(termData)
+    const filtered = keys.filter(key => ( key.startsWith('Display')))
 
-  return (
-    <div style={descriptionStyle}>
-      <Divider/>
+    return (
+      <div style={descriptionStyle}>
 
-      <List>
-        {
-          filtered.map((key, i) =>
+        <List>
+          {
+            filtered.map((key, i) => {
 
-            (<ListItem
-              button
-              onClick={handleClick(key)}
-              key={i}
-            >
-              <ListItemIcon>
-                <OpenIcon/>
-              </ListItemIcon>
-              <ListItemText
-                primary={termData[key]}
-                secondary={key.replace('Display_', '')}
-              />
-            </ListItem>))
-        }
-      </List>
-    </div>
-  )
+              const label = key.replace('Display_', '').replace(/_/g, ' ')
+              const value = termData[key]
+
+              return (
+                <ListItem
+                  button
+                  onClick={this.handleClick(value)}
+                  key={i}
+                >
+                  <ListItemIcon>
+                    {value.toString().startsWith('GO:') ? <OpenIcon/>: <InfoIcon/>}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={value}
+                    secondary={label}
+                  />
+                </ListItem>
+              )
+            })
+          }
+        </List>
+      </div>
+    )
+  }
+
+  handleClick = value => () => {
+
+    console.log(value)
+    window.open(GO_LINK + value.toString())
+  }
 }
 
-const handleClick = (key) => {
-
-}
 
 
 export default SubsystemPanel

@@ -41,7 +41,7 @@
   "dependencies": {
     "@blueprintjs/core": "^1.33.0",
     "cy-network-viewer": "^0.1.0",
-    "cytoscape": "^3.2.5",
+    "cytoscape": "^3.2.6",
     "cytoscapejs-renderer": "^0.1.0",
     "d3-array": "^1.2.1",
     "d3-color": "^1.0.3",
