@@ -147,6 +147,17 @@ class TermDetailsPanel extends Component {
       paddingTop: '1em'
     }
 
+
+
+    const uuid = this.props.datasource.get('uuid')
+    const url = this.props.cxtoolUrl+ uuid + '?server=test'
+    const network = this.props.network.get(url)
+
+    let networkData = {}
+    if(network !== undefined) {
+      networkData = network.data
+    }
+
     return (
       <div>
         <RawInteractionPanel
@@ -202,7 +213,8 @@ class TermDetailsPanel extends Component {
           this.state.selectedTab === 0 &&
           <TabContainer>
             <SubsystemPanel
-              networkData={interactions.data !== undefined ? interactions.data: {} }
+              selectedTerm={this.props.currentProperty}
+              networkData={networkData}
               title={title}
               description={'N/A'}
             />

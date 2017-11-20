@@ -10,6 +10,9 @@ import style from './style.css'
 
 import SimpleSearch from '../SimpleSearch'
 
+
+const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
+
 /*
   Main Ontology DAG viewer
 */
@@ -83,6 +86,8 @@ export default class NetworkViewer extends Component {
 
           selection={selection}
           selectionActions={selectionActions}
+
+          cxtoolUrl={CXTOOL_URL}
         />
 
         <Commands
@@ -107,6 +112,10 @@ export default class NetworkViewer extends Component {
 
           interactionStyle={interactionStyle}
           interactionStyleActions={interactionStyleActions}
+
+          datasource={this.props.datasource}
+          network={network}
+          cxtoolUrl={CXTOOL_URL}
         />
 
         <SimpleSearch

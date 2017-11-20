@@ -7,7 +7,6 @@ import {CircularProgress} from 'material-ui/Progress';
 import {Map} from 'immutable'
 
 const MYGENE_URL = 'http://mygene.info/v3'
-const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
 const NDEX_LINK_TAG = 'ndex_internalLink'
 
 const Viewer = CyNetworkViewer(SigmaRenderer)
@@ -105,7 +104,7 @@ class NetworkPanel extends Component {
 
     const linkId = linkEdntry.split('(')[1].replace(')', '')
 
-    const link = CXTOOL_URL + linkId + '?server=test'
+    const link = this.props.cxtoolUrl + linkId + '?server=test'
 
     window.setTimeout(() => {
       // Path finding
@@ -143,7 +142,7 @@ class NetworkPanel extends Component {
   componentWillMount() {
     // const url = this.props.trees[this.props.currentNetwork.id].url
     const uuid = this.props.datasource.get('uuid')
-    const url = CXTOOL_URL + uuid + '?server=test'
+    const url = this.props.cxtoolUrl+ uuid + '?server=test'
 
     this.setState({networkUrl: url})
     this.props.networkActions.fetchNetworkFromUrl(url)
@@ -154,7 +153,7 @@ class NetworkPanel extends Component {
     const uuid = this.props.datasource.get('uuid')
     const nextUuid = nextProps.datasource.get('uuid')
 
-    const url = CXTOOL_URL + uuid + '?server=test'
+    const url = this.props.cxtoolUrl + uuid + '?server=test'
     const network = this.props.network.get(url)
 
 
