@@ -1,5 +1,3 @@
-import config from '../assets/config.json'
-
 export const FETCH_PROPERTY = 'FETCH_PROPERTY'
 const fetchProperty = (id, url, propType) => {
   return {

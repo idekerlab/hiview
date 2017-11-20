@@ -8,13 +8,14 @@ const descriptionStyle = {
   fontFamily: 'Roboto'
 }
 
-const SubsystemPanel = props => (
-  <div>
-    <TitleBar {...props} />
-
-    <Divider />
-  </div>
-)
+const SubsystemPanel = props => {
+  return (
+    <div>
+      <TitleBar {...props} />
+      <Divider/>
+    </div>
+  )
+}
 
 
 export default SubsystemPanel

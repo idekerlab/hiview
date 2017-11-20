@@ -1,14 +1,12 @@
 import React, {Component} from 'react'
 import {browserHistory} from 'react-router'
 
-import ClosableAppBar from '../ClosableAppBar'
 import NetworkPanel from '../NetworkPanel'
 import PropertyPanel from '../PropertyPanel'
 import Errorbar from 'material-ui/Snackbar';
 
 import Commands from '../Commands'
 import style from './style.css'
-
 
 import SimpleSearch from '../SimpleSearch'
 
@@ -44,10 +42,9 @@ export default class NetworkViewer extends Component {
     const {
       networkActions,
       commands, commandActions,
-      events, eventActions, networkId, uiState, uiStateActions,
-      backgroundColor, vsActions, datasource, currentProperty, propertyActions,
-      searchActions, search, network, config, message, messageActions,
-      rawInteractionsActions, rawInteractions, selection, selectionActions,
+      events, eventActions, uiState, currentProperty, propertyActions,
+      search, network, config, messageActions,
+      rawInteractionsActions, selection, selectionActions,
       filters, filtersActions, interactionStyle, interactionStyleActions
 
     } = this.props
@@ -76,9 +73,6 @@ export default class NetworkViewer extends Component {
           network={network}
           search={search}
 
-          trees={config.get('trees').toJS()}
-          currentNetwork={this.props.currentNetwork.toJS()}
-
           messageActions={messageActions}
 
           rawInteractionsActions={rawInteractionsActions}
@@ -104,9 +98,6 @@ export default class NetworkViewer extends Component {
           interactionsCommandActions={this.props.interactionsCommandActions}
           events={events}
           currentProperty={currentProperty}
-          currentNetwork={this.props.currentNetwork.toJS()}
-          trees={config.get('trees').toJS()}
-          backendServices={config.get('backendServices').toJS()}
           rawInteractions={this.props.rawInteractions}
           rawInteractionsActions={this.props.rawInteractionsActions}
           selection={selection}

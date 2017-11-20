@@ -1,14 +1,12 @@
 import React, {Component} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
-import * as networkSourceActions from '../../reducers/currentnetwork'
 import * as commandActions from '../../actions/commands'
 import * as eventActions from '../../actions/cyjs'
 import * as uiStateActions from '../../actions/ui-state'
 import * as vsActions from '../../reducers/visualstyles'
 import * as currentVsActions from '../../reducers/currentvs'
 
-import * as currentNetworkActions from '../../reducers/currentnetwork'
 
 import NetworkViewer from '../../components/NetworkViewer'
 
@@ -80,7 +78,6 @@ class NetworkView extends Component {
 function mapStateToProps(state) {
 
   return {
-    'currentNetwork': state.app_manager.current_network,
     'currentProperty': state.app_manager.current_property,
     'search': state.app_manager.search,
     'commands': state.app_manager.commands,
@@ -123,15 +120,12 @@ function mapDispatchToProps(dispatch) {
     // ID Mapping
     'idmapActions': bindActionCreators(idmapActions, dispatch),
 
-    'networkSourceActions': bindActionCreators(networkSourceActions, dispatch),
     'commandActions': bindActionCreators(commandActions, dispatch),
     'interactionsCommandActions': bindActionCreators(interactionsCommandsActions, dispatch),
     'eventActions': bindActionCreators(eventActions, dispatch),
     'uiStateActions': bindActionCreators(uiStateActions, dispatch),
     'vsActions': bindActionCreators(vsActions, dispatch),
     'currentVsActions': bindActionCreators(currentVsActions, dispatch),
-
-    'currentNetworkActions': bindActionCreators(currentNetworkActions, dispatch),
 
     'propertyActions': bindActionCreators(propertyActions, dispatch),
     'searchActions': bindActionCreators(searchActions, dispatch),

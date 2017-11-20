@@ -64,32 +64,11 @@ class TermDetailsPanel extends Component {
 
 
   shouldComponentUpdate(nextProps, nextState) {
-    // const raw = this.props.rawInteractions;
-    // const newRaw = nextProps.rawInteractions;
-    //
-    // const filters = this.props.filters
-    // const newFilters = nextProps.filters
-    //
-    // console.log(this.props.filters)
-    // console.log(nextProps)
-    // if (raw === newRaw) {
-    //   console.log("NO need to up")
-    //
-    //   if(filters.size === 0 && newFilters.size !== 0) {
-    //     return true
-    //   } else {
-    //     return false
-    //   }
-    // }
-    //
-    console.log("up called")
     return true
-
   }
 
   setScore = (val) => {
     this.setState({scoreFilter: val})
-    console.log('New Score: ' + val)
 
     this.props.commandActions.filter({
       options: {
@@ -223,6 +202,7 @@ class TermDetailsPanel extends Component {
           this.state.selectedTab === 0 &&
           <TabContainer>
             <SubsystemPanel
+              networkData={interactions.data !== undefined ? interactions.data: {} }
               title={title}
               description={'N/A'}
             />

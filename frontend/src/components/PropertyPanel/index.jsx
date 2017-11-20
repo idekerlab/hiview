@@ -33,10 +33,8 @@ class PropertyPanel extends Component {
 
   componentWillReceiveProps(nextProps) {
 
-    console.log('PANEL PROP event------------------->')
     const selected = this.props.events.get('selected')
     const selectedNew = nextProps.events.get('selected')
-
     const currentProperty = this.props.currentProperty
     const newProperty = nextProps.currentProperty
 

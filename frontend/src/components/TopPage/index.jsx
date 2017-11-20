@@ -27,7 +27,7 @@ const TopPage = props => (
 
     <footer className={style.row3}>
       <a href='https://github.com/idekerlab/hiview' target='_blank'>
-        &copy; 2017 University of California, San Diego Trey Ideker Lab
+        &copy; 2017-2018 University of California, San Diego Trey Ideker Lab
       </a>
     </footer>
   </div>

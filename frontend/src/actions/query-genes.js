@@ -1,7 +1,5 @@
 import { createAction } from 'redux-actions'
 
-import config from '../assets/config.json'
-
 
 export const RUN_SIMULATION = 'RUN_SIMULATION'
 

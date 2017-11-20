@@ -150,18 +150,19 @@ class NetworkPanel extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(this.props)
 
-    const nextNet = nextProps.currentNetwork
-    const newUrl = nextProps.trees[nextNet.id].url
-    const network = this.props.network.get(newUrl)
+    const uuid = this.props.datasource.get('uuid')
+    const nextUuid = nextProps.datasource.get('uuid')
+
+    const url = CXTOOL_URL + uuid + '?server=test'
+    const network = this.props.network.get(url)
 
 
-    if (newUrl !== undefined && (network === undefined || network === null)) {
+    if (url !== undefined && (network === undefined || network === null)) {
 
 
       // Need to fetch network data
-      if (nextNet.id !== this.props.currentNetwork.id) {
+      if (nextUuid !== uuid) {
         this.props.networkActions.fetchNetworkFromUrl(newUrl)
       }
     } else {

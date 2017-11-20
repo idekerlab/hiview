@@ -174,7 +174,7 @@ class EdgeFilter extends Component {
           label={filter.attributeName}
           min={Number(filter.min)}
           max={Number(filter.max)}
-          value={filter.min}
+          value={Number(filter.min)}
           enabled={filter.enabled}
           step={0.001}
           filtersActions={this.props.filtersActions}
