@@ -6,6 +6,7 @@ import 'rc-slider/assets/index.css'
 import Checkbox from 'material-ui/Checkbox';
 import {FormControlLabel} from 'material-ui/Form';
 
+import BaseFilter from './BaseFilter'
 
 const SliderWithTooltip = createSliderWithTooltip(Slider)
 
@@ -17,25 +18,16 @@ const sliderRowStyle = {
   alignItems: 'center',
 }
 
-class ContinuousFilter extends Component {
+class ContinuousFilter extends BaseFilter {
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      value: 0,
-      enabled: props.enabled
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     value: 0,
+  //     enabled: props.enabled
+  //   };
+  // }
 
-  onSliderChange = value => {
-    this.setState({value});
-
-    this.props.filtersActions.setValue({
-      attributeName: this.props.label,
-      value
-    })
-    console.log(this.state.value)
-  }
 
   onAfterChange= value => {
     this.props.commandActions.filterEdges({
@@ -46,17 +38,11 @@ class ContinuousFilter extends Component {
     })
   }
 
-  filterSelected = value => {
-    const currentValue = this.state.enabled
-    this.setState({enabled: !currentValue});
+  // filterSelected = value => {
+  //   const currentValue = this.state.enabled
+  //   this.setState({enabled: !currentValue});
+  // }
 
-  }
-
-  componentDidUpdate() {
-  }
-
-  componentWillReceiveProps(nextProps) {
-  }
 
   render() {
     return (
@@ -66,18 +52,19 @@ class ContinuousFilter extends Component {
           style={{width: '40%'}}
           control={
             <Checkbox
-              style={{width: '1em', height: '1em'}}
-
-              checked={this.state.enabled}
+              disabled={this.state.disabled}
+              style={{width: '1em', height: '1em', color: this.state.labelColor}}
+              checked={this.state.checked}
               onChange={this.filterSelected}
               value={this.props.label}
             />
           }
           label={this.props.label}
         />
+
         <SliderWithTooltip
           style={{width: '58%'}}
-          disabled={!this.state.enabled}
+          disabled={!this.state.checked}
           defaultValue={this.props.value}
           min={this.props.min}
           max={this.props.max}
