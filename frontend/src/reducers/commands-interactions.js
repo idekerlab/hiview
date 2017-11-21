@@ -26,5 +26,9 @@ export default handleActions({
     command: 'expandEdges',
     parameters: action.payload
   }),
+  COLLAPSE_EDGES: (state, action) => ({
+    command: 'collapseEdges',
+    parameters: action.payload
+  }),
   CLEAR_COMMAND: (state, action) => (defaultState),
 }, defaultState)

@@ -4,12 +4,6 @@ import Slider, {createSliderWithTooltip} from 'rc-slider'
 import 'rc-slider/assets/index.css'
 
 import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
-import Collapse from 'material-ui/transitions/Collapse';
-
-import ExpandLess from 'material-ui-icons/ExpandLess';
-import ExpandMore from 'material-ui-icons/ExpandMore';
-import FilterIcon from 'material-ui-icons/Filter';
-import EqualizerIcon from 'material-ui-icons/Equalizer';
 
 import ContinuousFilter from './ContinuousFilter'
 import BooleanFilter from './BooleanFilter'
@@ -17,7 +11,7 @@ import BooleanFilter from './BooleanFilter'
 import { withStyles } from 'material-ui/styles';
 
 import * as d3Scale from 'd3-scale'
-const colorMap = d3Scale.scaleOrdinal(d3Scale.schemeCategory20)
+const colorMap = d3Scale.scaleOrdinal(d3Scale.schemeCategory10)
 
 
 const FILTER_TYPES = {
@@ -71,7 +65,7 @@ class EdgeFilter extends Component {
     super(props);
     this.state = {
       open: true,
-      selected: []
+      selected: new Array(5)
     }
   }
 
