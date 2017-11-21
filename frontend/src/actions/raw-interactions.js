@@ -134,7 +134,7 @@ const createFilter = network => {
         const thPosition = parseInt(edges.length * 0.9, 10)
 
         if(edges.length < MAX_EDGE) {
-          if(edge.length < 100) {
+          if(edges.length < 100) {
             th = value.min
           } else {
             th = values[thPosition]
