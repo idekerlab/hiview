@@ -35,7 +35,6 @@ class BaseFilter extends Component {
   }
 
 
-
   filterSelected = value => {
     const currentValue = this.state.checked
     const selectedItems = this.props.selected

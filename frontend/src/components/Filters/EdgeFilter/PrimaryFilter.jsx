@@ -41,6 +41,7 @@ class PrimaryFilter extends Component {
     this.props.commandActions.filterEdges({
       options: {
         type: 'numeric',
+        isPrimary: true,
         range: '[' + this.state.primaryFilter.attributeName + ' >= ' + value + ']',
       },
     })

@@ -20,28 +20,23 @@ const sliderRowStyle = {
 
 class ContinuousFilter extends BaseFilter {
 
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     value: 0,
-  //     enabled: props.enabled
-  //   };
-  // }
+  constructor(props) {
+    super(props);
+    this.state = {
+      sliderValue: this.props.value
+    };
+  }
 
 
   onAfterChange= value => {
     this.props.commandActions.filterEdges({
       options: {
         type: 'numeric',
+        isPrimary: this.props.isPrimary,
         range: '[' + this.props.label + ' >= ' + value + ']'
       }
     })
   }
-
-  // filterSelected = value => {
-  //   const currentValue = this.state.enabled
-  //   this.setState({enabled: !currentValue});
-  // }
 
 
   render() {
