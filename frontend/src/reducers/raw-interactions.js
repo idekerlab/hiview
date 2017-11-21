@@ -4,7 +4,8 @@ import {Map} from 'immutable'
 const defState = Map({
   loading: false,
   interactions: null,
-  filters: null
+  filters: null,
+  extraEdges: null
 })
 
 export default function networkState(state = defState, action) {
@@ -20,6 +21,7 @@ export default function networkState(state = defState, action) {
         .set('interactions', action.network)
         .set('filters', action.filters)
         .set('groups', action.groups)
+        .set('extraEdges', action.extraEdges)
     case SET_VALUE:
 
       const filters = state.get('filters')

@@ -16,13 +16,14 @@ const fetchNetwork = url => {
 
 
 export const RECEIVE_INTERACTIONS = 'RECEIVE_INTERACTIONS'
-const receiveNetwork = (url, network, filters, groups) => {
+const receiveNetwork = (url, network, filters, groups, extraEdges) => {
   return {
     type: RECEIVE_INTERACTIONS,
     url,
     network,
     filters,
-    groups
+    groups,
+    extraEdges
   }
 }
 
@@ -38,8 +39,9 @@ export const fetchInteractionsFromUrl = url => {
       .then(response => (response.json()))
       .then(network => (createFilter(network)))
       .then(netAndFilter => (createGroups(netAndFilter)))
+      .then(netAndFilter => (addExtraEdges(netAndFilter)))
       .then( netAndFilter =>
-        dispatch(receiveNetwork(url, netAndFilter[0], netAndFilter[1], netAndFilter[2]))
+        dispatch(receiveNetwork(url, netAndFilter[0], netAndFilter[1], netAndFilter[2], netAndFilter[3]))
       )
   }
 }
@@ -228,7 +230,9 @@ const addExtraEdges = netAndFilter => {
 
 
   }
-  return newEdges
+  netAndFilter.push(newEdges)
+
+  return netAndFilter
 
 }
 
