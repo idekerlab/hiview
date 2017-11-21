@@ -22,5 +22,9 @@ export default handleActions({
     command: 'layout',
     parameters: action.payload
   }),
+  EXPAND_EDGES: (state, action) => ({
+    command: 'expandEdges',
+    parameters: action.payload
+  }),
   CLEAR_COMMAND: (state, action) => (defaultState),
 }, defaultState)

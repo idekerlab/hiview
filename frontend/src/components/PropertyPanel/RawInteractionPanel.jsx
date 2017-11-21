@@ -43,7 +43,6 @@ class RawInteractionPanel extends Component {
     const filters = this.props.filters.toJS()
     const filterNames = Object.keys(filters)
 
-    console.log(filters)
     let primaryFilterName = ''
     filterNames.forEach(filterName => {
       if(filters[filterName].isPrimary) {
@@ -60,8 +59,6 @@ class RawInteractionPanel extends Component {
 
       const edgeData = edge.data
       const keys = Object.keys(edgeData)
-
-
 
       let primaryEdge = {}
 

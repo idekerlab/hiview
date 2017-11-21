@@ -176,10 +176,8 @@ const addExtraEdges = netAndFilter => {
 
   const network = netAndFilter[0]
   const filters = netAndFilter[1]
-
-
-
   const filterNames = Object.keys(filters)
+
 
   let primaryFilterName = ''
   filterNames.forEach(filterName => {
@@ -188,48 +186,47 @@ const addExtraEdges = netAndFilter => {
     }
   })
 
-  const edges = network.elements.edges
   const newEdges = []
-
-  let i = edges.length
-  while (i--) {
-    const edge = edges[i]
-
-    const edgeData = edge.data
-    const keys = Object.keys(edgeData)
-
-    let j = keys.length
-    while (j--) {
-      const key = keys[j]
-      if (key === 'id' || key === 'source' || key === 'target') {
-        continue
-      }
-
-      const value = edgeData[key]
-      if (!value) {
-        continue
-      }
-
-      const newKey = key.replace(PATTERN, '_')
-      const newEdge = {
-        data: {
-          id: edgeData.id + '-' + key,
-          source: edgeData.source,
-          target: edgeData.target,
-        }
-      }
-
-
-      newEdge.data[newKey] = edgeData[key]
-      if (newKey === primaryFilterName) {
-        newEdges.unshift(newEdge)
-      } else {
-        newEdges.push(newEdge)
-      }
-    }
-
-
-  }
+  //
+  // let i = edgeCount
+  // while (i--) {
+  //   const edge = edges[i]
+  //
+  //   const edgeData = edge.data
+  //   const keys = Object.keys(edgeData)
+  //
+  //   let j = keys.length
+  //   while (j--) {
+  //     const key = keys[j]
+  //     if (key === 'id' || key === 'source' || key === 'target') {
+  //       continue
+  //     }
+  //
+  //     const value = edgeData[key]
+  //     if (!value) {
+  //       continue
+  //     }
+  //
+  //     const newKey = key.replace(PATTERN, '_')
+  //     const newEdge = {
+  //       data: {
+  //         id: edgeData.id + '-' + key,
+  //         source: edgeData.source,
+  //         target: edgeData.target,
+  //       }
+  //     }
+  //
+  //
+  //     newEdge.data[newKey] = edgeData[key]
+  //     if (newKey === primaryFilterName) {
+  //       newEdges.unshift(newEdge)
+  //     } else {
+  //       newEdges.push(newEdge)
+  //     }
+  //   }
+  //
+  //
+  // }
   netAndFilter.push(newEdges)
 
   return netAndFilter

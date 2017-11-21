@@ -16,6 +16,9 @@ import BooleanFilter from './BooleanFilter'
 
 import { withStyles } from 'material-ui/styles';
 
+import * as d3Scale from 'd3-scale'
+const colorMap = d3Scale.scaleOrdinal(d3Scale.schemeCategory20)
+
 
 const FILTER_TYPES = {
   CONTINUOUS: 'continuous',
@@ -67,7 +70,8 @@ class EdgeFilter extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      open: true
+      open: true,
+      selected: []
     }
   }
 
@@ -152,6 +156,8 @@ class EdgeFilter extends Component {
           commandActions={this.props.commandActions}
           commands={this.props.commands}
           isPrimary={false}
+          selected={this.state.selected}
+          colorMap={colorMap}
         />
       )
     } else if(filterType === FILTER_TYPES.BOOLEAN) {
@@ -161,6 +167,9 @@ class EdgeFilter extends Component {
           label={filter.attributeName}
           enabled={filter.enabled}
           filtersActions={this.props.filtersActions}
+          commandActions={this.props.commandActions}
+          selected={this.state.selected}
+          colorMap={colorMap}
         />
       )
 

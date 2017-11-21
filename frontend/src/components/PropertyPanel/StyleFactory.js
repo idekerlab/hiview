@@ -36,11 +36,11 @@ const BASE_STYLE = {
   edge: {
     'selector': 'edge',
     'css': {
-      width: 1,
-      'line-color': '#aaaaaa',
+      width: 3,
+      'line-color': '#FFFFFF',
       opacity: 0.8,
       'curve-style': 'bezier',
-      'edge-distances': 'node-position',
+      // 'edge-distances': 'node-position',
     },
   },
   edgeSelected: {
@@ -54,7 +54,8 @@ const BASE_STYLE = {
     selector: '.hidden',
     css: {
       // display: 'none',
-      visibility: 'hidden'
+      'line-color': 'blue',
+      // visibility: 'hidden'
     },
   }
 }
