@@ -33,10 +33,11 @@ const styles = theme => ({
     width: '100%',
     color: '#333333',
     display: 'inline-flex',
+    justifyContent: 'flex-end'
   },
   formControl: {
     // margin: theme.spacing.unit,
-    width: '70%',
+    width: '50%',
     padding: '1em'
   },
   button: {

@@ -26,7 +26,7 @@ class LegendPanel extends Component {
 
     const svg = d3Selection
       .select(svgLegend)
-      .attr('width', parentWidth* 0.9)
+      .attr('width', parentWidth * 0.95)
       .attr('height', BAR_HEIGHT)
       .append("g")
 
@@ -70,13 +70,11 @@ class LegendPanel extends Component {
       <div ref={container=> this.container = container} style={legendPanelStyle}>
 
         <div style={minMaxStyle}>
-          <div style={titleStyle}>Similarity Score</div>
+          <div style={titleStyle}>Similarity Score (RF Score)</div>
         </div>
 
         <div style={barStyle}>
-          <div style={minStyle}>{min}</div>
           <svg ref={legend => this.legend = legend}></svg>
-          <div style={maxStyle}>{max}</div>
         </div>
       </div>
     )
@@ -86,11 +84,8 @@ class LegendPanel extends Component {
 const barStyle = {
   display: 'inline-flex',
   width: '100%',
-  color: '#333333',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '0.5em'
-
 
 }
 
@@ -104,11 +99,13 @@ const minMaxStyle = {
 }
 
 const minStyle = {
+  width: '2em',
   paddingRight: '0.5em'
 
 }
 
 const maxStyle = {
+  width: '2em',
   paddingLeft: '0.5em'
 }
 

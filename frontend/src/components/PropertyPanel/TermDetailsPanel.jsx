@@ -10,7 +10,7 @@ import SubsystemPanel from './SubsystemPanel'
 
 import TabContainer from './TabContainer'
 import LegendPanel from './LegendPanel'
-import {EdgeFilter} from '../Filters'
+import {EdgeFilter, PrimaryFilter} from '../Filters'
 
 
 import GeneList from './GeneList'
@@ -22,6 +22,7 @@ import CirclePacking from "../CirclePacking/index";
 
 
 import LayoutSelector from '../LayoutSelector'
+
 
 
 class TermDetailsPanel extends Component {
@@ -180,6 +181,14 @@ class TermDetailsPanel extends Component {
 
         <LegendPanel
           networkProps={networkProps}
+        />
+
+        <PrimaryFilter
+          filters={raw.filters}
+          commandActions={this.props.interactionsCommandActions}
+          commands={this.props.interactionsCommands}
+          filtersActions={this.props.filtersActions}
+
         />
 
         <LayoutSelector
