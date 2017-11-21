@@ -1,4 +1,5 @@
 const MAIN_EDGE_TAG = 'Main Feature'
+const MAX_EDGE = 400
 
 const PATTERN = /[ -]/g
 import { createAction } from 'redux-actions'
@@ -131,11 +132,19 @@ const createFilter = network => {
 
         values.sort()
         const thPosition = parseInt(edges.length * 0.9, 10)
-        th = values[thPosition]
+
+        if(edges.length < MAX_EDGE) {
+          if(edge.length < 100) {
+            th = value.min
+          } else {
+            th = values[thPosition]
+          }
+        } else if(thPosition > MAX_EDGE) {
+          th = values[edges.length - MAX_EDGE]
+        } else {
+          th = values[thPosition]
+        }
       }
-
-
-      console.log("TH ===============> " + th)
 
       filters.push({
         attributeName: key,

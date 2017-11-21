@@ -110,6 +110,29 @@ class RawInteractionPanel extends Component {
       return (<div></div>)
     }
 
+
+    const filters = this.props.filters
+
+    if (filters === null || filters.length === 0) {
+      return
+    }
+
+    let primaryFilter = null
+    const filterNames = []
+    const filterMap = {}
+
+    filters.forEach(filter => {
+      const isPrimary = filter.isPrimary
+      if (isPrimary) {
+        primaryFilter = filter
+      } else {
+        filterNames.push(filter.attributeName)
+        filterMap[filter.attributeName] = filter
+      }
+    })
+
+
+
     return (
       <Viewer
         key="subNetworkView"
@@ -118,16 +141,25 @@ class RawInteractionPanel extends Component {
         networkStyle={visualStyle}
         style={networkAreaStyle}
         eventHandlers={this.getCustomEventHandlers()}
-        rendererOptions={{layout: 'cose-bilkent'}}
+        rendererOptions={{
+          layout: 'cose-bilkent',
+          defaultFilter: {
+
+            command: 'filter',
+            parameters: {
+              options: {
+                type: 'numeric',
+                range: '[' + primaryFilter.attributeName + ' >= ' + primaryFilter.threshold + ']',
+              }
+            }
+          }
+        }}
         command={this.props.commands}
       />
     )
 
   }
 
-  componentDidUpdate() {
-    console.log('Raw Updated')
-  }
 
   selectNodes = (nodeIds, nodeProps) => {
     const node = nodeIds[0]

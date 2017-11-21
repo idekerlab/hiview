@@ -180,7 +180,7 @@ class TermDetailsPanel extends Component {
           selection={this.props.selection}
           selectionActions={this.props.selectionActions}
 
-          filters={this.props.filters}
+          filters={raw.filters}
           interactionStyleActions={this.props.interactionStyleActions}
           networkStyle={visualStyle}
         />
@@ -195,7 +195,6 @@ class TermDetailsPanel extends Component {
             commandActions={this.props.interactionsCommandActions}
             commands={this.props.interactionsCommands}
             filtersActions={this.props.filtersActions}
-
           />
 
           <LayoutSelector
