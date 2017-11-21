@@ -95,7 +95,7 @@ class PrimaryFilter extends Component {
     return (
       <div className={classes.root}>
         <SliderWithTooltip
-          style={{width: '95%'}}
+          style={{width: '95%', height: '2em'}}
           defaultValue={Number(primaryFilter.threshold)}
           min={Number(primaryFilter.min)}
           max={Number(primaryFilter.max)}

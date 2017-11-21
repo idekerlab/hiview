@@ -30,6 +30,9 @@ const styles = theme => ({
     position: 'relative',
     overflow: 'auto',
   },
+  list: {
+
+  },
   listItemLarge: {
     height: '1.3em',
     margin: 0,
@@ -115,37 +118,6 @@ class EdgeFilter extends Component {
     return (
       <div className={classes.root}>
         <List>
-          <ListItem className={classes.listItemLarge}>
-            <ContinuousFilter
-              key={primaryFilter.attributeName}
-              label={primaryFilter.attributeName}
-              min={Number(primaryFilter.min)}
-              max={Number(primaryFilter.max)}
-              value={primaryFilter.threshold}
-              enabled={primaryFilter.enabled}
-              step={0.001}
-              filtersActions={this.props.filtersActions}
-              commandActions={this.props.commandActions}
-              commands={this.props.commands}
-              isPrimary={true}
-            />
-          </ListItem>
-
-          <ListItem
-            className={classes.listItemLarge}
-            button
-            onClick={this.handleClick}
-            key={'parent'}
-          >
-            <ListItemIcon>
-              <EqualizerIcon/>
-            </ListItemIcon>
-            <ListItemText inset primary="Other Edge Filters"/>
-            {this.state.open ? <ExpandLess/> : <ExpandMore/>}
-          </ListItem>
-
-          <Collapse in={this.state.open} transitionDuration="auto" unmountOnExit>
-
             {
               sortedNames.map(filterName => (
                 <ListItem
@@ -157,7 +129,6 @@ class EdgeFilter extends Component {
               ))
             }
 
-          </Collapse>
         </List>
       </div>
     )

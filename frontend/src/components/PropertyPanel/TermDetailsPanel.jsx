@@ -145,7 +145,13 @@ class TermDetailsPanel extends Component {
       display: 'inline-flex',
       maxHeight: '17em',
       width: '100%',
-      paddingTop: '1em'
+      padding: '1em',
+      borderTop: 'solid 1px #444444',
+      borderBottom: 'solid 1px #444444'
+    }
+
+    const controlPanelStyle = {
+      padding: '1em',
     }
 
 
@@ -179,21 +185,23 @@ class TermDetailsPanel extends Component {
           networkStyle={visualStyle}
         />
 
-        <LegendPanel
-          networkProps={networkProps}
-        />
+        <div style={controlPanelStyle}>
+          <LegendPanel
+            networkProps={networkProps}
+          />
 
-        <PrimaryFilter
-          filters={raw.filters}
-          commandActions={this.props.interactionsCommandActions}
-          commands={this.props.interactionsCommands}
-          filtersActions={this.props.filtersActions}
+          <PrimaryFilter
+            filters={raw.filters}
+            commandActions={this.props.interactionsCommandActions}
+            commands={this.props.interactionsCommands}
+            filtersActions={this.props.filtersActions}
 
-        />
+          />
 
-        <LayoutSelector
-          commandActions={this.props.interactionsCommandActions}
-        />
+          <LayoutSelector
+            commandActions={this.props.interactionsCommandActions}
+          />
+        </div>
 
         <div style={filterPanelStyle}>
           <GroupSelector
