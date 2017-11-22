@@ -42,7 +42,7 @@ class PrimaryFilter extends Component {
       options: {
         type: 'numeric',
         isPrimary: true,
-        range: '[' + this.state.primaryFilter.attributeName + ' >= ' + value + ']',
+        range: '[' + this.state.primaryFilter.attributeName + ' < ' + value + ']',
       },
     })
   }

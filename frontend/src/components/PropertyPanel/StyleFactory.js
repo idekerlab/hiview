@@ -29,7 +29,7 @@ const BASE_STYLE = {
       'width': 64,
       'height': 30,
       'font-size': 14,
-      color: '#FFFFFF',
+      color: '#EE2222',
       'background-color': '#FFFFFF',
     },
   },
@@ -47,7 +47,9 @@ const BASE_STYLE = {
     'selector': 'edge:selected',
     'css': {
       'line-color': 'rgb(255,0,0)',
-      'width': 5,
+      'width': 10,
+      'label': 'data(interaction)',
+      'color': '#FFFFFF'
     },
   },
   hidden: {

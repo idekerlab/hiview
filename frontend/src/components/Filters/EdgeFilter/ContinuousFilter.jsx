@@ -29,11 +29,14 @@ class ContinuousFilter extends BaseFilter {
 
 
   onAfterChange= value => {
+
     this.props.commandActions.filterEdges({
       options: {
         type: 'numeric',
+        targetType: this.props.label,
         isPrimary: this.props.isPrimary,
-        range: '[' + this.props.label + ' >= ' + value + ']'
+        range: 'edge[interaction = "' + this.props.label + '"][' + this.props.label + ' < ' + value + ']'
+        // range: 'edge[interaction = "' + this.props.label + '"]'
       }
     })
   }

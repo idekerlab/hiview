@@ -146,7 +146,8 @@ class RawInteractionPanel extends Component {
             parameters: {
               options: {
                 type: 'numeric',
-                range: '[' + primaryFilter.attributeName + ' >= ' + primaryFilter.threshold + ']',
+                isPrimary: true,
+                range: '[' + primaryFilter.attributeName + ' < ' + primaryFilter.threshold + ']',
               }
             }
           }
