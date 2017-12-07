@@ -2,5 +2,6 @@ version: '2'
 services:
   static:
     build: ./webserver
+    restart: always
     ports:
       - "80:80"
