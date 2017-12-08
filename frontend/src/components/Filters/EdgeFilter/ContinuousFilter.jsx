@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 
 import Slider, {createSliderWithTooltip} from 'rc-slider'
 import 'rc-slider/assets/index.css'
@@ -21,26 +21,22 @@ const sliderRowStyle = {
 class ContinuousFilter extends BaseFilter {
 
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       sliderValue: this.props.value
-    };
+    }
   }
 
-
   onAfterChange= value => {
-
     this.props.commandActions.filterEdges({
       options: {
         type: 'numeric',
         targetType: this.props.label,
         isPrimary: this.props.isPrimary,
         range: 'edge[interaction = "' + this.props.label + '"][' + this.props.label + ' < ' + value + ']'
-        // range: 'edge[interaction = "' + this.props.label + '"]'
       }
     })
   }
-
 
   render() {
     return (

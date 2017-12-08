@@ -20,6 +20,8 @@ import * as StyleFactory from './StyleFactory'
 import GroupSelector from '../GroupSelector'
 import CirclePacking from "../CirclePacking/index";
 
+import ColorMapSelector from './ColorMapSelector'
+
 
 import LayoutSelector from '../LayoutSelector'
 
@@ -196,6 +198,8 @@ class TermDetailsPanel extends Component {
             commands={this.props.interactionsCommands}
             filtersActions={this.props.filtersActions}
           />
+
+          <ColorMapSelector />
 
           <LayoutSelector
             commandActions={this.props.interactionsCommandActions}

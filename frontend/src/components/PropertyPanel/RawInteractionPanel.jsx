@@ -38,65 +38,65 @@ class RawInteractionPanel extends Component {
     )
   }
 
-  addExtraEdges(network) {
-
-    const filters = this.props.filters.toJS()
-    const filterNames = Object.keys(filters)
-
-    let primaryFilterName = ''
-    filterNames.forEach(filterName => {
-      if(filters[filterName].isPrimary) {
-        primaryFilterName = filterName
-      }
-    })
-
-    const edges = network.elements.edges
-    const newEdges = []
-
-    let i = edges.length
-    while(i--) {
-      const edge = edges[i]
-
-      const edgeData = edge.data
-      const keys = Object.keys(edgeData)
-
-      let primaryEdge = {}
-
-      let j = keys.length
-      while(j--) {
-        const key = keys[j]
-        if(key === 'id' || key === 'source' || key === 'target') {
-          continue
-        }
-
-        const value = edgeData[key]
-        if(!value) {
-          continue
-        }
-
-        const newKey = key.replace(PATTERN, '_')
-        const newEdge = {
-          data: {
-            id: edgeData.id + '-' + key,
-            source: edgeData.source,
-            target: edgeData.target,
-          }
-        }
-
-
-        newEdge.data[newKey] = edgeData[key]
-        if(newKey === primaryFilterName) {
-          newEdges.unshift(newEdge)
-        } else {
-          newEdges.push(newEdge)
-        }
-      }
-
-
-    }
-    return newEdges
-
-  }
+  // addExtraEdges(network) {
+  //
+  //   const filters = this.props.filters.toJS()
+  //   const filterNames = Object.keys(filters)
+  //
+  //   let primaryFilterName = ''
+  //   filterNames.forEach(filterName => {
+  //     if(filters[filterName].isPrimary) {
+  //       primaryFilterName = filterName
+  //     }
+  //   })
+  //
+  //   const edges = network.elements.edges
+  //   const newEdges = []
+  //
+  //   let i = edges.length
+  //   while(i--) {
+  //     const edge = edges[i]
+  //
+  //     const edgeData = edge.data
+  //     const keys = Object.keys(edgeData)
+  //
+  //     let primaryEdge = {}
+  //
+  //     let j = keys.length
+  //     while(j--) {
+  //       const key = keys[j]
+  //       if(key === 'id' || key === 'source' || key === 'target') {
+  //         continue
+  //       }
+  //
+  //       const value = edgeData[key]
+  //       if(!value) {
+  //         continue
+  //       }
+  //
+  //       const newKey = key.replace(PATTERN, '_')
+  //       const newEdge = {
+  //         data: {
+  //           id: edgeData.id + '-' + key,
+  //           source: edgeData.source,
+  //           target: edgeData.target,
+  //         }
+  //       }
+  //
+  //
+  //       newEdge.data[newKey] = edgeData[key]
+  //       if(newKey === primaryFilterName) {
+  //         newEdges.unshift(newEdge)
+  //       } else {
+  //         newEdges.push(newEdge)
+  //       }
+  //     }
+  //
+  //
+  //   }
+  //   return newEdges
+  //
+  // }
 
   getMainContents = () => {
 
@@ -127,8 +127,6 @@ class RawInteractionPanel extends Component {
         filterMap[filter.attributeName] = filter
       }
     })
-
-
 
     return (
       <Viewer

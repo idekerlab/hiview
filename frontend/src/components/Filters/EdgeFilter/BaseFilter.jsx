@@ -31,6 +31,7 @@ class BaseFilter extends Component {
       checked: false,
       disabled: false,
       labelColor: PRESET_COLORS.ENABLED,
+      edgeColor: '#FFFFFF'
     }
   }
 
@@ -54,7 +55,9 @@ class BaseFilter extends Component {
       const color = this.props.colorMap(itemIdx)
       this.setState({
         checked: !currentValue,
-        labelColor: color})
+        labelColor: color,
+        edgeColor: color
+      })
       this.props.commandActions.expandEdges(
         {
           edgeType: this.props.label,
@@ -62,7 +65,6 @@ class BaseFilter extends Component {
         }
       )
     } else {
-
       //　Remove
       for(let i = 0; i<selectedItems.length; i++) {
         const item = selectedItems[i]
