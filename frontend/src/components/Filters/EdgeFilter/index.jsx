@@ -11,8 +11,26 @@ import BooleanFilter from './BooleanFilter'
 import { withStyles } from 'material-ui/styles';
 
 import * as d3Scale from 'd3-scale'
-const colorMap = d3Scale.scaleOrdinal(d3Scale.schemeCategory10)
+const originalColorMap = d3Scale.scaleOrdinal(d3Scale.schemeCategory10)
 
+const COLORS = [
+  originalColorMap(0),
+  originalColorMap(1),
+  originalColorMap(2),
+  originalColorMap(3),
+  originalColorMap(4),
+  '#EFFFEF',
+]
+
+const COLORS2 = []
+
+for(let i=0; i<6; i++) {
+  if(i !== 1) {
+    COLORS2.push(COLORS[i])
+  }
+}
+
+const colorMap = (idx) => (COLORS2[idx])
 
 const FILTER_TYPES = {
   CONTINUOUS: 'continuous',

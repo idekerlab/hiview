@@ -29,7 +29,7 @@ const BASE_STYLE = {
       'width': 64,
       'height': 30,
       'font-size': 14,
-      color: '#EE2222',
+      color: '#222222',
       'background-color': '#FFFFFF',
     },
   },
@@ -37,7 +37,7 @@ const BASE_STYLE = {
     'selector': 'edge',
     'css': {
       width: 3,
-      'line-color': '#777777',
+      'line-color': '#555555',
       opacity: 0.95,
       'curve-style': 'bezier',
       // 'edge-distances': 'node-position',
@@ -91,13 +91,13 @@ export const createStyle = originalNetwork => {
   const edgeStyle = BASE_STYLE.edge
 
   edgeStyle.css['width'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.3, 5)`
-  // edgeStyle.css['line-color'] = (d) => {
-  //   if (d.data('RF_score') === undefined) {
-  //     return '#aaaaaa'
-  //   } else {
-  //     return colorScale(d.data('RF_score'))
-  //   }
-  // }
+  edgeStyle.css['line-color'] = (d) => {
+    if (d.data('RF_score') === undefined) {
+      return '#aaaaaa'
+    } else {
+      return colorScale(d.data('RF_score'))
+    }
+  }
 
   edgeStyle.css['opacity'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.3, 0.95)`
   edgeStyle.css['display'] = (d) => {
