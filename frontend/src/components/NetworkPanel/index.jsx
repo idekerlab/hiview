@@ -51,9 +51,7 @@ class NetworkPanel extends Component {
   }
 
   selectNodes = (nodeIds, nodeProps) => {
-    console.log('====== Custom NODE select function called! ========');
-    console.log(nodeIds);
-    console.log(nodeProps);
+    console.log('Node Selected: ------------------------------------------')
 
     // First node in the selection
     const nodeId = nodeIds[0]
@@ -73,7 +71,6 @@ class NetworkPanel extends Component {
 
     if(hidden) {
 
-      console.log('This is hidden------------------------------------------')
       const original = props.Original_Name
       // this.props.commandActions.zoomToNode(original.toString())
       return
