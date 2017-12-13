@@ -1,4 +1,7 @@
+
+
 export const SEARCH = 'SEARCH'
+
 const search = (query, options) => {
   return {
     type: SEARCH,
@@ -30,20 +33,22 @@ const clearSearchResult = () => {
 
 
 const sendQuery = (query, options) => {
-  let opt = options
+  const baseUrl = options.baseUrl
+  const uuid = options.uuid
 
-  // return client.search({
-  //   index: opt.index,
-  //   type: opt.type,
-  //   size: 50,
-  //   body: {
-  //     query: {
-  //       match: {
-  //         _all: query
-  //       }
-  //     }
-  //   }
-  // })
+  const url = baseUrl + uuid + '/nodes'
+
+  const payload = {
+    'searchString': 'nodeName:' + query
+  }
+
+  return fetch(url, {
+    mode: 'cors',
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify(payload)
+  })
+
 }
 
 
@@ -54,14 +59,18 @@ export const clear = () => {
   }
 }
 
-export const searchDatabase = (query, options) => {
+const toIdList = (json) => (json.map(entry => (entry.id)))
+
+export const searchNdex = (query, options) => {
 
   return dispatch => {
     dispatch(search(query, options))
 
     return sendQuery(query, options)
-      .then(json =>
-        dispatch(receiveSearchResult(query, json))
+      .then(response => (response.json()))
+      .then(json => (toIdList(json)))
+      .then(idList =>
+        dispatch(receiveSearchResult(query, idList, options))
       )
   }
 }

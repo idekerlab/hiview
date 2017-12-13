@@ -9,6 +9,7 @@ import Commands from '../Commands'
 import style from './style.css'
 
 import SimpleSearch from '../SimpleSearch'
+import FullSearch from '../FullSearch'
 
 
 const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
@@ -46,7 +47,7 @@ export default class NetworkViewer extends Component {
       networkActions,
       commands, commandActions,
       events, eventActions, uiState, currentProperty, propertyActions,
-      search, network, config, messageActions,
+      search, searchActions, network, messageActions,
       rawInteractionsActions, selection, selectionActions,
       filters, filtersActions, interactionStyle, interactionStyleActions
 
@@ -118,12 +119,18 @@ export default class NetworkViewer extends Component {
           cxtoolUrl={CXTOOL_URL}
         />
 
-        <SimpleSearch
+        {/*<SimpleSearch*/}
+          {/*datasource={this.props.datasource.toJS()}*/}
+          {/*network={network.toJS()}*/}
+          {/*commandActions={commandActions}*/}
+        {/*/>*/}
+
+        <FullSearch
           datasource={this.props.datasource.toJS()}
           network={network.toJS()}
           commandActions={commandActions}
+          searchActions={searchActions}
         />
-
 
         <Errorbar
           className={style.errorbar}

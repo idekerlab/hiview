@@ -154,6 +154,22 @@ class NetworkPanel extends Component {
     const network = this.props.network.get(url)
 
 
+    const search = this.props.search
+    const nextSearch = nextProps.search
+
+
+    if(search.result !== nextSearch.result) {
+      console.log("+++ Search result updated")
+
+      // Select result
+      const selectedIds = nextSearch.result
+      if(selectedIds !== undefined && selectedIds !== null) {
+        this.props.commandActions.select(selectedIds)
+      }
+
+    }
+
+
     if (url !== undefined && (network === undefined || network === null)) {
 
 
