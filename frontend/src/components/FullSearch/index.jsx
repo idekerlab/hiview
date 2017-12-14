@@ -5,19 +5,31 @@ import Button from 'material-ui/Button'
 
 const SEARCH_URL = 'http://test.ndexbio.org/v2/search/network/'
 
+import {Transition} from 'react-transition-group'
+
+
+const duration = 500
+
+
+const animationStyle = {
+  transition: 'width 0.75s cubic-bezier(0.000, 0.795, 0.000, 1.000)',
+}
+
+
 class FullSearch extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-      query: ''
+      query: '',
+      expand: false,
     }
   }
 
 
   handleChange = event => {
     this.setState({
-      query: event.target.value
+      query: event.target.value,
     });
   }
 
@@ -40,10 +52,14 @@ class FullSearch extends Component {
   search = (query) => {
     const options = {
       baseUrl: SEARCH_URL,
-      uuid: this.props.datasource.uuid
+      uuid: this.props.datasource.uuid,
     }
 
     this.props.searchActions.searchNdex(query, options)
+
+    this.setState({
+      expand: true,
+    })
   }
 
 
@@ -52,38 +68,60 @@ class FullSearch extends Component {
     const baseStyle = {
       display: 'flex',
       position: 'fixed',
-      top: '1em',
-      left: '1em',
+      top: '0.5em',
+      left: '0.5em',
       zIndex: 1200,
-      width: '50em',
+      width: '30em',
       justifyContent: 'flex-start',
       alignItems: 'center',
       height: '3em',
-      //   background: 'rgba(222,222,222,0.8)',
-      padding: '0.8em'
+      // background: 'blue',
+      padding: '0.8em',
+      transition: `background ${duration}ms ease-in-out, height ${duration}ms ease-in-out`
+    }
+
+    const transitionStyles = {
+      entering: {
+        background: '#FFFFFF',
+        height: '3em',
+      },
+      entered: {
+        background: '#EEEEFF',
+        height: '30em',
+      },
     }
 
     return (
-      <div style={baseStyle}>
-        <TextField
-          style={{width: '20em', fontSize: '1.5em'}}
-          placeholder='e.g. brca1'
-          label='Search Terms/Genes'
-          margin="normal"
-          value={this.state.serverUrl}
-          onChange={this.handleChange}
-          onKeyPress={this.handleKey}
-        />
+      <Transition in={this.state.expand} timeout={duration}>
 
-        <Button
-          raised
-          color="primary"
-          onClick={this.handleStart}
-        >
-          Search
-        </Button>
+        {(state) => (
+          <div style={
+            {
+              ...baseStyle,
+              ...transitionStyles[state]
+            }
+          }>
+            <TextField
+              style={{width: '20em', fontSize: '1.5em'}}
+              placeholder='e.g. brca1'
+              label='Search Terms/Genes'
+              margin="normal"
+              value={this.state.serverUrl}
+              onChange={this.handleChange}
+              onKeyPress={this.handleKey}
+            />
 
-      </div>
+            <Button
+              raised
+              color="primary"
+              onClick={this.handleStart}
+            >
+              Search
+            </Button>
+
+          </div>
+        )}
+      </Transition>
     )
   }
 }
