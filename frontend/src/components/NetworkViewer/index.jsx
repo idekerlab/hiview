@@ -130,6 +130,7 @@ export default class NetworkViewer extends Component {
           network={network.toJS()}
           commandActions={commandActions}
           searchActions={searchActions}
+          search={search}
         />
 
         <Errorbar
