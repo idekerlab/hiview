@@ -49,7 +49,8 @@ class SearchPanel extends Component {
     super(props)
     this.state = {
       query: '',
-      expanded: false
+      expanded: false,
+      id2label: {}
     }
   }
 
@@ -64,10 +65,49 @@ class SearchPanel extends Component {
       this.setState({ expanded: true });
     }
 
+    const uuid = nextProps.datasource.uuid
+
+
+    const networkKey = Object.keys(nextProps.network)
+
+    console.log('}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}}')
+    console.log(uuid)
+    console.log(networkKey)
+
+    let networkData = null
+    networkKey.forEach(key=> {
+      if(key.includes(uuid)) {
+        networkData = nextProps.network[key]
+      }
+    })
+
+    if(networkData !== null) {
+      console.log(networkData)
+      const label2id = networkData.label2id
+
+      const labels = Object.keys(label2id)
+
+      const id2label = {}
+      labels.forEach(label => {
+        id2label[label2id[label]] = label
+      })
+
+      this.setState({id2label: id2label})
+
+
+    }
+
+
   }
+
+
+
+
 
   render() {
     const { classes } = this.props;
+
+
 
     const titleStyle = {
       width: '100%',
@@ -110,6 +150,7 @@ class SearchPanel extends Component {
               <SearchResult
                 search={this.props.search}
                 commandActions={this.props.commandActions}
+                id2label={this.state.id2label}
               />
             </CardContent>
           </Collapse>

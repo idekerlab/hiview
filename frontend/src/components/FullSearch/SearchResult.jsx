@@ -26,7 +26,10 @@ class SearchResult extends Component {
               <ListItemIcon>
                 <OpenIcon/>
               </ListItemIcon>
-              <ListItemText primary={result}/>
+              <ListItemText
+                primary={this.props.id2label[result]}
+                secondary={result}
+              />
             </ListItem>))
         }
       </List>
