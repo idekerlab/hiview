@@ -40,6 +40,7 @@ class SearchBox extends Component {
   }
 
 
+
   search = (query) => {
     const options = {
       baseUrl: SEARCH_URL,

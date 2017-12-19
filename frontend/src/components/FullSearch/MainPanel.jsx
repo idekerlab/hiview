@@ -49,6 +49,10 @@ class MainPanel extends React.Component {
     }
   }
 
+  handleReset = event => {
+    this.props.searchActions.clear()
+  }
+
 
   search = (query) => {
     const options = {
@@ -89,13 +93,17 @@ class MainPanel extends React.Component {
 
 
         <IconButton
-          aria-label="Search nodes">
+          aria-label="Search nodes"
+          onClick={this.handleStart}
+        >
           <SearchIcon/>
         </IconButton>
 
         <div style={{width: '0.1em', height: '2em', borderLeft: '1px solid #aaaaaa'}}/>
         <IconButton
-          aria-label="Reset">
+          aria-label="Reset"
+          onClick={this.handleReset}
+        >
           <RefreshIcon/>
         </IconButton>
 

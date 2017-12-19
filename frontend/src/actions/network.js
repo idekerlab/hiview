@@ -68,22 +68,21 @@ export const fetchNetworkFromUrl = url => {
 }
 
 const createLabel2IdMap = network => {
-  console.log("$$$$$$$$$$$$$$$$$$$$$$ net loaded")
-  console.log(network)
-
 
   const nodes = network.elements.nodes
-  console.log(nodes)
 
   const label2id = {}
+  const id2label = {}
+
   let i = nodes.length
   while(i--) {
     const nodeData = nodes[i].data
-    label2id[nodeData.Label] = nodeData.id
+    const label = nodeData.Label
+    label2id[label] = nodeData.id
+    id2label[nodeData.id] = label
   }
-
-  console.log(label2id)
   network['label2id'] = label2id
+  network['id2label'] = id2label
 
   return network
 }
