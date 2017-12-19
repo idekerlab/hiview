@@ -3,6 +3,11 @@ import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List'
 import OpenIcon from 'material-ui-icons/OpenInNew'
 
 
+const resultStyle = {
+  maxHeight: '30em',
+  overflow: 'auto'
+}
+
 class SearchResult extends Component {
 
   render() {
@@ -14,7 +19,7 @@ class SearchResult extends Component {
     console.log(results.sort())
 
     return (
-      <List>
+      <List style={resultStyle}>
         {
           results.map((result, i) =>
 

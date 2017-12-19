@@ -52,9 +52,9 @@ class SubsystemPanel extends Component {
   }
 
   handleClick = value => () => {
-
-    console.log(value)
-    window.open(GO_LINK + value.toString())
+    if(value.toString().startsWith('GO')) {
+      window.open(GO_LINK + value.toString())
+    }
   }
 }
 

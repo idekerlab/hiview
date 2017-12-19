@@ -100,6 +100,7 @@ class SearchPanel extends Component {
       textAlign: 'center'
     }
 
+
     return (
       <div>
 

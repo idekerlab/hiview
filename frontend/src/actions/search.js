@@ -39,7 +39,9 @@ const sendQuery = (query, options) => {
   const url = baseUrl + uuid + '/nodes'
 
   const payload = {
-    'searchString': 'nodeName:' + query
+    'searchString': query
+    // 'searchString': 'nodeName:' + query
+
   }
 
   return fetch(url, {

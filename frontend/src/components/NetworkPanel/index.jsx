@@ -43,6 +43,7 @@ class NetworkPanel extends Component {
   }
 
   setGeneProps = geneName => {
+    console.log('&&GENE Selected: ------------------------------------------')
     // Just fetch property
     const myGeneUrl = MYGENE_URL + '/query?q='
     const qUrl = myGeneUrl + geneName + '&fields=all&size=1'
@@ -69,14 +70,14 @@ class NetworkPanel extends Component {
     // Check hidden node
     const hidden = props.Hidden
 
-    if(hidden) {
-
-      const original = props.Original_Name
-      // this.props.commandActions.zoomToNode(original.toString())
-      return
-
-
-    }
+    // if(hidden) {
+    //
+    //   const original = props.Original_Name
+    //   // this.props.commandActions.zoomToNode(original.toString())
+    //   return
+    //
+    //
+    // }
     // There are two cases: Gene or term
 
     // Get node type:
@@ -94,12 +95,12 @@ class NetworkPanel extends Component {
       return
     }
     // From NDEx to CYJS converter
-    const linkEdntry = props[NDEX_LINK_TAG]
-    if(linkEdntry === undefined) {
+    const linkEntry = props[NDEX_LINK_TAG]
+    if(linkEntry === undefined) {
       return
     }
 
-    const linkId = linkEdntry.split('(')[1].replace(')', '')
+    const linkId = linkEntry.split('(')[1].replace(')', '')
 
     const link = this.props.cxtoolUrl + linkId + '?server=test'
 
