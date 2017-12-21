@@ -72,17 +72,23 @@ const createLabel2IdMap = network => {
   const nodes = network.elements.nodes
 
   const label2id = {}
-  const id2label = {}
+  const id2prop = {}
 
   let i = nodes.length
   while(i--) {
     const nodeData = nodes[i].data
     const label = nodeData.Label
+    const isRoot = nodeData.isRoot
+
+    if(isRoot) {
+      network['rootId'] = nodeData.id
+    }
+
     label2id[label] = nodeData.id
-    id2label[nodeData.id] = label
+    id2prop[nodeData.id] = nodeData
   }
   network['label2id'] = label2id
-  network['id2label'] = id2label
+  network['id2prop'] = id2prop
 
   return network
 }

@@ -23,7 +23,7 @@ export default handleActions({
   FIND_PATH: (state, action) => ({
     command: 'findPath',
     parameters: action.payload,
-    target: action.payload.target
+    // target: action.payload.target
   }),
   SELECT: (state, action) => ({
     command: 'select',

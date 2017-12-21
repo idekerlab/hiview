@@ -99,7 +99,7 @@ class CoreGenePropPanel extends Component {
             <ListItemText inset primary="Other Names:"/>
             {this.state.open ? <ExpandLess/> : <ExpandMore/>}
           </ListItem>
-          <Collapse in={this.state.open} transitionDuration="auto" unmountOnExit>
+          <Collapse in={this.state.open} unmountOnExit>
             {
               otherNames.map((otherName, i) =>
 
@@ -123,7 +123,7 @@ class CoreGenePropPanel extends Component {
             <ListItemText inset primary="Alias:"/>
             {this.state.openAlias ? <ExpandLess/> : <ExpandMore/>}
           </ListItem>
-          <Collapse in={this.state.openAlias} transitionDuration="auto" unmountOnExit>
+          <Collapse in={this.state.openAlias} unmountOnExit>
             {
               alias.map((al, i) =>
 
@@ -150,7 +150,7 @@ class CoreGenePropPanel extends Component {
             <ListItemText inset primary="Pathways:"/>
             {this.state.openPathways ? <ExpandLess/> : <ExpandMore/>}
           </ListItem>
-          <Collapse in={this.state.openPathways} transitionDuration="auto" unmountOnExit>
+          <Collapse in={this.state.openPathways} unmountOnExit>
             {
               this.getPathwayList(pathways)
             }

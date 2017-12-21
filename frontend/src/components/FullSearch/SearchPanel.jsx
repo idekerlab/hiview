@@ -61,6 +61,13 @@ class SearchPanel extends Component {
   componentWillReceiveProps(nextProps) {
 
     const nextResult = nextProps.search.result
+    const currentResult = this.props.search.result
+
+
+    if(nextResult === currentResult) {
+      return
+    }
+
     if(nextResult !== undefined && nextResult !== null) {
       if(nextResult.length !== 0) {
         this.setState({ expanded: true })
@@ -77,15 +84,17 @@ class SearchPanel extends Component {
     const networkKey = Object.keys(nextProps.network)
 
     let networkData = null
+    let currentNetworkUrl = null
+
     networkKey.forEach(key=> {
       if(key.includes(uuid)) {
         networkData = nextProps.network[key]
+        currentNetworkUrl = key
       }
     })
 
     if(networkData !== null) {
-      const id2label = networkData.id2label
-      this.setState({id2label: id2label})
+      this.setState({currentNetworkUrl: currentNetworkUrl})
     }
   }
 
@@ -93,13 +102,13 @@ class SearchPanel extends Component {
   render() {
     const { classes } = this.props;
 
-    const titleStyle = {
-      width: '100%',
-      fontSize: '1.2em',
-      fontWeight: 400,
-      textAlign: 'center'
+    let id2prop = {}
+    let rootId = null
+    if(this.props.network !== undefined && this.state.currentNetworkUrl !== undefined) {
+      const net = this.props.network[this.state.currentNetworkUrl]
+      id2prop = net.id2prop
+      rootId = net.rootId
     }
-
 
     return (
       <div>
@@ -135,7 +144,8 @@ class SearchPanel extends Component {
               <SearchResult
                 search={this.props.search}
                 commandActions={this.props.commandActions}
-                id2label={this.state.id2label}
+                id2prop={id2prop}
+                rootId={rootId}
               />
             </CardContent>
           </Collapse>
