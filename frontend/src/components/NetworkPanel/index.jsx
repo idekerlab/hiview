@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {browserHistory} from 'react-router'
 import CyNetworkViewer from 'cy-network-viewer'
-import {CytoscapeJsRenderer, SigmaRenderer} from 'cytoscapejs-renderer'
+import {SigmaRenderer} from 'cytoscapejs-renderer'
 import {CircularProgress} from 'material-ui/Progress';
 
 import {Map} from 'immutable'
@@ -10,7 +10,6 @@ const MYGENE_URL = 'http://mygene.info/v3'
 const NDEX_LINK_TAG = 'ndex_internalLink'
 
 const Viewer = CyNetworkViewer(SigmaRenderer)
-// const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
 const progressStyle = {
   position: 'fixed',
@@ -43,17 +42,13 @@ class NetworkPanel extends Component {
   }
 
   setGeneProps = geneName => {
-    console.log('&&GENE Selected: ------------------------------------------')
     // Just fetch property
     const myGeneUrl = MYGENE_URL + '/query?q='
     const qUrl = myGeneUrl + geneName + '&fields=all&size=1'
     this.props.propertyActions.fetchPropertyFromUrl(geneName, qUrl, 'gene')
-
   }
 
   selectNodes = (nodeIds, nodeProps) => {
-    console.log('Node Selected: ------------------------------------------')
-
     // First node in the selection
     const nodeId = nodeIds[0]
     const props = nodeProps[nodeId].props
@@ -129,8 +124,28 @@ class NetworkPanel extends Component {
     console.log(edgeProps)
   }
 
+  // Callback
+  commandFinished = (lastCommand, result = {}) => {
+    console.log('Custom command handler: Command Finished: ' + lastCommand);
+    console.log(result)
+
+    if(lastCommand === 'findPath') {
+      const path = result
+      this.props.currentPathActions.setPath(path)
+      if(path !== undefined && path.length !== 0) {
+        const start = path[0].id
+        this.props.commandActions.zoomToNode(start)
+      }
+    }
+
+  }
+
   // Then use it as a custom handler
-  getCustomEventHandlers = () => ({selectNodes: this.selectNodes, selectEdges: this.selectEdges})
+  getCustomEventHandlers = () => ({
+    selectNodes: this.selectNodes,
+    selectEdges: this.selectEdges,
+    commandFinished: this.commandFinished
+  })
 
   handleBack = () => {
     browserHistory.push('/')
@@ -203,9 +218,6 @@ class NetworkPanel extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log("Checking should!!!!!!!!!!!!")
-    console.log(nextProps.selection)
-
     // if(nextProps.selection.get('raw') !== this.props.selection.get('raw')) {
     //   console.log("Should update&&------------------------")
     //   return true
@@ -225,15 +237,6 @@ class NetworkPanel extends Component {
       return false
     }
     return true
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-
-    this.props.messageActions.setMessage('Neural network browser is ready!')
-
-    window.setTimeout(() => {
-      this.props.messageActions.setMessage('Ontology Viewer v0.1')
-    }, 3000)
   }
 
 

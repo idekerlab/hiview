@@ -7,6 +7,8 @@ import * as uiStateActions from '../../actions/ui-state'
 import * as vsActions from '../../reducers/visualstyles'
 import * as currentVsActions from '../../reducers/currentvs'
 
+import * as currentPathActions from '../../actions/current-path'
+
 
 import NetworkViewer from '../../components/NetworkViewer'
 
@@ -103,6 +105,8 @@ function mapStateToProps(state) {
     'filters': state.filters,
     'interactionStyle': state.interaction_style,
 
+    'currentPath': state.app_manager.current_path,
+
   }
 
 }
@@ -138,6 +142,8 @@ function mapDispatchToProps(dispatch) {
 
     'filtersActions': bindActionCreators(filtersActions, dispatch),
     'interactionStyleActions': bindActionCreators(interactionStyleActions, dispatch),
+
+    'currentPathActions': bindActionCreators(currentPathActions, dispatch),
   }
 
 }

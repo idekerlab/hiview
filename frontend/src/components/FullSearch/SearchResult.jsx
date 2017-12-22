@@ -2,6 +2,15 @@ import React, {Component} from 'react'
 import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List'
 import OpenIcon from 'material-ui-icons/OpenInNew'
 
+import Collapse from 'material-ui/transitions/Collapse';
+
+import ExpandLess from 'material-ui-icons/ExpandLess';
+import ExpandMore from 'material-ui-icons/ExpandMore';
+
+import DownArrow from 'material-ui-icons/ArrowDownward'
+
+import AliasList from './AliaseList'
+
 
 const resultStyle = {
   maxHeight: '30em',
@@ -9,74 +18,120 @@ const resultStyle = {
 }
 
 
-const buildNestedList = (idList, id2prop) => {
 
-  const originals = []
 
-  idList.forEach(id => {
-    const props = id2prop[id]
-    if(!props.Hidden) {
-      originals.push(props.Label)
+class SearchResult extends Component {
+
+
+  state = {}
+
+  buildNestedList = (idList, id2prop) => {
+
+    const nestedList = {}
+
+    // Creates basic structure only with original nodes
+    idList.forEach(id => {
+      const props = id2prop[id]
+      if (!props.Hidden) {
+        nestedList[props.Label] = {
+          props: props,
+          children: {},
+        }
+
+      }
+    })
+
+    idList.forEach(id => {
+      const props = id2prop[id]
+      if (props.Hidden) {
+        const label = props.Label
+        const parent = nestedList[label]
+        parent.children[id] = props
+      }
+    })
+
+    return nestedList
+  }
+
+  handleClick = (nodeId, rootId) => {
+    this.props.commandActions.findPath([nodeId, rootId])
+  };
+
+  handleToggle = (label) => {
+    if(this.state[label] === undefined) {
+      this.setState({[label]: true});
+    } else {
+      this.setState({[label]: !this.state[label]});
     }
-  })
-}
+  }
+
+  render() {
+    let results = this.props.search.result
+
+    if (results === undefined || results === null) {
+      return (
+        <List style={resultStyle}>
+          <ListItem>
+            <ListItemText
+              primary={'No result!'}
+            />
+          </ListItem>
+        </List>
+      )
+    }
+
+    const id2prop = this.props.id2prop
+    const nestedList = this.buildNestedList(results, id2prop)
+    const parents = Object.keys(nestedList)
 
 
+    console.log("*** PROP nested")
+    console.log(nestedList)
 
-const SearchResult = (props) => {
-
-  let results = props.search.result
-
-  if (results === undefined || results === null) {
     return (
       <List style={resultStyle}>
-        <ListItem>
-          <ListItemText
-            primary={"No result!"}
-          />
-        </ListItem>
+        {
+          parents.map((parent, i) =>
+
+            (
+              <div>
+                <ListItem
+                  key={i}
+                >
+                  <ListItemIcon
+                    onClick={(e) => this.handleClick(nestedList[parent].props.id, this.props.rootId)}
+                  >
+                    <OpenIcon
+                    />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={nestedList[parent].props.Label}
+                    secondary={nestedList[parent].props.NodeType}
+                  />
+                  {this.state[parent] ?
+                    <ExpandLess
+                      onClick={(e) => this.handleToggle(parent)}
+                    /> :
+                    <ExpandMore
+                      onClick={(e) => this.handleToggle(parent)}
+                    />
+                  }
+                </ListItem>
+
+                <Collapse component="li" in={this.state[parent]} timeout="auto" unmountOnExit>
+                  <AliasList
+                    rootId={this.props.rootId}
+                    aliases={nestedList[parent].children}
+                    commandActions={this.props.commandActions}
+                  />
+                </Collapse>
+              </div>
+            )
+          )
+        }
       </List>
     )
   }
-
-  const id2prop = props.id2prop
-
-  let i = results.length
-  const labels = new Array(i)
-
-  while (--i) {
-    labels[i] = id2prop[results[i]].Label
-  }
-
-
-  return (
-    <List style={resultStyle}>
-      {
-        results.map((result, i) =>
-
-          (<ListItem
-            button
-            onClick={handleClick(result, props.rootId, props.commandActions)}
-            key={i}
-          >
-            <ListItemIcon>
-              <OpenIcon/>
-            </ListItemIcon>
-            <ListItemText
-              primary={id2prop[result].Label}
-              secondary={id2prop[result].NodeType + '(' + id2prop[result].Hidden + ')'}
-            />
-          </ListItem>))
-      }
-    </List>
-  )
-}
-
-const handleClick = (nodeId, rootId, action) => () => {
-  console.log('------------------------------------------------------------------------------')
-  action.zoomToNode(nodeId)
-  action.findPath([nodeId, rootId])
-
 }
 
 

@@ -49,8 +49,8 @@ export default class NetworkViewer extends Component {
       events, eventActions, uiState, currentProperty, propertyActions,
       search, searchActions, network, messageActions,
       rawInteractionsActions, selection, selectionActions,
-      filters, filtersActions, interactionStyle, interactionStyleActions
-
+      filters, filtersActions, interactionStyle, interactionStyleActions,
+      currentPathActions
     } = this.props
 
     let errorMsg = null
@@ -89,6 +89,7 @@ export default class NetworkViewer extends Component {
           selectionActions={selectionActions}
 
           cxtoolUrl={CXTOOL_URL}
+          currentPathActions={currentPathActions}
         />
 
         <Commands

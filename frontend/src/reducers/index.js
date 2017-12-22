@@ -21,6 +21,7 @@ import message from './message'
 import idmap from './idmap'
 
 import selection from './selection'
+import current_path from './current-path'
 
 
 // Application states
@@ -35,7 +36,8 @@ const app_manager = combineReducers({
   query_genes,
   message,
   selection,
-  interactions_commands
+  interactions_commands,
+  current_path
 })
 
 
