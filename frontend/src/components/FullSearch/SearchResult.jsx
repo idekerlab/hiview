@@ -7,21 +7,17 @@ import Collapse from 'material-ui/transitions/Collapse';
 import ExpandLess from 'material-ui-icons/ExpandLess';
 import ExpandMore from 'material-ui-icons/ExpandMore';
 
-import DownArrow from 'material-ui-icons/ArrowDownward'
 
 import AliasList from './AliaseList'
 
 
 const resultStyle = {
-  maxHeight: '30em',
+  maxHeight: '40em',
   overflow: 'auto',
 }
 
 
-
-
 class SearchResult extends Component {
-
 
   state = {}
 
@@ -35,9 +31,10 @@ class SearchResult extends Component {
       if (!props.Hidden) {
         nestedList[props.Label] = {
           props: props,
-          children: {},
+          children: {
+            [id]: props
+          }
         }
-
       }
     })
 
@@ -84,10 +81,6 @@ class SearchResult extends Component {
     const nestedList = this.buildNestedList(results, id2prop)
     const parents = Object.keys(nestedList)
 
-
-    console.log("*** PROP nested")
-    console.log(nestedList)
-
     return (
       <List style={resultStyle}>
         {
@@ -123,6 +116,7 @@ class SearchResult extends Component {
                     rootId={this.props.rootId}
                     aliases={nestedList[parent].children}
                     commandActions={this.props.commandActions}
+                    currentPath={this.props.currentPath}
                   />
                 </Collapse>
               </div>

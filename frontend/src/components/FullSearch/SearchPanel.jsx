@@ -21,7 +21,7 @@ import MainPanel from './MainPanel'
 const styles = theme => ({
 
   card: {
-    width: 400,
+    width: 500,
   },
   media: {
     height: 194,
@@ -146,6 +146,7 @@ class SearchPanel extends Component {
                 commandActions={this.props.commandActions}
                 id2prop={id2prop}
                 rootId={rootId}
+                currentPath={this.props.currentPath}
               />
             </CardContent>
           </Collapse>

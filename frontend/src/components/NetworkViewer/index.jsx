@@ -50,7 +50,7 @@ export default class NetworkViewer extends Component {
       search, searchActions, network, messageActions,
       rawInteractionsActions, selection, selectionActions,
       filters, filtersActions, interactionStyle, interactionStyleActions,
-      currentPathActions
+      currentPathActions, currentPath
     } = this.props
 
     let errorMsg = null
@@ -132,6 +132,7 @@ export default class NetworkViewer extends Component {
           commandActions={commandActions}
           searchActions={searchActions}
           search={search}
+          currentPath={currentPath}
         />
 
         <Errorbar
