@@ -6,7 +6,7 @@ import GenePropertyPanel from './GenePropertyPanel'
 
 import CloseIcon from 'material-ui-icons/Close'
 
-const MAX_WIDTH = 1000.0
+const MAX_WIDTH = 500.0
 const MIN_WIDTH = 350.0
 
 

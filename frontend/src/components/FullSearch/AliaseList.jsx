@@ -1,62 +1,74 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
+import Collapse from "material-ui/transitions/Collapse";
+import List, {
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemIcon,
+  ListItemText
+} from "material-ui/List";
+import Avatar from "material-ui/Avatar";
+import Button from "material-ui/Button";
 
-import Collapse from 'material-ui/transitions/Collapse';
-import List, {ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemIcon, ListItemText} from "material-ui/List";
+import PlaceIcon from "material-ui-icons/Place";
+import NavigationIcon from "material-ui-icons/Navigation";
 
-import PlaceIcon from 'material-ui-icons/Place';
-import NavigationIcon from 'material-ui-icons/Navigation';
-
-import Avatar from 'material-ui/Avatar';
-import IconButton from 'material-ui/IconButton';
-
-import Card, {CardActions, CardContent} from 'material-ui/Card';
-import Button from 'material-ui/Button';
-import Typography from 'material-ui/Typography';
-
-import PathList from './PathList'
+import PathList from "./PathList";
 
 class AliasList extends Component {
+  state = {};
 
-  state = {}
+  componentWillReceiveProps(nextProps) {
+    const newPath = nextProps.currentPath;
+    console.log("NEW PATH=========================");
+    console.log(newPath);
+
+    if (newPath !== undefined && newPath !== null) {
+      const path = newPath.get("currentPath");
+
+      if(path === undefined || path === null || path.length === 0) {
+        return
+      }
+
+      this.setState({ [path[0].id]: path });
+    }
+  }
 
   render() {
-    console.log(";;;;;;;;;;;;;;;;;;;;;;;; ")
-    console.log(this.props)
-
     const aliases = this.props.aliases;
     const keys = Object.keys(aliases);
 
     return (
-      <List disablePadding style={{paddingLeft: '4em'}}>
+      <List disablePadding style={{ paddingLeft: "4em" }}>
         {keys.map((key, i) => (
-
           <div>
-            <ListItem
-              key={i}
-            >
+            <ListItem key={i}>
               <ListItemAvatar>
                 <Avatar>
-                  <PlaceIcon/>
+                  <PlaceIcon />
                 </Avatar>
               </ListItemAvatar>
 
               <ListItemText
-                primary={'Path ' + (i + 1)}
-                secondary={'Node ID: ' + key}
+                primary={"Path " + (i + 1)}
+                secondary={"Node ID: " + key}
               />
               <ListItemSecondaryAction>
                 <Button
-                  aria-label="Find path" raised color="secondary"
-                  onClick={(e) => this.handleClick(key)}
+                  aria-label="Find path"
+                  raised
+                  color="secondary"
+                  onClick={e => this.handleClick(key)}
                 >
-                  <NavigationIcon/>
+                  <NavigationIcon />
                   Find Path
                 </Button>
               </ListItemSecondaryAction>
             </ListItem>
             <Collapse component="li" in={true} timeout="auto" unmountOnExit>
               <PathList
-                path={this.props.currentPath}
+                path={this.state[key]}
+                commandActions={this.props.commandActions}
               />
             </Collapse>
           </div>
@@ -65,13 +77,9 @@ class AliasList extends Component {
     );
   }
 
-
-  handleClick = (nodeId) => {
-    this.props.commandActions.findPath([nodeId, this.props.rootId])
-  }
-
+  handleClick = nodeId => {
+    this.props.commandActions.findPath([nodeId, this.props.rootId]);
+  };
 }
-
-
 
 export default AliasList;
