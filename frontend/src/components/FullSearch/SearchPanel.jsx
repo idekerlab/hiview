@@ -139,7 +139,7 @@ class SearchPanel extends Component {
             </IconButton>
           </CardActions>
           <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-            <CardContent>
+            <CardContent style={{padding: 0}}>
 
               <SearchResult
                 search={this.props.search}

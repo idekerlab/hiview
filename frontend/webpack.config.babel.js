@@ -30,7 +30,7 @@ export default () => ({
       },
       {
         test: /\.css$/,
-        exclude: /node_modules\/rc-slider/,
+        exclude: path.resolve(__dirname, 'node_modules/rc-slider/'),
         use: [
           {
             loader: 'style-loader',
@@ -45,7 +45,7 @@ export default () => ({
       },
       {
         test: /\.css/,
-        include: /node_modules\/rc-slider/,
+        include: path.resolve(__dirname, 'node_modules/rc-slider/'),
         use: [
           {
             loader: 'style-loader',
