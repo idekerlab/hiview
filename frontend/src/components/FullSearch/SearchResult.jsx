@@ -11,10 +11,6 @@ import ExpandMore from 'material-ui-icons/ExpandMore';
 import AliasList from './AliaseList'
 
 
-const resultStyle = {
-  maxHeight: '40em',
-  overflow: 'auto',
-}
 
 
 class SearchResult extends Component {
@@ -63,6 +59,14 @@ class SearchResult extends Component {
   }
 
   render() {
+
+    const windowHeight = window.innerHeight * 0.75
+
+    const resultStyle = {
+      height: windowHeight,
+      overflow: 'auto',
+    }
+
     let results = this.props.search.result
 
     if (results === undefined || results === null) {
@@ -87,9 +91,10 @@ class SearchResult extends Component {
           parents.map((parent, i) =>
 
             (
-              <div>
+              <div
+                key={'parent-' + i}
+              >
                 <ListItem
-                  key={i}
                 >
                   <ListItemIcon
                     onClick={(e) => this.handleClick(nestedList[parent].props.id, this.props.rootId)}

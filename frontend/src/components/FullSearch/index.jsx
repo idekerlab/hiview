@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React from 'react'
 import SearchPanel from './SearchPanel'
 
 const baseStyle = {

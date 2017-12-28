@@ -39,10 +39,12 @@ class AliasList extends Component {
     const keys = Object.keys(aliases);
 
     return (
-      <List disablePadding style={{ paddingLeft: "4em" }}>
+      <List disablePadding style={{ paddingLeft: "1.5em" }}>
         {keys.map((key, i) => (
-          <div>
-            <ListItem key={i}>
+          <div
+            key={'alias-' + i}
+          >
+            <ListItem>
               <ListItemAvatar>
                 <Avatar>
                   <PlaceIcon />
@@ -55,9 +57,9 @@ class AliasList extends Component {
               />
               <ListItemSecondaryAction>
                 <Button
-                  aria-label="Find path"
+                  aria-label='Find path'
                   raised
-                  color="secondary"
+                  color={'accent'}
                   onClick={e => this.handleClick(key)}
                 >
                   <NavigationIcon />

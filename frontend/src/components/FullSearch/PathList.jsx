@@ -13,7 +13,7 @@ const PathList = props => {
   }
 
   return (
-    <List disablePadding style={{paddingLeft: '4em'}}>
+    <List disablePadding style={{paddingLeft: '1.5em'}}>
       {path.map((node, i) => (
 
         <ListItem

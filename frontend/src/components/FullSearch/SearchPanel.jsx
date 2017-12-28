@@ -21,7 +21,7 @@ import MainPanel from './MainPanel'
 const styles = theme => ({
 
   card: {
-    width: 500,
+    width: 360,
   },
   media: {
     height: 194,

@@ -59,7 +59,7 @@ class SearchBox extends Component {
     return (
       <div style={baseStyle}>
         <TextField
-          style={{width: '10em', fontSize: '1.5em'}}
+          style={{width: '8em', fontSize: '1.5em'}}
           placeholder='e.g. brca1'
           label='Search Terms/Genes'
           margin="normal"
