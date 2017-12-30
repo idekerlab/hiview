@@ -60,8 +60,8 @@ const createGroups = netAndFilter => {
       groupMap[group] = []
     })
 
-
     const nodes = network.elements.nodes
+
     nodes.forEach(node => {
       const nodeData = node.data
       const nodePropNames = Object.keys(nodeData)

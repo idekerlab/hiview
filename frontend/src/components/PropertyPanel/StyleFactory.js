@@ -26,10 +26,11 @@ const BASE_STYLE = {
   nodeSelected: {
     'selector': 'node:selected',
     'css': {
-      'width': 64,
-      'height': 30,
+      'width': 60,
+      'height': 60,
       'font-size': 14,
       color: '#222222',
+      'background-opacity': 0,
       'background-color': '#FFFFFF',
     },
   },

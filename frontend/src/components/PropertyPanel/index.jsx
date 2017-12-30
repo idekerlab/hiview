@@ -105,7 +105,6 @@ class PropertyPanel extends Component {
       paddingLeft: '0.8em',
     }
 
-
     return (
       <Drawer
         style={drawerStyle}
