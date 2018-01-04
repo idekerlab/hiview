@@ -115,9 +115,7 @@ class TermDetailsPanel extends Component {
 
 
     const data = details.data
-
     let entry = {}
-
     let subnet = null
 
     let geneList = []
@@ -145,11 +143,12 @@ class TermDetailsPanel extends Component {
 
     const filterPanelStyle = {
       display: 'inline-flex',
-      maxHeight: '17em',
+      height: '17em',
       width: '100%',
-      padding: '1em',
-      borderTop: 'solid 1px #444444',
-      borderBottom: 'solid 1px #444444'
+      padding: '0.6em',
+      backgroundColor: '#F5F5F5'
+      // borderTop: 'solid 1px #444444',
+      // borderBottom: 'solid 1px #444444'
     }
 
     const controlPanelStyle = {
@@ -199,8 +198,6 @@ class TermDetailsPanel extends Component {
             filtersActions={this.props.filtersActions}
           />
 
-          <ColorMapSelector />
-
           <LayoutSelector
             commandActions={this.props.interactionsCommandActions}
           />
@@ -211,7 +208,6 @@ class TermDetailsPanel extends Component {
             groups={raw.groups}
             commandActions={this.props.interactionsCommandActions}
           />
-
 
           <EdgeFilter
             filters={raw.filters}

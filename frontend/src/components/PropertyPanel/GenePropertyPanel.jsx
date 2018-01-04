@@ -9,6 +9,7 @@ import PropTreePanel from './PropTreePanel'
 
 import CoreGenePropPanel from './CoreGenePropPanel'
 
+import Typography from "material-ui/Typography";
 
 
 import * as d3Scale from 'd3-scale'
@@ -89,8 +90,10 @@ class GenePropertyPanel extends Component {
         />
 
         <div style={descriptionStyle}>
-          <div style={labelStyle}>Summary:</div>
-          {entry.summary}
+          <Typography type="title">Summary:</Typography>
+          <Typography type="body2">
+            {entry.summary}
+          </Typography>
         </div>
 
 

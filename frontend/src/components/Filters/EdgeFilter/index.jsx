@@ -1,17 +1,15 @@
-import React, {Component} from 'react'
+import React, { Component } from "react";
+import List, { ListItem } from "material-ui/List";
 
-import Slider, {createSliderWithTooltip} from 'rc-slider'
-import 'rc-slider/assets/index.css'
+import ContinuousFilter from "./ContinuousFilter";
+import BooleanFilter from "./BooleanFilter";
 
-import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
+import { withStyles } from "material-ui/styles";
 
-import ContinuousFilter from './ContinuousFilter'
-import BooleanFilter from './BooleanFilter'
+import Typography from "material-ui/Typography";
 
-import { withStyles } from 'material-ui/styles';
-
-import * as d3Scale from 'd3-scale'
-const originalColorMap = d3Scale.scaleOrdinal(d3Scale.schemeCategory10)
+import * as d3Scale from "d3-scale";
+const originalColorMap = d3Scale.scaleOrdinal(d3Scale.schemeCategory10);
 
 const COLORS = [
   originalColorMap(0),
@@ -19,140 +17,120 @@ const COLORS = [
   originalColorMap(2),
   originalColorMap(3),
   originalColorMap(4),
-  '#EFFFEF',
-]
+  "#EFFFEF"
+];
 
-const COLORS2 = []
+const COLORS2 = [];
 
-for(let i=0; i<6; i++) {
-  if(i !== 1) {
-    COLORS2.push(COLORS[i])
+for (let i = 0; i < 6; i++) {
+  if (i !== 1) {
+    COLORS2.push(COLORS[i]);
   }
 }
 
-const colorMap = (idx) => (COLORS2[idx])
+const colorMap = idx => COLORS2[idx];
 
 const FILTER_TYPES = {
-  CONTINUOUS: 'continuous',
-  BOOLEAN: 'boolean'
-}
-
+  CONTINUOUS: "continuous",
+  BOOLEAN: "boolean"
+};
 
 const styles = theme => ({
   root: {
-    width: '100%',
-    background: theme.palette.background.paper,
-    position: 'relative',
-    overflow: 'auto',
+    height: "inherit",
+    position: "relative",
+    background: 'inherit',
+    flexGrow: 2,
+    paddingRight: '0.6em'
+  },
+  title: {
+    height: '2em'
   },
   list: {
+    overflow: "scroll",
+    height: '13em'
 
   },
   listItemLarge: {
-    height: '1.3em',
+    height: "1.3em",
     margin: 0,
-    padding: '0.3em'
+    padding: "0.3em"
   },
   listItem: {
-    height: '1em',
+    height: "1em",
     margin: 0,
-    padding: '0.2em'
+    padding: "0.2em",
+    paddingLeft: 0
+
   }
 });
 
-
-const log = (value) => {
-  console.log(value)
-}
-
-const percentFormatter = (v) => {
-  return `${v} %`
-}
-
-const SliderWithTooltip = createSliderWithTooltip(Slider)
-
-
-const sliderRowStyle = {
-  display: 'flex',
-  alignItems: 'center',
-}
-
 class EdgeFilter extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       open: true,
       selected: new Array(5)
-    }
+    };
   }
 
-  onAfterChange = (value) => {
-    console.log(value)
-  }
-
+  onAfterChange = value => {
+    console.log(value);
+  };
 
   handleChange = name => event => {
-    this.setState({[name]: event.target.checked});
-  }
+    this.setState({ [name]: event.target.checked });
+  };
 
-  handleClick = (event) => {
-
-    const isOpen = this.state.open
+  handleClick = event => {
+    const isOpen = this.state.open;
 
     this.setState({
       open: !isOpen
     });
-  }
+  };
 
   render() {
-
-    const { classes } = this.props
-    const filters = this.props.filters
+    const { classes } = this.props;
+    const filters = this.props.filters;
 
     if (filters === null || filters.length === 0) {
-      return (<div></div>)
+      return <div />;
     }
 
-    let primaryFilter = null
-    const filterNames = []
-    const filterMap = {}
+    let primaryFilter = null;
+    const filterNames = [];
+    const filterMap = {};
 
     filters.forEach(filter => {
-      const isPrimary = filter.isPrimary
-      if(isPrimary) {
-        primaryFilter = filter
+      const isPrimary = filter.isPrimary;
+      if (isPrimary) {
+        primaryFilter = filter;
       } else {
-        filterNames.push(filter.attributeName)
-        filterMap[filter.attributeName] = filter
+        filterNames.push(filter.attributeName);
+        filterMap[filter.attributeName] = filter;
       }
-    })
+    });
 
-    const sortedNames = filterNames.sort()
-
+    const sortedNames = filterNames.sort();
 
     return (
       <div className={classes.root}>
-        <List>
-            {
-              sortedNames.map(filterName => (
-                <ListItem
-                  className={classes.listItem}
-                  key={filterName}
-                >
-                  {this.getFilter(filterMap[filterName])}
-                </ListItem>
-              ))
-            }
+        <Typography type="title" className={classes.title}>Interaction Features:</Typography>
 
-        </List>
+          <List className={classes.list}>
+            {sortedNames.map(filterName => (
+              <ListItem className={classes.listItem} key={filterName}>
+                {this.getFilter(filterMap[filterName])}
+              </ListItem>
+            ))}
+          </List>
       </div>
-    )
+    );
   }
 
   getFilter(filter) {
-
-    const filterType = filter.type
+    const filterType = filter.type;
 
     if (filterType === FILTER_TYPES.CONTINUOUS) {
       return (
@@ -171,9 +149,9 @@ class EdgeFilter extends Component {
           selected={this.state.selected}
           colorMap={colorMap}
         />
-      )
-    } else if(filterType === FILTER_TYPES.BOOLEAN) {
-      return(
+      );
+    } else if (filterType === FILTER_TYPES.BOOLEAN) {
+      return (
         <BooleanFilter
           key={filter.attributeName}
           label={filter.attributeName}
@@ -183,8 +161,7 @@ class EdgeFilter extends Component {
           selected={this.state.selected}
           colorMap={colorMap}
         />
-      )
-
+      );
     }
   }
 }

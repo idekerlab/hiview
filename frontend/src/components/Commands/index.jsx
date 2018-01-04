@@ -46,11 +46,6 @@ class Commands extends Component {
 
   render() {
 
-    const buttonStyle = {
-      width: '2.8em',
-      height: '2.8em',
-    }
-
     const uiState = this.props.uiState
 
     if (!uiState.get('showCommands')) {
@@ -73,10 +68,9 @@ class Commands extends Component {
 
         <div className={classnames(style.bar, style.grid)}>
           <Button
-            fab
+            fab mini
             color="primary"
             aria-label="zoom in"
-            style={buttonStyle}
             className={style.command}
             onClick={this.handleZoomIn}
           >
@@ -84,20 +78,18 @@ class Commands extends Component {
             />
           </Button>
           <Button
-            fab
+            fab mini
             color="primary"
             aria-label="zoom out"
-            style={buttonStyle}
             className={style.command}
             onClick={this.handleZoomOut}
           >
             <ZoomOut/>
           </Button>
           <Button
-            fab
+            fab mini
             color="primary"
             aria-label="fit"
-            style={buttonStyle}
             className={style.command}
             onClick={this.handleFit}
           >
@@ -105,9 +97,8 @@ class Commands extends Component {
           </Button>
 
           <Button
-            fab
+            fab mini
             aria-label="settings"
-            style={buttonStyle}
             className={style.command}
             onClick={this.handleOpenMenu}
           >

@@ -30,7 +30,6 @@ const BASE_STYLE = {
       'height': 60,
       'font-size': 14,
       color: '#222222',
-      'background-opacity': 0,
       'background-color': '#FFFFFF',
     },
   },

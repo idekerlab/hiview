@@ -7,21 +7,28 @@ import List, {
 } from "material-ui/List";
 import Avatar from "material-ui/Avatar";
 
+import Typography from "material-ui/Typography";
 import * as d3Scale from "d3-scale";
+
+const PANEL_TITLE = 'Subsystems'
+
 
 const colorMap = d3Scale.scaleOrdinal(d3Scale.schemeCategory20c);
 
 const styles = theme => ({
   root: {
     width: "30%",
-    background: theme.palette.background.paper,
-    overflow: "auto",
+    background: 'inherit',
     minWidth: "14em",
     color: "#333333",
     position: "relative"
   },
-  listSection: {
-    background: "inherit"
+  title: {
+    height: '2em'
+  },
+  list: {
+    overflow: "scroll",
+    height: '13em'
   },
   listItem: {
     height: "1.8em",
@@ -30,12 +37,6 @@ const styles = theme => ({
   }
 });
 
-const titleStyle = {
-  color: "#111111",
-  fontWeight: 400,
-  fontSize: "1em",
-  paddingLeft: "1em"
-};
 
 class GroupSelector extends Component {
 
@@ -97,9 +98,10 @@ class GroupSelector extends Component {
     let i = 0;
     return (
       <div className={classes.root}>
-        <div style={titleStyle}>Assigned gene selector:</div>
 
-        <List>
+        <Typography type="title" className={classes.title}>{PANEL_TITLE}</Typography>
+
+        <List className={classes.list}>
           {groupNames.map(group => {
             const color = colorMap(i++);
             const avatarStyle = {

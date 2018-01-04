@@ -35,11 +35,12 @@ import * as interactionsCommandsActions from '../../actions/commands-interaction
 
 import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
 
-import {lightBlue, red} from 'material-ui/colors'
+import {lightBlue100, redA200, red} from 'material-ui/colors'
 
 const theme = createMuiTheme({
   palette: {
-    primary: lightBlue,
+    primary: lightBlue100,
+    accent: redA200,
     error: red,
   },
 });
