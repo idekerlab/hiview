@@ -37,6 +37,7 @@ export const fetchInteractionsFromUrl = url => {
 
     return fetchNet(url)
       .then(response => (response.json()))
+      .then(network => (sortEdges(network)))
       .then(network => (createFilter(network)))
       .then(netAndFilter => (createGroups(netAndFilter)))
       .then(netAndFilter => (addExtraEdges(netAndFilter)))
@@ -84,6 +85,38 @@ const createGroups = netAndFilter => {
 
   return netAndFilter
 }
+
+const compareBy = fieldName => (a, b) => {
+
+  const scoreA = a.data[fieldName];
+  const scoreB = b.data[fieldName];
+
+  let comparison = 0;
+  if (scoreA > scoreB) {
+    comparison = 1;
+  } else if (scoreA < scoreB) {
+    comparison = -1;
+  }
+  return comparison;
+}
+
+const sortEdges = (network) => {
+
+  const nodes = network.elements.nodes
+  const edges = network.elements.edges
+
+  edges.sort(compareBy('RF_score'))
+
+  // console.log("SORTED EDGES=======================================>>")
+
+  // edges.forEach(edge=> {console.log(edge.data['RF_score'])})
+
+
+  
+  return network
+}
+
+
 
 const createFilter = network => {
 

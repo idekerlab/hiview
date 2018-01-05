@@ -1,36 +1,3 @@
 {
-  "plugins": [
-    "prettier"
-  ],
-  "extends": [
-    "eslint:all",
-    "plugin:react/all"
-  ],
-  "parserOptions": {
-    "ecmaVersion": 6,
-    "sourceType": "module",
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
-  "rules": {
-    "prettier/prettier": "error",
-    "indent": ["error", 2],
-    "react/jsx-indent": [
-      2,
-      2
-    ],
-    "semi": [
-      0,
-      "always"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "comma-dangle": [
-      "error",
-      "only-multiline"
-    ]
-  }
+  "extends": ["plugin:prettier/recommended"]
 }
