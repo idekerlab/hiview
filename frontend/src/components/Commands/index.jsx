@@ -2,17 +2,13 @@ import React, { Component } from "react";
 import MainMenu from "../MainMenu";
 import Drawer from "material-ui/Drawer";
 
-import classnames from "classnames";
-
-import style from "./style.css";
-
-import Button from "material-ui/Button";
-
-// Icons
 import FitContent from "material-ui-icons/ZoomOutMap";
 import ZoomIn from "material-ui-icons/ZoomIn";
 import ZoomOut from "material-ui-icons/ZoomOut";
-import Settings from "material-ui-icons/Settings";
+import Button from "material-ui/Button";
+
+import classnames from "classnames";
+import style from "./style.css";
 
 const dStyle = {
   padding: 10
@@ -25,10 +21,6 @@ class Commands extends Component {
       open: false
     };
   }
-
-  handleOpenMenu = () => {
-    this.setState({ open: !this.state.open });
-  };
 
   handleZoomIn = event => {
     this.props.commandActions.zoomIn();
@@ -90,16 +82,6 @@ class Commands extends Component {
             onClick={this.handleFit}
           >
             <FitContent />
-          </Button>
-
-          <Button
-            fab
-            mini
-            aria-label="settings"
-            className={style.command}
-            onClick={this.handleOpenMenu}
-          >
-            <Settings />
           </Button>
         </div>
       </div>

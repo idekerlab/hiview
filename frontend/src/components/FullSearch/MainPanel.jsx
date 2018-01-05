@@ -67,6 +67,11 @@ class MainPanel extends React.Component {
     })
   }
 
+  handleOpen = (event) => {
+    const currentPanelState = this.props.uiState.get('showMainMenu')
+    this.props.uiStateActions.showMainMenu(!currentPanelState)
+  }
+
 
   render() {
 
@@ -76,7 +81,9 @@ class MainPanel extends React.Component {
       <div style={baseStyle}>
 
         <IconButton
-          aria-label="Open main menu">
+          aria-label="Open main menu"
+          onClick={this.handleOpen}
+        >
           <MenuIcon/>
         </IconButton>
 

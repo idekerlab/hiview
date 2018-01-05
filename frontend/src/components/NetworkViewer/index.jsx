@@ -8,7 +8,8 @@ import Errorbar from 'material-ui/Snackbar';
 import Commands from '../Commands'
 import style from './style.css'
 
-import SimpleSearch from '../SimpleSearch'
+import MainMenuPanel from '../MainMenuPanel'
+
 import FullSearch from '../FullSearch'
 
 
@@ -46,7 +47,7 @@ export default class NetworkViewer extends Component {
     const {
       networkActions,
       commands, commandActions,
-      events, eventActions, uiState, currentProperty, propertyActions,
+      events, eventActions, uiState, uiStateActions, currentProperty, propertyActions,
       search, searchActions, network, messageActions,
       rawInteractionsActions, selection, selectionActions,
       filters, filtersActions, interactionStyle, interactionStyleActions,
@@ -65,6 +66,12 @@ export default class NetworkViewer extends Component {
 
       <div style={this.props.style}>
 
+        <MainMenuPanel
+          uiState={uiState}
+          uiStateActions={uiStateActions}
+          maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
+        />
+
         <NetworkPanel
           networkActions={networkActions}
           commands={commands}
@@ -79,6 +86,7 @@ export default class NetworkViewer extends Component {
 
           messageActions={messageActions}
 
+          maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
           rawInteractionsActions={rawInteractionsActions}
 
           idmapActions={this.props.idmapActions}
@@ -120,12 +128,6 @@ export default class NetworkViewer extends Component {
           cxtoolUrl={CXTOOL_URL}
         />
 
-        {/*<SimpleSearch*/}
-          {/*datasource={this.props.datasource.toJS()}*/}
-          {/*network={network.toJS()}*/}
-          {/*commandActions={commandActions}*/}
-        {/*/>*/}
-
         <FullSearch
           datasource={this.props.datasource.toJS()}
           network={network.toJS()}
@@ -133,6 +135,8 @@ export default class NetworkViewer extends Component {
           searchActions={searchActions}
           search={search}
           currentPath={currentPath}
+          uiState={uiState}
+          uiStateActions={uiStateActions}
         />
 
         <Errorbar

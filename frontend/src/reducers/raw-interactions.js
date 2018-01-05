@@ -1,11 +1,14 @@
-import {FETCH_INTERACTIONS, RECEIVE_INTERACTIONS, SET_VALUE} from '../actions/raw-interactions'
+import {FETCH_INTERACTIONS, RECEIVE_INTERACTIONS, SET_VALUE, SET_MAX_EDGE_COUNT} from '../actions/raw-interactions'
 import {Map} from 'immutable'
+
+const DEF_MAX_EDGE_COUNT = 500
 
 const defState = Map({
   loading: false,
   interactions: null,
   filters: null,
-  extraEdges: null
+  extraEdges: null,
+  maxEdgeCount: DEF_MAX_EDGE_COUNT
 })
 
 export default function networkState(state = defState, action) {
@@ -46,6 +49,8 @@ export default function networkState(state = defState, action) {
 
 
       return state.set('filters', filters)
+    case SET_MAX_EDGE_COUNT:
+      return set('maxEdgeCount', action.payload)
 
     default:
       return state

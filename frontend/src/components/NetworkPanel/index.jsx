@@ -113,7 +113,7 @@ class NetworkPanel extends Component {
       // this.props.commandActions.findPath({startId: startNode, endId: root})
 
       // Directly set prop from node attributes
-      this.props.rawInteractionsActions.fetchInteractionsFromUrl(link)
+      this.props.rawInteractionsActions.fetchInteractionsFromUrl(link, this.props.maxEdgeCount)
       this.props.propertyActions.setProperty(props.id, props, 'term')
     }, 0)
   }

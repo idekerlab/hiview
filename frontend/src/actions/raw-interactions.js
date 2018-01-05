@@ -31,16 +31,15 @@ const fetchNet = url => {
   return fetch(url)
 }
 
-export const fetchInteractionsFromUrl = url => {
+export const fetchInteractionsFromUrl = (url, maxEdgeCount= 500) => {
   return dispatch => {
     dispatch(fetchNetwork(url))
 
     return fetchNet(url)
       .then(response => (response.json()))
-      .then(network => (sortEdges(network)))
+      .then(network => (sortEdges(network, maxEdgeCount)))
       .then(network => (createFilter(network)))
       .then(netAndFilter => (createGroups(netAndFilter)))
-      .then(netAndFilter => (addExtraEdges(netAndFilter)))
       .then( netAndFilter =>
         dispatch(receiveNetwork(url, netAndFilter[0], netAndFilter[1], netAndFilter[2], netAndFilter[3]))
       )
@@ -93,30 +92,51 @@ const compareBy = fieldName => (a, b) => {
 
   let comparison = 0;
   if (scoreA > scoreB) {
-    comparison = 1;
-  } else if (scoreA < scoreB) {
     comparison = -1;
+  } else if (scoreA < scoreB) {
+    comparison = 1;
   }
   return comparison;
 }
 
-const sortEdges = (network) => {
+const sortEdges = (network, maxEdgeCount) => {
 
   const nodes = network.elements.nodes
   const edges = network.elements.edges
 
+  const edgeCount = edges.length
+  if(edgeCount<maxEdgeCount) {
+    return network
+  }
+
   edges.sort(compareBy('RF_score'))
 
-  // console.log("SORTED EDGES=======================================>>")
+  const subset = edges.slice(0,maxEdgeCount)
+  const subsetLen = subset.length
+  const nodeSet = new Set()
 
-  // edges.forEach(edge=> {console.log(edge.data['RF_score'])})
+  for(let i = 0; i<subsetLen; i++){
+    const edge = subset[i]
+    nodeSet.add(edge.data.source)
+    nodeSet.add(edge.data.target)
+  }
 
+  let j = nodes.length
+  const newNodes = new Array(nodeSet.size)
 
-  
+  let idx = 0
+  while(j--) {
+    const node = nodes[j]
+    if(nodeSet.has(node.data.id)) {
+      newNodes[idx] = node
+      idx++
+    }
+  }
+  network.elements.edges = subset
+  network.elements.nodes = newNodes
+
   return network
 }
-
-
 
 const createFilter = network => {
 
@@ -124,7 +144,6 @@ const createFilter = network => {
 
   const edges = network.elements.edges
   let edgeCount = edges.length
-
 
   // 1. Extract props from network data
   const edgeTypes = {}
@@ -205,68 +224,10 @@ const createFilter = network => {
 }
 
 
-const addExtraEdges = netAndFilter => {
-
-  const network = netAndFilter[0]
-  const filters = netAndFilter[1]
-  const filterNames = Object.keys(filters)
-
-
-  let primaryFilterName = ''
-  filterNames.forEach(filterName => {
-    if (filters[filterName].isPrimary) {
-      primaryFilterName = filterName
-    }
-  })
-
-  const newEdges = []
-  //
-  // let i = edgeCount
-  // while (i--) {
-  //   const edge = edges[i]
-  //
-  //   const edgeData = edge.data
-  //   const keys = Object.keys(edgeData)
-  //
-  //   let j = keys.length
-  //   while (j--) {
-  //     const key = keys[j]
-  //     if (key === 'id' || key === 'source' || key === 'target') {
-  //       continue
-  //     }
-  //
-  //     const value = edgeData[key]
-  //     if (!value) {
-  //       continue
-  //     }
-  //
-  //     const newKey = key.replace(PATTERN, '_')
-  //     const newEdge = {
-  //       data: {
-  //         id: edgeData.id + '-' + key,
-  //         source: edgeData.source,
-  //         target: edgeData.target,
-  //       }
-  //     }
-  //
-  //
-  //     newEdge.data[newKey] = edgeData[key]
-  //     if (newKey === primaryFilterName) {
-  //       newEdges.unshift(newEdge)
-  //     } else {
-  //       newEdges.push(newEdge)
-  //     }
-  //   }
-  //
-  //
-  // }
-  netAndFilter.push(newEdges)
-
-  return netAndFilter
-
-}
-
 // For filters
-
 export const SET_VALUE = 'SET_VALUE'
 export const setValue = createAction(SET_VALUE)
+
+// For upper liit of edges
+export const SET_MAX_EDGE_COUNT = 'SET_MAX_EDGE_COUNT'
+export const setMaxEdgeCount = createAction(SET_MAX_EDGE_COUNT)

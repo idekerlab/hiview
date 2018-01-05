@@ -11,6 +11,12 @@ import Divider from 'material-ui/Divider';
 
 import HomeIcon from 'material-ui-icons/Home'
 import HelpIcon from 'material-ui-icons/HelpOutline';
+import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
+import Typography from 'material-ui/Typography';
+import IconButton from 'material-ui/IconButton';
+
+import Input from 'material-ui/Input';
+import TextField from 'material-ui/TextField';
 
 
 import style from './style.css'
@@ -18,6 +24,10 @@ import style from './style.css'
 
 // TODO: Split into smaller sub-menus
 export default class MainMenu extends Component {
+
+  state = {
+    maxEdge: this.props.maxEdgeCount
+  }
 
   handleHome = event => {
     window.location.href = '/'
@@ -42,41 +52,55 @@ export default class MainMenu extends Component {
     this.props.uiStateActions.showSearchWindow(!switched)
   }
 
-  extractNdexData(cxData) {
-    const provenanceHistory = cxData.provenanceHistory
 
-    if (provenanceHistory === undefined || provenanceHistory === null) {
-      return []
-    }
-
-    const entity = provenanceHistory[0].entity
-    if (entity === undefined || entity === null) {
-      return []
-    }
-
-    const properties = entity.properties
-    if (properties === undefined || properties === null) {
-      return []
-    }
-
-    return properties
+  handleClose = (event) => {
+    const currentPanelState = this.props.uiState.get('showMainMenu')
+    this.props.uiStateActions.showMainMenu(!currentPanelState)
   }
 
+  handleChange = event => {
+    this.setState({
+      maxEdge: event.target.value
+    });
+  }
+
+  handleKey = event => {
+    const maxEdge = this.state.maxEdge
+
+    if (event.key === 'Enter') {
+      console.log("Setting max to " + maxEdge)
+    }
+  }
 
   render() {
-
-    const uiState = this.props.uiState
-
-    const showCommands = uiState.get('showCommands')
-    const showSearchWindow = uiState.get('showSearchWindow')
+    const baseStyle = {
+      padding: '1em',
+      width: 400
+    }
 
     return (
-      <div style={{width: '400px'}}>
+      <div style={baseStyle}>
         <div className={classnames(style.grid, style.top)}>
-          <h1 className={style.title}>
+          <Typography type="title">
             HiView v0.1
-          </h1>
+          </Typography>
+
+          <IconButton onClick={this.handleClose}>
+            <ChevronLeftIcon />
+          </IconButton>
         </div>
+
+        <Divider />
+
+        <TextField
+          fullWidth
+          id="maxEdgeCount"
+          label="Maximum number of interactions (edges):"
+          value={this.state.maxEdge}
+          onChange={this.handleChange}
+          onKeyPress={this.handleKey}
+          margin="normal"
+        />
 
         <Divider />
 
