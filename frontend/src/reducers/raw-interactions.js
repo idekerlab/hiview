@@ -50,7 +50,7 @@ export default function networkState(state = defState, action) {
 
       return state.set('filters', filters)
     case SET_MAX_EDGE_COUNT:
-      return set('maxEdgeCount', action.payload)
+      return state.set('maxEdgeCount', action.payload)
 
     default:
       return state

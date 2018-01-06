@@ -4,6 +4,11 @@ import CyNetworkViewer from 'cy-network-viewer'
 import {SigmaRenderer} from 'cytoscapejs-renderer'
 import {CircularProgress} from 'material-ui/Progress';
 
+
+// For context menu
+import {ContextMenuTrigger} from "react-contextmenu";
+import NetworkContextMenu from '../NetworkContextMenu'
+
 import {Map} from 'immutable'
 
 const MYGENE_URL = 'http://mygene.info/v3'
@@ -280,16 +285,24 @@ class NetworkPanel extends Component {
     // const style = getVisualStyle(networkData.data.minSize, networkData.data.maxSize)
 
     return (
-      <Viewer
-        key="mainView"
-        network={networkData}
-        networkType={'cyjs'}
-        style={networkAreaStyle}
-        // networkStyle={style}
-        eventHandlers={this.getCustomEventHandlers()}
-        command={commands}
-        rendererOptions={rendOpts}
-      />
+      <div>
+        <ContextMenuTrigger id="some_unique_identifier">
+
+          <Viewer
+            key="mainView"
+            network={networkData}
+            networkType={'cyjs'}
+            style={networkAreaStyle}
+            // networkStyle={style}
+            eventHandlers={this.getCustomEventHandlers()}
+            command={commands}
+            rendererOptions={rendOpts}
+          />
+        </ContextMenuTrigger>
+
+        <NetworkContextMenu/>
+
+      </div>
     )
   }
 

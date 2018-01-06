@@ -47,7 +47,7 @@ const styles = theme => ({
     height: '2em'
   },
   list: {
-    overflow: "scroll",
+    overflow: "auto",
     height: '13em'
 
   },

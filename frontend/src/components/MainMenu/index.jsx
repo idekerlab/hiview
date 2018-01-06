@@ -69,6 +69,7 @@ export default class MainMenu extends Component {
 
     if (event.key === 'Enter') {
       console.log("Setting max to " + maxEdge)
+      this.props.rawInteractionsActions.setMaxEdgeCount(maxEdge)
     }
   }
 

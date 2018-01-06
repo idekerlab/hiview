@@ -5,7 +5,7 @@ const baseStyle = {
   position: 'fixed',
   top: '0.5em',
   left: '0.5em',
-  zIndex: 1200,
+  zIndex: 900,
 
 }
 

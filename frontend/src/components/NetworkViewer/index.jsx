@@ -70,6 +70,7 @@ export default class NetworkViewer extends Component {
           uiState={uiState}
           uiStateActions={uiStateActions}
           maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
+          rawInteractionsActions={this.props.rawInteractionsActions}
         />
 
         <NetworkPanel

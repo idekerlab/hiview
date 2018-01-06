@@ -7,14 +7,13 @@ import Drawer from 'material-ui/Drawer'
 export default class MainMenuPanel extends Component {
 
   render() {
-    const {
-      uiState, uiStateActions, networks, networkId,
-      styles, currentVsActions, currentVs, maxEdgeCount} = this.props
+    const {uiState, uiStateActions, maxEdgeCount, rawInteractionsActions} = this.props
 
     const openState = uiState.get('showMainMenu')
 
     return (
         <Drawer
+          style={{zIndex: 2000}}
           type="persistent"
           anchor={'left'}
           open={openState}
@@ -22,16 +21,9 @@ export default class MainMenuPanel extends Component {
         >
           <MainMenu
             maxEdgeCount={maxEdgeCount}
-            networks={networks}
-            networkId={networkId}
             uiState={uiState}
             uiStateActions={uiStateActions}
-            styles={styles}
-            currentVsActions={currentVsActions}
-            currentVs={currentVs}
-            trees={this.props.trees}
-            currentNetwork={this.props.currentNetwork}
-            currentNetworkActions={this.props.currentNetworkActions}
+            rawInteractionsActions={rawInteractionsActions}
           />
         </Drawer>
     )

@@ -70,7 +70,7 @@ class LegendPanel extends Component {
       <div ref={container=> this.container = container} style={legendPanelStyle}>
 
         <div style={minMaxStyle}>
-          <div style={titleStyle}>Similarity Score (RF Score)</div>
+          <div style={titleStyle}>Integrated Similarity Score</div>
         </div>
 
         <div style={barStyle}>
