@@ -25,6 +25,7 @@ import Select from 'material-ui/Select';
 import Button from 'material-ui/Button';
 import ApplyIcon from 'material-ui-icons/Refresh';
 
+import FitContent from "material-ui-icons/ZoomOutMap";
 
 
 // Base style
@@ -78,11 +79,16 @@ class LayoutSelector extends Component {
     })
   }
 
+  handleFit = event => {
+    this.props.commandActions.fit()
+  }
+
   render() {
     const { classes } = this.props
 
     return(
       <div className={classes.root}>
+
         <FormControl className={classes.formControl}>
           <Select
             value={this.state.layout}
@@ -106,6 +112,15 @@ class LayoutSelector extends Component {
         >
           Apply
           <ApplyIcon/>
+        </Button>
+
+        <Button
+          className={classes.button}
+          raised
+          color='default'
+          onClick={this.handleFit}
+        >
+          <FitContent/>
         </Button>
       </div>
     )

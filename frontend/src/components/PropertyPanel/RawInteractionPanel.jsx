@@ -20,10 +20,11 @@ class RawInteractionPanel extends Component {
   render() {
 
     // Style of this component's area
-    const containerStyle = {
+    let containerStyle = {
       width: '100%',
-      height: '34em',
-      background: '#000000'
+      height: this.props.panelHeight,
+      background: '#000000',
+      flexGrow: 3
     }
 
     const networkAreaStyle = {
@@ -34,8 +35,9 @@ class RawInteractionPanel extends Component {
       position: 'relative'
     }
 
-    console.log('**CONT')
+    console.log('**CONT2')
     console.log(containerStyle)
+    console.log(networkAreaStyle)
     return (
       <div style={containerStyle}>
         {this.getMainContents(networkAreaStyle)}

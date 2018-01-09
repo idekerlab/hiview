@@ -7,7 +7,7 @@ import CloseIcon from 'material-ui-icons/Close'
 import ExpandIcon from 'material-ui-icons/Fullscreen'
 import ExitExpandIcon from 'material-ui-icons/FullscreenExit'
 
-const MAX_WIDTH = 500.0
+const MAX_WIDTH = 450.0
 const MIN_WIDTH = 350.0
 
 
@@ -23,6 +23,7 @@ class PropertyPanel extends Component {
     this.state = {
       open: false,
       panelWidth: this.getWidth(),
+      panelHeight: window.innerHeight * 0.4,
       expand: false
     };
   }
@@ -41,19 +42,17 @@ class PropertyPanel extends Component {
     if(expand) {
       this.setState({
         panelWidth: this.getWidth(),
-        interactionPanelHeight: 300,
+        panelHeight: window.innerHeight * 0.4,
         expand: false
       })
 
     } else {
       this.setState({
         panelWidth: window.innerWidth,
-        interactionPanelHeight: 300,
+        panelHeight: window.innerHeight,
         expand: true
       })
-
     }
-
   }
 
 
@@ -187,6 +186,8 @@ class PropertyPanel extends Component {
         <TermDetailsPanel
           {...this.props}
           width={this.state.panelWidth}
+          height={this.state.panelHeight}
+          expanded={this.state.expand}
         />
       )
     } else if (propType === PANEL_TYPES.GENE) {

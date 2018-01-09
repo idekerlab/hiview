@@ -26,6 +26,10 @@ export default handleActions({
     command: 'expandEdges',
     parameters: action.payload
   }),
+  FIT: (state, action) => ({
+    command: 'fit',
+    parameters: action.payload
+  }),
   COLLAPSE_EDGES: (state, action) => ({
     command: 'collapseEdges',
     parameters: action.payload
