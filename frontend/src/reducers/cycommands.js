@@ -42,4 +42,13 @@ export default handleActions({
     command: 'zoomToNode',
     parameters: action.payload
   }),
+
+  SHOW_NEIGHBOURS: (state, action) => ({
+    command: 'showNeighbours',
+    parameters: action.payload
+  }),
+  HIDE_NEIGHBOURS: (state, action) => ({
+    command: 'hideNeighbours',
+    parameters: action.payload
+  }),
 }, defaultState)

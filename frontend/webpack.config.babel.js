@@ -30,7 +30,10 @@ export default () => ({
       },
       {
         test: /\.css$/,
-        exclude: path.resolve(__dirname, 'node_modules/rc-slider/'),
+        exclude: [
+          path.resolve(__dirname, 'node_modules/rc-slider/'),
+          path.resolve(__dirname, 'node_modules/react-contextmenu/'),
+        ],
         use: [
           {
             loader: 'style-loader',
@@ -45,7 +48,10 @@ export default () => ({
       },
       {
         test: /\.css/,
-        include: path.resolve(__dirname, 'node_modules/rc-slider/'),
+        include: [
+          path.resolve(__dirname, 'node_modules/rc-slider/'),
+          path.resolve(__dirname, 'node_modules/react-contextmenu/'),
+        ],
         use: [
           {
             loader: 'style-loader',

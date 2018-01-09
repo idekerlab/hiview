@@ -4,7 +4,6 @@ import CyNetworkViewer from 'cy-network-viewer'
 import {SigmaRenderer} from 'cytoscapejs-renderer'
 import {CircularProgress} from 'material-ui/Progress';
 
-
 // For context menu
 import {ContextMenuTrigger} from "react-contextmenu";
 import NetworkContextMenu from '../NetworkContextMenu'
@@ -43,6 +42,7 @@ class NetworkPanel extends Component {
     this.state = {
       updating: false,
       networkUrl: '',
+      hoverNode: null
     };
   }
 
@@ -145,11 +145,18 @@ class NetworkPanel extends Component {
 
   }
 
+  hoverOnNode = (nodeId, nodeProps) => {
+    console.log('====== Custom HOVER called! ========');
+    console.log(nodeId, nodeProps)
+    this.setState({hoverNode: nodeProps})
+  }
+
   // Then use it as a custom handler
   getCustomEventHandlers = () => ({
     selectNodes: this.selectNodes,
     selectEdges: this.selectEdges,
-    commandFinished: this.commandFinished
+    commandFinished: this.commandFinished,
+    hoverOnNode: this.hoverOnNode
   })
 
   handleBack = () => {
@@ -223,6 +230,11 @@ class NetworkPanel extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+
+    if(this.state.hoverNode !== nextState.hoverNode) {
+      return true
+    }
+
     // if(nextProps.selection.get('raw') !== this.props.selection.get('raw')) {
     //   console.log("Should update&&------------------------")
     //   return true
@@ -235,6 +247,7 @@ class NetworkPanel extends Component {
     if (nextProps.network.get('loading') === this.props.network.get('loading')) {
       // Check commands difference
       console.log('...Still loading...')
+
       if (this.props.commands !== nextProps.commands) {
         return true
       }
@@ -286,7 +299,7 @@ class NetworkPanel extends Component {
 
     return (
       <div>
-        <ContextMenuTrigger id="some_unique_identifier">
+        <ContextMenuTrigger id="networkContextMenu">
 
           <Viewer
             key="mainView"
@@ -300,7 +313,10 @@ class NetworkPanel extends Component {
           />
         </ContextMenuTrigger>
 
-        <NetworkContextMenu/>
+        <NetworkContextMenu
+          hoverNode={this.state.hoverNode}
+          commandActions={this.props.commandActions}
+        />
 
       </div>
     )

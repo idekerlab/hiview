@@ -3,8 +3,9 @@ import Drawer from 'material-ui/Drawer'
 import TermDetailsPanel from './TermDetailsPanel'
 import GenePropertyPanel from './GenePropertyPanel'
 
-
 import CloseIcon from 'material-ui-icons/Close'
+import ExpandIcon from 'material-ui-icons/Fullscreen'
+import ExitExpandIcon from 'material-ui-icons/FullscreenExit'
 
 const MAX_WIDTH = 500.0
 const MIN_WIDTH = 350.0
@@ -21,13 +22,38 @@ class PropertyPanel extends Component {
     super(props)
     this.state = {
       open: false,
+      panelWidth: this.getWidth(),
+      expand: false
     };
   }
 
   handleClose = () => {
     this.setState({
       open: false,
+      expand: false,
+      panelWidth: this.getWidth(),
     })
+  }
+
+  handleExpand = () => {
+    const expand = this.state.expand
+
+    if(expand) {
+      this.setState({
+        panelWidth: this.getWidth(),
+        interactionPanelHeight: 300,
+        expand: false
+      })
+
+    } else {
+      this.setState({
+        panelWidth: window.innerWidth,
+        interactionPanelHeight: 300,
+        expand: true
+      })
+
+    }
+
   }
 
 
@@ -62,7 +88,7 @@ class PropertyPanel extends Component {
 
   render() {
     // Width of this UI panel
-    const w = this.getWidth()
+    const w = this.state.panelWidth
 
     const propType = this.props.currentProperty.propType
     const label = this.props.currentProperty.data.Label
@@ -118,6 +144,21 @@ class PropertyPanel extends Component {
               style={closeIconStyle}
               onClick={this.handleClose}
             />
+            {
+              this.state.expand ? (
+                <ExitExpandIcon
+                  style={closeIconStyle}
+                  onClick={this.handleExpand}
+                />
+
+              ) : (
+
+                <ExpandIcon
+                  style={closeIconStyle}
+                  onClick={this.handleExpand}
+                />
+              )
+            }
             <div style={titleStyle}>{barTitle}</div>
           </div>
 
@@ -145,6 +186,7 @@ class PropertyPanel extends Component {
       return (
         <TermDetailsPanel
           {...this.props}
+          width={this.state.panelWidth}
         />
       )
     } else if (propType === PANEL_TYPES.GENE) {

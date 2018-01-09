@@ -3,9 +3,7 @@ import React, {Component} from 'react'
 import Tabs, {Tab} from 'material-ui/Tabs';
 import {CircularProgress} from 'material-ui/Progress';
 
-
 import RawInteractionPanel from './RawInteractionPanel'
-
 import SubsystemPanel from './SubsystemPanel'
 
 import TabContainer from './TabContainer'
@@ -19,7 +17,6 @@ import * as StyleFactory from './StyleFactory'
 
 import GroupSelector from '../GroupSelector'
 import CirclePacking from "../CirclePacking/index";
-
 import ColorMapSelector from './ColorMapSelector'
 
 
@@ -62,12 +59,6 @@ class TermDetailsPanel extends Component {
     if(nextProps.rawInteractions !== this.props.rawInteractions) {
       this.addStyle(nextProps.rawInteractions)
     }
-
-  }
-
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return true
   }
 
   setScore = (val) => {
@@ -81,8 +72,6 @@ class TermDetailsPanel extends Component {
       target: 'subnet'
     })
   }
-
-
 
   render() {
     const raw = this.props.rawInteractions.toJS();
@@ -156,7 +145,6 @@ class TermDetailsPanel extends Component {
     }
 
 
-
     const uuid = this.props.datasource.get('uuid')
     const url = this.props.cxtoolUrl+ uuid + '?server=test'
     const network = this.props.network.get(url)
@@ -184,6 +172,8 @@ class TermDetailsPanel extends Component {
           filters={raw.filters}
           interactionStyleActions={this.props.interactionStyleActions}
           networkStyle={visualStyle}
+
+          panelWidth={this.props.width}
         />
 
         <div style={controlPanelStyle}>
