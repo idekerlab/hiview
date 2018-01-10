@@ -83,7 +83,7 @@ export default class MainMenu extends Component {
       <div style={baseStyle}>
         <div className={classnames(style.grid, style.top)}>
           <Typography type="title">
-            HiView v0.1
+            HiView v0.2
           </Typography>
 
           <IconButton onClick={this.handleClose}>
