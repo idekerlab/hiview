@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import Drawer from 'material-ui/Drawer'
+
 import TermDetailsPanel from './TermDetailsPanel'
 import GenePropertyPanel from './GenePropertyPanel'
 
@@ -7,14 +8,49 @@ import CloseIcon from 'material-ui-icons/Close'
 import ExpandIcon from 'material-ui-icons/Fullscreen'
 import ExitExpandIcon from 'material-ui-icons/FullscreenExit'
 
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+import IconButton from 'material-ui/IconButton';
+
+import {withStyles} from 'material-ui/styles';
+
+
+import {blueGrey} from 'material-ui/colors'
+
+
 const MAX_WIDTH = 450.0
 const MIN_WIDTH = 350.0
-
 
 const PANEL_TYPES = {
   GENE: 'gene',
   TERM: 'term'
 }
+
+const styles = {
+  root: {
+    width: '100%',
+  },
+  flex: {
+    flex: 1,
+  },
+  menuButton: {
+    marginLeft: -12,
+    marginRight: 20,
+  },
+  expandButton: {
+    marginLeft: 12,
+    marginRight: -12,
+  },
+};
+
+const drawerStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  maxWidth: MAX_WIDTH,
+  height: '100%'
+}
+
 
 class PropertyPanel extends Component {
 
@@ -39,7 +75,7 @@ class PropertyPanel extends Component {
   handleExpand = () => {
     const expand = this.state.expand
 
-    if(expand) {
+    if (expand) {
       this.setState({
         panelWidth: this.getWidth(),
         panelHeight: window.innerHeight * 0.4,
@@ -71,14 +107,12 @@ class PropertyPanel extends Component {
   }
 
   getWidth = () => {
-
     let w = window.innerWidth * 0.45
-
     if (w > MAX_WIDTH) {
       w = MAX_WIDTH
     }
 
-    if(w < MIN_WIDTH) {
+    if (w < MIN_WIDTH) {
       w = MIN_WIDTH
     }
 
@@ -86,35 +120,23 @@ class PropertyPanel extends Component {
   }
 
   render() {
+    const {classes} = this.props;
+
     // Width of this UI panel
     const w = this.state.panelWidth
 
     const propType = this.props.currentProperty.propType
-    const label = this.props.currentProperty.data.Label
+    let label = '?'
 
-    const drawerStyle = {
-      display: 'flex',
-      flexDirection: 'column',
-      maxWidth: MAX_WIDTH,
+    if (propType === PANEL_TYPES.TERM) {
+      label = this.props.currentProperty.data.Label
+    } else if (propType === PANEL_TYPES.GENE) {
+      label = this.props.currentProperty.id
     }
 
-    const closeIconStyle = {
-      marginLeft: '0.7em',
-      alignSelf: 'center',
-      color: '#777777'
-    }
-
-    const barColor = (propType === PANEL_TYPES.GENE) ? 'orange' : '#FAFAFA'
+    const barColor = (propType === PANEL_TYPES.GENE) ? 'orange' : blueGrey
     const barTitle = label
 
-    const closeIconPanelStyle = {
-      display: 'inline-flex',
-      justifyContent: 'flex-start',
-      alignItems: 'center',
-      width: '100%',
-      height: '2.5em',
-      backgroundColor: barColor
-    }
 
     const drawerContentsStyle = {
       width: w,
@@ -122,11 +144,9 @@ class PropertyPanel extends Component {
       overflowX: 'hidden',
     }
 
-    const titleStyle = {
-      color: '#333333',
-      fontSize: '1.3em',
-      fontWeight: 500,
-      paddingLeft: '0.8em',
+    let appBarPosition = "fixed"
+    if(propType === PANEL_TYPES.GENE) {
+      appBarPosition = 'absolute'
     }
 
     return (
@@ -137,32 +157,43 @@ class PropertyPanel extends Component {
         open={this.state.open}>
 
         <div style={drawerContentsStyle}>
-
-          <div style={closeIconPanelStyle}>
-            <CloseIcon
-              style={closeIconStyle}
-              onClick={this.handleClose}
-            />
-            {
-              this.state.expand ? (
-                <ExitExpandIcon
-                  style={closeIconStyle}
-                  onClick={this.handleExpand}
+          <AppBar position={appBarPosition}>
+            <Toolbar>
+              <IconButton className={classes.menuButton} color="contrast">
+                <CloseIcon
+                  onClick={this.handleClose}
                 />
+              </IconButton>
 
-              ) : (
+              <Typography type="title" color="inherit" className={classes.flex}>
+                {barTitle}
+              </Typography>
 
-                <ExpandIcon
-                  style={closeIconStyle}
-                  onClick={this.handleExpand}
-                />
+
+              {propType === PANEL_TYPES.GENE ? (<div/>) : (
+                <div>
+                  <IconButton className={classes.expandButton} color="contrast">
+                    {
+                      this.state.expand ? (
+                        <ExitExpandIcon
+                          onClick={this.handleExpand}
+                        />
+
+                      ) : (
+
+                        <ExpandIcon
+                          onClick={this.handleExpand}
+                        />
+                      )
+                    }
+                  </IconButton>
+                </div>
               )
-            }
-            <div style={titleStyle}>{barTitle}</div>
-          </div>
+              }
+            </Toolbar>
+          </AppBar>
 
           {this.getPanel(w)}
-
         </div>
       </Drawer>
     )
@@ -175,7 +206,7 @@ class PropertyPanel extends Component {
 
     // Do not return any component if nothing is selected.
     if (this.props.currentProperty.id === null) {
-      return (<div></div>)
+      return (<div/>)
     }
 
     // This will be gene or term.
@@ -206,4 +237,4 @@ class PropertyPanel extends Component {
 
 }
 
-export default PropertyPanel
+export default withStyles(styles)(PropertyPanel);

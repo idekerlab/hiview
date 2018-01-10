@@ -16,15 +16,14 @@ import * as d3Scale from 'd3-scale'
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
 
 import {CircularProgress} from 'material-ui/Progress';
+import {blueGrey} from 'material-ui/colors'
 
 const colorFunction = d3Scale.scaleOrdinal(d3ScaleChromatic.schemeDark2)
 
 const descriptionStyle = {
-  background: '#BEBEB4',
-  padding: '1em',
-  color: '#333333',
-  fontSize: '1.1em',
-  fontWeight: 300
+  background: blueGrey[100],
+  padding: '1.5em',
+  paddingRight: '2em',
 }
 
 const disabledStyle = {
@@ -44,12 +43,9 @@ class GenePropertyPanel extends Component {
   }
 
   render() {
-    console.log("%%%%%%%%%%%%%%%% Rendering Gene Panel")
-    console.log(this.props)
-
     const details = this.props.currentProperty
     if (details === undefined || details === null || details.id === null || details.id === undefined) {
-      return (<div></div>)
+      return (<div />)
     }
 
     // Loading
@@ -70,18 +66,9 @@ class GenePropertyPanel extends Component {
 
     const entry = data.hits[0]
 
-
-    const labelStyle = {
-      fontWeight: 700,
-      fontSize: '1em',
-      color: '#444444',
-      paddingBottom: '0.5em'
-    }
-
-    console.log(entry)
     return (
 
-      <div style={{width: this.props.width}}>
+      <div style={{width: this.props.width, paddingTop: '5.5em'}}>
 
         <TitleBar
           title={entry.name}

@@ -235,6 +235,12 @@ class NetworkPanel extends Component {
       return true
     }
 
+    if(this.props.renderingOptions !== nextProps.renderingOptions) {
+
+      console.log("REND update: Should update&&------------------------")
+      return true
+    }
+
     // if(nextProps.selection.get('raw') !== this.props.selection.get('raw')) {
     //   console.log("Should update&&------------------------")
     //   return true
@@ -293,6 +299,7 @@ class NetworkPanel extends Component {
     // Default layout
     const rendOpts = {
       layout: 'preset',
+      sigmaOptions: this.props.renderingOptions.toJS()
     }
 
     // const style = getVisualStyle(networkData.data.minSize, networkData.data.maxSize)
@@ -317,7 +324,6 @@ class NetworkPanel extends Component {
           hoverNode={this.state.hoverNode}
           commandActions={this.props.commandActions}
         />
-
       </div>
     )
   }

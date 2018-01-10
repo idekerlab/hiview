@@ -66,6 +66,7 @@
     "react-router": "^3.2.0",
     "react-router-redux": "^4.0.8",
     "react-sortable-tree": "^1.5.4",
+    "react-split-pane": "^0.1.74",
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",
     "redux-thunk": "^2.2.0",

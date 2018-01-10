@@ -5,26 +5,29 @@ import {withStyles} from 'material-ui/styles'
 import Slider, {createSliderWithTooltip} from 'rc-slider'
 import 'rc-slider/assets/index.css'
 
-import { blueGrey } from 'material-ui/colors';
-
-const sliderColor = blueGrey[400];
+import { teal } from 'material-ui/colors';
 
 
 const SliderWithTooltip = createSliderWithTooltip(Slider)
 
+const railStyle={ }
 
 const styles = theme => ({
   root: {
     width: '100%',
     display: 'inline-flex',
-
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: '1em',
     paddingBottom: '1em',
-  },
+  }
 })
 
+const sliderColor = teal[300];
+const trackStyle= { backgroundColor: sliderColor}
+const handleStyle={
+  borderColor: sliderColor
+}
 
 class PrimaryFilter extends Component {
 
@@ -35,7 +38,6 @@ class PrimaryFilter extends Component {
       primaryFilter: null
     };
   }
-
 
   onAfterChange = value => {
     this.props.commandActions.filterEdges({
@@ -70,7 +72,6 @@ class PrimaryFilter extends Component {
     })
 
     this.setState({primaryFilter: primaryFilter})
-
   }
 
 
@@ -96,13 +97,16 @@ class PrimaryFilter extends Component {
     return (
       <div className={classes.root}>
         <SliderWithTooltip
-          style={{width: '95%', height: '2em'}}
+          style={{width: '96%', height: '2em'}}
           defaultValue={Number(primaryFilter.threshold)}
           min={Number(primaryFilter.min)}
           max={Number(primaryFilter.max)}
           step={0.001}
           onAfterChange={this.onAfterChange}
           marks={marks}
+          trackStyle={trackStyle}
+          handleStyle={[handleStyle]}
+          railStyle={railStyle}
         />
       </div>
     )

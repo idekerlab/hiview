@@ -23,6 +23,8 @@ import idmap from './idmap'
 import selection from './selection'
 import current_path from './current-path'
 
+import rendering_options from './rendering-options'
+
 
 // Application states
 const app_manager = combineReducers({
@@ -50,5 +52,6 @@ export default combineReducers({
   raw_interactions,
   idmap,
   filters,
-  interaction_style
+  interaction_style,
+  rendering_options
 })

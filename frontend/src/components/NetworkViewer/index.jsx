@@ -51,7 +51,7 @@ export default class NetworkViewer extends Component {
       search, searchActions, network, messageActions,
       rawInteractionsActions, selection, selectionActions,
       filters, filtersActions, interactionStyle, interactionStyleActions,
-      currentPathActions, currentPath
+      currentPathActions, currentPath, renderingOptions, renderingOptionsActions
     } = this.props
 
     let errorMsg = null
@@ -71,6 +71,8 @@ export default class NetworkViewer extends Component {
           uiStateActions={uiStateActions}
           maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
           rawInteractionsActions={this.props.rawInteractionsActions}
+          renderingOptions={renderingOptions}
+          renderingOptionsActions={renderingOptionsActions}
         />
 
         <NetworkPanel
@@ -99,6 +101,8 @@ export default class NetworkViewer extends Component {
 
           cxtoolUrl={CXTOOL_URL}
           currentPathActions={currentPathActions}
+
+          renderingOptions={renderingOptions}
         />
 
         <Commands

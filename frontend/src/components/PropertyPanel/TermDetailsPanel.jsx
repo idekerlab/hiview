@@ -10,16 +10,11 @@ import TabContainer from './TabContainer'
 import LegendPanel from './LegendPanel'
 import {EdgeFilter, PrimaryFilter} from '../Filters'
 
-
 import GeneList from './GeneList'
 
 import * as StyleFactory from './StyleFactory'
 
 import GroupSelector from '../GroupSelector'
-import CirclePacking from "../CirclePacking/index";
-import ColorMapSelector from './ColorMapSelector'
-
-
 import LayoutSelector from '../LayoutSelector'
 
 
@@ -34,7 +29,6 @@ class TermDetailsPanel extends Component {
       selectedTab: 0
     }
   }
-
 
   addStyle(rawInteractions) {
     const networkStyle = StyleFactory.createStyle(rawInteractions)
@@ -97,10 +91,9 @@ class TermDetailsPanel extends Component {
     const details = this.props.currentProperty
     if (details === undefined || details === null || details.id === null || details.id === undefined) {
       return (
-        <div></div>
+        <div/>
       )
     }
-
 
     const data = details.data
     let entry = {}
@@ -135,14 +128,11 @@ class TermDetailsPanel extends Component {
       width: '100%',
       padding: '0.6em',
       backgroundColor: '#F5F5F5'
-      // borderTop: 'solid 1px #444444',
-      // borderBottom: 'solid 1px #444444'
     }
 
     const controlPanelStyle = {
       padding: '1em',
     }
-
 
     const uuid = this.props.datasource.get('uuid')
     const url = this.props.cxtoolUrl + uuid + '?server=test'
@@ -155,8 +145,7 @@ class TermDetailsPanel extends Component {
 
     const containerStyle = {
       display: 'flex',
-      flexDirection: this.props.expanded ? 'row' : 'column'
-
+      flexDirection: this.props.expanded ? 'row' : 'column',
     }
 
     const controlWrapperStyle = {
@@ -166,6 +155,9 @@ class TermDetailsPanel extends Component {
 
     return (
       <div style={containerStyle}>
+
+        {this.props.expanded ? (<div/>) : (<div style={{width: '100%', height: '5.2em'}}/>)}
+
         <RawInteractionPanel
           subnet={interactions}
           selectedTerm={this.props.currentProperty.id}
@@ -189,6 +181,9 @@ class TermDetailsPanel extends Component {
         />
 
         <div style={controlWrapperStyle}>
+
+          {this.props.expanded ? (<div style={{width: '100%', height: '5.2em'}}/>) : (<div/>)}
+
           <div style={controlPanelStyle}>
             <LegendPanel
               networkProps={networkProps}

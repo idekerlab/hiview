@@ -20,35 +20,25 @@ import * as networkActions from '../../actions/network'
 import {grey50} from 'material-ui/styles';
 
 import * as queryGenesActions from '../../actions/query-genes'
-
 import * as messageActions from '../../actions/message'
-
 import * as rawInteractionsActions from '../../actions/raw-interactions'
-
 import * as idmapActions from '../../actions/idmap'
 import * as selectionActions from '../../actions/selection'
-
 import * as filtersActions from '../../actions/filters'
 import * as interactionStyleActions from '../../actions/interaction-style'
 
 import * as interactionsCommandsActions from '../../actions/commands-interactions'
 
-import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles';
+import {MuiThemeProvider} from 'material-ui/styles'
 
-import {lightBlue100, redA200, red} from 'material-ui/colors'
+import {theme} from '../theme'
+import 'typeface-roboto'
 
-const theme = createMuiTheme({
-  palette: {
-    primary: lightBlue100,
-    accent: redA200,
-    error: red,
-  },
-});
-
+import * as renderingOptionsActions from '../../actions/rendering-options'
 
 const baseStyle = {
-  'left': 0,
   'position': 'fixed',
+  'left': 0,
   'top': 0,
   'zIndex': 0,
   'background': grey50,
@@ -62,7 +52,6 @@ const baseStyle = {
 class NetworkView extends Component {
 
   render() {
-
     const networkId = this.props.params.uri
 
     return (
@@ -108,6 +97,8 @@ function mapStateToProps(state) {
 
     'currentPath': state.app_manager.current_path,
 
+    'renderingOptions': state.rendering_options
+
   }
 
 }
@@ -145,6 +136,8 @@ function mapDispatchToProps(dispatch) {
     'interactionStyleActions': bindActionCreators(interactionStyleActions, dispatch),
 
     'currentPathActions': bindActionCreators(currentPathActions, dispatch),
+
+    'renderingOptionsActions': bindActionCreators(renderingOptionsActions, dispatch),
   }
 
 }

@@ -4,6 +4,9 @@ import MainMenu from '../MainMenu'
 import Drawer from 'material-ui/Drawer'
 
 
+import RendererOptionsPanel from '../RendererOptionsPanel'
+
+
 export default class MainMenuPanel extends Component {
 
   render() {
@@ -24,6 +27,10 @@ export default class MainMenuPanel extends Component {
             uiState={uiState}
             uiStateActions={uiStateActions}
             rawInteractionsActions={rawInteractionsActions}
+          />
+
+          <RendererOptionsPanel
+            {...this.props}
           />
         </Drawer>
     )

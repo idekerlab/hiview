@@ -95,7 +95,7 @@ class LayoutSelector extends Component {
             onChange={this.handleChange('layout')}
             autoWidth
           >
-            <MenuItem value={LAYOUTS.COSE}>COSE (Force-Directed Layout)</MenuItem>
+            <MenuItem value={LAYOUTS.COSE}>COSE (Force-Directed)</MenuItem>
             <MenuItem value={LAYOUTS.GRID}>Grid</MenuItem>
             <MenuItem value={LAYOUTS.CIRCLE}>Circle</MenuItem>
             <MenuItem value={LAYOUTS.COCENTRIC}>Cocentric</MenuItem>

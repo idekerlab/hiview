@@ -3,23 +3,12 @@ import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 
 import 'typeface-roboto'
-import {MuiThemeProvider, createMuiTheme} from 'material-ui/styles'
+import {MuiThemeProvider} from 'material-ui/styles'
 
 import TopPage from '../../components/TopPage/index'
 import * as dataSourceActions from '../../actions/datasource'
 
-import green from 'material-ui/colors/green';
-import red from 'material-ui/colors/red';
-
-const theme = createMuiTheme({
-  palette: {
-    secondary: {
-      ...green,
-      A400: '#00e677',
-    },
-    error: red,
-  },
-})
+import {theme} from '../theme'
 
 
 const FrontPage = props => (
