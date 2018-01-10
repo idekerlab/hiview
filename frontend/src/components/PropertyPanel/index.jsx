@@ -222,6 +222,9 @@ class PropertyPanel extends Component {
         />
       )
     } else if (propType === PANEL_TYPES.GENE) {
+
+      // Check namespace props here...
+
       return (
         <GenePropertyPanel
           {...this.props}

@@ -58,7 +58,12 @@ class CoreGenePropPanel extends Component {
 
     // Keys
     const entrezgene = geneInfo[CORE_PROPS.entrezgene]
-    const ensemblGene = geneInfo['ensembl']['gene']
+
+    const ensembl = geneInfo['ensembl']
+    let ensemblGene = 'N/A'
+    if(ensembl !== undefined) {
+      ensemblGene = ensembl['gene']
+    }
 
     return (
       <div>
