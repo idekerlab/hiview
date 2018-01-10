@@ -146,8 +146,6 @@ class NetworkPanel extends Component {
   }
 
   hoverOnNode = (nodeId, nodeProps) => {
-    console.log('====== Custom HOVER called! ========');
-    console.log(nodeId, nodeProps)
     this.setState({hoverNode: nodeProps})
   }
 
@@ -230,24 +228,16 @@ class NetworkPanel extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.commands.target === 'subnet') {
+      return false
+    }
 
     if(this.state.hoverNode !== nextState.hoverNode) {
       return true
     }
 
-    if(this.props.renderingOptions !== nextProps.renderingOptions) {
-
-      console.log("REND update: Should update&&------------------------")
+    if(!this.props.renderingOptions.equals(nextProps.renderingOptions)) {
       return true
-    }
-
-    // if(nextProps.selection.get('raw') !== this.props.selection.get('raw')) {
-    //   console.log("Should update&&------------------------")
-    //   return true
-    // }
-
-    if (nextProps.commands.target === 'subnet') {
-      return false
     }
 
     if (nextProps.network.get('loading') === this.props.network.get('loading')) {

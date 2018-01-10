@@ -23,9 +23,7 @@ import TextField from 'material-ui/TextField'
 import {deepOrange, blueGrey} from 'material-ui/colors';
 
 
-
 import Avatar from 'material-ui/Avatar';
-
 
 
 import Slider from "rc-slider";
@@ -61,22 +59,37 @@ class RendererOptionsPanel extends Component {
   };
 
   onAfterRangeChange = value => {
-    // this.props.renderingOptionsActions.setNodeRatio(value)
+    const newRange = {
+      min: value[0],
+      max: value[1]
+    }
+    this.props.renderingOptionsActions.setNodeSizeRange(newRange)
 
-    console.log('Update: ' + value)
+    console.log('Update range:')
+    console.log(value)
   };
 
   render() {
 
-    const nodeStyle ={
+    const nodeStyle = {
       color: 'white',
       backgroundColor: deepOrange[600]
     }
 
 
+    const marks = {
+      0.00: 0.00,
+      2.00: 2.00,
+    };
+
+    const rangeMarks = {
+      0.0: 0.0,
+      50.0: 50.0,
+    };
+
+
     return (
       <div style={baseStyle}>
-
 
 
         <List>
@@ -95,16 +108,15 @@ class RendererOptionsPanel extends Component {
             </ListItemAvatar>
 
             <ListItemText primary='Node Ratio:'/>
-
-
-              <SliderWithTooltip
-                style={{width: "65%"}}
-                defaultValue={this.props.renderingOptions.get('nodesPowRatio')}
-                min={0.001}
-                max={2.0}
-                step={0.001}
-                onAfterChange={this.onAfterChange}
-              />
+            <SliderWithTooltip
+              style={{width: "55%"}}
+              defaultValue={this.props.renderingOptions.get('nodesPowRatio')}
+              min={0.001}
+              max={2.0}
+              step={0.001}
+              marks={marks}
+              onAfterChange={this.onAfterChange}
+            />
           </ListItem>
 
           <ListItem>
@@ -115,12 +127,16 @@ class RendererOptionsPanel extends Component {
             <ListItemText primary='Node Size:'/>
 
             <Range
-              style={{width: "65%"}}
-              defaultValue={[0, this.props.renderingOptions.get('nodesPowRatio')]}
-              min={0.01}
-              max={10.0}
-              step={0.01}
+              style={{width: "55%"}}
+              defaultValue={[
+                this.props.renderingOptions.get('minNodeSize'),
+                this.props.renderingOptions.get('maxNodeSize')
+              ]}
+              min={0.0}
+              max={50.0}
+              step={0.1}
               allowCross={false}
+              marks={rangeMarks}
               onAfterChange={this.onAfterRangeChange}
             />
           </ListItem>

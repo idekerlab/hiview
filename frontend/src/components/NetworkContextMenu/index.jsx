@@ -17,9 +17,6 @@ const toggleShowGenes = (id, props) => {
 
 const NetworkContextMenu = (props) => {
 
-  console.log("## Context menu:")
-  console.log(props)
-
   let selected = null
   if(props.hoverNode !== null) {
     selected = props.hoverNode.Label
@@ -38,9 +35,6 @@ const NetworkContextMenu = (props) => {
         Show / Hide Genes
       </MenuItem>
 
-      <MenuItem data={{data2: "some_data"}} onClick={handleClick}>
-        Children
-      </MenuItem>
       <SubMenu title='Move to...'>
         <MenuItem onClick={handleClick} data={{ item: 'subsubitem 1' }}>Parents</MenuItem>
         <MenuItem onClick={handleClick} data={{ item: 'subsubitem 2' }}>Children</MenuItem>

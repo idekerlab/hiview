@@ -4,6 +4,11 @@ import MainMenu from '../MainMenu'
 import Drawer from 'material-ui/Drawer'
 
 
+import AppBar from 'material-ui/AppBar';
+import Toolbar from 'material-ui/Toolbar';
+import Typography from 'material-ui/Typography';
+import IconButton from 'material-ui/IconButton';
+
 import RendererOptionsPanel from '../RendererOptionsPanel'
 
 
@@ -22,6 +27,10 @@ export default class MainMenuPanel extends Component {
           open={openState}
           width={300}
         >
+          <RendererOptionsPanel
+            {...this.props}
+          />
+
           <MainMenu
             maxEdgeCount={maxEdgeCount}
             uiState={uiState}
@@ -29,9 +38,6 @@ export default class MainMenuPanel extends Component {
             rawInteractionsActions={rawInteractionsActions}
           />
 
-          <RendererOptionsPanel
-            {...this.props}
-          />
         </Drawer>
     )
   }
