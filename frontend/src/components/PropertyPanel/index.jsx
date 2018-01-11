@@ -4,7 +4,7 @@ import Drawer from 'material-ui/Drawer'
 import TermDetailsPanel from './TermDetailsPanel'
 import GenePropertyPanel from './GenePropertyPanel'
 
-import CloseIcon from 'material-ui-icons/Close'
+import CloseIcon from "material-ui-icons/KeyboardArrowRight";
 import ExpandIcon from 'material-ui-icons/Fullscreen'
 import ExitExpandIcon from 'material-ui-icons/FullscreenExit'
 

@@ -11,6 +11,16 @@ import IconButton from 'material-ui/IconButton';
 
 import RendererOptionsPanel from '../RendererOptionsPanel'
 
+import TitleBar from './TitleBar'
+
+const DRAWER_WIDTH = 300;
+
+
+const containerStyle = {
+  display: 'flex',
+  width: '100%',
+  flexDirection: 'column'
+}
 
 export default class MainMenuPanel extends Component {
 
@@ -20,13 +30,19 @@ export default class MainMenuPanel extends Component {
     const openState = uiState.get('showMainMenu')
 
     return (
-        <Drawer
-          style={{zIndex: 2000}}
-          type="persistent"
-          anchor={'left'}
-          open={openState}
-          width={300}
-        >
+      <Drawer
+        style={{zIndex: 2000}}
+        type="persistent"
+        anchor={'left'}
+        open={openState}
+      >
+        <div style={containerStyle}>
+          <TitleBar
+            {...this.props}
+          />
+
+          <div style={{width: '100%', height: '5em'}}/>
+
           <RendererOptionsPanel
             {...this.props}
           />
@@ -37,8 +53,9 @@ export default class MainMenuPanel extends Component {
             uiStateActions={uiStateActions}
             rawInteractionsActions={rawInteractionsActions}
           />
+        </div>
 
-        </Drawer>
+      </Drawer>
     )
   }
 }

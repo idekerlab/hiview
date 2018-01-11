@@ -39,7 +39,9 @@ class SearchResult extends Component {
       if (props.Hidden) {
         const label = props.Label
         const parent = nestedList[label]
-        parent.children[id] = props
+        if(parent !== undefined) {
+          parent.children[id] = props
+        }
       }
     })
 
@@ -59,7 +61,6 @@ class SearchResult extends Component {
   }
 
   render() {
-
     const windowHeight = window.innerHeight * 0.75
 
     const resultStyle = {

@@ -29,6 +29,7 @@ import Avatar from 'material-ui/Avatar';
 import Slider from "rc-slider";
 
 import "rc-slider/assets/index.css";
+import {teal} from "material-ui/colors/index";
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip;
 
@@ -37,8 +38,14 @@ const Range = createSliderWithTooltip(Slider.Range);
 
 
 const baseStyle = {
-  backgroundColor: blueGrey[100],
+  backgroundColor: blueGrey[50],
   width: '100%'
+}
+
+const sliderColor = teal[300];
+const trackStyle= { backgroundColor: sliderColor}
+const handleStyle={
+  borderColor: sliderColor
 }
 
 class RendererOptionsPanel extends Component {
@@ -54,8 +61,10 @@ class RendererOptionsPanel extends Component {
 
   onAfterChange = value => {
     this.props.renderingOptionsActions.setNodeRatio(value)
+  };
 
-    console.log('Update: ' + value)
+  onAfterLabelChange = value => {
+    this.props.renderingOptionsActions.setLaelRatio(value)
   };
 
   onAfterRangeChange = value => {
@@ -69,11 +78,27 @@ class RendererOptionsPanel extends Component {
     console.log(value)
   };
 
+  onAfterEdgeRangeChange = value => {
+    const newRange = {
+      min: value[0],
+      max: value[1]
+    }
+    this.props.renderingOptionsActions.setEdgeWidthRange(newRange)
+
+    console.log('Update edge range:')
+    console.log(value)
+  };
+
   render() {
 
     const nodeStyle = {
       color: 'white',
       backgroundColor: deepOrange[600]
+    }
+
+    const edgeStyle = {
+      color: 'white',
+      backgroundColor: blueGrey[300]
     }
 
 
@@ -97,7 +122,7 @@ class RendererOptionsPanel extends Component {
             <ListItemIcon>
               <TuneIcon/>
             </ListItemIcon>
-            <ListItemText primary='Rendering Options:'/>
+            <ListItemText primary='Hierarchy Viewer Options:'/>
           </ListItem>
 
           <Divider/>
@@ -114,7 +139,9 @@ class RendererOptionsPanel extends Component {
               min={0.001}
               max={2.0}
               step={0.001}
-              marks={marks}
+              // marks={marks}
+              trackStyle={trackStyle}
+              handleStyle={[handleStyle]}
               onAfterChange={this.onAfterChange}
             />
           </ListItem>
@@ -136,8 +163,53 @@ class RendererOptionsPanel extends Component {
               max={50.0}
               step={0.1}
               allowCross={false}
-              marks={rangeMarks}
+              // marks={rangeMarks}
+              trackStyle={[trackStyle]}
+              handleStyle={[handleStyle]}
               onAfterChange={this.onAfterRangeChange}
+            />
+          </ListItem>
+
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar style={nodeStyle}>N</Avatar>
+            </ListItemAvatar>
+
+            <ListItemText primary='Label Size Ratio:'/>
+            <SliderWithTooltip
+              style={{width: "55%"}}
+              defaultValue={this.props.renderingOptions.get('labelSizeRatio')}
+              min={0.0}
+              max={2.0}
+              step={0.001}
+              // marks={marks}
+              trackStyle={trackStyle}
+              handleStyle={[handleStyle]}
+              onAfterChange={this.onAfterLabelChange}
+            />
+          </ListItem>
+
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar style={edgeStyle}>E</Avatar>
+            </ListItemAvatar>
+
+            <ListItemText primary='Edge Width:'/>
+
+            <Range
+              style={{width: "55%"}}
+              defaultValue={[
+                this.props.renderingOptions.get('minEdgeSize'),
+                this.props.renderingOptions.get('maxEdgeSize')
+              ]}
+              min={0.0}
+              max={5.0}
+              step={0.01}
+              allowCross={false}
+              // marks={rangeMarks}
+              trackStyle={[trackStyle]}
+              handleStyle={[handleStyle]}
+              onAfterChange={this.onAfterEdgeRangeChange}
             />
           </ListItem>
 

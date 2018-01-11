@@ -11,12 +11,17 @@ import Divider from 'material-ui/Divider';
 
 import HomeIcon from 'material-ui-icons/Home'
 import HelpIcon from 'material-ui-icons/HelpOutline';
+import TuneIcon from 'material-ui-icons/Tune';
+import NetworkIcon from 'material-ui-icons/NetworkCell';
+
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import Typography from 'material-ui/Typography';
 import IconButton from 'material-ui/IconButton';
 
 import Input from 'material-ui/Input';
 import TextField from 'material-ui/TextField';
+
+import {blueGrey} from 'material-ui/colors'
 
 
 import style from './style.css'
@@ -75,35 +80,44 @@ export default class MainMenu extends Component {
 
   render() {
     const baseStyle = {
-      padding: '1em',
       width: 400
     }
 
     return (
       <div style={baseStyle}>
-        <div className={classnames(style.grid, style.top)}>
-          <Typography type="title">
-            HiView v0.2
-          </Typography>
-
-          <IconButton onClick={this.handleClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
 
         <Divider />
 
-        <TextField
-          fullWidth
-          id="maxEdgeCount"
-          label="Maximum number of interactions (edges):"
-          value={this.state.maxEdge}
-          onChange={this.handleChange}
-          onKeyPress={this.handleKey}
-          margin="normal"
-        />
+        <List style={{backgroundColor: blueGrey[50]}}>
+          <ListItem>
+            <ListItemIcon>
+              <TuneIcon/>
+            </ListItemIcon>
 
-        <Divider />
+            <ListItemText primary='Interaction Viewer Options:'/>
+
+          </ListItem>
+
+          <Divider />
+
+          <ListItem>
+            <ListItemIcon>
+              <NetworkIcon/>
+            </ListItemIcon>
+
+            <TextField
+              fullWidth
+              id="maxEdgeCount"
+              label="Maximum number of interactions (edges):"
+              value={this.state.maxEdge}
+              onChange={this.handleChange}
+              onKeyPress={this.handleKey}
+              margin="normal"
+            />
+
+          </ListItem>
+
+        </List>
 
         <List>
           <ListItem

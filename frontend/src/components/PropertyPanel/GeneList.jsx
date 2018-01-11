@@ -15,22 +15,24 @@ class GeneList extends Component {
     console.log(genes.sort())
     return (
 
-      <List>
-        {
-          genes.map((gene, i) =>
+      <div style={{overflow: 'auto'}}>
+        <List>
+          {
+            genes.map((gene, i) =>
 
-            (<ListItem
-              button
-              onClick={this.handleClick(gene)}
-              key={i}
-            >
-              <ListItemIcon>
-                <OpenIcon/>
-              </ListItemIcon>
-              <ListItemText primary={gene}/>
-            </ListItem>))
-        }
-      </List>
+              (<ListItem
+                button
+                onClick={this.handleClick(gene)}
+                key={i}
+              >
+                <ListItemIcon>
+                  <OpenIcon/>
+                </ListItemIcon>
+                <ListItemText primary={gene}/>
+              </ListItem>))
+          }
+        </List>
+      </div>
     )
   }
 

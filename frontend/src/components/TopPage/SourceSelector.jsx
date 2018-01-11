@@ -7,23 +7,17 @@ import Button from 'material-ui/Button'
 import { withStyles } from 'material-ui/styles'
 
 import {browserHistory} from 'react-router'
-import style from './style.css'
 
+import Typography from 'material-ui/Typography'
 
-const styles = theme => ({
-  textField: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-    width: 600,
+const textFieldStyle = {
+    width: 400,
     fontSize: '2em'
-  },
-});
+  }
 
 const EXAMPLE_UUIDS = {
   'Small hierarchy': 'a5a8e7db-ca94-11e7-9379-0660b7976219',
   'Large hierarchy': '7ae8907a-b395-11e7-b629-0660b7976219',
-  // 'Small hierarchy': 'f2847aa2-c0ed-11e7-a3af-0660b7976219',
-  // 'Small hierarchy (new)': 'dd5d6072-c4d2-11e7-9379-0660b7976219',
 }
 
 
@@ -61,21 +55,17 @@ class SourceSelector extends Component {
   }
 
   handleStart = () => {
-
     this.props.dataSourceActions.addDataSource(this.state)
-
     browserHistory.push('/app')
   }
 
   render() {
-    const { classes } = this.props;
-
     const examples = Object.keys(EXAMPLE_UUIDS)
 
     return (
-      <div className={style.row2}>
+      <div style={{width: '350px'}}>
         <TextField
-          className={classes.textField}
+          style={textFieldStyle}
           placeholder='e.g. http://test.ndexbio.org'
           label='NDEx Server URL'
           margin="normal"
@@ -84,26 +74,20 @@ class SourceSelector extends Component {
         />
 
         <TextField
-          className={classes.textField}
+          style={textFieldStyle}
           label="UUID of the main hierarchy"
           value={this.state.uuid}
           margin="normal"
           onChange={this.handleUuidChange}
         />
 
-
         <TextField
           id="examples"
           select
           label="Example Hierarchies:"
-          className={classes.textField}
+          style={textFieldStyle}
           value={this.state.example}
           onChange={this.handleExampleChange}
-          SelectProps={{
-            MenuProps: {
-              className: classes.menu,
-            },
-          }}
           margin="normal"
         >
 
@@ -118,7 +102,7 @@ class SourceSelector extends Component {
 
         <Button
           raised
-          color="primary"
+          color="accent"
           onClick={this.handleStart}
         >
           Start
@@ -129,4 +113,4 @@ class SourceSelector extends Component {
   }
 }
 
-export default withStyles(styles)(SourceSelector);
+export default SourceSelector
