@@ -42,6 +42,7 @@ const styles = theme => ({
   }
 });
 
+const version ='0.2'
 
 const TopPage = props => {
 
@@ -53,7 +54,7 @@ const TopPage = props => {
       <AppBar position="fixed">
         <Toolbar>
             <Typography type="headline" color="inherit">
-              HiView
+              HiView v{version}&alpha;
             </Typography>
 
         </Toolbar>
@@ -67,11 +68,6 @@ const TopPage = props => {
           <Typography type="headline">
             Universal browser for hierarchical data
           </Typography>
-
-          <Typography type="subheading">
-            Version 0.2 &alpha;
-          </Typography>
-
         </div>
 
         <div>
