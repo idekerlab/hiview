@@ -136,10 +136,21 @@ class NetworkPanel extends Component {
 
     if(lastCommand === 'findPath') {
       const path = result
+
+      if(path !== undefined && path.notFound) {
+        this.props.commandActions.zoomToNode(path.startId)
+        return
+      }
+
       this.props.currentPathActions.setPath(path)
-      if(path !== undefined && path.length !== 0) {
-        const start = path[0].id
-        this.props.commandActions.zoomToNode(start)
+
+
+      if(path !== undefined && path.length !== 0 && path.length !== 1) {
+        if(path[0] !== undefined) {
+          const start = path[0].id
+          this.props.commandActions.zoomToNode(start)
+        } else {
+        }
       }
     }
 

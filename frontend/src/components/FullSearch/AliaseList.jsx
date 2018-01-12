@@ -30,7 +30,9 @@ class AliasList extends Component {
         return
       }
 
-      this.setState({ [path[0].id]: path });
+      if(path[0] !== undefined) {
+        this.setState({ [path[0].id]: path });
+      }
     }
   }
 
