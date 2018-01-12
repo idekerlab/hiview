@@ -4,7 +4,8 @@ import { Map } from "immutable";
 import {
   SET_NODE_RATIO,
   SET_NODE_SIZE_RANGE,
-  SET_EDGE_WIDTH_RANGE
+  SET_EDGE_WIDTH_RANGE,
+  SET_NODE_LABEL_RATIO
 } from "../actions/rendering-options";
 
 // Sigma.js rendering params
@@ -13,6 +14,7 @@ const MIN_NODE_SIZE = "minNodeSize";
 const MAX_NODE_SIZE = "maxNodeSize";
 const MIN_EDGE_SIZE = "minEdgeSize";
 const MAX_EDGE_SIZE = "maxEdgeSize";
+const NODE_LABEL_RATIO = "labelSizeRatio";
 
 const defaultState = Map({
   minNodeSize: 2,
@@ -27,6 +29,8 @@ const defaultState = Map({
 export default handleActions(
   {
     [SET_NODE_RATIO]: (state, action) => state.set(NODE_RATIO, action.payload),
+    [SET_NODE_LABEL_RATIO]: (state, action) =>
+      state.set(NODE_LABEL_RATIO, action.payload),
     [SET_NODE_SIZE_RANGE]: (state, action) =>
       state
         .set(MIN_NODE_SIZE, action.payload.min)

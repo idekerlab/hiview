@@ -64,7 +64,7 @@ class RendererOptionsPanel extends Component {
   };
 
   onAfterLabelChange = value => {
-    this.props.renderingOptionsActions.setLaelRatio(value)
+    this.props.renderingOptionsActions.setNodeLabelRatio(value)
   };
 
   onAfterRangeChange = value => {
@@ -180,7 +180,7 @@ class RendererOptionsPanel extends Component {
               style={{width: "55%"}}
               defaultValue={this.props.renderingOptions.get('labelSizeRatio')}
               min={0.0}
-              max={2.0}
+              max={5.0}
               step={0.001}
               // marks={marks}
               trackStyle={trackStyle}
