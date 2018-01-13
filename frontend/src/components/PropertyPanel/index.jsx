@@ -149,6 +149,8 @@ class PropertyPanel extends Component {
       appBarPosition = 'absolute'
     }
 
+    const fontType = (propType === PANEL_TYPES.GENE) ? 'display2': 'headline'
+
     return (
       <Drawer
         style={drawerStyle}
@@ -165,7 +167,7 @@ class PropertyPanel extends Component {
                 />
               </IconButton>
 
-              <Typography type="title" color="inherit" className={classes.flex}>
+              <Typography type={fontType} color="inherit" className={classes.flex}>
                 {barTitle}
               </Typography>
 

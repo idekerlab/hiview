@@ -9,6 +9,8 @@ import ExpandLess from 'material-ui-icons/ExpandLess';
 import ExpandMore from 'material-ui-icons/ExpandMore';
 import Collapse from 'material-ui/transitions/Collapse'
 
+import GoPanel from './GoPanel'
+
 import style from './style.css'
 
 const CORE_PROPS = {
@@ -17,7 +19,14 @@ const CORE_PROPS = {
   other_names: 'other_names',
   alias: 'alias',
   pathway: 'pathway',
-  entrezgene: 'entrezgene'
+  entrezgene: 'entrezgene',
+  go: 'go'
+}
+
+const PATHWAY_DB = {
+  kegg: 'http://www.kegg.jp/entry/',
+  reactome: 'https://reactome.org/content/detail/',
+  wikipathways: 'https://www.wikipathways.org/index.php/Pathway:'
 }
 
 class CoreGenePropPanel extends Component {
@@ -26,6 +35,7 @@ class CoreGenePropPanel extends Component {
     super(props)
     this.state = {
       open: true,
+      openGo: true,
       openAlias: true,
       openPathways: true
     }
@@ -46,9 +56,13 @@ class CoreGenePropPanel extends Component {
     // Entry from MyGene.info
     const geneInfo = this.props.geneInfo
 
+    console.log(geneInfo)
+
     // required val
     const symbol = geneInfo[CORE_PROPS.symbol]
     const name = geneInfo[CORE_PROPS.name]
+
+    const geneOntology = geneInfo[CORE_PROPS.go]
 
     // Array
     const otherNames = this.checkType(geneInfo[CORE_PROPS.other_names])
@@ -92,6 +106,12 @@ class CoreGenePropPanel extends Component {
               secondary={'Ensembl Gene ID'}
             />
           </ListItem>
+          
+          <GoPanel
+            go={geneOntology}
+            open={this.state.openGo}
+            handleExpand={this.handleExpandGo}
+          />
 
           <ListItem
             button
@@ -109,10 +129,11 @@ class CoreGenePropPanel extends Component {
               otherNames.map((otherName, i) =>
 
                 (<ListItem
-                  button
                   key={i}
                 >
-                  <ListItemText primary={otherName}/>
+                  <ListItemText
+                    primary={otherName}
+                  />
                 </ListItem>))
             }
           </Collapse>
@@ -133,7 +154,6 @@ class CoreGenePropPanel extends Component {
               alias.map((al, i) =>
 
                 (<ListItem
-                  button
                   key={i}
 
                 >
@@ -143,6 +163,8 @@ class CoreGenePropPanel extends Component {
                 </ListItem>))
             }
           </Collapse>
+
+
 
           <ListItem
             button
@@ -185,9 +207,11 @@ class CoreGenePropPanel extends Component {
               <ListItem
                 button
                 key={j}
+                onMouseEnter={(e) => this.handlePathwayHover(pathwayDb, ent.id)}
               >
                 <OpenIcon
                   className={style.linkIcon}
+                  onClick={(e) => this.handlePathwayClick(pathwayDb, ent.id)}
 
                 />
                 <ListItemText
@@ -209,6 +233,10 @@ class CoreGenePropPanel extends Component {
     this.setState({open: !this.state.open});
   }
 
+  handleExpandGo = () => {
+    this.setState({openGo: !this.state.openGo});
+  }
+
   handleExpandAlias = () => {
     this.setState({openAlias: !this.state.openAlias});
   }
@@ -216,11 +244,17 @@ class CoreGenePropPanel extends Component {
   handleExpandPathways = () => {
     this.setState({openPathways: !this.state.openPathways});
   }
-}
 
+  handlePathwayClick = (databaseName, pathwayId) => {
+    const url = PATHWAY_DB[databaseName]
+    if(url !== undefined) {
+      window.open(url + pathwayId)
+    }
+  }
 
-const handleClick = gene => () => {
-  window.open(`http://www.genecards.org/cgi-bin/carddisp.pl?gene=${gene}`)
+  handlePathwayHover = (databaseName, pathwayId) => {
+    const url = PATHWAY_DB[databaseName]
+  }
 }
 
 
