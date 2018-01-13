@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import * as d3Selection from 'd3-selection'
 import * as d3Array from 'd3-array'
 import * as d3Scale from 'd3-scale'
+import * as d3ScaleChromatic from 'd3-scale-chromatic'
 
 const legendPanelStyle = {
   display: 'flex',
@@ -30,8 +31,8 @@ class LegendPanel extends Component {
       .attr('height', BAR_HEIGHT)
       .append("g")
 
-    const colorScale = d3Scale.scaleSequential(d3Scale.interpolateInferno)
-      .domain([0, parentWidth])
+    const colorScale = d3Scale.scaleSequential(d3ScaleChromatic.interpolateGnBu)
+      .domain([parentWidth,0])
 
     const bars = svg.selectAll('.bars')
       .data(d3Array.range(parentWidth), function (d) {

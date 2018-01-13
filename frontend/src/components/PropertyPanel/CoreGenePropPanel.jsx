@@ -106,7 +106,7 @@ class CoreGenePropPanel extends Component {
               secondary={'Ensembl Gene ID'}
             />
           </ListItem>
-          
+
           <GoPanel
             go={geneOntology}
             open={this.state.openGo}

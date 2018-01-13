@@ -6,6 +6,7 @@ const ATTR_TYPES = {
 }
 
 import * as d3Scale from 'd3-scale'
+import * as d3ScaleChromatic from 'd3-scale-chromatic'
 
 
 const BASE_STYLE = {
@@ -83,14 +84,16 @@ export const createStyle = originalNetwork => {
   const similarityMin = networkData[`${primaryEdgeType} ${ATTR_TYPES.MIN}`]
   const similarityMax = networkData[`${primaryEdgeType} ${ATTR_TYPES.MAX}`]
 
-  const colorScale = d3Scale.scaleSequential(d3Scale.interpolateInferno).domain([
-    similarityMin,
+  // const colorScale = d3Scale.scaleSequential(d3ScaleChromatic.interpolateGnBu)
+  //   .domain([parentWidth,0])
+  const colorScale = d3Scale.scaleSequential(d3ScaleChromatic.interpolateGnBu).domain([
     similarityMax,
+    similarityMin,
   ])
 
   const edgeStyle = BASE_STYLE.edge
 
-  edgeStyle.css['width'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.3, 5)`
+  edgeStyle.css['width'] = `mapData(RF_score,${similarityMin},${similarityMax}, 1, 3)`
   edgeStyle.css['line-color'] = (d) => {
     if (d.data('RF_score') === undefined) {
       return '#aaaaaa'
@@ -99,7 +102,7 @@ export const createStyle = originalNetwork => {
     }
   }
 
-  edgeStyle.css['opacity'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.3, 0.95)`
+  edgeStyle.css['opacity'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.2, 0.95)`
   edgeStyle.css['display'] = (d) => {
 
     if (d.data('RF_score') === undefined) {

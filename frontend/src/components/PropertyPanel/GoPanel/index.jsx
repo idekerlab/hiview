@@ -1,23 +1,21 @@
-import React, {Component} from 'react'
-
-import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List'
+import React from 'react'
+import { ListItem, ListItemText, ListItemIcon } from "material-ui/List";
 
 import ViewListIcon from 'material-ui-icons/ViewList'
+
 import ExpandLess from 'material-ui-icons/ExpandLess';
 import ExpandMore from 'material-ui-icons/ExpandMore';
 import Collapse from 'material-ui/transitions/Collapse'
 
 import GoCategoryPanel from './GoCategoryPanel'
 
-const GoPanel = (props) => {
 
+const GoPanel = props => {
   const go = props.go
 
   const bp = go.BP
   const cc = go.CC
   const mf = go.MF
-
-  console.log(go)
 
   return (
 
