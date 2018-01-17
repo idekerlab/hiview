@@ -11,7 +11,7 @@ import Typography from "material-ui/Typography";
 import * as d3Scale from "d3-scale";
 const originalColorMap = d3Scale.scaleOrdinal(d3Scale.schemeCategory10);
 
-const COLORS = [
+const COLORS0 = [
   originalColorMap(0),
   originalColorMap(1),
   originalColorMap(2),
@@ -20,15 +20,17 @@ const COLORS = [
   "#EFFFEF"
 ];
 
-const COLORS2 = [];
+const COLORS = ['#d01c8b','#0571b0','#f7f7f7','#66c2a5','#4dac26']
 
-for (let i = 0; i < 6; i++) {
-  if (i !== 1) {
-    COLORS2.push(COLORS[i]);
-  }
-}
-
-const colorMap = idx => COLORS2[idx];
+// const COLORS2 = [];
+//
+// for (let i = 0; i < 6; i++) {
+//   if (i !== 1) {
+//     COLORS2.push(COLORS[i]);
+//   }
+// }
+//
+const colorMap = idx => COLORS[idx];
 
 const FILTER_TYPES = {
   CONTINUOUS: "continuous",

@@ -31,8 +31,8 @@ class LegendPanel extends Component {
       .attr('height', BAR_HEIGHT)
       .append("g")
 
-    const colorScale = d3Scale.scaleSequential(d3ScaleChromatic.interpolateGnBu)
-      .domain([parentWidth,0])
+    const colorScale = d3Scale.scaleSequential(d3Scale.interpolateInferno)
+      .domain([0, parentWidth])
 
     const bars = svg.selectAll('.bars')
       .data(d3Array.range(parentWidth), function (d) {
