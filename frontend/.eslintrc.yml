@@ -1,0 +1,18 @@
+root: true
+plugins:
+  - react
+  - flowtype
+  - prettier
+extends:
+  - plugin:react/recommended
+  - plugin:flowtype/recommended
+  - plugin:prettier/recommended
+parser: babel-eslint
+env: {}
+rules:
+  prettier/prettier:
+    - 2
+    -
+      trailingComma: none
+      singleQuote: true
+      semi: false

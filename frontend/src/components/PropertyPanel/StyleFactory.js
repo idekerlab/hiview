@@ -93,7 +93,7 @@ export const createStyle = originalNetwork => {
 
   const edgeStyle = BASE_STYLE.edge
 
-  edgeStyle.css['width'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.5, 2)`
+  edgeStyle.css['width'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.5, 4)`
   edgeStyle.css['line-color'] = (d) => {
     if (d.data('RF_score') === undefined) {
       return '#aaaaaa'
