@@ -42,6 +42,7 @@
     "webpack-dev-server": "^2.11.0"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "cy-network-viewer": "^0.1.0",
     "cytoscape": "^3.2.7",
     "cytoscapejs-renderer": "^0.1.0",

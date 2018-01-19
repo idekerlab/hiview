@@ -12,6 +12,8 @@ import MainMenuPanel from '../MainMenuPanel'
 
 import FullSearch from '../FullSearch'
 
+import SplitPane from 'react-split-pane'
+
 
 const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
 
@@ -75,35 +77,49 @@ export default class NetworkViewer extends Component {
           renderingOptionsActions={renderingOptionsActions}
         />
 
-        <NetworkPanel
-          networkActions={networkActions}
-          commands={commands}
-          commandActions={commandActions}
-          events={events}
-          eventActions={eventActions}
-          currentProperty={currentProperty}
-          propertyActions={propertyActions}
+        <SplitPane split="horizontal" defaultSize={400} primary="second">
+          <div>
+            <NetworkPanel
+              networkActions={networkActions}
+              commands={commands}
+              commandActions={commandActions}
+              events={events}
+              eventActions={eventActions}
+              currentProperty={currentProperty}
+              propertyActions={propertyActions}
 
-          network={network}
-          search={search}
+              network={network}
+              search={search}
 
-          messageActions={messageActions}
+              messageActions={messageActions}
 
-          maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
-          rawInteractionsActions={rawInteractionsActions}
+              maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
+              rawInteractionsActions={rawInteractionsActions}
 
-          idmapActions={this.props.idmapActions}
+              idmapActions={this.props.idmapActions}
 
-          datasource={this.props.datasource}
+              datasource={this.props.datasource}
 
-          selection={selection}
-          selectionActions={selectionActions}
+              selection={selection}
+              selectionActions={selectionActions}
 
-          cxtoolUrl={CXTOOL_URL}
-          currentPathActions={currentPathActions}
+              cxtoolUrl={CXTOOL_URL}
+              currentPathActions={currentPathActions}
 
-          renderingOptions={renderingOptions}
-        />
+              renderingOptions={renderingOptions}
+            />
+
+          </div>
+          <div style={{height: '100%', width: '100%'}}>
+            <SplitPane split="vertical" defaultSize={400} primary="second">
+              <div style={{background: 'orange', height: '100%', width: '100%'}}>
+              </div>
+              <div style={{background: 'teal', height: '100%', width: '100%'}}>
+              </div>
+            </SplitPane>
+          </div>
+        </SplitPane>
+
 
         <Commands
           commandActions={commandActions}
