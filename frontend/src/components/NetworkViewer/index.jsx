@@ -147,6 +147,9 @@ export default class NetworkViewer extends Component {
           datasource={this.props.datasource}
           network={network}
           cxtoolUrl={CXTOOL_URL}
+
+          enrichment={this.props.enrichment}
+          enrichmentActions={this.props.enrichmentActions}
         />
 
         <FullSearch

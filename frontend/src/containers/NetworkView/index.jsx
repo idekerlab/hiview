@@ -29,6 +29,8 @@ import * as interactionStyleActions from '../../actions/interaction-style'
 
 import * as interactionsCommandsActions from '../../actions/commands-interactions'
 
+import * as enrichmentActions from '../../actions/enrichment'
+
 import {MuiThemeProvider} from 'material-ui/styles'
 
 import {theme} from '../theme'
@@ -97,7 +99,8 @@ function mapStateToProps(state) {
 
     'currentPath': state.app_manager.current_path,
 
-    'renderingOptions': state.rendering_options
+    'renderingOptions': state.rendering_options,
+    'enrichment': state.enrichment
 
   }
 
@@ -138,6 +141,7 @@ function mapDispatchToProps(dispatch) {
     'currentPathActions': bindActionCreators(currentPathActions, dispatch),
 
     'renderingOptionsActions': bindActionCreators(renderingOptionsActions, dispatch),
+    'enrichmentActions': bindActionCreators(enrichmentActions, dispatch),
   }
 
 }

@@ -25,6 +25,8 @@ import current_path from './current-path'
 
 import rendering_options from './rendering-options'
 
+import enrichment from './enrichment'
+
 
 // Application states
 const app_manager = combineReducers({
@@ -39,7 +41,7 @@ const app_manager = combineReducers({
   message,
   selection,
   interactions_commands,
-  current_path
+  current_path,
 })
 
 
@@ -53,5 +55,6 @@ export default combineReducers({
   idmap,
   filters,
   interaction_style,
-  rendering_options
+  rendering_options,
+  enrichment
 })

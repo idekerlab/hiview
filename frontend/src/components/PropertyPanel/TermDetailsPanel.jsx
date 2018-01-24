@@ -178,6 +178,9 @@ class TermDetailsPanel extends Component {
           panelWidth={this.props.width}
           panelHeight={this.props.height}
           expanded={this.props.expanded}
+
+          enrichment={this.props.enrichment}
+          enrichmentActions={this.props.enrichmentActions}
         />
 
         <div style={controlWrapperStyle}>
