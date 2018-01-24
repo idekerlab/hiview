@@ -4,11 +4,8 @@ import TextField from 'material-ui/TextField'
 import MenuItem from 'material-ui/Menu/MenuItem'
 import Button from 'material-ui/Button'
 
-import { withStyles } from 'material-ui/styles'
-
 import {browserHistory} from 'react-router'
 
-import Typography from 'material-ui/Typography'
 
 const textFieldStyle = {
     width: 400,
@@ -102,7 +99,6 @@ class SourceSelector extends Component {
 
         <Button
           raised
-          color="accent"
           onClick={this.handleStart}
         >
           Start

@@ -42,7 +42,7 @@ const TitleBar = props => {
         </Typography>
         </div>
 
-        <IconButton color="contrast" className={classes.menuButton}>
+        <IconButton className={classes.menuButton}>
           <CloseIcon onClick={e => handleClose(props)} />
         </IconButton>
       </Toolbar>

@@ -161,7 +161,7 @@ class PropertyPanel extends Component {
         <div style={drawerContentsStyle}>
           <AppBar position={appBarPosition}>
             <Toolbar>
-              <IconButton className={classes.menuButton} color="contrast">
+              <IconButton className={classes.menuButton}>
                 <CloseIcon
                   onClick={this.handleClose}
                 />
@@ -174,7 +174,7 @@ class PropertyPanel extends Component {
 
               {propType === PANEL_TYPES.GENE ? (<div/>) : (
                 <div>
-                  <IconButton className={classes.expandButton} color="contrast">
+                  <IconButton className={classes.expandButton}>
                     {
                       this.state.expand ? (
                         <ExitExpandIcon

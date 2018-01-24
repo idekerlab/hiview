@@ -5,6 +5,8 @@ import NetworkPanel from '../NetworkPanel'
 import PropertyPanel from '../PropertyPanel'
 import Errorbar from 'material-ui/Snackbar';
 
+import PlotPanel from '../PlotPanel'
+
 import Commands from '../Commands'
 import style from './style.css'
 
@@ -17,6 +19,17 @@ import SplitPane from 'react-split-pane'
 
 const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
 
+
+import {blueGrey} from 'material-ui/colors';
+
+const VIZ_PANEL_STYLE = {
+  background: blueGrey[50],
+  height: '100%',
+  width: '100%',
+  borderTop: 'solid 1px #'
+}
+
+
 /*
   Main Ontology DAG viewer
 */
@@ -27,6 +40,8 @@ export default class NetworkViewer extends Component {
     this.state = {
       autoHideDuration: 1000000,
       open: false,
+      plotWidth: 100,
+      plotHeight: 100
     };
   }
 
@@ -42,6 +57,14 @@ export default class NetworkViewer extends Component {
       open: false,
     });
   };
+
+  componentDidMount () {
+    this.setState({
+      plotWidth: this.plotPanel.offsetWidth,
+      plotHeight: this.plotPanel.offsetHeight,
+    })
+  }
+
 
 
   render() {
@@ -111,8 +134,16 @@ export default class NetworkViewer extends Component {
 
           </div>
           <div style={{height: '100%', width: '100%'}}>
-            <SplitPane split="vertical" defaultSize={400} primary="second">
-              <div style={{background: 'orange', height: '100%', width: '100%'}}>
+            <SplitPane split="vertical" defaultSize={300} primary="second">
+              <div
+                ref={plot => {this.plotPanel = plot}}
+                style={VIZ_PANEL_STYLE}>
+                <PlotPanel
+
+                  width={this.state.plotWidth}
+                  height={this.state.plotHeight}
+                  data={this.props.enrichment.get('result')}
+                />
               </div>
               <div style={{background: 'teal', height: '100%', width: '100%'}}>
               </div>

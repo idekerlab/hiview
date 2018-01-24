@@ -188,7 +188,6 @@ class LeftMenuPanel extends React.Component {
           >
             <Toolbar disableGutters={!open}>
               <IconButton
-                color="contrast"
                 aria-label="open drawer"
                 onClick={this.handleDrawerOpen}
                 className={classNames(classes.menuButton, open && classes.hide)}
