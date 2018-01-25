@@ -1,0 +1,10 @@
+
+.plotContainer {
+    width: 600px;
+    height: 320px;
+    padding: 0.5em;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}

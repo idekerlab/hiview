@@ -1,55 +1,45 @@
-import React from "react";
+import React from 'react'
+import Paper from 'material-ui/Paper'
+import Typography from 'material-ui/Typography'
+import style from './style.css'
 
-import {
-  XYPlot,
-  XAxis,
-  YAxis,
-  VerticalGridLines,
-  HorizontalGridLines,
-  HorizontalBarSeries,
-} from "react-vis";
+import BarPlot from './BarPlot'
 
 const PlotPanel = props => {
 
-  const width = props.width
-  const height = props.height
-  if(props.data === null) {
-    return (<div/>)
+  console.log("WIDTH==========> " + props.width)
+
+  const containerStyle = {
+    height: '100%',
+    width: props.width,
+    overflow: 'scroll',
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  }
+  return props.data === null ? (
+    <div />
+  ) : (
+    <div style={containerStyle}>{plots(props)}</div>
+  )
+}
+
+const plots = props => {
+  const plotList = []
+
+  for (let [k, v] of Object.entries(props.data)) {
+    plotList.push(
+      <Paper className={style.plotContainer} elevation={4}>
+        <Typography type="headline" component="h3">
+          {k}
+        </Typography>
+        <BarPlot data={v} title={k} />
+      </Paper>
+    )
   }
 
-  const kegg = props.data['KEGG_2016']
-  const series = []
-  for(let i = 0; i<20; i++) {
-    const entry = kegg[i]
-    console.log(entry)
-    entry.forEach(d => {console.log(d)})
-    const keggEntry = { y: entry[1].split('_')[0], x: entry[4] }
-    series.push(keggEntry)
-  }
-
-
-  return(
-    <div style={{paddingLeft: '2em'}}>
-      <XYPlot
-        width={width}
-        height={height}
-        yType="ordinal"
-        stackBy="x"
-      >
-        <VerticalGridLines />
-
-        <HorizontalGridLines />
-
-        <XAxis />
-        <YAxis title={"KEGG"} />
-
-        <HorizontalBarSeries
-          data={series}
-          // data={[{ y: 'test1', x: 10 }, { y: 'test2', x: 5 }, { y: 4, x: 15 }, { y: 5, x: 7 }]}
-        />
-      </XYPlot>
-    </div>
-  );
+  return plotList
 }
 
 export default PlotPanel

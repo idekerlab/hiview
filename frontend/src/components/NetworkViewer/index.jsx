@@ -1,9 +1,9 @@
-import React, {Component} from 'react'
-import {browserHistory} from 'react-router'
+import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 
 import NetworkPanel from '../NetworkPanel'
 import PropertyPanel from '../PropertyPanel'
-import Errorbar from 'material-ui/Snackbar';
+import Errorbar from 'material-ui/Snackbar'
 
 import PlotPanel from '../PlotPanel'
 
@@ -16,81 +16,87 @@ import FullSearch from '../FullSearch'
 
 import SplitPane from 'react-split-pane'
 
-
 const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
 
-
-import {blueGrey} from 'material-ui/colors';
+import { blueGrey } from 'material-ui/colors'
 
 const VIZ_PANEL_STYLE = {
   background: blueGrey[50],
   height: '100%',
-  width: '100%',
-  borderTop: 'solid 1px #'
+  borderTop: 'solid 2px #EEEEEE',
 }
-
 
 /*
   Main Ontology DAG viewer
 */
 export default class NetworkViewer extends Component {
-
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       autoHideDuration: 1000000,
       open: false,
       plotWidth: 100,
       plotHeight: 100
-    };
+    }
   }
 
   handleActionTouchTap = () => {
     this.setState({
-      open: false,
-    });
+      open: false
+    })
     browserHistory.push('/')
-  };
+  }
 
   handleRequestClose = () => {
     this.setState({
-      open: false,
-    });
-  };
-
-  componentDidMount () {
-    this.setState({
-      plotWidth: this.plotPanel.offsetWidth,
-      plotHeight: this.plotPanel.offsetHeight,
+      open: false
     })
   }
 
-
+  componentDidMount() {
+    this.setState({
+      plotWidth: this.plotPanel.offsetWidth,
+      plotHeight: this.plotPanel.offsetHeight
+    })
+  }
 
   render() {
-
     const {
       networkActions,
-      commands, commandActions,
-      events, eventActions, uiState, uiStateActions, currentProperty, propertyActions,
-      search, searchActions, network, messageActions,
-      rawInteractionsActions, selection, selectionActions,
-      filters, filtersActions, interactionStyle, interactionStyleActions,
-      currentPathActions, currentPath, renderingOptions, renderingOptionsActions
+      commands,
+      commandActions,
+      events,
+      eventActions,
+      uiState,
+      uiStateActions,
+      currentProperty,
+      propertyActions,
+      search,
+      searchActions,
+      network,
+      messageActions,
+      rawInteractionsActions,
+      selection,
+      selectionActions,
+      filters,
+      filtersActions,
+      interactionStyle,
+      interactionStyleActions,
+      currentPathActions,
+      currentPath,
+      renderingOptions,
+      renderingOptionsActions
     } = this.props
 
     let errorMsg = null
-    if(errorMsg === null || errorMsg === undefined) {
+    if (errorMsg === null || errorMsg === undefined) {
       errorMsg = 'N/A'
     } else {
       errorMsg = 'ERROR: ' + errorMsg
     }
 
-
     return (
-
       <div style={this.props.style}>
-
         <MainMenuPanel
           uiState={uiState}
           uiStateActions={uiStateActions}
@@ -110,53 +116,42 @@ export default class NetworkViewer extends Component {
               eventActions={eventActions}
               currentProperty={currentProperty}
               propertyActions={propertyActions}
-
               network={network}
               search={search}
-
               messageActions={messageActions}
-
               maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
               rawInteractionsActions={rawInteractionsActions}
-
               idmapActions={this.props.idmapActions}
-
               datasource={this.props.datasource}
-
               selection={selection}
               selectionActions={selectionActions}
-
               cxtoolUrl={CXTOOL_URL}
               currentPathActions={currentPathActions}
-
               renderingOptions={renderingOptions}
             />
-
           </div>
-          <div style={{height: '100%', width: '100%'}}>
-            <SplitPane split="vertical" defaultSize={300} primary="second">
+          <div style={{ height: '100%', width: '100%' }}>
+            <SplitPane split="vertical" defaultSize={400} primary="second">
               <div
-                ref={plot => {this.plotPanel = plot}}
-                style={VIZ_PANEL_STYLE}>
+                ref={plot => {
+                  this.plotPanel = plot
+                }}
+                style={VIZ_PANEL_STYLE}
+              >
                 <PlotPanel
-
                   width={this.state.plotWidth}
                   height={this.state.plotHeight}
                   data={this.props.enrichment.get('result')}
                 />
               </div>
-              <div style={{background: 'teal', height: '100%', width: '100%'}}>
-              </div>
+              <div
+                style={{ background: blueGrey[100], height: '100%', width: '100%' }}
+              />
             </SplitPane>
           </div>
         </SplitPane>
 
-
-        <Commands
-          commandActions={commandActions}
-          uiState={uiState}
-        />
-
+        <Commands commandActions={commandActions} uiState={uiState} />
 
         <PropertyPanel
           // commands={commands}
@@ -171,14 +166,11 @@ export default class NetworkViewer extends Component {
           selectionActions={selectionActions}
           filters={filters}
           filtersActions={filtersActions}
-
           interactionStyle={interactionStyle}
           interactionStyleActions={interactionStyleActions}
-
           datasource={this.props.datasource}
           network={network}
           cxtoolUrl={CXTOOL_URL}
-
           enrichment={this.props.enrichment}
           enrichmentActions={this.props.enrichmentActions}
         />
@@ -198,16 +190,15 @@ export default class NetworkViewer extends Component {
           className={style.errorbar}
           open={this.state.open}
           message={errorMsg}
-          action='Back'
+          action="Back"
           bodyStyle={{
             backgroundColor: 'rgba(0,0,0,0)',
-            fontWeight: 700,
+            fontWeight: 700
           }}
           autoHideDuration={this.state.autoHideDuration}
           onActionTouchTap={this.handleActionTouchTap}
           onRequestClose={this.handleRequestClose}
         />
-
       </div>
     )
   }

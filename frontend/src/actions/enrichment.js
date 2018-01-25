@@ -4,7 +4,7 @@ import {Map} from 'immutable'
 
 const ENRICHR_URL = "http://amp.pharm.mssm.edu/Enrichr/addList";
 
-const backgrounds = ["KEGG_2016", "Reactome_2016", "Human_Phenotype_Ontology", "Jensen_DISEASES"]
+const backgrounds = ["KEGG_2016", "Reactome_2016", "WikiPathways_2016", "Human_Phenotype_Ontology", "Jensen_DISEASES"]
 
 
 export const SEND_GENE_LIST = "SEND_GENE_LIST";

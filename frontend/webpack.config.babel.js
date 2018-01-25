@@ -6,7 +6,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 export default () => ({
 
-  devtool: 'inline-source-map',
+  // devtool: 'inline-source-map',
+  devtool: "source-map",
 
   context: path.join(__dirname, './src'),
 
