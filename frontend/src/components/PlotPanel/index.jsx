@@ -30,7 +30,7 @@ const plots = props => {
 
   for (let [k, v] of Object.entries(props.data)) {
     plotList.push(
-      <Paper className={style.plotContainer} elevation={4}>
+      <Paper className={style.plotContainer} elevation={4} key={k}>
         <Typography type="headline" component="h3">
           {k}
         </Typography>

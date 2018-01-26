@@ -12,7 +12,8 @@ import { Map, Set } from "immutable";
 const defState = Map({
   genes: Set(),
   running: false,
-  result: null
+  result: null,
+  subsystemId: null
 });
 
 export default function enrichmentState(state = defState, action) {
@@ -28,6 +29,7 @@ export default function enrichmentState(state = defState, action) {
       return state
         .set('running', false)
         .set('result', action.result)
+        .set('subsystemId', action.subsystemId)
 
     case ADD_GENE_LIST:
       console.log('$$$$$$$$$$$ADD!!!!!!!')

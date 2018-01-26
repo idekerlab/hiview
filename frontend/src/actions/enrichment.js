@@ -8,21 +8,23 @@ const backgrounds = ["KEGG_2016", "Reactome_2016", "WikiPathways_2016", "Human_P
 
 
 export const SEND_GENE_LIST = "SEND_GENE_LIST";
-const sendGeneList = (url, genes) => ({
+const sendGeneList = (url, genes, subsystemId) => ({
   type: SEND_GENE_LIST,
   url,
   genes,
   result: null,
-  running: true
+  running: true,
+  subsystemId
 });
 
 export const RECEIVE_ANALYSIS_RESULT = "RECEIVE_ANALYSIS_RESULT";
-const receiveAnalysisResult = (url, result) => {
+const receiveAnalysisResult = (url, result, subsystemId) => {
   return {
     type: RECEIVE_ANALYSIS_RESULT,
     url,
     running: false,
-    result
+    result,
+    subsystemId
   };
 };
 
@@ -57,10 +59,11 @@ const parallelCall = (url, jobId) => {
   return tasks
 };
 
-export const runEnrichment = (url = ENRICHR_URL, genes) => {
+
+export const runEnrichment = (url = ENRICHR_URL, genes, subsystemId) => {
   return dispatch => {
 
-    dispatch(sendGeneList(url, genes));
+    dispatch(sendGeneList(url, genes, subsystemId));
 
     return send(url, genes)
       .then(response => {
@@ -90,7 +93,7 @@ export const runEnrichment = (url = ENRICHR_URL, genes) => {
             console.log(resultMap)
             return resultMap;
           })
-          .then(result => dispatch(receiveAnalysisResult(url, result)));
+          .then(result => dispatch(receiveAnalysisResult(url, result, subsystemId)));
       });
   };
 };

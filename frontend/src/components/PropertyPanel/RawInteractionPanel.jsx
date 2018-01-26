@@ -1,165 +1,152 @@
-import React, {Component} from "react";
-import CyNetworkViewer from "cy-network-viewer";
-import {CytoscapeJsRenderer} from "cytoscapejs-renderer";
+import React, { Component } from 'react'
+import CyNetworkViewer from 'cy-network-viewer'
+import { CytoscapeJsRenderer } from 'cytoscapejs-renderer'
 
-import {Set} from 'immutable'
+import { Set } from 'immutable'
 
-
-const Viewer = CyNetworkViewer(CytoscapeJsRenderer);
+const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
 class RawInteractionPanel extends Component {
   componentWillReceiveProps(nextProps) {
-    const network = this.props.subnet;
-    const newNetwork = nextProps.subnet;
 
-    if (newNetwork !== undefined && newNetwork !== null) {
-      if (
-        this.props.enrichment.get("genes").size === 0 ||
-        network !== newNetwork
-      ) {
-        const genes1 = Set(network.elements.nodes.map(node => node.data.name));
-        const genes2 = Set(newNetwork.elements.nodes.map(node => node.data.name));
+    const newNetwork = nextProps.subnet
 
+    const running = nextProps.enrichment.get('running')
+    const lastRunning = this.props.enrichment.get('running')
 
-        const resultOld = this.props.enrichment.get("result");
-        const result = nextProps.enrichment.get("result");
+    if (lastRunning && running) {
+      return
+    }
 
-        const running = nextProps.enrichment.get("running");
-        const lastRunning = this.props.enrichment.get("running");
-        if (lastRunning && running === lastRunning) {
-          console.log("!!!!!!!!!!!!!!!!!!!!!!no need to runEQUAL GENES!")
+    const genes = Set(newNetwork.elements.nodes.map(node => node.data.name))
 
-          return
-        }
-        if (genes1.equals(genes2) && lastRunning) {
-          return
-        }
+    const subsystemId = this.props.enrichment.get('subsystemId')
+    const nextSubsystemId = nextProps.selectedTerm
 
-        console.log(result);
-        if(!running) {
-          this.props.enrichmentActions.runEnrichment(
-            "http://amp.pharm.mssm.edu/Enrichr/addList",
-            genes2
-          );
-        }
-      }
+    if (subsystemId === null || (subsystemId !== nextSubsystemId)) {
+      this.props.enrichmentActions.runEnrichment(
+        'http://amp.pharm.mssm.edu/Enrichr/addList',
+        genes,
+        nextSubsystemId
+      )
     }
   }
 
   render() {
     // Style of this component's area
     let containerStyle = {
-      width: "100%",
-      height: this.props.panelHeight,
-      background: "#000000",
+      width: '100%',
+      height: '100%',
+      // height: this.props.panelHeight,
+      background: '#000000',
       flexGrow: 3
-    };
+    }
 
     const networkAreaStyle = {
       width: this.props.panelWidth,
-      height: "100%",
+      height: '100%',
       top: 0,
       right: 0,
-      position: "relative"
-    };
+      position: 'relative'
+    }
 
-    console.log("**CONT2");
-    console.log(containerStyle);
-    console.log(networkAreaStyle);
+    console.log('**CONT2')
+    console.log(containerStyle)
+    console.log(networkAreaStyle)
     return (
       <div style={containerStyle}>{this.getMainContents(networkAreaStyle)}</div>
-    );
+    )
   }
 
   getMainContents = networkAreaStyle => {
-    const newNet = this.props.subnet;
-    const visualStyle = this.props.networkStyle;
+    const newNet = this.props.subnet
+    const visualStyle = this.props.networkStyle
 
     if (newNet === null || newNet === undefined || visualStyle === null) {
-      return <div/>;
+      return <div />
     }
 
-    const filters = this.props.filters;
+    const filters = this.props.filters
 
     if (filters === null || filters.length === 0) {
-      return;
+      return
     }
 
-    let primaryFilter = null;
-    const filterNames = [];
-    const filterMap = {};
+    let primaryFilter = null
+    const filterNames = []
+    const filterMap = {}
 
     filters.forEach(filter => {
-      const isPrimary = filter.isPrimary;
+      const isPrimary = filter.isPrimary
       if (isPrimary) {
-        primaryFilter = filter;
+        primaryFilter = filter
       } else {
-        filterNames.push(filter.attributeName);
-        filterMap[filter.attributeName] = filter;
+        filterNames.push(filter.attributeName)
+        filterMap[filter.attributeName] = filter
       }
-    });
+    })
 
     return (
       <Viewer
         key="subNetworkView"
         network={this.props.subnet}
-        networkType={"cyjs"}
+        networkType={'cyjs'}
         networkStyle={visualStyle}
         style={networkAreaStyle}
         eventHandlers={this.getCustomEventHandlers()}
         rendererOptions={{
-          layout: "cose-bilkent",
+          layout: 'cose-bilkent',
           defaultFilter: {
-            command: "filter",
+            command: 'filter',
             parameters: {
               options: {
-                type: "numeric",
+                type: 'numeric',
                 isPrimary: true,
                 range:
-                "[" +
-                primaryFilter.attributeName +
-                " < " +
-                primaryFilter.threshold +
-                "]"
+                  '[' +
+                  primaryFilter.attributeName +
+                  ' < ' +
+                  primaryFilter.threshold +
+                  ']'
               }
             }
           }
         }}
         command={this.props.commands}
       />
-    );
-  };
+    )
+  }
 
   selectNodes = (nodeIds, nodeProps) => {
-    const node = nodeIds[0];
-    const props = nodeProps[node];
+    const node = nodeIds[0]
+    const props = nodeProps[node]
 
     const newSelectionState = {
-      networkId: "raw",
+      networkId: 'raw',
       nodeId: node,
       nodeProps: props
-    };
+    }
 
-    this.props.selectionActions.selectNode(newSelectionState);
-  };
+    this.props.selectionActions.selectNode(newSelectionState)
+  }
 
   selectEdges = (edgeIds, edgeProps) => {
-    console.log(edgeProps);
-  };
+    console.log(edgeProps)
+  }
 
   commandFinished = (lastCommand, status = {}) => {
-    console.log("Raw interaction: Command Finished: " + lastCommand);
-    console.log(status);
+    console.log('Raw interaction: Command Finished: ' + lastCommand)
+    console.log(status)
 
-    this.props.commandActions.clearCommand();
-  };
+    this.props.commandActions.clearCommand()
+  }
 
   // Then use it as a custom handler
   getCustomEventHandlers = () => ({
     selectNodes: this.selectNodes,
     selectEdges: this.selectEdges,
     commandFinished: this.commandFinished
-  });
+  })
 }
 
-export default RawInteractionPanel;
+export default RawInteractionPanel

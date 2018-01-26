@@ -1,7 +1,7 @@
 
 .plotContainer {
     width: 600px;
-    height: 320px;
+    height: 350px;
     padding: 0.5em;
     display: inline-flex;
     flex-direction: column;
