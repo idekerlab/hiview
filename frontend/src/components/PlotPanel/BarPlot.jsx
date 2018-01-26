@@ -1,84 +1,100 @@
-import React from 'react'
+import React, { Component } from "react";
 
-import {
-  XYPlot,
-  XAxis,
-  YAxis,
-  HorizontalBarSeries
-} from 'react-vis'
+import { XYPlot, XAxis, YAxis, HorizontalBarSeries } from "react-vis";
 
-const RANKING_MAX = 15
+const RANKING_MAX = 10;
 
-const HOVER_COLOR = '#FF0000'
+class BarPlot extends Component {
 
-
-class BarPlot extends React.Component {
   constructor() {
     super();
     this.state = {
-      index: null
+      selectedIndex: -1,
+      data: []
     };
   }
 
+
   render() {
-    const dataPoints = this.props.data
-    const series = []
+    console.log("RENDERING!!")
+    const dataPoints = this.props.data;
+    const {selectedIndex} = this.state
 
-    const max = dataPoints.length < RANKING_MAX ? dataPoints.length : RANKING_MAX
+    console.log(selectedIndex)
 
-    for (let i = max - 1; i > 0; i--) {
-      const entry = dataPoints[i]
-      const bar = {y: entry[1].split('_')[0], x: entry[4], index: i, color: i === this.state.index ? 0 : 1}
-      series.push(bar)
-    }
+    const max =
+      dataPoints.length < RANKING_MAX ? dataPoints.length : RANKING_MAX;
+
+    // Pick top 10 data
+    const originalData = dataPoints.slice(0, max)
+
+    const data = originalData.map((d, i) => ({
+        y: d[1].split("_")[0],
+        x: d[4],
+        index: i,
+    }))
+
+      data.forEach(d => {
+        if(selectedIndex === -1) {
+          d.opacity = 1
+        } else {
+          if(d.index === selectedIndex) {
+            d.opacity = 1
+            d.color = 2
+          } else {
+            d.opacity = 0.2
+          }
+        }
+      })
+
+
+
+    console.log(data)
 
     return (
       <XYPlot
         colorType="category"
-        onMouseLeave={() => this.setState({index: null})}
+        onMouseLeave={() => this.setState({ selectedIndex: -1 })}
         animation={false}
         width={550}
         height={320}
         yType="ordinal"
         stackBy="x"
-        margin={{left: 250, right: 10, top: 7, bottom: 35}}
+        margin={{ left: 250, right: 10, top: 7, bottom: 35 }}
+        color={'teal'}
       >
-        {/*<VerticalGridLines />*/}
-
-        {/*<HorizontalGridLines />*/}
-
-        <XAxis/>
-        <YAxis/>
+        <XAxis />
+        <YAxis />
 
         <HorizontalBarSeries
-          data={series}
-          onValueClick={(event) => this.handleBarSelection(event, this.props.title, dataPoints)}
-
-          onValueMouseOver={(datapoint) => {
-
-            if(this.state.index === datapoint.index) {
-              return
-            }
-
+          data={data}
+          onValueClick={event =>
+            this.handleBarSelection(event, this.props.title, dataPoints)
+          }
+          onValueMouseOut={(datapoint, event) => this.setState({selectedIndex: -1})}
+          onValueMouseOver={(datapoint, event)=>{
             console.log(datapoint)
             this.setState({
-              index: datapoint.index
-            })
+              selectedIndex: datapoint.index
+            });
           }}
+
         />
       </XYPlot>
-    )
+    );
   }
+
 
   handleBarSelection = (event, title, dataPoints) => {
-    console.log("CLICK BAR22!")
-    event.title = title
-    console.log(event)
-    const genes = dataPoints[event.index][5]
-    event.genes = genes
-
-  }
+    console.log("CLICK BAR22!");
+    event.title = title;
+    console.log(event);
+    const genes = dataPoints[event.index][5];
+    event.genes = genes;
+    this.setState({
+      selectedIndex: event.index
+    })
+  };
 }
 
-
-export default BarPlot
+export default BarPlot;
