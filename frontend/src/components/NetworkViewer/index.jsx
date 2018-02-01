@@ -106,7 +106,7 @@ export default class NetworkViewer extends Component {
           renderingOptionsActions={renderingOptionsActions}
         />
 
-        <SplitPane split="horizontal" defaultSize={400} primary="second">
+        <SplitPane split="horizontal" defaultSize={350} primary="second">
           <div>
             <NetworkPanel
               networkActions={networkActions}
@@ -131,7 +131,7 @@ export default class NetworkViewer extends Component {
             />
           </div>
           <div style={{ height: '100%', width: '100%' }}>
-            <SplitPane split="vertical" defaultSize={400} primary="second">
+            <SplitPane split="vertical" defaultSize={1000} primary="second">
               <div
                 ref={plot => {
                   this.plotPanel = plot

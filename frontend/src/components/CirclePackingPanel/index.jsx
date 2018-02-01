@@ -5,10 +5,15 @@ import { CirclePackingRenderer, CyTreeViewer } from 'cy-tree-viewer'
 const TreeViewer = CyTreeViewer(CirclePackingRenderer)
 
 class CirclePackingPanel extends Component {
+  state = {
+    tree: null
+  }
 
   componentWillMount() {}
 
-  componentDidMount() {}
+  componentDidMount() {
+    // Initialization
+  }
 
   componentWillReceiveProps(nextProps) {}
 
@@ -37,11 +42,15 @@ class CirclePackingPanel extends Component {
     console.log('------------- Circle Packing ---------------')
     console.log(this.props)
 
+    if (this.state.tree === null) {
+      return <div />
+    }
+
     return (
       <TreeViewer
         {...this.props}
         eventHandlers={this.getEventHandlers()}
-        size={height}
+        size={300}
       />
     )
   }

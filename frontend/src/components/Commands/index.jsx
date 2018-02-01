@@ -1,92 +1,99 @@
-import React, { Component } from "react";
-import MainMenu from "../MainMenu";
-import Drawer from "material-ui/Drawer";
+import React, { Component } from 'react'
 
-import FitContent from "material-ui-icons/ZoomOutMap";
-import ZoomIn from "material-ui-icons/ZoomIn";
-import ZoomOut from "material-ui-icons/ZoomOut";
-import Button from "material-ui/Button";
+// Icons
+import FitContentIcon from 'material-ui-icons/ZoomOutMap'
+import ZoomInIcon from 'material-ui-icons/ZoomIn'
+import ZoomOutIcon from 'material-ui-icons/ZoomOut'
+import LocateIcon from 'material-ui-icons/MyLocation'
+import HideIcon from 'material-ui-icons/ChevronLeft'
 
-import classnames from "classnames";
-import style from "./style.css";
+import Card from 'material-ui/Card'
+import IconButton from 'material-ui/IconButton'
 
-const dStyle = {
-  padding: 10
-};
+import styles from './style.css'
 
 class Commands extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      open: false
-    };
+  handleZoomIn = () => {
+    this.props.commandActions.zoomIn()
   }
 
-  handleZoomIn = event => {
-    this.props.commandActions.zoomIn();
-  };
-
   handleZoomOut = event => {
-    this.props.commandActions.zoomOut();
-  };
+    this.props.commandActions.zoomOut()
+  }
 
   handleFit = event => {
-    this.props.commandActions.fit();
-  };
+    this.props.commandActions.fit()
+  }
+
+  handleLocate = event => {
+    this.props.commandActions.fit()
+  }
 
   render() {
-    const uiState = this.props.uiState;
+    const uiState = this.props.uiState
 
-    if (!uiState.get("showCommands")) {
-      return <div />;
+    if (!uiState.get('showCommands')) {
+      return <div />
     }
 
     return (
-      <div>
-        <Drawer
-          anchor={"left"}
-          open={this.state.open}
-          style={dStyle}
-          width={400}
+      <Card className={styles.container}>
+        <IconButton
+          disableRipple={true}
+          onClick={this.handleZoomIn}
+          aria-label="Zoom in"
         >
-          <MainMenu uiState={uiState} />
-        </Drawer>
+          <ZoomInIcon />
+        </IconButton>
+        <IconButton
+          disableRipple={true}
+          onClick={this.handleZoomOut}
+          aria-label="Zoom out"
+        >
+          <ZoomOutIcon />
+        </IconButton>
+        <IconButton
+          disableRipple={true}
+          onClick={this.handleFit}
+          aria-label="Fit Content"
+        >
+          <FitContentIcon />
+        </IconButton>
 
-        <div className={classnames(style.bar, style.grid)}>
-          <Button
-            fab
-            mini
-            color="primary"
-            aria-label="zoom in"
-            className={style.command}
-            onClick={this.handleZoomIn}
-          >
-            <ZoomIn />
-          </Button>
-          <Button
-            fab
-            mini
-            color="primary"
-            aria-label="zoom out"
-            className={style.command}
-            onClick={this.handleZoomOut}
-          >
-            <ZoomOut />
-          </Button>
-          <Button
-            fab
-            mini
-            color="primary"
-            aria-label="fit"
-            className={style.command}
-            onClick={this.handleFit}
-          >
-            <FitContent />
-          </Button>
-        </div>
-      </div>
-    );
+        <div
+          style={{
+            width: '0.1em',
+            height: '1.8em',
+            borderLeft: '1px solid #aaaaaa'
+          }}
+        />
+
+        <IconButton
+          disableRipple={true}
+          onClick={this.handleLocate}
+          aria-label="Locate selected subsystem"
+        >
+          <LocateIcon />
+        </IconButton>
+
+        <div
+          style={{
+            width: '0.1em',
+            height: '2.5em',
+            borderLeft: '2px solid #999999'
+          }}
+        />
+
+        <IconButton
+          disableRipple={true}
+          onClick={this.handleLocate}
+          aria-label="Locate selected subsystem"
+        >
+          <HideIcon />
+        </IconButton>
+      </Card>
+    )
   }
 }
 
-export default Commands;
+export default Commands
