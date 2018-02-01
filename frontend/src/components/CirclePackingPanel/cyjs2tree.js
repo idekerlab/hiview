@@ -18,13 +18,13 @@ const cyjs2tree = cyjs => {
     const node = nodes[idx]
     const data = node.data
     // if (data['NodeType'] !== 'Gene' && !data['Label'].includes('Hidden')) {
-      const isRoot = nodes[idx].data.isRoot
-      if (isRoot) {
-        root = nodes[idx]
-      }
+    const isRoot = nodes[idx].data.isRoot
+    if (isRoot) {
+      root = nodes[idx]
+    }
 
-      const nodeData = nodes[idx].data
-      nodeMap[nodeData.id] = nodeData
+    const nodeData = nodes[idx].data
+    nodeMap[nodeData.id] = nodeData
     // }
   }
 
@@ -37,20 +37,18 @@ const cyjs2tree = cyjs => {
 
   return d3Hierarchy
     .stratify()
-    .id(function(d) {
-      return d.name
-    })
-    .parentId(function(d) {
-      return d.parent
-    })(table)
+    .id(d => d.id)
+    .parentId(d => d.parent)(table)
 }
 
 const transform = (rootId, edges, nodeMap) => {
   const table = []
 
   table.push({
-    name: nodeMap[rootId].name,
-    parent: ''
+    id: nodeMap[rootId].id,
+    Label: nodeMap[rootId].Label,
+    parent: '',
+    props: nodeMap[rootId]
   })
 
   edges.forEach(edge => {
@@ -58,11 +56,15 @@ const transform = (rootId, edges, nodeMap) => {
     const target = nodeMap[edge.data.target]
 
     if (source !== undefined && target !== undefined) {
+      // console.log(source)
+
       table.push({
-        name: source.name,
-        parent: target.name,
+        id: source.id,
+        Label: source.Label,
+        parent: target.id,
         value: source.Size,
-        nodeType: source.NodeType
+        NodeType: source.NodeType,
+        props: source
       })
     } else {
     }

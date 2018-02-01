@@ -23,7 +23,7 @@ import { blueGrey } from 'material-ui/colors'
 const VIZ_PANEL_STYLE = {
   background: blueGrey[50],
   height: '100%',
-  borderTop: 'solid 2px #EEEEEE',
+  borderTop: 'solid 2px #EEEEEE'
 }
 
 /*
@@ -131,7 +131,7 @@ export default class NetworkViewer extends Component {
             />
           </div>
           <div style={{ height: '100%', width: '100%' }}>
-            <SplitPane split="vertical" defaultSize={1000} primary="second">
+            <SplitPane split="vertical" defaultSize={100} primary="second">
               <div
                 ref={plot => {
                   this.plotPanel = plot
@@ -145,7 +145,11 @@ export default class NetworkViewer extends Component {
                 />
               </div>
               <div
-                style={{ background: blueGrey[100], height: '100%', width: '100%' }}
+                style={{
+                  background: blueGrey[100],
+                  height: '100%',
+                  width: '100%'
+                }}
               />
             </SplitPane>
           </div>

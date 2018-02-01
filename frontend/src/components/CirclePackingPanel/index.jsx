@@ -2,17 +2,25 @@ import React, { Component } from 'react'
 
 import { CirclePackingRenderer, CyTreeViewer } from 'cy-tree-viewer'
 
+import cyjs2tree from './cyjs2tree'
+
 const TreeViewer = CyTreeViewer(CirclePackingRenderer)
 
 class CirclePackingPanel extends Component {
   state = {
-    tree: null
+    tree: null,
+    hover: null
   }
 
   componentWillMount() {}
 
   componentDidMount() {
     // Initialization
+
+    const tree = cyjs2tree(this.props.network)
+    this.setState({
+      tree
+    })
   }
 
   componentWillReceiveProps(nextProps) {}
@@ -20,13 +28,17 @@ class CirclePackingPanel extends Component {
   getEventHandlers = () => {
     const selectNode = (id, data) => {
       console.log('Seleected = ' + id)
-      this.setState({
-        selected: id
-      })
+      console.log(data)
+      const wrappedData = {
+        props: data
+      }
+      this.props.selectNodes([id], {[id]: wrappedData})
+
     }
 
     const hoverOnNode = (id, data) => {
-      console.log('hover = ' + id)
+      // console.log('hover = ' + id)
+      // console.log(data)
       this.setState({
         hover: id
       })
@@ -39,19 +51,18 @@ class CirclePackingPanel extends Component {
   }
 
   render() {
-    console.log('------------- Circle Packing ---------------')
-    console.log(this.props)
-
     if (this.state.tree === null) {
       return <div />
     }
 
     return (
-      <TreeViewer
-        {...this.props}
-        eventHandlers={this.getEventHandlers()}
-        size={300}
-      />
+      <div style={this.props.style}>
+        <TreeViewer
+          tree={this.state.tree}
+          eventHandlers={this.getEventHandlers()}
+          size={900}
+        />
+      </div>
     )
   }
 }

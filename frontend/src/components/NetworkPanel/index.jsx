@@ -1,14 +1,16 @@
-import React, {Component} from 'react'
-import {browserHistory} from 'react-router'
+import React, { Component } from 'react'
+import { browserHistory } from 'react-router'
 import CyNetworkViewer from 'cy-network-viewer'
-import {SigmaRenderer} from 'cytoscapejs-renderer'
-import {CircularProgress} from 'material-ui/Progress';
+import { SigmaRenderer } from 'cytoscapejs-renderer'
+import { CircularProgress } from 'material-ui/Progress'
 
 // For context menu
-import {ContextMenuTrigger} from "react-contextmenu";
+import { ContextMenuTrigger } from 'react-contextmenu'
 import NetworkContextMenu from '../NetworkContextMenu'
 
-import {Map} from 'immutable'
+import CirclePackingPanel from '../CirclePackingPanel'
+
+import { Map } from 'immutable'
 
 const MYGENE_URL = 'http://mygene.info/v3'
 const NDEX_LINK_TAG = 'ndex_internalLink'
@@ -27,23 +29,21 @@ const progressStyle = {
   justifyContent: 'center',
   color: 'white',
   backgroundColor: 'rgba(0,0,0,0.2)',
-  zIndex: 1000,
+  zIndex: 1000
 }
 
 const styles = theme => ({
-  progress: progressStyle,
-});
-
+  progress: progressStyle
+})
 
 class NetworkPanel extends Component {
-
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       updating: false,
       networkUrl: '',
       hoverNode: null
-    };
+    }
   }
 
   setGeneProps = geneName => {
@@ -64,26 +64,16 @@ class NetworkPanel extends Component {
       nodeProps: props
     }
 
+    console.log('----------------- Selected -----------------')
+    console.log(props)
     this.props.selectionActions.selectNode(newSelectionState)
 
 
-    // Check hidden node
-    const hidden = props.Hidden
-
-    // if(hidden) {
-    //
-    //   const original = props.Original_Name
-    //   // this.props.commandActions.zoomToNode(original.toString())
-    //   return
-    //
-    //
-    // }
-    // There are two cases: Gene or term
-
-    // Get node type:
-
     const nodeTypeTag = 'NodeType'
-    const nodeType = props[nodeTypeTag]
+    let nodeType = props[nodeTypeTag]
+    if (nodeType === null || nodeType === undefined) {
+      nodeType = props['nodeType']
+    }
 
     if (nodeType === null || nodeType === undefined) {
       // Error handler will be here...
@@ -94,70 +84,67 @@ class NetworkPanel extends Component {
       this.setGeneProps(props.Label)
       return
     }
+
+    console.log('----------------- Selected2 -----------------')
+
     // From NDEx to CYJS converter
     const linkEntry = props[NDEX_LINK_TAG]
-    if(linkEntry === undefined) {
+    if (linkEntry === undefined) {
       return
     }
 
     const linkId = linkEntry.split('(')[1].replace(')', '')
 
     const link = this.props.cxtoolUrl + linkId + '?server=test'
+    console.log('----------------- Selected3 -----------------')
+
 
     window.setTimeout(() => {
-      // Path finding
-
-      // const networkProp = this.props.network
-      // const networkData = networkProp.get(this.state.networkUrl)
-      // const root = networkData.data.rootId
 
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
-
-      // const startNode = nodeIds[0]
-      // this.props.commandActions.findPath({startId: startNode, endId: root})
-
       // Directly set prop from node attributes
-      this.props.rawInteractionsActions.fetchInteractionsFromUrl(link, this.props.maxEdgeCount)
+      this.props.rawInteractionsActions.fetchInteractionsFromUrl(
+        link,
+        this.props.maxEdgeCount
+      )
       this.props.propertyActions.setProperty(props.id, props, 'term')
     }, 0)
   }
 
   selectEdges = (edgeIds, edgeProps) => {
-    console.log('====== Custom edge select function called! ========');
+    console.log('====== Custom edge select function called! ========')
     console.log('Selected Edge ID: ' + edgeIds)
     console.log(edgeProps)
   }
 
   // Callback
   commandFinished = (lastCommand, result = {}) => {
-    console.log('Custom command handler: Command Finished: ' + lastCommand);
+    console.log('Custom command handler: Command Finished: ' + lastCommand)
     console.log(result)
 
-    if(lastCommand === 'findPath') {
+    if (lastCommand === 'findPath') {
       const path = result
 
-      if(path !== undefined && path.notFound) {
+      if (path !== undefined && path.notFound) {
         this.props.commandActions.zoomToNode(path.startId)
         return
       }
 
       this.props.currentPathActions.setPath(path)
 
-
-      if(path !== undefined && path.length !== 0 && path.length !== 1) {
-        if(path[0] !== undefined) {
+      if (path !== undefined && path.length !== 0 && path.length !== 1) {
+        if (path[0] !== undefined) {
           const start = path[0].id
           this.props.commandActions.zoomToNode(start)
         } else {
         }
       }
     }
-
   }
 
   hoverOnNode = (nodeId, nodeProps) => {
-    this.setState({hoverNode: nodeProps})
+    this.setState({ hoverNode: nodeProps })
   }
 
   // Then use it as a custom handler
@@ -176,40 +163,33 @@ class NetworkPanel extends Component {
   componentWillMount() {
     // const url = this.props.trees[this.props.currentNetwork.id].url
     const uuid = this.props.datasource.get('uuid')
-    const url = this.props.cxtoolUrl+ uuid + '?server=test'
+    const url = this.props.cxtoolUrl + uuid + '?server=test'
 
-    this.setState({networkUrl: url})
+    this.setState({ networkUrl: url })
     this.props.networkActions.fetchNetworkFromUrl(url)
   }
 
   componentWillReceiveProps(nextProps) {
-
     const uuid = this.props.datasource.get('uuid')
     const nextUuid = nextProps.datasource.get('uuid')
 
     const url = this.props.cxtoolUrl + uuid + '?server=test'
     const network = this.props.network.get(url)
 
-
     const search = this.props.search
     const nextSearch = nextProps.search
 
-
-    if(search.result !== nextSearch.result) {
-      console.log("+++ Search result updated")
+    if (search.result !== nextSearch.result) {
+      console.log('+++ Search result updated')
 
       // Select result
       const selectedIds = nextSearch.result
-      if(selectedIds !== undefined && selectedIds !== null) {
+      if (selectedIds !== undefined && selectedIds !== null) {
         this.props.commandActions.select(selectedIds)
       }
-
     }
 
-
     if (url !== undefined && (network === undefined || network === null)) {
-
-
       // Need to fetch network data
       if (nextUuid !== uuid) {
         this.props.networkActions.fetchNetworkFromUrl(newUrl)
@@ -221,14 +201,14 @@ class NetworkPanel extends Component {
 
       const nextRawSelection = newSelection.get('raw')
       const rawSelection = selection.get('raw')
-      if(rawSelection === undefined || nextRawSelection === undefined) {
+      if (rawSelection === undefined || nextRawSelection === undefined) {
         return
       }
 
       const newId = nextRawSelection.nodeId
       const originalId = rawSelection.nodeId
 
-      if(newId !== originalId) {
+      if (newId !== originalId) {
         const geneName = nextRawSelection.nodeProps.name
         const networkProp = this.props.network
         const networkData = networkProp.get(this.state.networkUrl)
@@ -243,15 +223,17 @@ class NetworkPanel extends Component {
       return false
     }
 
-    if(this.state.hoverNode !== nextState.hoverNode) {
+    if (this.state.hoverNode !== nextState.hoverNode) {
       return true
     }
 
-    if(!this.props.renderingOptions.equals(nextProps.renderingOptions)) {
+    if (!this.props.renderingOptions.equals(nextProps.renderingOptions)) {
       return true
     }
 
-    if (nextProps.network.get('loading') === this.props.network.get('loading')) {
+    if (
+      nextProps.network.get('loading') === this.props.network.get('loading')
+    ) {
       // Check commands difference
       console.log('...Still loading...')
 
@@ -264,7 +246,6 @@ class NetworkPanel extends Component {
     return true
   }
 
-
   render() {
     const loading = this.props.network.get('loading')
     const networkProp = this.props.network
@@ -273,29 +254,36 @@ class NetworkPanel extends Component {
     if (loading || networkData === undefined) {
       return (
         <div style={progressStyle}>
-          <h2>Loading.  Please wait...</h2>
-          <CircularProgress
-            size={600}
-          />
+          <h2>Loading. Please wait...</h2>
+          <CircularProgress size={600} />
         </div>
       )
     }
 
     let commands = this.props.commands
     if (commands.target === 'subnet') {
-      commands = Map({command: '', parameters: {}})
+      commands = Map({ command: '', parameters: {} })
     }
 
     const networkAreaStyle = {
       position: 'fixed',
       top: 0,
-      left: 0,
-      width: '100%',
+      right: 0,
+      width: '60%',
       height: '100%',
       background: '#FFFFFF'
       // background: 'radial-gradient(circle closest-side, #f1f1f1, #aaaaaa 130%)'
-    };
+    }
 
+    const circleAreaStyle = {
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '40%',
+      height: '100%',
+      background: '#EEEEEE'
+      // background: 'radial-gradient(circle closest-side, #f1f1f1, #aaaaaa 130%)'
+    }
 
     // Default layout
     const rendOpts = {
@@ -308,7 +296,6 @@ class NetworkPanel extends Component {
     return (
       <div>
         <ContextMenuTrigger id="networkContextMenu">
-
           <Viewer
             key="mainView"
             network={networkData}
@@ -325,11 +312,15 @@ class NetworkPanel extends Component {
           hoverNode={this.state.hoverNode}
           commandActions={this.props.commandActions}
         />
+
+        <CirclePackingPanel
+          network={networkData}
+          style={circleAreaStyle}
+          selectNodes={this.selectNodes}
+        />
       </div>
     )
   }
-
 }
-
 
 export default NetworkPanel
