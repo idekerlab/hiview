@@ -131,27 +131,18 @@ export default class NetworkViewer extends Component {
             />
           </div>
           <div style={{ height: '100%', width: '100%' }}>
-            <SplitPane split="vertical" defaultSize={100} primary="second">
-              <div
-                ref={plot => {
-                  this.plotPanel = plot
-                }}
-                style={VIZ_PANEL_STYLE}
-              >
-                <PlotPanel
-                  width={this.state.plotWidth}
-                  height={this.state.plotHeight}
-                  data={this.props.enrichment.get('result')}
-                />
-              </div>
-              <div
-                style={{
-                  background: blueGrey[100],
-                  height: '100%',
-                  width: '100%'
-                }}
+            <div
+              ref={plot => {
+                this.plotPanel = plot
+              }}
+              style={VIZ_PANEL_STYLE}
+            >
+              <PlotPanel
+                width={this.state.plotWidth}
+                height={this.state.plotHeight}
+                data={this.props.enrichment.get('result')}
               />
-            </SplitPane>
+            </div>
           </div>
         </SplitPane>
 

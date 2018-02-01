@@ -9,17 +9,20 @@ const TreeViewer = CyTreeViewer(CirclePackingRenderer)
 class CirclePackingPanel extends Component {
   state = {
     tree: null,
-    hover: null
+    hover: null,
+    height: 800
   }
 
   componentWillMount() {}
 
   componentDidMount() {
     // Initialization
+    const height = this.containerElement.clientHeight
 
     const tree = cyjs2tree(this.props.network)
     this.setState({
-      tree
+      tree,
+      height
     })
   }
 
@@ -32,8 +35,7 @@ class CirclePackingPanel extends Component {
       const wrappedData = {
         props: data
       }
-      this.props.selectNodes([id], {[id]: wrappedData})
-
+      this.props.selectNodes([id], { [id]: wrappedData })
     }
 
     const hoverOnNode = (id, data) => {
@@ -51,17 +53,21 @@ class CirclePackingPanel extends Component {
   }
 
   render() {
-    if (this.state.tree === null) {
-      return <div />
-    }
 
     return (
-      <div style={this.props.style}>
-        <TreeViewer
-          tree={this.state.tree}
-          eventHandlers={this.getEventHandlers()}
-          size={900}
-        />
+      <div
+        ref={containerElement => (this.containerElement = containerElement)}
+        style={this.props.style}
+      >
+        {this.state.tree === null ? (
+          <div />
+        ) : (
+          <TreeViewer
+            tree={this.state.tree}
+            eventHandlers={this.getEventHandlers()}
+            size={this.state.height}
+          />
+        )}
       </div>
     )
   }

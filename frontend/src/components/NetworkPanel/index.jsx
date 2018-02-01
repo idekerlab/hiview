@@ -269,7 +269,7 @@ class NetworkPanel extends Component {
       position: 'fixed',
       top: 0,
       right: 0,
-      width: '60%',
+      width: '70%',
       height: '100%',
       background: '#FFFFFF'
       // background: 'radial-gradient(circle closest-side, #f1f1f1, #aaaaaa 130%)'
@@ -279,7 +279,7 @@ class NetworkPanel extends Component {
       position: 'fixed',
       top: 0,
       left: 0,
-      width: '40%',
+      width: '30%',
       height: '100%',
       background: '#EEEEEE'
       // background: 'radial-gradient(circle closest-side, #f1f1f1, #aaaaaa 130%)'
