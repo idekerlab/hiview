@@ -1,16 +1,13 @@
 import React from 'react'
-import Paper from 'material-ui/Paper'
 import Typography from 'material-ui/Typography'
 import style from './style.css'
 
 import BarPlot from './BarPlot'
-
-import { LinearProgress } from 'material-ui/Progress'
+import Progress from './Progress'
 
 const PlotPanel = props => {
   const containerStyle = {
-    height: props.height,
-    width: props.width,
+    height: '100%',
 
     overflow: 'scroll',
     display: 'flex',
@@ -19,32 +16,14 @@ const PlotPanel = props => {
     justifyContent: 'flex-start'
   }
 
-  const loading = props.enrichment.running
-
+  const loading = props.enrichment.get('running')
   if (loading) {
-    return progress()
+    return <Progress />
   } else if (props.data === null) {
-    return progress()
-    // return <div />
+    return <div />
   } else {
     return <div style={containerStyle}>{plots(props)}</div>
   }
-}
-
-const progress = () => {
-  const progressStyle = {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100%'
-  }
-
-  return (
-    <div style={progressStyle}>
-      <LinearProgress mode="query" style={{ width: '300px' }} />
-    </div>
-  )
 }
 
 const plots = props => {
@@ -52,12 +31,12 @@ const plots = props => {
 
   for (let [k, v] of Object.entries(props.data)) {
     plotList.push(
-      <Paper className={style.plotContainer} elevation={4} key={k}>
+      <div className={style.plotContainer} key={k}>
         <Typography type="headline" component="h3">
           {k}
         </Typography>
-        <BarPlot data={v} title={k} />
-      </Paper>
+        <BarPlot height={props.height - 70} data={v} title={k} />
+      </div>
     )
   }
 

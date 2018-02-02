@@ -140,3 +140,23 @@ html, body, #root {
 .Resizer.disabled:hover {
     border-color: transparent;
 }
+.node {
+    cursor: pointer;
+}
+
+.label {
+    font: 12px "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    text-anchor: middle;
+}
+
+.label,
+.node--root {
+    pointer-events: none;
+}
+
+.node:hover {
+    stroke: orange;
+    opacity: 1;
+    stroke-width: 4px;
+}
+

@@ -33,6 +33,7 @@ class CirclePackingPanel extends Component {
         props: data
       }
       this.props.selectNodes([id], { [id]: wrappedData })
+      this.props.commandActions.zoomToNode(id)
     }
 
     const hoverOnNode = (id, data) => {
@@ -69,5 +70,9 @@ class CirclePackingPanel extends Component {
     )
   }
 }
+
+const handleClick = (nodeId, props) => {
+  props.commandActions.zoomToNode(nodeId)
+};
 
 export default CirclePackingPanel

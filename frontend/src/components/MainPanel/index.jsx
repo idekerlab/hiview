@@ -17,10 +17,14 @@ import { blueGrey } from 'material-ui/colors'
 const VIZ_PANEL_STYLE = {
   background: blueGrey[50],
   height: '100%',
-  borderTop: 'solid 2px #EEEEEE'
+  width: '100%',
+  display: 'flex',
+  justifyContent: 'center',
+  alignItems: 'center',
+  borderTop: 'solid 2px #aaaaaa'
 }
 
-const DEF_BOTTOM_PANEL_HEIGHT = 350
+const DEF_BOTTOM_PANEL_HEIGHT = 300
 
 /*
   Main Ontology DAG viewer
@@ -77,7 +81,7 @@ export default class MainPanel extends Component {
   handleResize = size => {
     console.log(size)
     this.setState({
-      networkViewHeight: (window.innerHeight - size)
+      networkViewHeight: window.innerHeight - size
     })
   }
 
@@ -122,7 +126,7 @@ export default class MainPanel extends Component {
 
         <SplitPane
           split="horizontal"
-          minSize={150}
+          minSize={50}
           defaultSize={DEF_BOTTOM_PANEL_HEIGHT}
           primary="second"
           onDragFinished={size => this.handleResize(size)}
@@ -156,20 +160,18 @@ export default class MainPanel extends Component {
               renderingOptions={renderingOptions}
             />
           </div>
-          <div style={{ height: '100%', width: '100%' }}>
-            <div
-              ref={plot => {
-                this.plotPanel = plot
-              }}
-              style={VIZ_PANEL_STYLE}
-            >
-              <PlotPanel
-                width={this.state.plotWidth}
-                height={this.state.plotHeight}
-                data={this.props.enrichment.get('result')}
-                enrichment={this.props.enrichment}
-              />
-            </div>
+          <div
+            ref={plot => {
+              this.plotPanel = plot
+            }}
+            style={VIZ_PANEL_STYLE}
+          >
+            <PlotPanel
+              width={this.state.plotWidth}
+              height={this.state.plotHeight}
+              data={this.props.enrichment.get('result')}
+              enrichment={this.props.enrichment}
+            />
           </div>
         </SplitPane>
 

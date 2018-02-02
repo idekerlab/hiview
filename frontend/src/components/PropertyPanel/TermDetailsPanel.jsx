@@ -170,29 +170,29 @@ class TermDetailsPanel extends Component {
 
         <SplitPane
           split="horizontal"
-          defaultSize={400}
+          defaultSize={500}
           onDragFinished={this.handleResize}
           onChange={this.handleResize2}
         >
-            <RawInteractionPanel
-              subnet={interactions}
-              selectedTerm={this.props.currentProperty.id}
-              handleClose={this.props.handleClose}
-              commandActions={this.props.interactionsCommandActions}
-              commands={this.props.interactionsCommands}
-              loading={raw.loading}
-              selection={this.props.selection}
-              selectionActions={this.props.selectionActions}
-              filters={raw.filters}
-              interactionStyleActions={this.props.interactionStyleActions}
-              networkStyle={visualStyle}
-              panelWidth={this.props.width}
-              panelHeight={this.props.height}
-              expanded={this.props.expanded}
-              enrichment={this.props.enrichment}
-              enrichmentActions={this.props.enrichmentActions}
-            />
-          <div style={{zIndex: 1111}}>
+          <RawInteractionPanel
+            subnet={interactions}
+            selectedTerm={this.props.currentProperty.id}
+            handleClose={this.props.handleClose}
+            commandActions={this.props.interactionsCommandActions}
+            commands={this.props.interactionsCommands}
+            loading={raw.loading}
+            selection={this.props.selection}
+            selectionActions={this.props.selectionActions}
+            filters={raw.filters}
+            interactionStyleActions={this.props.interactionStyleActions}
+            networkStyle={visualStyle}
+            panelWidth={this.props.width}
+            panelHeight={this.props.height}
+            expanded={this.props.expanded}
+            enrichment={this.props.enrichment}
+            enrichmentActions={this.props.enrichmentActions}
+          />
+          <div style={{ zIndex: 1111 }}>
             <div style={controlWrapperStyle}>
               {this.props.expanded ? (
                 <div style={{ width: '100%', height: '5.2em' }} />

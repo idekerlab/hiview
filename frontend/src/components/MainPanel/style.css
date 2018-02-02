@@ -14,8 +14,3 @@
     justify-content: center;
 }
 
-.errorbar {
-    z-index: 1000;
-    height: 6em;
-    background-color: #ff0033;
-}

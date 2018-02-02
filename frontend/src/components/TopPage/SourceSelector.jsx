@@ -16,7 +16,8 @@ const SMALL_NAME = 'Fanconi Anemia gene ontology (FanGO)'
 const EXAMPLE_UUIDS = {
   [SMALL_NAME]:
     'c84ec0b0-02f4-11e8-bd69-0660b7976219',
-  'Large hierarchy': '7ae8907a-b395-11e7-b629-0660b7976219'
+  'Large hierarchy': '7ae8907a-b395-11e7-b629-0660b7976219',
+  'DNA Repair': 'ab704ae4-0719-11e8-b03c-0660b7976219'
 }
 
 class SourceSelector extends Component {

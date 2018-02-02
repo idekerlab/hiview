@@ -68,7 +68,6 @@ class NetworkPanel extends Component {
     console.log(props)
     this.props.selectionActions.selectNode(newSelectionState)
 
-
     const nodeTypeTag = 'NodeType'
     let nodeType = props[nodeTypeTag]
     if (nodeType === null || nodeType === undefined) {
@@ -98,9 +97,7 @@ class NetworkPanel extends Component {
     const link = this.props.cxtoolUrl + linkId + '?server=test'
     console.log('----------------- Selected3 -----------------')
 
-
     window.setTimeout(() => {
-
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
       // Directly set prop from node attributes
@@ -219,11 +216,10 @@ class NetworkPanel extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if(this.props.height !== nextProps.height) {
+    if (this.props.height !== nextProps.height) {
       console.log('!!!!!!!!!! NEW HEIGHT')
       return true
     }
-
 
     if (nextProps.commands.target === 'subnet') {
       return false
@@ -261,7 +257,7 @@ class NetworkPanel extends Component {
       return (
         <div style={progressStyle}>
           <h2>Loading. Please wait...</h2>
-          <CircularProgress size={600} />
+          <CircularProgress size={500} />
         </div>
       )
     }
@@ -276,9 +272,7 @@ class NetworkPanel extends Component {
       top: 0,
       right: 0,
       width: '70%',
-      height: this.props.height,
-      background: '#FF0000'
-      // background: 'radial-gradient(circle closest-side, #f1f1f1, #aaaaaa 130%)'
+      height: this.props.height
     }
 
     const circleAreaStyle = {
@@ -286,9 +280,7 @@ class NetworkPanel extends Component {
       top: 0,
       left: 0,
       width: '30%',
-      height: this.props.height,
-      background: 'teal'
-      // background: 'radial-gradient(circle closest-side, #f1f1f1, #aaaaaa 130%)'
+      height: this.props.height
     }
 
     // Default layout
@@ -297,13 +289,8 @@ class NetworkPanel extends Component {
       sigmaOptions: this.props.renderingOptions.toJS()
     }
 
-    console.log('??????????????????????? size ????????????????')
-    console.log(this.props.width)
-    console.log(this.props.height)
-    // const style = getVisualStyle(networkData.data.minSize, networkData.data.maxSize)
-
     return (
-      <div style={{background: 'pink', width: '100%', height: this.props.height}}>
+      <div style={{ width: '100%', height: this.props.height }}>
         <ContextMenuTrigger id="networkContextMenu">
           <Viewer
             key="mainView"
@@ -326,6 +313,7 @@ class NetworkPanel extends Component {
           network={networkData}
           style={circleAreaStyle}
           selectNodes={this.selectNodes}
+          commandActions={this.props.commandActions}
         />
       </div>
     )

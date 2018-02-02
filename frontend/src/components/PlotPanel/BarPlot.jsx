@@ -54,11 +54,11 @@ class BarPlot extends Component {
         colorType="category"
         onMouseLeave={() => this.setState({ selectedIndex: -1 })}
         animation={false}
-        width={550}
-        height={320}
+        width={560}
+        height={this.props.height}
         yType="ordinal"
         stackBy="x"
-        margin={{ left: 250, right: 10, top: 7, bottom: 35 }}
+        margin={{ left: 250, right: 10, top: 3, bottom: 35 }}
       >
         <XAxis />
         <YAxis />
