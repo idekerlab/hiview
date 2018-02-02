@@ -5,23 +5,45 @@ import style from './style.css'
 
 import BarPlot from './BarPlot'
 
+import { LinearProgress } from 'material-ui/Progress'
+
 const PlotPanel = props => {
-
-  console.log("WIDTH==========> " + props.width)
-
   const containerStyle = {
-    height: '100%',
+    height: props.height,
     width: props.width,
+
     overflow: 'scroll',
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start'
   }
-  return props.data === null ? (
-    <div />
-  ) : (
-    <div style={containerStyle}>{plots(props)}</div>
+
+  const loading = props.enrichment.running
+
+  if (loading) {
+    return progress()
+  } else if (props.data === null) {
+    return progress()
+    // return <div />
+  } else {
+    return <div style={containerStyle}>{plots(props)}</div>
+  }
+}
+
+const progress = () => {
+  const progressStyle = {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '100%'
+  }
+
+  return (
+    <div style={progressStyle}>
+      <LinearProgress mode="query" style={{ width: '300px' }} />
+    </div>
   )
 }
 

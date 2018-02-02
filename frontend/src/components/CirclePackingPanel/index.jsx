@@ -10,23 +10,20 @@ class CirclePackingPanel extends Component {
   state = {
     tree: null,
     hover: null,
-    height: 800
   }
 
   componentWillMount() {}
 
   componentDidMount() {
     // Initialization
-    const height = this.containerElement.clientHeight
-
     const tree = cyjs2tree(this.props.network)
     this.setState({
       tree,
-      height
     })
   }
 
-  componentWillReceiveProps(nextProps) {}
+  componentWillReceiveProps(nextProps) {
+  }
 
   getEventHandlers = () => {
     const selectNode = (id, data) => {
@@ -65,7 +62,7 @@ class CirclePackingPanel extends Component {
           <TreeViewer
             tree={this.state.tree}
             eventHandlers={this.getEventHandlers()}
-            size={this.state.height}
+            size={this.props.style.height}
           />
         )}
       </div>

@@ -3,17 +3,11 @@ import { browserHistory } from 'react-router'
 
 import NetworkPanel from '../NetworkPanel'
 import PropertyPanel from '../PropertyPanel'
-import Errorbar from 'material-ui/Snackbar'
-
 import PlotPanel from '../PlotPanel'
-
 import Commands from '../Commands'
-import style from './style.css'
 
 import MainMenuPanel from '../MainMenuPanel'
-
 import FullSearch from '../FullSearch'
-
 import SplitPane from 'react-split-pane'
 
 const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
@@ -26,17 +20,21 @@ const VIZ_PANEL_STYLE = {
   borderTop: 'solid 2px #EEEEEE'
 }
 
+const DEF_BOTTOM_PANEL_HEIGHT = 350
+
 /*
   Main Ontology DAG viewer
 */
-export default class NetworkViewer extends Component {
+export default class MainPanel extends Component {
   constructor(props) {
     super(props)
     this.state = {
       autoHideDuration: 1000000,
       open: false,
       plotWidth: 100,
-      plotHeight: 100
+      plotHeight: 100,
+      networkViewWidth: 100,
+      networkViewHeight: 100
     }
   }
 
@@ -53,10 +51,33 @@ export default class NetworkViewer extends Component {
     })
   }
 
-  componentDidMount() {
+  setPanelSizes = () => {
+    console.log('??????????????????????? WILL size ????????????????')
+    const height = window.innerHeight
+
+    console.log(height)
+    const nvHeight = height - this.plotPanel.offsetHeight
+    console.log(nvHeight)
+
     this.setState({
       plotWidth: this.plotPanel.offsetWidth,
-      plotHeight: this.plotPanel.offsetHeight
+      plotHeight: this.plotPanel.offsetHeight,
+      networkViewWidth: this.networkViewPanel.offsetWidth,
+      networkViewHeight: nvHeight
+    })
+  }
+
+  componentDidMount() {
+    console.log('??????????????????????? DID size ????????????????')
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setPanelSizes()
+  }
+
+  handleResize = size => {
+    console.log(size)
+    this.setState({
+      networkViewHeight: (window.innerHeight - size)
     })
   }
 
@@ -88,13 +109,6 @@ export default class NetworkViewer extends Component {
       renderingOptionsActions
     } = this.props
 
-    let errorMsg = null
-    if (errorMsg === null || errorMsg === undefined) {
-      errorMsg = 'N/A'
-    } else {
-      errorMsg = 'ERROR: ' + errorMsg
-    }
-
     return (
       <div style={this.props.style}>
         <MainMenuPanel
@@ -106,9 +120,21 @@ export default class NetworkViewer extends Component {
           renderingOptionsActions={renderingOptionsActions}
         />
 
-        <SplitPane split="horizontal" defaultSize={350} primary="second">
-          <div>
+        <SplitPane
+          split="horizontal"
+          minSize={150}
+          defaultSize={DEF_BOTTOM_PANEL_HEIGHT}
+          primary="second"
+          onDragFinished={size => this.handleResize(size)}
+        >
+          <div
+            ref={networkViewPanel => {
+              this.networkViewPanel = networkViewPanel
+            }}
+          >
             <NetworkPanel
+              width={this.state.networkViewWidth}
+              height={this.state.networkViewHeight}
               networkActions={networkActions}
               commands={commands}
               commandActions={commandActions}
@@ -141,6 +167,7 @@ export default class NetworkViewer extends Component {
                 width={this.state.plotWidth}
                 height={this.state.plotHeight}
                 data={this.props.enrichment.get('result')}
+                enrichment={this.props.enrichment}
               />
             </div>
           </div>
@@ -179,20 +206,6 @@ export default class NetworkViewer extends Component {
           currentPath={currentPath}
           uiState={uiState}
           uiStateActions={uiStateActions}
-        />
-
-        <Errorbar
-          className={style.errorbar}
-          open={this.state.open}
-          message={errorMsg}
-          action="Back"
-          bodyStyle={{
-            backgroundColor: 'rgba(0,0,0,0)',
-            fontWeight: 700
-          }}
-          autoHideDuration={this.state.autoHideDuration}
-          onActionTouchTap={this.handleActionTouchTap}
-          onRequestClose={this.handleRequestClose}
         />
       </div>
     )

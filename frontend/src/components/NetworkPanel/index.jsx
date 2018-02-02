@@ -219,6 +219,12 @@ class NetworkPanel extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    if(this.props.height !== nextProps.height) {
+      console.log('!!!!!!!!!! NEW HEIGHT')
+      return true
+    }
+
+
     if (nextProps.commands.target === 'subnet') {
       return false
     }
@@ -270,8 +276,8 @@ class NetworkPanel extends Component {
       top: 0,
       right: 0,
       width: '70%',
-      height: '100%',
-      background: '#FFFFFF'
+      height: this.props.height,
+      background: '#FF0000'
       // background: 'radial-gradient(circle closest-side, #f1f1f1, #aaaaaa 130%)'
     }
 
@@ -280,8 +286,8 @@ class NetworkPanel extends Component {
       top: 0,
       left: 0,
       width: '30%',
-      height: '100%',
-      background: '#EEEEEE'
+      height: this.props.height,
+      background: 'teal'
       // background: 'radial-gradient(circle closest-side, #f1f1f1, #aaaaaa 130%)'
     }
 
@@ -291,10 +297,13 @@ class NetworkPanel extends Component {
       sigmaOptions: this.props.renderingOptions.toJS()
     }
 
+    console.log('??????????????????????? size ????????????????')
+    console.log(this.props.width)
+    console.log(this.props.height)
     // const style = getVisualStyle(networkData.data.minSize, networkData.data.maxSize)
 
     return (
-      <div>
+      <div style={{background: 'pink', width: '100%', height: this.props.height}}>
         <ContextMenuTrigger id="networkContextMenu">
           <Viewer
             key="mainView"

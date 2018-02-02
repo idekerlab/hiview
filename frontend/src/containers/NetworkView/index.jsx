@@ -10,7 +10,7 @@ import * as currentVsActions from '../../reducers/currentvs'
 import * as currentPathActions from '../../actions/current-path'
 
 
-import NetworkViewer from '../../components/NetworkViewer'
+import MainPanel from '../../components/MainPanel'
 
 import * as propertyActions from '../../actions/property'
 import * as searchActions from '../../actions/search'
@@ -58,7 +58,7 @@ class NetworkView extends Component {
 
     return (
       <MuiThemeProvider theme={theme}>
-        <NetworkViewer
+        <MainPanel
           {...this.props}
           networkId={networkId}
           style={baseStyle}
