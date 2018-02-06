@@ -132,7 +132,7 @@ class SearchPanel extends Component {
 
                 <CardActions>
 
-                  <Typography type="title">
+                  <Typography variant="title">
                     Search Result
                   </Typography>
 

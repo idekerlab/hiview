@@ -42,6 +42,14 @@ class CirclePackingPanel extends Component {
       this.setState({
         hover: id
       })
+
+
+
+      // this.props.commandActions.selectNodes({
+      //   idList: geneIds,
+      //   selectedColor: selectedColor,
+      //   groupColors: this.state.groupColors
+      // });
     }
 
     return {

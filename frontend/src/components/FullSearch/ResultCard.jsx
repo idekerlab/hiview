@@ -6,7 +6,7 @@ class ResultCard extends Component {
       <div>
         <CardActions disableActionSpacing>
 
-          <Typography type="title">
+          <Typography variant="title">
             Search Result
           </Typography>
 

@@ -279,7 +279,7 @@ class NetworkPanel extends Component {
       position: 'fixed',
       top: 0,
       left: 0,
-      width: '30%',
+      width: '100%',
       height: this.props.height
     }
 
@@ -291,23 +291,23 @@ class NetworkPanel extends Component {
 
     return (
       <div style={{ width: '100%', height: this.props.height }}>
-        <ContextMenuTrigger id="networkContextMenu">
-          <Viewer
-            key="mainView"
-            network={networkData}
-            networkType={'cyjs'}
-            style={networkAreaStyle}
-            // networkStyle={style}
-            eventHandlers={this.getCustomEventHandlers()}
-            command={commands}
-            rendererOptions={rendOpts}
-          />
-        </ContextMenuTrigger>
+        {/*<ContextMenuTrigger id="networkContextMenu">*/}
+          {/*<Viewer*/}
+            {/*key="mainView"*/}
+            {/*network={networkData}*/}
+            {/*networkType={'cyjs'}*/}
+            {/*style={networkAreaStyle}*/}
+            {/*// networkStyle={style}*/}
+            {/*eventHandlers={this.getCustomEventHandlers()}*/}
+            {/*command={commands}*/}
+            {/*rendererOptions={rendOpts}*/}
+          {/*/>*/}
+        {/*</ContextMenuTrigger>*/}
 
-        <NetworkContextMenu
-          hoverNode={this.state.hoverNode}
-          commandActions={this.props.commandActions}
-        />
+        {/*<NetworkContextMenu*/}
+          {/*hoverNode={this.state.hoverNode}*/}
+          {/*commandActions={this.props.commandActions}*/}
+        {/*/>*/}
 
         <CirclePackingPanel
           network={networkData}

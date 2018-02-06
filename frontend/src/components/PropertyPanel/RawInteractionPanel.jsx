@@ -7,6 +7,8 @@ import { Set } from 'immutable'
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
 class RawInteractionPanel extends Component {
+
+
   componentWillReceiveProps(nextProps) {
 
     const newNetwork = nextProps.subnet
@@ -24,6 +26,12 @@ class RawInteractionPanel extends Component {
     const nextSubsystemId = nextProps.selectedTerm
 
     if (subsystemId === null || (subsystemId !== nextSubsystemId)) {
+
+
+      if(lastRunning) {
+        return
+      }
+
       this.props.enrichmentActions.runEnrichment(
         'http://amp.pharm.mssm.edu/Enrichr/addList',
         genes,

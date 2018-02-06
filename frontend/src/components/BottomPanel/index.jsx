@@ -114,7 +114,7 @@ class BottomPanel extends Component {
   render() {
     return (
       <Drawer
-        type="persistent"
+        variant="persistent"
         anchor="bottom"
         open={this.props.open}
       >

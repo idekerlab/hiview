@@ -154,7 +154,7 @@ class PropertyPanel extends Component {
     return (
       <Drawer
         style={drawerStyle}
-        type="persistent"
+        variant="persistent"
         anchor={'right'}
         open={this.state.open}>
 

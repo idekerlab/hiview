@@ -94,7 +94,7 @@ class SourceSelector extends Component {
           ))}
         </TextField>
 
-        <Button raised onClick={this.handleStart}>
+        <Button variant="raised" onClick={this.handleStart}>
           Start
         </Button>
       </div>

@@ -77,7 +77,7 @@ class GenePropertyPanel extends Component {
         />
 
         <div style={descriptionStyle}>
-          <Typography type="title">Summary:</Typography>
+          <Typography variant="title">Summary:</Typography>
           <Typography type="body2">
             {entry.summary}
           </Typography>

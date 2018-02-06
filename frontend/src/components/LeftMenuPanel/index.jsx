@@ -136,7 +136,7 @@ class LeftMenuPanel extends React.Component {
 
     const drawer = (
       <Drawer
-        type="persistent"
+        variant="persistent"
         classes={{
           paper: classes.drawerPaper,
         }}
@@ -194,7 +194,7 @@ class LeftMenuPanel extends React.Component {
               >
                 <MenuIcon />
               </IconButton>
-              <Typography type="title" color="inherit" noWrap>
+              <Typography variant="title" color="inherit" noWrap>
                 Persistent drawer
               </Typography>
             </Toolbar>

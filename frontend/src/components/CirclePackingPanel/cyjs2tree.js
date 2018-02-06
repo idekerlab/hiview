@@ -17,15 +17,15 @@ const cyjs2tree = cyjs => {
   while (idx--) {
     const node = nodes[idx]
     const data = node.data
-    // if (data['NodeType'] !== 'Gene' && !data['Label'].includes('Hidden')) {
-    const isRoot = nodes[idx].data.isRoot
-    if (isRoot) {
-      root = nodes[idx]
-    }
+    if (!data['Label'].includes('Hidden') && !data['Label'].includes('Linked') ) {
+      const isRoot = nodes[idx].data.isRoot
+      if (isRoot) {
+        root = nodes[idx]
+      }
 
-    const nodeData = nodes[idx].data
-    nodeMap[nodeData.id] = nodeData
-    // }
+      const nodeData = nodes[idx].data
+      nodeMap[nodeData.id] = nodeData
+    }
   }
 
   console.log(root)

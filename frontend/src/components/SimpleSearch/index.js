@@ -161,7 +161,7 @@ class SimpleSearch extends Component {
         />
 
         <Button
-          raised
+          variant="raised"
           color="primary"
           onClick={this.handleStart}
         >

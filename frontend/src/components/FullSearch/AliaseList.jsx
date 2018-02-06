@@ -60,7 +60,7 @@ class AliasList extends Component {
               <ListItemSecondaryAction>
                 <Button
                   aria-label='Find path'
-                  raised
+                  variant="raised"
                   color={'accent'}
                   onClick={e => this.handleClick(key)}
                 >

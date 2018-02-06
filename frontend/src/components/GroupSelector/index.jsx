@@ -99,7 +99,7 @@ class GroupSelector extends Component {
     return (
       <div className={classes.root}>
 
-        <Typography type="title" className={classes.title}>{PANEL_TITLE}</Typography>
+        <Typography variant="title" className={classes.title}>{PANEL_TITLE}</Typography>
 
         <List className={classes.list}>
           {groupNames.map(group => {

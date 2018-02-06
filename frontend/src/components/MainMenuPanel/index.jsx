@@ -32,7 +32,7 @@ export default class MainMenuPanel extends Component {
     return (
       <Drawer
         style={{zIndex: 2000}}
-        type="persistent"
+        variant="persistent"
         anchor={'left'}
         open={openState}
       >

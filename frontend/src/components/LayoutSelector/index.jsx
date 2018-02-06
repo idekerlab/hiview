@@ -89,7 +89,7 @@ class LayoutSelector extends Component {
 
         <Button
           className={classes.button}
-          raised
+          variant="raised"
           color='primary'
           onClick={this.handleClick}
         >
@@ -99,7 +99,7 @@ class LayoutSelector extends Component {
 
         <Button
           className={classes.button}
-          raised
+          variant="raised"
           color='default'
           onClick={this.handleFit}
         >
