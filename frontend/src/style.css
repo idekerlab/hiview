@@ -161,3 +161,9 @@ html, body, #root {
     stroke-width: 4px;
 }
 
+.node-selected {
+    stroke: red;
+    opacity: 1;
+    stroke-width: 8px;
+}
+
