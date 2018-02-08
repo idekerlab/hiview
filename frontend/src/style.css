@@ -155,15 +155,24 @@ html, body, #root {
     pointer-events: none;
 }
 
+
+
 .node:hover {
-    stroke: orange;
+    stroke: white;
     opacity: 1;
-    stroke-width: 4px;
+    stroke-width: 3px;
 }
 
-.node-selected {
+.node-selected,.node-selected:hover {
     stroke: red;
     opacity: 1;
     stroke-width: 8px;
 }
 
+
+.node-selected-sub,.node-selected-sub:hover {
+
+    stroke: orange;
+    opacity: 1;
+    stroke-width: 4px;
+}

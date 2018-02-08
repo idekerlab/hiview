@@ -51,6 +51,7 @@ const transform = (rootId, edges, nodeMap) => {
     props: nodeMap[rootId]
   })
 
+
   edges.forEach(edge => {
     const source = nodeMap[edge.data.source]
     const target = nodeMap[edge.data.target]
