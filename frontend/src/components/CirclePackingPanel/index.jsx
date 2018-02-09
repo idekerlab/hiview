@@ -10,7 +10,8 @@ class CirclePackingPanel extends Component {
   state = {
     tree: null,
     hover: null,
-    hoverNodes: null
+    hoverNodes: null,
+    selectedGroups: new Set()
   }
 
   componentDidMount() {
@@ -22,8 +23,7 @@ class CirclePackingPanel extends Component {
   }
 
   selectGroups = (id, data, groups, actions) => {
-
-    if(data.props === undefined) {
+    if (data.props === undefined) {
       return
     }
 
@@ -39,33 +39,52 @@ class CirclePackingPanel extends Component {
       return
     }
 
+    console.log('$$$$$$$$$$$$$$$$ADDED ID')
+    this.setState({
+      selectedGroups: this.state.selectedGroups.add(id)
+    })
+
+    console.log(this.state.selectedGroups)
+
     window.setTimeout(() => {
       actions.selectNodes({
         idList: geneIds,
         selectedColor: 'green'
       })
     }, 0)
-
   }
 
   getEventHandlers = () => {
-
     const selectNode = (id, data, zoom) => {
-      console.log('Seleected = ' + id)
-      console.log(data)
       const wrappedData = {
         props: data
       }
 
-      console.log('+++++++++++++++++++++++ZOOM: ' + zoom)
-      if(zoom) {
+      if (zoom) {
         this.props.selectNodes([id], { [id]: wrappedData })
       } else {
-        console.log('+++++++++++++++++++++++GROUP: ')
-        console.log(wrappedData)
-        this.selectGroups(id, wrappedData, this.props.groups, this.props.interactionsCommandActions)
+        this.selectGroups(
+          id,
+          wrappedData,
+          this.props.groups,
+          this.props.interactionsCommandActions
+        )
       }
       // this.props.commandActions.zoomToNode(id)
+    }
+
+    const deselectNode = id => {
+      if (id === null) {
+        return
+      }
+
+      if (this.state.hoverNodes !== null) {
+        if (!this.state.selectedGroups.has(id)) {
+          this.props.interactionsCommandActions.unselectNodes({
+            idList: this.state.hoverNodes
+          })
+        }
+      }
     }
 
     const hoverOnNode = (id, data) => {
@@ -82,16 +101,8 @@ class CirclePackingPanel extends Component {
       //   }
       // }
 
-      if (id === null) {
-        if (this.state.hoverNodes !== null) {
-          this.props.interactionsCommandActions.unselectNodes({
-            idList: this.state.hoverNodes
-          })
-        }
-        return
-      }
 
-      if (data.props.name === undefined) {
+      if (data === null || data.props === null || data.props.name === undefined) {
         return
       }
 
@@ -106,6 +117,10 @@ class CirclePackingPanel extends Component {
       const geneIds = groups[name]
 
       if (geneIds === null || geneIds === undefined) {
+        return
+      }
+
+      if(this.state.selectedGroups.has(id)) {
         return
       }
 
@@ -130,7 +145,8 @@ class CirclePackingPanel extends Component {
 
     return {
       selectNode,
-      hoverOnNode
+      hoverOnNode,
+      deselectNode
     }
   }
 
