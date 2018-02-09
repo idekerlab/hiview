@@ -26,6 +26,7 @@ import current_path from './current-path'
 import rendering_options from './rendering-options'
 
 import enrichment from './enrichment'
+import groups from './groups'
 
 
 // Application states
@@ -56,5 +57,6 @@ export default combineReducers({
   filters,
   interaction_style,
   rendering_options,
-  enrichment
+  enrichment,
+  groups
 })

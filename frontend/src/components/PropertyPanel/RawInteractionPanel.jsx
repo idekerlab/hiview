@@ -32,11 +32,11 @@ class RawInteractionPanel extends Component {
         return
       }
 
-      this.props.enrichmentActions.runEnrichment(
-        'http://amp.pharm.mssm.edu/Enrichr/addList',
-        genes,
-        nextSubsystemId
-      )
+      // this.props.enrichmentActions.runEnrichment(
+      //   'http://amp.pharm.mssm.edu/Enrichr/addList',
+      //   genes,
+      //   nextSubsystemId
+      // )
     }
   }
 
@@ -58,9 +58,6 @@ class RawInteractionPanel extends Component {
       position: 'relative'
     }
 
-    console.log('**CONT2')
-    console.log(containerStyle)
-    console.log(networkAreaStyle)
     return (
       <div style={containerStyle}>{this.getMainContents(networkAreaStyle)}</div>
     )
@@ -138,14 +135,8 @@ class RawInteractionPanel extends Component {
     this.props.selectionActions.selectNode(newSelectionState)
   }
 
-  selectEdges = (edgeIds, edgeProps) => {
-    console.log(edgeProps)
-  }
 
   commandFinished = (lastCommand, status = {}) => {
-    console.log('Raw interaction: Command Finished: ' + lastCommand)
-    console.log(status)
-
     this.props.commandActions.clearCommand()
   }
 

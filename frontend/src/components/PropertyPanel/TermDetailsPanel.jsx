@@ -52,6 +52,20 @@ class TermDetailsPanel extends Component {
     if (nextProps.rawInteractions !== this.props.rawInteractions) {
       this.addStyle(nextProps.rawInteractions)
     }
+
+    // Update groups
+    //
+    // const groups = this.props.groups.groups
+    // const newGroups = nextProps.rawInteractions.get('groups')
+    //
+    // if (newGroups !== undefined || newGroups !== null) {
+    //   console.log('Updating group@@@@@@@@@@@@@@@@@@@@@@@@@@2')
+    //   this.props.groupsActions.addGroups({
+    //     parent: nextProps.currentProperty.id,
+    //     parentName: nextProps.currentProperty.data.Label,
+    //     groups: newGroups
+    //   })
+    // }
   }
 
   setScore = val => {

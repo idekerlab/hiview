@@ -26,9 +26,10 @@ const BASE_STYLE = {
   nodeSelected: {
     'selector': 'node:selected',
     'css': {
-      'width': 60,
-      'height': 60,
-      'font-size': 14,
+      'shape': 'ellipse',
+      'width': 50,
+      'height': 50,
+      'font-size': 16,
       color: '#222222',
       'background-color': '#FFFFFF',
     },

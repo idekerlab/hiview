@@ -1,6 +1,6 @@
-import React, {Component} from 'react'
-import {bindActionCreators} from 'redux'
-import {connect} from 'react-redux'
+import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import * as commandActions from '../../actions/commands'
 import * as eventActions from '../../actions/cyjs'
 import * as uiStateActions from '../../actions/ui-state'
@@ -9,7 +9,6 @@ import * as currentVsActions from '../../reducers/currentvs'
 
 import * as currentPathActions from '../../actions/current-path'
 
-
 import MainPanel from '../../components/MainPanel'
 
 import * as propertyActions from '../../actions/property'
@@ -17,7 +16,7 @@ import * as searchActions from '../../actions/search'
 
 import * as networkActions from '../../actions/network'
 
-import {grey50} from 'material-ui/styles';
+import { grey50 } from 'material-ui/styles'
 
 import * as queryGenesActions from '../../actions/query-genes'
 import * as messageActions from '../../actions/message'
@@ -30,123 +29,123 @@ import * as interactionStyleActions from '../../actions/interaction-style'
 import * as interactionsCommandsActions from '../../actions/commands-interactions'
 
 import * as enrichmentActions from '../../actions/enrichment'
+import * as groupsActions from '../../actions/groups'
 
-import {MuiThemeProvider} from 'material-ui/styles'
+import { MuiThemeProvider } from 'material-ui/styles'
 
-import {theme} from '../theme'
+import { theme } from '../theme'
 import 'typeface-roboto'
 
 import * as renderingOptionsActions from '../../actions/rendering-options'
 
 const baseStyle = {
-  'position': 'fixed',
-  'left': 0,
-  'top': 0,
-  'zIndex': 0,
-  'background': grey50,
-  'height': '100%',
-  'width': '100%',
+  position: 'fixed',
+  left: 0,
+  top: 0,
+  zIndex: 0,
+  background: grey50,
+  height: '100%',
+  width: '100%'
 }
 
 /**
  * Base component for the network viewer page.
  */
 class NetworkView extends Component {
-
   render() {
     const networkId = this.props.params.uri
 
     return (
       <MuiThemeProvider theme={theme}>
-        <MainPanel
-          {...this.props}
-          networkId={networkId}
-          style={baseStyle}
-        />
+        <MainPanel {...this.props} networkId={networkId} style={baseStyle} />
       </MuiThemeProvider>
     )
   }
-
 }
 
 function mapStateToProps(state) {
-
   return {
-    'currentProperty': state.app_manager.current_property,
-    'search': state.app_manager.search,
-    'commands': state.app_manager.commands,
-    'interactionsCommands': state.app_manager.interactions_commands,
-    'events': state.app_manager.cy_events,
-    'uiState': state.app_manager.ui_state,
-    'styles': state.visual_styles,
-    'currentVs': state.app_manager.current_vs,
+    currentProperty: state.app_manager.current_property,
+    search: state.app_manager.search,
+    commands: state.app_manager.commands,
+    interactionsCommands: state.app_manager.interactions_commands,
+    events: state.app_manager.cy_events,
+    uiState: state.app_manager.ui_state,
+    styles: state.visual_styles,
+    currentVs: state.app_manager.current_vs,
 
-    'datasource': state.datasource,
+    datasource: state.datasource,
 
-    'network': state.network,
+    network: state.network,
 
-    'rawInteractions': state.raw_interactions,
+    rawInteractions: state.raw_interactions,
 
-    'config': state.config,
+    config: state.config,
 
-    'queryGenes': state.app_manager.query_genes,
-    'message': state.app_manager.message,
+    queryGenes: state.app_manager.query_genes,
+    message: state.app_manager.message,
 
-    'idmap': state.idmap,
-    'selection': state.app_manager.selection,
-    'filters': state.filters,
-    'interactionStyle': state.interaction_style,
+    idmap: state.idmap,
+    selection: state.app_manager.selection,
+    filters: state.filters,
+    interactionStyle: state.interaction_style,
 
-    'currentPath': state.app_manager.current_path,
+    currentPath: state.app_manager.current_path,
 
-    'renderingOptions': state.rendering_options,
-    'enrichment': state.enrichment
-
+    renderingOptions: state.rendering_options,
+    enrichment: state.enrichment,
+    groups: state.groups
   }
-
 }
 
 function mapDispatchToProps(dispatch) {
-
   return {
-
     // Main ontology tree
-    'networkActions': bindActionCreators(networkActions, dispatch),
+    networkActions: bindActionCreators(networkActions, dispatch),
 
     // Raw interactions
-    'rawInteractionsActions': bindActionCreators(rawInteractionsActions, dispatch),
+    rawInteractionsActions: bindActionCreators(
+      rawInteractionsActions,
+      dispatch
+    ),
 
     // ID Mapping
-    'idmapActions': bindActionCreators(idmapActions, dispatch),
+    idmapActions: bindActionCreators(idmapActions, dispatch),
 
-    'commandActions': bindActionCreators(commandActions, dispatch),
-    'interactionsCommandActions': bindActionCreators(interactionsCommandsActions, dispatch),
-    'eventActions': bindActionCreators(eventActions, dispatch),
-    'uiStateActions': bindActionCreators(uiStateActions, dispatch),
-    'vsActions': bindActionCreators(vsActions, dispatch),
-    'currentVsActions': bindActionCreators(currentVsActions, dispatch),
+    commandActions: bindActionCreators(commandActions, dispatch),
+    interactionsCommandActions: bindActionCreators(
+      interactionsCommandsActions,
+      dispatch
+    ),
+    eventActions: bindActionCreators(eventActions, dispatch),
+    uiStateActions: bindActionCreators(uiStateActions, dispatch),
+    vsActions: bindActionCreators(vsActions, dispatch),
+    currentVsActions: bindActionCreators(currentVsActions, dispatch),
 
-    'propertyActions': bindActionCreators(propertyActions, dispatch),
-    'searchActions': bindActionCreators(searchActions, dispatch),
+    propertyActions: bindActionCreators(propertyActions, dispatch),
+    searchActions: bindActionCreators(searchActions, dispatch),
 
-    'queryGenesActions': bindActionCreators(queryGenesActions, dispatch),
+    queryGenesActions: bindActionCreators(queryGenesActions, dispatch),
 
-    'messageActions': bindActionCreators(messageActions, dispatch),
+    messageActions: bindActionCreators(messageActions, dispatch),
 
-    'selectionActions': bindActionCreators(selectionActions, dispatch),
+    selectionActions: bindActionCreators(selectionActions, dispatch),
 
-    'filtersActions': bindActionCreators(filtersActions, dispatch),
-    'interactionStyleActions': bindActionCreators(interactionStyleActions, dispatch),
+    filtersActions: bindActionCreators(filtersActions, dispatch),
+    interactionStyleActions: bindActionCreators(
+      interactionStyleActions,
+      dispatch
+    ),
 
-    'currentPathActions': bindActionCreators(currentPathActions, dispatch),
+    currentPathActions: bindActionCreators(currentPathActions, dispatch),
 
-    'renderingOptionsActions': bindActionCreators(renderingOptionsActions, dispatch),
-    'enrichmentActions': bindActionCreators(enrichmentActions, dispatch),
+    renderingOptionsActions: bindActionCreators(
+      renderingOptionsActions,
+      dispatch
+    ),
+    enrichmentActions: bindActionCreators(enrichmentActions, dispatch),
+    groupsActions: bindActionCreators(groupsActions, dispatch)
   }
-
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(NetworkView)
+export default connect(mapStateToProps, mapDispatchToProps)(NetworkView)

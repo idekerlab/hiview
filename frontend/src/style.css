@@ -164,7 +164,7 @@ html, body, #root {
 }
 
 .node-selected,.node-selected:hover {
-    stroke: red;
+    stroke: orange;
     opacity: 1;
     stroke-width: 8px;
 }
@@ -172,7 +172,7 @@ html, body, #root {
 
 .node-selected-sub,.node-selected-sub:hover {
 
-    stroke: orange;
+    stroke: teal;
     opacity: 1;
     stroke-width: 4px;
 }

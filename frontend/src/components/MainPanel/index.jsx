@@ -24,7 +24,7 @@ const VIZ_PANEL_STYLE = {
   borderTop: 'solid 2px #aaaaaa'
 }
 
-const DEF_BOTTOM_PANEL_HEIGHT = 300
+const DEF_BOTTOM_PANEL_HEIGHT = 150
 
 /*
   Main Ontology DAG viewer
@@ -56,12 +56,8 @@ export default class MainPanel extends Component {
   }
 
   setPanelSizes = () => {
-    console.log('??????????????????????? WILL size ????????????????')
     const height = window.innerHeight
-
-    console.log(height)
     const nvHeight = height - this.plotPanel.offsetHeight
-    console.log(nvHeight)
 
     this.setState({
       plotWidth: this.plotPanel.offsetWidth,
@@ -71,9 +67,7 @@ export default class MainPanel extends Component {
     })
   }
 
-  componentDidMount() {
-    console.log('??????????????????????? DID size ????????????????')
-  }
+  componentDidMount() {}
   componentWillReceiveProps(nextProps) {
     this.setPanelSizes()
   }
@@ -158,6 +152,9 @@ export default class MainPanel extends Component {
               cxtoolUrl={CXTOOL_URL}
               currentPathActions={currentPathActions}
               renderingOptions={renderingOptions}
+
+              rawInteractions={this.props.rawInteractions}
+              interactionsCommandActions={this.props.interactionsCommandActions}
             />
           </div>
           <div
@@ -197,6 +194,9 @@ export default class MainPanel extends Component {
           cxtoolUrl={CXTOOL_URL}
           enrichment={this.props.enrichment}
           enrichmentActions={this.props.enrichmentActions}
+
+          groups={this.props.groups}
+          groupsActions={this.props.groupsActions}
         />
 
         <FullSearch

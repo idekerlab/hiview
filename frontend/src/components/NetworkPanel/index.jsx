@@ -64,8 +64,6 @@ class NetworkPanel extends Component {
       nodeProps: props
     }
 
-    console.log('----------------- Selected -----------------')
-    console.log(props)
     this.props.selectionActions.selectNode(newSelectionState)
 
     const nodeTypeTag = 'NodeType'
@@ -84,8 +82,6 @@ class NetworkPanel extends Component {
       return
     }
 
-    console.log('----------------- Selected2 -----------------')
-
     // From NDEx to CYJS converter
     const linkEntry = props[NDEX_LINK_TAG]
     if (linkEntry === undefined) {
@@ -97,15 +93,18 @@ class NetworkPanel extends Component {
     const link = this.props.cxtoolUrl + linkId + '?server=test'
     console.log('----------------- Selected3 -----------------')
 
+    console.log(props)
     window.setTimeout(() => {
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
-      // Directly set prop from node attributes
-      this.props.rawInteractionsActions.fetchInteractionsFromUrl(
-        link,
-        this.props.maxEdgeCount
-      )
-      this.props.propertyActions.setProperty(props.id, props, 'term')
+      if (props.Size < 500) {
+        // Directly set prop from node attributes
+        this.props.rawInteractionsActions.fetchInteractionsFromUrl(
+          link,
+          this.props.maxEdgeCount
+        )
+        this.props.propertyActions.setProperty(props.id, props, 'term')
+      }
     }, 0)
   }
 
@@ -217,7 +216,11 @@ class NetworkPanel extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.height !== nextProps.height) {
-      console.log('!!!!!!!!!! NEW HEIGHT')
+      return true
+    }
+
+    if(this.props.rawInteractions !== nextProps.rawInteractions) {
+      console.log('!!!!!!!!!! NEWNETWORK !!!!!!!!!!!!!!!!!')
       return true
     }
 
@@ -279,8 +282,9 @@ class NetworkPanel extends Component {
       position: 'fixed',
       top: 0,
       left: 0,
-      width: '100%',
-      height: this.props.height
+      width: this.props.width,
+      height: this.props.height,
+      background: 'red'
     }
 
     // Default layout
@@ -292,25 +296,27 @@ class NetworkPanel extends Component {
     return (
       <div style={{ width: '100%', height: this.props.height }}>
         {/*<ContextMenuTrigger id="networkContextMenu">*/}
-          {/*<Viewer*/}
-            {/*key="mainView"*/}
-            {/*network={networkData}*/}
-            {/*networkType={'cyjs'}*/}
-            {/*style={networkAreaStyle}*/}
-            {/*// networkStyle={style}*/}
-            {/*eventHandlers={this.getCustomEventHandlers()}*/}
-            {/*command={commands}*/}
-            {/*rendererOptions={rendOpts}*/}
-          {/*/>*/}
+        {/*<Viewer*/}
+        {/*key="mainView"*/}
+        {/*network={networkData}*/}
+        {/*networkType={'cyjs'}*/}
+        {/*style={networkAreaStyle}*/}
+        {/*// networkStyle={style}*/}
+        {/*eventHandlers={this.getCustomEventHandlers()}*/}
+        {/*command={commands}*/}
+        {/*rendererOptions={rendOpts}*/}
+        {/*/>*/}
         {/*</ContextMenuTrigger>*/}
 
         {/*<NetworkContextMenu*/}
-          {/*hoverNode={this.state.hoverNode}*/}
-          {/*commandActions={this.props.commandActions}*/}
+        {/*hoverNode={this.state.hoverNode}*/}
+        {/*commandActions={this.props.commandActions}*/}
         {/*/>*/}
 
         <CirclePackingPanel
+          {...this.props}
           network={networkData}
+          groups={this.props.rawInteractions.get('groups')}
           style={circleAreaStyle}
           selectNodes={this.selectNodes}
           commandActions={this.props.commandActions}

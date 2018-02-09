@@ -1,23 +1,21 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import Drawer from 'material-ui/Drawer'
 
 import TermDetailsPanel from './TermDetailsPanel'
 import GenePropertyPanel from './GenePropertyPanel'
 
-import CloseIcon from "material-ui-icons/KeyboardArrowRight";
+import CloseIcon from 'material-ui-icons/KeyboardArrowRight'
 import ExpandIcon from 'material-ui-icons/Fullscreen'
 import ExitExpandIcon from 'material-ui-icons/FullscreenExit'
 
-import AppBar from 'material-ui/AppBar';
-import Toolbar from 'material-ui/Toolbar';
-import Typography from 'material-ui/Typography';
-import IconButton from 'material-ui/IconButton';
+import AppBar from 'material-ui/AppBar'
+import Toolbar from 'material-ui/Toolbar'
+import Typography from 'material-ui/Typography'
+import IconButton from 'material-ui/IconButton'
 
-import {withStyles} from 'material-ui/styles';
+import { withStyles } from 'material-ui/styles'
 
-
-import {blueGrey} from 'material-ui/colors'
-
+import { blueGrey } from 'material-ui/colors'
 
 const MAX_WIDTH = 450.0
 const MIN_WIDTH = 350.0
@@ -29,20 +27,20 @@ const PANEL_TYPES = {
 
 const styles = {
   root: {
-    width: '100%',
+    width: '100%'
   },
   flex: {
-    flex: 1,
+    flex: 1
   },
   menuButton: {
     marginLeft: -12,
-    marginRight: 20,
+    marginRight: 20
   },
   expandButton: {
     marginLeft: 12,
-    marginRight: -12,
-  },
-};
+    marginRight: -12
+  }
+}
 
 const drawerStyle = {
   display: 'flex',
@@ -51,9 +49,7 @@ const drawerStyle = {
   height: '100%'
 }
 
-
 class PropertyPanel extends Component {
-
   constructor(props) {
     super(props)
     this.state = {
@@ -61,14 +57,14 @@ class PropertyPanel extends Component {
       panelWidth: this.getWidth(),
       panelHeight: window.innerHeight * 0.4,
       expand: false
-    };
+    }
   }
 
   handleClose = () => {
     this.setState({
       open: false,
       expand: false,
-      panelWidth: this.getWidth(),
+      panelWidth: this.getWidth()
     })
   }
 
@@ -81,7 +77,6 @@ class PropertyPanel extends Component {
         panelHeight: window.innerHeight * 0.4,
         expand: false
       })
-
     } else {
       this.setState({
         panelWidth: window.innerWidth,
@@ -91,9 +86,7 @@ class PropertyPanel extends Component {
     }
   }
 
-
   componentWillReceiveProps(nextProps) {
-
     const selected = this.props.events.get('selected')
     const selectedNew = nextProps.events.get('selected')
     const currentProperty = this.props.currentProperty
@@ -101,7 +94,7 @@ class PropertyPanel extends Component {
 
     if (selected !== selectedNew || currentProperty !== newProperty) {
       this.setState({
-        open: true,
+        open: true
       })
     }
   }
@@ -120,7 +113,7 @@ class PropertyPanel extends Component {
   }
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props
 
     // Width of this UI panel
     const w = this.state.panelWidth
@@ -134,64 +127,56 @@ class PropertyPanel extends Component {
       label = this.props.currentProperty.id
     }
 
-    const barColor = (propType === PANEL_TYPES.GENE) ? 'orange' : blueGrey
+    const barColor = propType === PANEL_TYPES.GENE ? 'orange' : blueGrey
     const barTitle = label
-
 
     const drawerContentsStyle = {
       width: w,
       height: '100%',
-      overflowX: 'hidden',
+      overflowX: 'hidden'
     }
 
-    let appBarPosition = "fixed"
-    if(propType === PANEL_TYPES.GENE) {
+    let appBarPosition = 'fixed'
+    if (propType === PANEL_TYPES.GENE) {
       appBarPosition = 'absolute'
     }
 
-    const fontType = (propType === PANEL_TYPES.GENE) ? 'display2': 'headline'
+    const fontType = propType === PANEL_TYPES.GENE ? 'display2' : 'title'
+    const fontColor = propType === PANEL_TYPES.GENE ? '#666666' : 'orange'
 
     return (
       <Drawer
         style={drawerStyle}
         variant="persistent"
         anchor={'right'}
-        open={this.state.open}>
-
+        open={this.state.open}
+      >
         <div style={drawerContentsStyle}>
-          <AppBar position={appBarPosition}>
+          <AppBar position={appBarPosition} color={'default'}>
             <Toolbar>
               <IconButton className={classes.menuButton}>
-                <CloseIcon
-                  onClick={this.handleClose}
-                />
+                <CloseIcon onClick={this.handleClose} />
               </IconButton>
 
-              <Typography type={fontType} color="inherit" className={classes.flex}>
+              <h2
+                style={{color: fontColor}}
+              >
                 {barTitle}
-              </Typography>
+              </h2>
 
-
-              {propType === PANEL_TYPES.GENE ? (<div/>) : (
+              {propType === PANEL_TYPES.GENE ? (
+                <div />
+              ) : (
                 <div>
                   <IconButton className={classes.expandButton}>
-                    {
-                      this.state.expand ? (
-                        <ExitExpandIcon
-                          onClick={this.handleExpand}
-                        />
-
-                      ) : (
-
-                        <ExpandIcon
-                          onClick={this.handleExpand}
-                        />
-                      )
-                    }
+                    {this.state.expand ? (
+                      <ExitExpandIcon onClick={this.handleExpand} />
+                    ) : (
+                      <ExpandIcon onClick={this.handleExpand} />
+                    )}
                   </IconButton>
                 </div>
-              )
-              }
+              )}
             </Toolbar>
           </AppBar>
 
@@ -204,11 +189,10 @@ class PropertyPanel extends Component {
   /**
    * Currently supporting two types of networks only.
    */
-  getPanel = (w) => {
-
+  getPanel = w => {
     // Do not return any component if nothing is selected.
     if (this.props.currentProperty.id === null) {
-      return (<div/>)
+      return <div />
     }
 
     // This will be gene or term.
@@ -224,22 +208,18 @@ class PropertyPanel extends Component {
         />
       )
     } else if (propType === PANEL_TYPES.GENE) {
-
       // Check namespace props here...
 
-      return (
-        <GenePropertyPanel
-          {...this.props}
-          width={w}
-        />
-      )
+      return <GenePropertyPanel {...this.props} width={w} />
     } else {
-
       // Unsupported type
-      return (<div><h2>Unknown prop type</h2></div>)
+      return (
+        <div>
+          <h2>Unknown prop type</h2>
+        </div>
+      )
     }
   }
-
 }
 
-export default withStyles(styles)(PropertyPanel);
+export default withStyles(styles)(PropertyPanel)

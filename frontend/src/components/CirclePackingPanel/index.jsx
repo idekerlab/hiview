@@ -10,19 +10,15 @@ class CirclePackingPanel extends Component {
   state = {
     tree: null,
     hover: null,
+    hoverNodes: null
   }
-
-  componentWillMount() {}
 
   componentDidMount() {
     // Initialization
     const tree = cyjs2tree(this.props.network)
     this.setState({
-      tree,
+      tree
     })
-  }
-
-  componentWillReceiveProps(nextProps) {
   }
 
   getEventHandlers = () => {
@@ -37,15 +33,46 @@ class CirclePackingPanel extends Component {
     }
 
     const hoverOnNode = (id, data) => {
-      // console.log('hover = ' + id)
-      // console.log(data)
+      if (id === null) {
+        if (this.state.hoverNodes !== null) {
+          this.props.interactionsCommandActions.unselectNodes({
+            idList: this.state.hoverNodes
+          })
+        }
+
+        return
+      }
+
+      if (data.props.name === undefined) {
+        return
+      }
+
+      const name = data.props.name.split('.')[0]
+
+      const groups = this.props.groups
+      if (groups === undefined) {
+        return
+      }
+
+      const geneIds = groups[name]
+
+      if (geneIds === null || geneIds === undefined) {
+        return
+      }
+
       this.setState({
-        hover: id
+        hover: id,
+        hoverNodes: geneIds
       })
 
+      window.setTimeout(() => {
+        this.props.interactionsCommandActions.selectNodes({
+          idList: geneIds,
+          selectedColor: 'red'
+        })
+      }, 0)
 
-
-      // this.props.commandActions.selectNodes({
+      // this.props.rawInteractionsActions.selectNodes({
       //   idList: geneIds,
       //   selectedColor: selectedColor,
       //   groupColors: this.state.groupColors
@@ -59,7 +86,6 @@ class CirclePackingPanel extends Component {
   }
 
   render() {
-
     return (
       <div
         ref={containerElement => (this.containerElement = containerElement)}
@@ -71,7 +97,8 @@ class CirclePackingPanel extends Component {
           <TreeViewer
             tree={this.state.tree}
             eventHandlers={this.getEventHandlers()}
-            size={this.props.style.height}
+            width={this.props.style.width}
+            height={this.props.style.height}
           />
         )}
       </div>
@@ -81,6 +108,6 @@ class CirclePackingPanel extends Component {
 
 const handleClick = (nodeId, props) => {
   props.commandActions.zoomToNode(nodeId)
-};
+}
 
 export default CirclePackingPanel
