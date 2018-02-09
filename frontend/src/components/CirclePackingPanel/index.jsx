@@ -21,25 +21,73 @@ class CirclePackingPanel extends Component {
     })
   }
 
+  selectGroups = (id, data, groups, actions) => {
+
+    if(data.props === undefined) {
+      return
+    }
+
+    if (data.props.name === undefined) {
+      return
+    }
+
+    console.log(data)
+    const name = data.props.name.split('.')[0]
+    const geneIds = groups[name]
+
+    if (geneIds === null || geneIds === undefined) {
+      return
+    }
+
+    window.setTimeout(() => {
+      actions.selectNodes({
+        idList: geneIds,
+        selectedColor: 'green'
+      })
+    }, 0)
+
+  }
+
   getEventHandlers = () => {
-    const selectNode = (id, data) => {
+
+    const selectNode = (id, data, zoom) => {
       console.log('Seleected = ' + id)
       console.log(data)
       const wrappedData = {
         props: data
       }
-      this.props.selectNodes([id], { [id]: wrappedData })
-      this.props.commandActions.zoomToNode(id)
+
+      console.log('+++++++++++++++++++++++ZOOM: ' + zoom)
+      if(zoom) {
+        this.props.selectNodes([id], { [id]: wrappedData })
+      } else {
+        console.log('+++++++++++++++++++++++GROUP: ')
+        console.log(wrappedData)
+        this.selectGroups(id, wrappedData, this.props.groups, this.props.interactionsCommandActions)
+      }
+      // this.props.commandActions.zoomToNode(id)
     }
 
     const hoverOnNode = (id, data) => {
+      // Special case: gene
+      // if(data !== null) {
+      //   const nodeType = data.NodeType
+      //   if(nodeType === "Gene") {
+      //     this.props.interactionsCommandActions.selectNodes({
+      //       idList: [id],
+      //       selectedColor: 'red'
+      //     })
+      //
+      //     return
+      //   }
+      // }
+
       if (id === null) {
         if (this.state.hoverNodes !== null) {
           this.props.interactionsCommandActions.unselectNodes({
             idList: this.state.hoverNodes
           })
         }
-
         return
       }
 
@@ -47,6 +95,7 @@ class CirclePackingPanel extends Component {
         return
       }
 
+      console.log(data)
       const name = data.props.name.split('.')[0]
 
       const groups = this.props.groups

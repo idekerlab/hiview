@@ -156,9 +156,8 @@ html, body, #root {
 }
 
 
-
 .node:hover {
-    stroke: white;
+    stroke: red;
     opacity: 1;
     stroke-width: 3px;
 }
