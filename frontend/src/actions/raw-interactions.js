@@ -228,6 +228,7 @@ const createFilter = network => {
 export const SET_VALUE = 'SET_VALUE'
 export const setValue = createAction(SET_VALUE)
 
-// For upper liit of edges
+// For upper limit of edges
 export const SET_MAX_EDGE_COUNT = 'SET_MAX_EDGE_COUNT'
 export const setMaxEdgeCount = createAction(SET_MAX_EDGE_COUNT)
+

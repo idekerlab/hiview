@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-
 import { CirclePackingRenderer, CyTreeViewer } from 'cy-tree-viewer'
-
 import cyjs2tree from './cyjs2tree'
+import { Set } from 'immutable'
 
 const TreeViewer = CyTreeViewer(CirclePackingRenderer)
 
@@ -11,11 +10,11 @@ class CirclePackingPanel extends Component {
     tree: null,
     hover: null,
     hoverNodes: null,
-    selectedGroups: new Set()
+    selectedGroups: Set(),
+    selectedGenes: Set()
   }
 
   componentDidMount() {
-    // Initialization
     const tree = cyjs2tree(this.props.network)
     this.setState({
       tree
@@ -46,9 +45,11 @@ class CirclePackingPanel extends Component {
 
     console.log(this.state.selectedGroups)
 
+    geneIds.forEach(gene => this.state.selectedGenes.add(gene))
+
     window.setTimeout(() => {
       actions.selectNodes({
-        idList: geneIds,
+        idList: [...this.state.selectedGenes],
         selectedColor: 'green'
       })
     }, 0)
@@ -61,7 +62,17 @@ class CirclePackingPanel extends Component {
       }
 
       if (zoom) {
-        this.props.selectNodes([id], { [id]: wrappedData })
+        // Move focus to new node
+
+        // Clear all selected nodes
+        this.setState({
+          hover: null,
+          hoverNodes: null,
+          selectedGroups: Set(),
+          selectedGenes: Set()
+        })
+
+        this.props.selectPrimaryNode([id], { [id]: wrappedData })
       } else {
         this.selectGroups(
           id,
@@ -87,28 +98,53 @@ class CirclePackingPanel extends Component {
       }
     }
 
-    const hoverOnNode = (id, data) => {
-      // Special case: gene
-      // if(data !== null) {
-      //   const nodeType = data.NodeType
-      //   if(nodeType === "Gene") {
-      //     this.props.interactionsCommandActions.selectNodes({
-      //       idList: [id],
-      //       selectedColor: 'red'
-      //     })
-      //
-      //     return
-      //   }
-      // }
-
-
-      if (data === null || data.props === null || data.props.name === undefined) {
+    const hoverOutNode = (id, data) => {
+      // Case 1: No permanent selection
+      if (this.state.hoverNodes === null) {
         return
       }
 
-      console.log(data)
-      const name = data.props.name.split('.')[0]
+      // Case 2: Hover, but no permanent selection
+      if (this.state.selectedGenes.size === 0) {
+        this.props.interactionsCommandActions.unselectNodes({
+          idList: this.state.hoverNodes
+        })
 
+        this.setState({
+          hover: null,
+          hoverNodes: null
+        })
+
+        return
+      }
+
+      // Case 3: permanent selection is not empty
+
+      const hoverSelectionSet = Set(this.state.hoverNodes)
+      const permanentSelectionSet = this.state.selectedGenes
+
+      // this.props.interactionsCommandActions.unselectNodes({
+      //   idList: this.state.hoverNodes
+      // })
+      //
+      // window.setTimeout(() => {
+      //   this.props.interactionsCommandActions.selectNodes({
+      //     idList: [...this.state.selectedGenes],
+      //     selectedColor: 'green'
+      //   })
+      // }, 0)
+    }
+
+    const hoverOnNode = (id, data) => {
+      if (
+        data === null ||
+        data.props === null ||
+        data.props.name === undefined
+      ) {
+        return
+      }
+
+      const name = data.props.name.split('.')[0]
       const groups = this.props.groups
       if (groups === undefined) {
         return
@@ -120,7 +156,7 @@ class CirclePackingPanel extends Component {
         return
       }
 
-      if(this.state.selectedGroups.has(id)) {
+      if (this.state.selectedGroups.has(id)) {
         return
       }
 
@@ -129,22 +165,15 @@ class CirclePackingPanel extends Component {
         hoverNodes: geneIds
       })
 
-      window.setTimeout(() => {
-        this.props.interactionsCommandActions.selectNodes({
-          idList: geneIds,
-          selectedColor: 'red'
-        })
-      }, 0)
-
-      // this.props.rawInteractionsActions.selectNodes({
-      //   idList: geneIds,
-      //   selectedColor: selectedColor,
-      //   groupColors: this.state.groupColors
-      // });
+      this.props.interactionsCommandActions.selectNodes({
+        idList: geneIds,
+        selectedColor: 'red'
+      })
     }
 
     return {
       selectNode,
+      hoverOutNode,
       hoverOnNode,
       deselectNode
     }

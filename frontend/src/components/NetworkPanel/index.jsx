@@ -240,7 +240,6 @@ class NetworkPanel extends Component {
       nextProps.network.get('loading') === this.props.network.get('loading')
     ) {
       // Check commands difference
-      console.log('...Still loading...')
 
       if (this.props.commands !== nextProps.commands) {
         return true
@@ -318,7 +317,7 @@ class NetworkPanel extends Component {
           network={networkData}
           groups={this.props.rawInteractions.get('groups')}
           style={circleAreaStyle}
-          selectNodes={this.selectNodes}
+          selectPrimaryNode={this.selectNodes}
           commandActions={this.props.commandActions}
         />
       </div>
