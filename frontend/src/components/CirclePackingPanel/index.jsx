@@ -189,6 +189,7 @@ class CirclePackingPanel extends Component {
           <div />
         ) : (
           <TreeViewer
+            selected={this.props.search.result}
             tree={this.state.tree}
             eventHandlers={this.getEventHandlers()}
             width={this.props.style.width}
