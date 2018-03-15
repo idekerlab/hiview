@@ -24,7 +24,7 @@ const VIZ_PANEL_STYLE = {
   borderTop: 'solid 2px #aaaaaa'
 }
 
-const DEF_BOTTOM_PANEL_HEIGHT = 150
+const DEF_BOTTOM_PANEL_HEIGHT = 330
 
 /*
   Main Ontology DAG viewer
@@ -131,6 +131,8 @@ export default class MainPanel extends Component {
             }}
           >
             <NetworkPanel
+              uiState={uiState}
+              uiStateActions={uiStateActions}
               width={this.state.networkViewWidth}
               height={this.state.networkViewHeight}
               networkActions={networkActions}

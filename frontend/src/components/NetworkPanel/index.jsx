@@ -215,11 +215,21 @@ class NetworkPanel extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    console.log('!!!!!!!!!! NV should !!!!!!!!!!!!!!!!!')
+    console.log(this.props.uiState)
+    console.log(nextProps.uiState)
+
     if (this.props.height !== nextProps.height) {
       return true
     }
 
-    if(this.props.rawInteractions !== nextProps.rawInteractions) {
+
+    if(this.props.uiState.get('changeViewer') !== nextProps.uiState.get('changeViewer')) {
+      console.log('!!!!!!!!!! CHANGE VIEW !!!!!!!!!!!!!!!!!')
+      return true
+    }
+
+    if (this.props.rawInteractions !== nextProps.rawInteractions) {
       console.log('!!!!!!!!!! NEWNETWORK !!!!!!!!!!!!!!!!!')
       return true
     }
@@ -273,7 +283,7 @@ class NetworkPanel extends Component {
       position: 'fixed',
       top: 0,
       right: 0,
-      width: '70%',
+      width: this.props.width,
       height: this.props.height
     }
 
@@ -292,36 +302,42 @@ class NetworkPanel extends Component {
       sigmaOptions: this.props.renderingOptions.toJS()
     }
 
-    return (
-      <div style={{ width: '100%', height: this.props.height }}>
-        {/*<ContextMenuTrigger id="networkContextMenu">*/}
-        {/*<Viewer*/}
-        {/*key="mainView"*/}
-        {/*network={networkData}*/}
-        {/*networkType={'cyjs'}*/}
-        {/*style={networkAreaStyle}*/}
-        {/*// networkStyle={style}*/}
-        {/*eventHandlers={this.getCustomEventHandlers()}*/}
-        {/*command={commands}*/}
-        {/*rendererOptions={rendOpts}*/}
-        {/*/>*/}
-        {/*</ContextMenuTrigger>*/}
+    if (this.props.uiState.get('changeViewer')) {
+      return (
+        <div style={{ width: '100%', height: this.props.height }}>
+          <ContextMenuTrigger id="networkContextMenu">
+            <Viewer
+              key="mainView"
+              network={networkData}
+              networkType={'cyjs'}
+              style={networkAreaStyle}
+              // networkStyle={style}
+              eventHandlers={this.getCustomEventHandlers()}
+              command={commands}
+              rendererOptions={rendOpts}
+            />
+          </ContextMenuTrigger>
 
-        {/*<NetworkContextMenu*/}
-        {/*hoverNode={this.state.hoverNode}*/}
-        {/*commandActions={this.props.commandActions}*/}
-        {/*/>*/}
-
-        <CirclePackingPanel
-          {...this.props}
-          network={networkData}
-          groups={this.props.rawInteractions.get('groups')}
-          style={circleAreaStyle}
-          selectPrimaryNode={this.selectNodes}
-          commandActions={this.props.commandActions}
-        />
-      </div>
-    )
+          <NetworkContextMenu
+            hoverNode={this.state.hoverNode}
+            commandActions={this.props.commandActions}
+          />
+        </div>
+      )
+    } else {
+      return (
+        <div style={{ width: '100%', height: this.props.height }}>
+          <CirclePackingPanel
+            {...this.props}
+            network={networkData}
+            groups={this.props.rawInteractions.get('groups')}
+            style={circleAreaStyle}
+            selectPrimaryNode={this.selectNodes}
+            commandActions={this.props.commandActions}
+          />
+        </div>
+      )
+    }
   }
 }
 

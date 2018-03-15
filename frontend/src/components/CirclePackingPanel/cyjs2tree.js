@@ -13,11 +13,16 @@ const cyjs2tree = cyjs => {
 
   const nodeMap = {}
 
+  // Root info is stored in network data
   let root = null
+
   while (idx--) {
     const node = nodes[idx]
     const data = node.data
-    if (!data['Label'].includes('Hidden') && !data['Label'].includes('Linked') ) {
+    if (
+      !data['Label'].includes('Hidden') &&
+      !data['Label'].includes('Linked')
+    ) {
       const isRoot = nodes[idx].data.isRoot
       if (isRoot) {
         root = nodes[idx]
@@ -28,6 +33,8 @@ const cyjs2tree = cyjs => {
     }
   }
 
+  console.log(cyjs)
+  console.log(Object.keys(nodeMap).length)
   console.log(root)
 
   const rootId = root.data.id
@@ -51,14 +58,17 @@ const transform = (rootId, edges, nodeMap) => {
     props: nodeMap[rootId]
   })
 
-
   edges.forEach(edge => {
     const source = nodeMap[edge.data.source]
     const target = nodeMap[edge.data.target]
 
-    if (source !== undefined && target !== undefined) {
-      // console.log(source)
-
+    if (
+      source !== undefined &&
+      target !== undefined &&
+      edge.data['Is_Tree_Edge'] === 'Tree' &&
+      nodeMap[source.id] !== undefined &&
+      nodeMap[target.id] !== undefined
+    ) {
       table.push({
         id: source.id,
         Label: source.Label,
@@ -67,7 +77,6 @@ const transform = (rootId, edges, nodeMap) => {
         NodeType: source.NodeType,
         props: source
       })
-    } else {
     }
   })
 

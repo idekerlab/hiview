@@ -32,11 +32,11 @@ class RawInteractionPanel extends Component {
         return
       }
 
-      // this.props.enrichmentActions.runEnrichment(
-      //   'http://amp.pharm.mssm.edu/Enrichr/addList',
-      //   genes,
-      //   nextSubsystemId
-      // )
+      this.props.enrichmentActions.runEnrichment(
+        'http://amp.pharm.mssm.edu/Enrichr/addList',
+        genes,
+        nextSubsystemId
+      )
     }
   }
 
