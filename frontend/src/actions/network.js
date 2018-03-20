@@ -3,20 +3,48 @@ import cytoscape from 'cytoscape'
 
 export const FETCH_NETWORK = 'FETCH_NETWORK'
 
+const DB_NAME = 'HiViewNetworkDB'
+const request = window.indexedDB.open(DB_NAME, 3)
+console.log('** IndexedDB', request)
+
+request.onerror = event => {
+  console.error('Failed to connect DB')
+}
+
+
+let db
+
+request.onsuccess = () => {
+  db = event.target.result
+}
+
+let index
+let store
+
+request.onupgradeneeded = () => {
+  db = request.result
+
+  store = db.createObjectStore('NetworkStore', { keyPath: 'id' })
+  index = store.createIndex('NameIndex', ['data.name'])
+}
+
+
+
+
+
 const fetchNetwork = url => {
   return {
     type: FETCH_NETWORK,
-    url,
+    url
   }
 }
 
 export const RECEIVE_NETWORK = 'RECEIVE_NETWORK'
 const receiveNetwork = (url, json) => {
-
   return {
     type: RECEIVE_NETWORK,
     url,
-    network: json,
+    network: json
   }
 }
 
@@ -52,35 +80,35 @@ const filterNodes = network => {
 }
 
 export const fetchNetworkFromUrl = url => {
-
   return dispatch => {
     dispatch(fetchNetwork(url))
 
-    return fetchNet(url)
-      .then(response => (response.json()))
-      // .then(rawCyjs => (filterEdges(rawCyjs)))
-      // .then(rawCyjs => (filterNodes(rawCyjs)))
-      // .then(rawCyjs => (filterLeafs(rawCyjs)))
-      // .then(json => (layout(json)))
-      .then(json => (createLabel2IdMap(json)))
-      .then(network => dispatch(receiveNetwork(url, network)))
+    return (
+      fetchNet(url)
+        .then(response => response.json())
+        // .then(rawCyjs => (filterEdges(rawCyjs)))
+        // .then(rawCyjs => (filterNodes(rawCyjs)))
+        // .then(rawCyjs => (filterLeafs(rawCyjs)))
+        // .then(json => (layout(json)))
+        .then(json => createLabel2IdMap(json))
+        .then(network => dispatch(receiveNetwork(url, network)))
+    )
   }
 }
 
 const createLabel2IdMap = network => {
-
   const nodes = network.elements.nodes
 
   const label2id = {}
   const id2prop = {}
 
   let i = nodes.length
-  while(i--) {
+  while (i--) {
     const nodeData = nodes[i].data
     const label = nodeData.Label
     const isRoot = nodeData.isRoot
 
-    if(isRoot) {
+    if (isRoot) {
       network['rootId'] = nodeData.id
     }
 
@@ -93,19 +121,17 @@ const createLabel2IdMap = network => {
   return network
 }
 
-
 const filterLeafs = network => {
   const cy = cytoscape({
-    elements: network.elements,
+    elements: network.elements
   })
 
   const toBeRemovedNodes = cy.filter((element, i) => {
-
     if (element.isNode() && element.degree() === 1) {
-      return true;
+      return true
     }
-    return false;
-  });
+    return false
+  })
 
   console.log('TOTAL: ' + network.elements.nodes.length)
   console.log('FILTERED: ' + toBeRemovedNodes.length)
@@ -114,8 +140,8 @@ const filterLeafs = network => {
   cy.remove(toBeRemovedEdges)
   cy.remove(toBeRemovedNodes)
 
-  network.elements.nodes = cy.nodes().jsons();
-  network.elements.edges = cy.edges().jsons();
+  network.elements.nodes = cy.nodes().jsons()
+  network.elements.edges = cy.edges().jsons()
 
   return network
 }
@@ -163,9 +189,7 @@ const findRoot = network => {
   return rootId
 }
 
-
 const layout = network => {
-
   const rootNodeId = findRoot(network)
   if (rootNodeId === null) {
     console.log('FAILED!!!!!!!!!!!!!!!!!!!!!!!!! Root Node not found: ')
@@ -181,13 +205,11 @@ const layout = network => {
   return applyLayout(layoutMap, network)
 }
 
-
 const getTree = (rootId, tree) => {
-
   const csv = []
   csv.push({
     name: rootId,
-    parent: '',
+    parent: ''
   })
 
   const edges = tree.elements.edges
@@ -197,7 +219,7 @@ const getTree = (rootId, tree) => {
 
     csv.push({
       name: source,
-      parent: target,
+      parent: target
     })
   })
 
@@ -205,12 +227,12 @@ const getTree = (rootId, tree) => {
 
   const d3tree = d3Hierarchy
     .stratify()
-    .id(function (d) {
-      return d.name;
+    .id(function(d) {
+      return d.name
     })
-    .parentId(function (d) {
-      return d.parent;
-    })(csv);
+    .parentId(function(d) {
+      return d.parent
+    })(csv)
 
   console.log(d3tree)
 
@@ -219,7 +241,7 @@ const getTree = (rootId, tree) => {
     .size([360, 1600])
     .separation((a, b) => {
       return (a.parent === b.parent ? 1 : 2) / a.depth
-    });
+    })
 
   layout(d3tree)
   console.log('---------- Done! -------------')
@@ -237,7 +259,6 @@ const applyLayout = (layoutMap, network) => {
   nodes.forEach(node => {
     const position = layoutMap[node.data.id]
     if (position !== undefined) {
-
       let depth = position[2]
 
       if (depth === undefined) {
@@ -286,25 +307,16 @@ const applyLayout = (layoutMap, network) => {
 const project = (x, y) => {
   const angle = (x - 90) / 180 * Math.PI
   const radius = y
-  return [
-    radius * Math.cos(angle),
-    radius * Math.sin(angle),
-    angle,
-  ];
+  return [radius * Math.cos(angle), radius * Math.sin(angle), angle]
 }
 
 const project2 = (x, y) => {
   const angle = (x - 90) / 180 * Math.PI
   const radius = y
-  return [
-    radius * Math.cos(angle * 2),
-    radius * Math.sin(angle * 2),
-    angle,
-  ];
+  return [radius * Math.cos(angle * 2), radius * Math.sin(angle * 2), angle]
 }
 
 const walk = (node, layoutMap) => {
-
   layoutMap[node.id] = [node.x, node.y, node.depth]
 
   const children = node.children
@@ -317,11 +329,10 @@ const walk = (node, layoutMap) => {
 }
 
 export const idMapping = json => {
-
   fetch(url, {
-    method: 'POST',
+    method: 'POST'
   })
-    .then(response => (response.json()))
+    .then(response => response.json())
     .then(json => {
       dispatch(receiveNetwork(url, json))
     })
@@ -331,6 +342,6 @@ export const DELETE_NETWORK = 'DELETE_NETWORK'
 const deleteNetwork = url => {
   return {
     type: DELETE_NETWORK,
-    url,
+    url
   }
 }
