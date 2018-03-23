@@ -136,12 +136,30 @@ class CirclePackingPanel extends Component {
     }
 
     const hoverOnNode = (id, data) => {
+
+      this.props.selectionActions.enterNode(data)
+
       if (
         data === null ||
         data.props === null ||
         data.props.name === undefined
       ) {
         return
+      }
+
+      console.log('DATA::: ', data)
+      if(data.NodeType === 'Gene') {
+        console.log([id])
+        this.setState({
+          hover: id,
+          hoverNodes: [id]
+        })
+
+        this.props.interactionsCommandActions.selectNodes({
+          idList: [id],
+          selectedColor: 'red'
+        })
+
       }
 
       const name = data.props.name.split('.')[0]
@@ -160,10 +178,12 @@ class CirclePackingPanel extends Component {
         return
       }
 
+      console.log("GENE SET: ", geneIds)
       this.setState({
         hover: id,
         hoverNodes: geneIds
       })
+
 
       this.props.interactionsCommandActions.selectNodes({
         idList: geneIds,

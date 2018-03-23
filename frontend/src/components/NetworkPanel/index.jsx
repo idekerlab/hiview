@@ -215,16 +215,14 @@ class NetworkPanel extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log('!!!!!!!!!! NV should !!!!!!!!!!!!!!!!!')
-    console.log(this.props.uiState)
-    console.log(nextProps.uiState)
-
     if (this.props.height !== nextProps.height) {
       return true
     }
 
-
-    if(this.props.uiState.get('changeViewer') !== nextProps.uiState.get('changeViewer')) {
+    if (
+      this.props.uiState.get('changeViewer') !==
+      nextProps.uiState.get('changeViewer')
+    ) {
       console.log('!!!!!!!!!! CHANGE VIEW !!!!!!!!!!!!!!!!!')
       return true
     }
@@ -265,10 +263,21 @@ class NetworkPanel extends Component {
     const networkProp = this.props.network
     const networkData = networkProp.get(this.state.networkUrl)
 
-    if (loading || networkData === undefined) {
+
+    console.log('!!! NP render: ', this.props)
+
+    if (loading) {
+      let message = 'Loading hierarchy.  Please wait...'
+
+      console.log('ND::: ', networkData)
+
+      if (networkData !== undefined) {
+        message = 'Data Loaded!'
+      }
+
       return (
         <div style={progressStyle}>
-          <h2>Loading. Please wait...</h2>
+          <h2>{message}</h2>
           <CircularProgress size={500} />
         </div>
       )

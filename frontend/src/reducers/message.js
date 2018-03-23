@@ -1,12 +1,14 @@
-import {handleActions} from 'redux-actions'
-import {Map} from 'immutable'
+import { handleActions } from 'redux-actions'
 
-const defaultState = Map({
-  message: 'Initializing application.  Please be patient...'
-})
+const defaultState = {
+  message: ''
+}
 
-export default handleActions({
-  SET_MESSAGE: (state, action) => (Map({
-    message: action.payload
-  })),
-}, defaultState)
+export default handleActions(
+  {
+    SET_MESSAGE: (state, action) => {
+      message: action.payload
+    }
+  },
+  defaultState
+)

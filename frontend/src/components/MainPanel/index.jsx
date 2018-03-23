@@ -10,6 +10,8 @@ import MainMenuPanel from '../MainMenuPanel'
 import FullSearch from '../FullSearch'
 import SplitPane from 'react-split-pane'
 
+import Overlay from '../Overlay'
+
 const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
 
 import { blueGrey } from 'material-ui/colors'
@@ -24,7 +26,7 @@ const VIZ_PANEL_STYLE = {
   borderTop: 'solid 2px #aaaaaa'
 }
 
-const DEF_BOTTOM_PANEL_HEIGHT = 330
+const DEF_BOTTOM_PANEL_HEIGHT = 30
 
 /*
   Main Ontology DAG viewer
@@ -109,6 +111,11 @@ export default class MainPanel extends Component {
 
     return (
       <div style={this.props.style}>
+
+        <Overlay
+          selection={selection}
+        />
+
         <MainMenuPanel
           uiState={uiState}
           uiStateActions={uiStateActions}

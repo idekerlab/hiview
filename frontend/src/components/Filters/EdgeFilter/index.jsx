@@ -39,7 +39,7 @@ const styles = theme => ({
     padding: "0.3em"
   },
   listItem: {
-    height: "1em",
+    height: "1.5em",
     margin: 0,
     padding: "0.2em",
     paddingLeft: 0

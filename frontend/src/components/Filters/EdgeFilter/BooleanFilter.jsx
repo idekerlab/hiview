@@ -8,7 +8,7 @@ import BaseFilter from "./BaseFilter";
 const filterRowStyle = {
   padding: "1em",
   width: "100%",
-  height: "0.5em",
+  height: "0.8em",
   display: "flex",
   alignItems: "center"
 };
