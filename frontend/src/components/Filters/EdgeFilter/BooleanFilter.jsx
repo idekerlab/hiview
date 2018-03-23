@@ -25,6 +25,7 @@ class BooleanFilter extends BaseFilter {
               style={{
                 width: "1em",
                 height: "1em",
+                paddingRight: '0.2em',
                 color: this.state.labelColor
               }}
               checked={this.state.checked}

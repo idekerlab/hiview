@@ -159,13 +159,13 @@ html, body, #root {
 .node:hover {
     stroke: red;
     opacity: 1;
-    stroke-width: 3px;
+    stroke-width: 1px;
 }
 
 .node-selected,.node-selected:hover {
     stroke: orange;
     opacity: 1;
-    stroke-width: 8px;
+    stroke-width: 1.5px;
 }
 
 
@@ -173,5 +173,5 @@ html, body, #root {
 
     stroke: teal;
     opacity: 1;
-    stroke-width: 4px;
+    stroke-width: 1px;
 }

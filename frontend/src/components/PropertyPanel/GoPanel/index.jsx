@@ -13,6 +13,10 @@ import GoCategoryPanel from './GoCategoryPanel'
 const GoPanel = props => {
   const go = props.go
 
+  if(go === undefined) {
+    return <div />
+  }
+
   const bp = go.BP
   const cc = go.CC
   const mf = go.MF

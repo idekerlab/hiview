@@ -11,6 +11,7 @@ import FullSearch from '../FullSearch'
 import SplitPane from 'react-split-pane'
 
 import Overlay from '../Overlay'
+import BottomPanel from '../BottomPanel'
 
 const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
 
@@ -57,29 +58,7 @@ export default class MainPanel extends Component {
     })
   }
 
-  setPanelSizes = () => {
-    const height = window.innerHeight
-    const nvHeight = height - this.plotPanel.offsetHeight
 
-    this.setState({
-      plotWidth: this.plotPanel.offsetWidth,
-      plotHeight: this.plotPanel.offsetHeight,
-      networkViewWidth: this.networkViewPanel.offsetWidth,
-      networkViewHeight: nvHeight
-    })
-  }
-
-  componentDidMount() {}
-  componentWillReceiveProps(nextProps) {
-    this.setPanelSizes()
-  }
-
-  handleResize = size => {
-    console.log(size)
-    this.setState({
-      networkViewHeight: window.innerHeight - size
-    })
-  }
 
   render() {
     const {
@@ -111,10 +90,7 @@ export default class MainPanel extends Component {
 
     return (
       <div style={this.props.style}>
-
-        <Overlay
-          selection={selection}
-        />
+        <Overlay selection={selection} />
 
         <MainMenuPanel
           uiState={uiState}
@@ -125,61 +101,42 @@ export default class MainPanel extends Component {
           renderingOptionsActions={renderingOptionsActions}
         />
 
-        <SplitPane
-          split="horizontal"
-          minSize={50}
-          defaultSize={DEF_BOTTOM_PANEL_HEIGHT}
-          primary="second"
-          onDragFinished={size => this.handleResize(size)}
-        >
-          <div
-            ref={networkViewPanel => {
-              this.networkViewPanel = networkViewPanel
-            }}
-          >
-            <NetworkPanel
-              uiState={uiState}
-              uiStateActions={uiStateActions}
-              width={this.state.networkViewWidth}
-              height={this.state.networkViewHeight}
-              networkActions={networkActions}
-              commands={commands}
-              commandActions={commandActions}
-              events={events}
-              eventActions={eventActions}
-              currentProperty={currentProperty}
-              propertyActions={propertyActions}
-              network={network}
-              search={search}
-              messageActions={messageActions}
-              maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
-              rawInteractionsActions={rawInteractionsActions}
-              idmapActions={this.props.idmapActions}
-              datasource={this.props.datasource}
-              selection={selection}
-              selectionActions={selectionActions}
-              cxtoolUrl={CXTOOL_URL}
-              currentPathActions={currentPathActions}
-              renderingOptions={renderingOptions}
+        <BottomPanel>
+          <PlotPanel
+            width={'100%'}
+            height={'14em'}
+            data={this.props.enrichment.get('result')}
+            enrichment={this.props.enrichment}
+          />
+        </BottomPanel>
 
-              rawInteractions={this.props.rawInteractions}
-              interactionsCommandActions={this.props.interactionsCommandActions}
-            />
-          </div>
-          <div
-            ref={plot => {
-              this.plotPanel = plot
-            }}
-            style={VIZ_PANEL_STYLE}
-          >
-            <PlotPanel
-              width={this.state.plotWidth}
-              height={this.state.plotHeight}
-              data={this.props.enrichment.get('result')}
-              enrichment={this.props.enrichment}
-            />
-          </div>
-        </SplitPane>
+        <NetworkPanel
+          uiState={uiState}
+          uiStateActions={uiStateActions}
+          width={window.innerWidth}
+          height={window.innerHeight}
+          networkActions={networkActions}
+          commands={commands}
+          commandActions={commandActions}
+          events={events}
+          eventActions={eventActions}
+          currentProperty={currentProperty}
+          propertyActions={propertyActions}
+          network={network}
+          search={search}
+          messageActions={messageActions}
+          maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
+          rawInteractionsActions={rawInteractionsActions}
+          idmapActions={this.props.idmapActions}
+          datasource={this.props.datasource}
+          selection={selection}
+          selectionActions={selectionActions}
+          cxtoolUrl={CXTOOL_URL}
+          currentPathActions={currentPathActions}
+          renderingOptions={renderingOptions}
+          rawInteractions={this.props.rawInteractions}
+          interactionsCommandActions={this.props.interactionsCommandActions}
+        />
 
         <Commands commandActions={commandActions} uiState={uiState} />
 
@@ -203,7 +160,6 @@ export default class MainPanel extends Component {
           cxtoolUrl={CXTOOL_URL}
           enrichment={this.props.enrichment}
           enrichmentActions={this.props.enrichmentActions}
-
           groups={this.props.groups}
           groupsActions={this.props.groupsActions}
         />

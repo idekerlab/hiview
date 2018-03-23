@@ -30,7 +30,6 @@ class CirclePackingPanel extends Component {
       return
     }
 
-    console.log(data)
     const name = data.props.name.split('.')[0]
     const geneIds = groups[name]
 
@@ -38,12 +37,9 @@ class CirclePackingPanel extends Component {
       return
     }
 
-    console.log('$$$$$$$$$$$$$$$$ADDED ID')
     this.setState({
       selectedGroups: this.state.selectedGroups.add(id)
     })
-
-    console.log(this.state.selectedGroups)
 
     geneIds.forEach(gene => this.state.selectedGenes.add(gene))
 
@@ -147,7 +143,6 @@ class CirclePackingPanel extends Component {
         return
       }
 
-      console.log('DATA::: ', data)
       if(data.NodeType === 'Gene') {
         console.log([id])
         this.setState({
@@ -178,7 +173,6 @@ class CirclePackingPanel extends Component {
         return
       }
 
-      console.log("GENE SET: ", geneIds)
       this.setState({
         hover: id,
         hoverNodes: geneIds
