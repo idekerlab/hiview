@@ -10,7 +10,6 @@ import ExitExpandIcon from 'material-ui-icons/FullscreenExit'
 
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
-import Typography from 'material-ui/Typography'
 import IconButton from 'material-ui/IconButton'
 
 import { withStyles } from 'material-ui/styles'
@@ -45,8 +44,8 @@ const styles = {
 const drawerStyle = {
   display: 'flex',
   flexDirection: 'column',
-  maxWidth: MAX_WIDTH,
-  height: '100%'
+  height: '100%',
+  maxWidth: MAX_WIDTH
 }
 
 class PropertyPanel extends Component {
@@ -158,11 +157,7 @@ class PropertyPanel extends Component {
                 <CloseIcon onClick={this.handleClose} />
               </IconButton>
 
-              <h2
-                style={{color: fontColor}}
-              >
-                {barTitle}
-              </h2>
+              <h2 style={{ color: fontColor }}>{barTitle}</h2>
 
               {propType === PANEL_TYPES.GENE ? (
                 <div />
@@ -210,7 +205,7 @@ class PropertyPanel extends Component {
     } else if (propType === PANEL_TYPES.GENE) {
       // Check namespace props here...
 
-      return <GenePropertyPanel {...this.props} width={w} />
+      return <GenePropertyPanel {...this.props} />
     } else {
       // Unsupported type
       return (

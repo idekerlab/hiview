@@ -1,75 +1,61 @@
-import React, {Component} from 'react'
-
-import {List, ListItem} from 'material-ui/List';
-import Divider from 'material-ui/Divider';
-
+import React, { Component } from 'react'
 import TitleBar from './TitleBar'
-
-import PropTreePanel from './PropTreePanel'
-
 import CoreGenePropPanel from './CoreGenePropPanel'
+import Typography from 'material-ui/Typography'
 
-import Typography from "material-ui/Typography";
+import { CircularProgress } from 'material-ui/Progress'
+import { blueGrey } from 'material-ui/colors'
 
-
-import * as d3Scale from 'd3-scale'
-import * as d3ScaleChromatic from 'd3-scale-chromatic'
-
-import {CircularProgress} from 'material-ui/Progress';
-import {blueGrey} from 'material-ui/colors'
-
-const colorFunction = d3Scale.scaleOrdinal(d3ScaleChromatic.schemeDark2)
+const containerStyle = {
+  paddingTop: '5.5em'
+}
 
 const descriptionStyle = {
-  background: blueGrey[100],
-  padding: '1.5em',
-  paddingRight: '2em',
+  background: blueGrey[50],
+  padding: '1.2em'
 }
-
-const disabledStyle = {
-  background: '#999999'
-}
-
 
 class GenePropertyPanel extends Component {
-
   constructor(props) {
     super(props)
     this.state = {
       subtree: {},
       scoreFilter: 1.0,
       subnet: {}
-    };
+    }
   }
 
   render() {
     const details = this.props.currentProperty
-    if (details === undefined || details === null || details.id === null || details.id === undefined) {
-      return (<div />)
+    if (
+      details === undefined ||
+      details === null ||
+      details.id === null ||
+      details.id === undefined
+    ) {
+      return <div />
     }
 
     // Loading
-    if(details.loading) {
-      return(<CircularProgress />)
+    if (details.loading) {
+      return <CircularProgress />
     }
 
     const data = details.data
     const id = details.id
 
-    if(data === undefined || data === null) {
-        return(<div>no data</div>)
+    if (data === undefined || data === null) {
+      return <div>no data</div>
     }
 
-    if(data.hits === undefined || data.hits.length === 0) {
-      return(<div>no data</div>)
+    if (data.hits === undefined || data.hits.length === 0) {
+      return <div>no data</div>
     }
 
     const entry = data.hits[0]
 
     return (
-
-      <div style={{width: this.props.width, paddingTop: '5.5em'}}>
-
+      <div style={containerStyle}>
         <TitleBar
           title={entry.name}
           geneId={entry._id}
@@ -77,29 +63,24 @@ class GenePropertyPanel extends Component {
         />
 
         <div style={descriptionStyle}>
-          <Typography variant="title">Summary:</Typography>
-          <Typography type="body2">
+          <Typography
+            variant="title"
+            style={{ borderBottom: '1px solid #666666', marginBottom: '0.2em' }}
+          >
+            Summary:
+          </Typography>
+          <Typography type="subheading" style={{ fontSize: '1.2em' }}>
             {entry.summary}
           </Typography>
         </div>
 
-
-        <CoreGenePropPanel
-          geneInfo={entry}
-        />
-
-
-        {/*<PropTreePanel*/}
-          {/*tree={entry}*/}
-        {/*/>*/}
+        <CoreGenePropPanel geneInfo={entry} />
       </div>
     )
   }
 
-
-
   _handleTouchTap = id => {
-    window.open('http://amigo.geneontology.org/amigo/term/' + id);
+    window.open('http://amigo.geneontology.org/amigo/term/' + id)
   }
 }
 

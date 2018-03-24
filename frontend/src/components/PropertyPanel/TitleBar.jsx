@@ -20,7 +20,7 @@ const TitleBar = props => (
       className={style.linkIcon}
       onClick={handleClick(props.geneSymbol)}
     />
-    <Typography type="display1" align="center">
+    <Typography variant="display1" align="center" style={{fontSize: '1.6em'}}>
       {props.title}
     </Typography>
   </div>

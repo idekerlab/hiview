@@ -14,10 +14,7 @@ import GeneList from './GeneList'
 
 import * as StyleFactory from './StyleFactory'
 
-import GroupSelector from '../GroupSelector'
 import LayoutSelector from '../LayoutSelector'
-
-import SplitPane from 'react-split-pane'
 
 class TermDetailsPanel extends Component {
   constructor(props) {
@@ -39,33 +36,10 @@ class TermDetailsPanel extends Component {
     })
   }
 
-  componentDidUpdate() {
-    // this.createFilter(this.props.rawInteractions)
-  }
-
-  componentDidMount() {
-    // this.createFilter(this.props.rawInteractions)
-  }
-
   componentWillReceiveProps(nextProps) {
-    // this.createFilter(nextProps.rawInteractions)
     if (nextProps.rawInteractions !== this.props.rawInteractions) {
       this.addStyle(nextProps.rawInteractions)
     }
-
-    // Update groups
-    //
-    // const groups = this.props.groups.groups
-    // const newGroups = nextProps.rawInteractions.get('groups')
-    //
-    // if (newGroups !== undefined || newGroups !== null) {
-    //   console.log('Updating group@@@@@@@@@@@@@@@@@@@@@@@@@@2')
-    //   this.props.groupsActions.addGroups({
-    //     parent: nextProps.currentProperty.id,
-    //     parentName: nextProps.currentProperty.data.Label,
-    //     groups: newGroups
-    //   })
-    // }
   }
 
   setScore = val => {
@@ -148,11 +122,12 @@ class TermDetailsPanel extends Component {
       height: '17em',
       width: '100%',
       padding: '0.6em',
-      backgroundColor: '#F5F5F5'
+      background: '#FFFFFF'
     }
 
     const controlPanelStyle = {
-      padding: '1em'
+      padding: '1em',
+      background: '#FFFFFF'
     }
 
     const uuid = this.props.datasource.get('uuid')
@@ -182,97 +157,85 @@ class TermDetailsPanel extends Component {
           <div style={{ width: '100%', height: '5.2em' }} />
         )}
 
-        <SplitPane
-          split="horizontal"
-          defaultSize={500}
-          onDragFinished={this.handleResize}
-          onChange={this.handleResize2}
-        >
-          <RawInteractionPanel
-            subnet={interactions}
-            selectedTerm={this.props.currentProperty.id}
-            handleClose={this.props.handleClose}
-            commandActions={this.props.interactionsCommandActions}
-            commands={this.props.interactionsCommands}
-            loading={raw.loading}
-            selection={this.props.selection}
-            selectionActions={this.props.selectionActions}
-            filters={raw.filters}
-            interactionStyleActions={this.props.interactionStyleActions}
-            networkStyle={visualStyle}
-            panelWidth={this.props.width}
-            panelHeight={this.props.height}
-            expanded={this.props.expanded}
-            enrichment={this.props.enrichment}
-            enrichmentActions={this.props.enrichmentActions}
-          />
-          <div style={{ zIndex: 1111 }}>
-            <div style={controlWrapperStyle}>
-              {this.props.expanded ? (
-                <div style={{ width: '100%', height: '5.2em' }} />
-              ) : (
-                <div />
-              )}
+        <RawInteractionPanel
+          subnet={interactions}
+          selectedTerm={this.props.currentProperty.id}
+          handleClose={this.props.handleClose}
+          commandActions={this.props.interactionsCommandActions}
+          commands={this.props.interactionsCommands}
+          loading={raw.loading}
+          selection={this.props.selection}
+          selectionActions={this.props.selectionActions}
+          filters={raw.filters}
+          interactionStyleActions={this.props.interactionStyleActions}
+          networkStyle={visualStyle}
+          panelWidth={this.props.width}
+          panelHeight={this.props.height}
+          expanded={this.props.expanded}
+          enrichment={this.props.enrichment}
+          enrichmentActions={this.props.enrichmentActions}
+        />
 
-              <div style={controlPanelStyle}>
-                <LegendPanel networkProps={networkProps} />
 
-                <PrimaryFilter
-                  filters={raw.filters}
-                  commandActions={this.props.interactionsCommandActions}
-                  commands={this.props.interactionsCommands}
-                  filtersActions={this.props.filtersActions}
-                />
 
-                <LayoutSelector
-                  commandActions={this.props.interactionsCommandActions}
-                />
-              </div>
+        <div style={{ zIndex: 1111 }}>
+          <div style={controlWrapperStyle}>
+            {this.props.expanded ? (
+              <div style={{ height: '5.2em' }} />
+            ) : (
+              <div />
+            )}
 
-              <div style={filterPanelStyle}>
-                <GroupSelector
-                  groups={raw.groups}
-                  commandActions={this.props.interactionsCommandActions}
-                />
+            <div style={controlPanelStyle}>
+              <LegendPanel networkProps={networkProps} />
 
-                <EdgeFilter
-                  filters={raw.filters}
-                  commandActions={this.props.interactionsCommandActions}
-                  commands={this.props.interactionsCommands}
-                  filtersActions={this.props.filtersActions}
-                />
-              </div>
+              <PrimaryFilter
+                filters={raw.filters}
+                commandActions={this.props.interactionsCommandActions}
+                commands={this.props.interactionsCommands}
+                filtersActions={this.props.filtersActions}
+              />
 
-              <div>
-                <Tabs
-                  value={this.state.selectedTab}
-                  onChange={this.handleChange}
-                >
-                  <Tab label="Subsystem Details" />
-                  <Tab label="Assigned Genes" />
-                  <Tab label="Interactions" />
-                </Tabs>
-              </div>
-
-              {this.state.selectedTab === 0 && (
-                <TabContainer>
-                  <SubsystemPanel
-                    selectedTerm={this.props.currentProperty}
-                    networkData={networkData}
-                    title={title}
-                    description={'N/A'}
-                  />
-                </TabContainer>
-              )}
-              {this.state.selectedTab === 1 && (
-                <TabContainer>
-                  <GeneList genes={geneList} />
-                </TabContainer>
-              )}
-              {this.state.selectedTab === 2 && <TabContainer>N/A</TabContainer>}
+              <LayoutSelector
+                commandActions={this.props.interactionsCommandActions}
+              />
             </div>
+
+            <div style={filterPanelStyle}>
+              <EdgeFilter
+                filters={raw.filters}
+                commandActions={this.props.interactionsCommandActions}
+                commands={this.props.interactionsCommands}
+                filtersActions={this.props.filtersActions}
+              />
+            </div>
+
+            <div>
+              <Tabs value={this.state.selectedTab} onChange={this.handleChange}>
+                <Tab label="Subsystem Details" />
+                <Tab label="Assigned Genes" />
+                <Tab label="Interactions" />
+              </Tabs>
+            </div>
+
+            {this.state.selectedTab === 0 && (
+              <TabContainer>
+                <SubsystemPanel
+                  selectedTerm={this.props.currentProperty}
+                  networkData={networkData}
+                  title={title}
+                  description={'N/A'}
+                />
+              </TabContainer>
+            )}
+            {this.state.selectedTab === 1 && (
+              <TabContainer>
+                <GeneList genes={geneList} />
+              </TabContainer>
+            )}
+            {this.state.selectedTab === 2 && <TabContainer>N/A</TabContainer>}
           </div>
-        </SplitPane>
+        </div>
       </div>
     )
   }
