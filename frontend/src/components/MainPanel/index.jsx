@@ -3,7 +3,6 @@ import { browserHistory } from 'react-router'
 
 import NetworkPanel from '../NetworkPanel'
 import PropertyPanel from '../PropertyPanel'
-import PlotPanel from '../PlotPanel'
 import Commands from '../Commands'
 
 import MainMenuPanel from '../MainMenuPanel'
@@ -90,6 +89,7 @@ export default class MainPanel extends Component {
 
     return (
       <div style={this.props.style}>
+
         <Overlay selection={selection} />
 
         <MainMenuPanel
@@ -101,14 +101,12 @@ export default class MainPanel extends Component {
           renderingOptionsActions={renderingOptionsActions}
         />
 
-        <BottomPanel>
-          <PlotPanel
-            width={'100%'}
-            height={'14em'}
-            data={this.props.enrichment.get('result')}
-            enrichment={this.props.enrichment}
-          />
-        </BottomPanel>
+        <BottomPanel
+          width={'100%'}
+          height={'14em'}
+          data={this.props.enrichment.get('result')}
+          enrichment={this.props.enrichment}
+        />
 
         <NetworkPanel
           uiState={uiState}

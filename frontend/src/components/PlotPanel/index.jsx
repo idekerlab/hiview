@@ -35,7 +35,7 @@ const plots = props => {
         <Typography type="headline" component="h3">
           {k}
         </Typography>
-        <BarPlot height={props.height - 70} data={v} title={k} />
+        <BarPlot height={300} data={v} title={k} />
       </div>
     )
   }

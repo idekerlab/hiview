@@ -4,12 +4,25 @@ import Drawer from 'material-ui/Drawer'
 import CloseIcon from 'material-ui-icons/KeyboardArrowDown'
 
 import IconButton from 'material-ui/IconButton'
+import PlotPanel from '../PlotPanel'
 
 const panelStyle = {
   width: '100%',
-  height: '15em',
+  height: '25em',
   backgroundColor: 'rgba(245,245,245, 0.9)',
   padding: '1em'
+}
+
+const plotStyle = {
+  height: 300,
+  width: '100%',
+  background: 'red'
+}
+
+const buttonStyle = {
+  position: 'absolute',
+  top: 0,
+  left: '0.5em'
 }
 
 class BottomPanel extends Component {
@@ -32,9 +45,10 @@ class BottomPanel extends Component {
         open={this.state.open}
       >
         <div style={panelStyle}>
-          <IconButton>
+          <IconButton style={buttonStyle}>
             <CloseIcon onClick={e => this.handleClose()} />
           </IconButton>
+          <PlotPanel {...this.props} style={plotStyle} />
         </div>
       </Drawer>
     )

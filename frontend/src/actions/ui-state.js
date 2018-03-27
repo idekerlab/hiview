@@ -8,6 +8,10 @@ export const SHOW_SEARCH_WINDOW = 'SHOW_SEARCH_WINDOW'
 
 export const SHOW_MAIN_MENU = 'SHOW_MAIN_MENU'
 
+
+// State of the enrichment result
+export const SHOW_PLOT_PANEL = 'SHOW_PLOT_PANEL'
+
 export const CHANGE_VIEWER = 'CHANGE_VIEWER'
 
 export const showAppBar = createAction(SHOW_APP_BAR)
