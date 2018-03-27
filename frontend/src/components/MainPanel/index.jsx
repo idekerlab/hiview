@@ -106,6 +106,8 @@ export default class MainPanel extends Component {
           height={'14em'}
           data={this.props.enrichment.get('result')}
           enrichment={this.props.enrichment}
+          uiState={uiState}
+          uiStateActions={uiStateActions}
         />
 
         <NetworkPanel
@@ -136,7 +138,11 @@ export default class MainPanel extends Component {
           interactionsCommandActions={this.props.interactionsCommandActions}
         />
 
-        <Commands commandActions={commandActions} uiState={uiState} />
+        <Commands
+          commandActions={commandActions}
+          uiState={uiState}
+          uiStateActions={uiStateActions}
+        />
 
         <PropertyPanel
           // commands={commands}

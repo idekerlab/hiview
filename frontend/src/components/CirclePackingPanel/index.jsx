@@ -133,6 +133,7 @@ class CirclePackingPanel extends Component {
 
     const hoverOnNode = (id, data) => {
 
+
       this.props.selectionActions.enterNode(data)
 
       if (

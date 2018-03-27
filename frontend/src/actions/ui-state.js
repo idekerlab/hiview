@@ -20,6 +20,8 @@ export const showResult = createAction(SHOW_RESULT)
 
 export const showMainMenu = createAction(SHOW_MAIN_MENU)
 
+export const showPlotPanel = createAction(SHOW_PLOT_PANEL)
+
 // For showing/hiding search window
 export const showSearchWindow = createAction(SHOW_SEARCH_WINDOW)
 

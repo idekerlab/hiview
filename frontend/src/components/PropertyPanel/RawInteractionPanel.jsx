@@ -20,6 +20,12 @@ class RawInteractionPanel extends Component {
       return
     }
 
+    if(newNetwork === null || newNetwork === undefined) {
+
+      console.log("&& Null net: ", nextProps)
+      return
+    }
+
     const genes = Set(newNetwork.elements.nodes.map(node => node.data.name))
 
     const subsystemId = this.props.enrichment.get('subsystemId')

@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 
 const style = {
   position: 'fixed',
-  left: '1em',
-  bottom: '4em',
-  background: 'rgba(255, 255, 255, 0.8)',
+  left: '26em',
+  bottom: '0.5em',
+  background: 'rgba(205, 205, 205, 0.7)',
   zIndex: 1800,
   height: '5em',
   width: '32em',

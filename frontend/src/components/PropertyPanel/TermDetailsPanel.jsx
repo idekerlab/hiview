@@ -135,7 +135,7 @@ class TermDetailsPanel extends Component {
     const network = this.props.network.get(url)
 
     let networkData = {}
-    if (network !== undefined) {
+    if (network !== undefined || network === null) {
       networkData = network.data
     }
 
@@ -175,8 +175,6 @@ class TermDetailsPanel extends Component {
           enrichment={this.props.enrichment}
           enrichmentActions={this.props.enrichmentActions}
         />
-
-
 
         <div style={{ zIndex: 1111 }}>
           <div style={controlWrapperStyle}>

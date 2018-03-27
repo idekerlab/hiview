@@ -112,6 +112,7 @@ class PropertyPanel extends Component {
   }
 
   render() {
+
     const { classes } = this.props
 
     // Width of this UI panel

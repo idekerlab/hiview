@@ -22,7 +22,7 @@ const plotStyle = {
 const buttonStyle = {
   position: 'absolute',
   top: 0,
-  left: '0.5em'
+  left: '0.5em',
 }
 
 class BottomPanel extends Component {
@@ -31,9 +31,14 @@ class BottomPanel extends Component {
   }
 
   handleClose() {
-    this.setState({
-      open: false
-    })
+    this.props.uiStateActions.showPlotPanel(false)
+  }
+
+
+  componentWillReceiveProps(nextProps) {
+    if(this.props.data !== nextProps.data) {
+      this.props.uiStateActions.showPlotPanel(true)
+    }
   }
 
   render() {
@@ -42,11 +47,12 @@ class BottomPanel extends Component {
         style={{ zIndex: 2300 }}
         variant="persistent"
         anchor={'bottom'}
-        open={this.state.open}
+        open={this.props.uiState.get('showPlotPanel')}
       >
         <div style={panelStyle}>
           <IconButton style={buttonStyle}>
-            <CloseIcon onClick={e => this.handleClose()} />
+            <CloseIcon
+              onClick={e => this.handleClose()} />
           </IconButton>
           <PlotPanel {...this.props} style={plotStyle} />
         </div>

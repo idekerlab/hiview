@@ -5,7 +5,9 @@ import FitContentIcon from 'material-ui-icons/ZoomOutMap'
 import ZoomInIcon from 'material-ui-icons/ZoomIn'
 import ZoomOutIcon from 'material-ui-icons/ZoomOut'
 import LocateIcon from 'material-ui-icons/MyLocation'
-import HideIcon from 'material-ui-icons/ChevronLeft'
+import CloseIcon from 'material-ui-icons/ChevronLeft'
+import OpenIcon from 'material-ui-icons/ChevronRight'
+import PlotIcon from 'material-ui-icons/Sort'
 
 import Card from 'material-ui/Card'
 import IconButton from 'material-ui/IconButton'
@@ -29,11 +31,31 @@ class Commands extends Component {
     this.props.commandActions.fit()
   }
 
+  handleShowPlot = event => {
+    console.log('Plot: ')
+    this.props.uiStateActions.showPlotPanel(true)
+  }
+
+  toggle = isOpen => {
+    console.log('SHOW: ', isOpen)
+    this.props.uiStateActions.showCommands(isOpen)
+  }
+
   render() {
     const uiState = this.props.uiState
 
     if (!uiState.get('showCommands')) {
-      return <div />
+      return (
+        <Card className={styles.container}>
+          <IconButton
+            disableRipple={true}
+            onClick={e => this.toggle(true)}
+            aria-label="Locate selected subsystem"
+          >
+            <OpenIcon />
+          </IconButton>
+        </Card>
+      )
     }
 
     return (
@@ -76,6 +98,16 @@ class Commands extends Component {
           <LocateIcon />
         </IconButton>
 
+        <IconButton
+          disableRipple={true}
+          aria-label="Show plot"
+          onClick={this.handleShowPlot}
+        >
+          <PlotIcon
+            color={this.plotIconColor()}
+          />
+        </IconButton>
+
         <div
           style={{
             width: '0.1em',
@@ -86,14 +118,18 @@ class Commands extends Component {
 
         <IconButton
           disableRipple={true}
-          onClick={this.handleLocate}
+          onClick={e => this.toggle(false)}
           aria-label="Locate selected subsystem"
         >
-          <HideIcon />
+          <CloseIcon />
         </IconButton>
       </Card>
     )
   }
+
+  plotIconColor = () => (
+    this.props.uiState.showPlotPanel ? 'primary' : 'inherit'
+  )
 }
 
 export default Commands

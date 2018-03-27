@@ -18,6 +18,7 @@ const PlotPanel = props => {
 
   const loading = props.enrichment.get('running')
   if (loading) {
+
     return <Progress />
   } else if (props.data === null) {
     return <div />
@@ -35,7 +36,7 @@ const plots = props => {
         <Typography type="headline" component="h3">
           {k}
         </Typography>
-        <BarPlot height={300} data={v} title={k} />
+        <BarPlot height={250} data={v} title={k} />
       </div>
     )
   }
