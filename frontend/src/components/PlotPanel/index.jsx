@@ -13,7 +13,9 @@ const PlotPanel = props => {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'flex-start'
+    justifyContent: 'flex-start',
+    marginTop: '-3em',
+    padding: 0
   }
 
   const loading = props.enrichment.get('running')
@@ -33,10 +35,10 @@ const plots = props => {
   for (let [k, v] of Object.entries(props.data)) {
     plotList.push(
       <div className={style.plotContainer} key={k}>
-        <Typography type="headline" component="h3">
+        <Typography variant="subheading" gutterBottom>
           {k}
         </Typography>
-        <BarPlot height={250} data={v} title={k} />
+        <BarPlot height={240} data={v} title={k} />
       </div>
     )
   }

@@ -90,13 +90,6 @@ class Commands extends Component {
           }}
         />
 
-        <IconButton
-          disableRipple={true}
-          onClick={this.handleLocate}
-          aria-label="Locate selected subsystem"
-        >
-          <LocateIcon />
-        </IconButton>
 
         <IconButton
           disableRipple={true}

@@ -108,6 +108,7 @@ export default class MainPanel extends Component {
           enrichment={this.props.enrichment}
           uiState={uiState}
           uiStateActions={uiStateActions}
+          selection={selection}
         />
 
         <NetworkPanel

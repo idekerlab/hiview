@@ -149,6 +149,8 @@ class TermDetailsPanel extends Component {
       maxWidth: 450
     }
 
+    const hidden = entry.Hidden
+
     return (
       <div style={containerStyle}>
         {this.props.expanded ? (
@@ -157,24 +159,28 @@ class TermDetailsPanel extends Component {
           <div style={{ width: '100%', height: '5.2em' }} />
         )}
 
-        <RawInteractionPanel
-          subnet={interactions}
-          selectedTerm={this.props.currentProperty.id}
-          handleClose={this.props.handleClose}
-          commandActions={this.props.interactionsCommandActions}
-          commands={this.props.interactionsCommands}
-          loading={raw.loading}
-          selection={this.props.selection}
-          selectionActions={this.props.selectionActions}
-          filters={raw.filters}
-          interactionStyleActions={this.props.interactionStyleActions}
-          networkStyle={visualStyle}
-          panelWidth={this.props.width}
-          panelHeight={this.props.height}
-          expanded={this.props.expanded}
-          enrichment={this.props.enrichment}
-          enrichmentActions={this.props.enrichmentActions}
-        />
+        {hidden ? (
+          <div />
+        ) : (
+          <RawInteractionPanel
+            subnet={interactions}
+            selectedTerm={this.props.currentProperty.id}
+            handleClose={this.props.handleClose}
+            commandActions={this.props.interactionsCommandActions}
+            commands={this.props.interactionsCommands}
+            loading={raw.loading}
+            selection={this.props.selection}
+            selectionActions={this.props.selectionActions}
+            filters={raw.filters}
+            interactionStyleActions={this.props.interactionStyleActions}
+            networkStyle={visualStyle}
+            panelWidth={this.props.width}
+            panelHeight={this.props.height}
+            expanded={this.props.expanded}
+            enrichment={this.props.enrichment}
+            enrichmentActions={this.props.enrichmentActions}
+          />
+        )}
 
         <div style={{ zIndex: 1111 }}>
           <div style={controlWrapperStyle}>
@@ -184,29 +190,37 @@ class TermDetailsPanel extends Component {
               <div />
             )}
 
-            <div style={controlPanelStyle}>
-              <LegendPanel networkProps={networkProps} />
+            {hidden ? (
+              <div />
+            ) : (
+              <div style={controlPanelStyle}>
+                <LegendPanel networkProps={networkProps} />
 
-              <PrimaryFilter
-                filters={raw.filters}
-                commandActions={this.props.interactionsCommandActions}
-                commands={this.props.interactionsCommands}
-                filtersActions={this.props.filtersActions}
-              />
+                <PrimaryFilter
+                  filters={raw.filters}
+                  commandActions={this.props.interactionsCommandActions}
+                  commands={this.props.interactionsCommands}
+                  filtersActions={this.props.filtersActions}
+                />
 
-              <LayoutSelector
-                commandActions={this.props.interactionsCommandActions}
-              />
-            </div>
+                <LayoutSelector
+                  commandActions={this.props.interactionsCommandActions}
+                />
+              </div>
+            )}
 
-            <div style={filterPanelStyle}>
-              <EdgeFilter
-                filters={raw.filters}
-                commandActions={this.props.interactionsCommandActions}
-                commands={this.props.interactionsCommands}
-                filtersActions={this.props.filtersActions}
-              />
-            </div>
+            {hidden ? (
+              <div />
+            ) : (
+              <div style={filterPanelStyle}>
+                <EdgeFilter
+                  filters={raw.filters}
+                  commandActions={this.props.interactionsCommandActions}
+                  commands={this.props.interactionsCommands}
+                  filtersActions={this.props.filtersActions}
+                />
+              </div>
+            )}
 
             <div>
               <Tabs value={this.state.selectedTab} onChange={this.handleChange}>

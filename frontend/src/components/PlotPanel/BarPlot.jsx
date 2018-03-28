@@ -15,12 +15,15 @@ class BarPlot extends Component {
 
   componentDidMount() {}
 
+  sortData = () => {
+
+  }
+
   render() {
-    // console.log('RENDERING!!')
     const dataPoints = this.props.data
     const { selectedIndex } = this.state
 
-    // console.log(selectedIndex)
+    // Sort
 
     const max =
       dataPoints.length < RANKING_MAX ? dataPoints.length : RANKING_MAX
@@ -54,11 +57,11 @@ class BarPlot extends Component {
         colorType="category"
         onMouseLeave={() => this.setState({ selectedIndex: -1 })}
         animation={false}
-        width={560}
+        width={530}
         height={this.props.height}
         yType="ordinal"
         stackBy="x"
-        margin={{ left: 250, right: 10, top: 3, bottom: 35 }}
+        margin={{ left: 270, right: 10, top: 0, bottom: 30 }}
       >
         <XAxis />
         <YAxis />

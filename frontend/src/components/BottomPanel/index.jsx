@@ -8,9 +8,9 @@ import PlotPanel from '../PlotPanel'
 
 const panelStyle = {
   width: '100%',
-  height: '25em',
-  backgroundColor: 'rgba(245,245,245, 0.9)',
-  padding: '1em'
+  height: '26em',
+  backgroundColor: 'rgba(255,255,255,1)',
+  padding: 0
 }
 
 const plotStyle = {
@@ -20,9 +20,23 @@ const plotStyle = {
 }
 
 const buttonStyle = {
-  position: 'absolute',
-  top: 0,
-  left: '0.5em',
+  paddingLedt: '0.5em'
+}
+
+
+const titleStyle = {
+  display: 'inline-flex',
+  width: '100%',
+  paddingTop: '0.4em',
+  height: '1.5em',
+  alignItems: 'center'
+}
+
+const titleText = {
+  color: '#555555',
+  fontSize: '1.3em',
+  fontWeight: 300,
+  borderBottom: '1px solid #888888'
 }
 
 class BottomPanel extends Component {
@@ -34,14 +48,21 @@ class BottomPanel extends Component {
     this.props.uiStateActions.showPlotPanel(false)
   }
 
-
   componentWillReceiveProps(nextProps) {
-    if(this.props.data !== nextProps.data) {
+    if (this.props.data !== nextProps.data) {
       this.props.uiStateActions.showPlotPanel(true)
     }
   }
 
   render() {
+
+    const expanded = this.props.selection.get('main')
+
+    let idExpanded = '-'
+    if(expanded !== undefined) {
+      idExpanded = expanded.nodeProps.Label
+    }
+
     return (
       <Drawer
         style={{ zIndex: 2300 }}
@@ -50,10 +71,15 @@ class BottomPanel extends Component {
         open={this.props.uiState.get('showPlotPanel')}
       >
         <div style={panelStyle}>
-          <IconButton style={buttonStyle}>
-            <CloseIcon
-              onClick={e => this.handleClose()} />
-          </IconButton>
+          <div style={titleStyle}>
+            <IconButton style={buttonStyle}>
+              <CloseIcon onClick={e => this.handleClose()} />
+            </IconButton>
+            <div style={titleText}>
+              Gene Set Enrichment Analysis result
+              for selected subsystem <i style={{color: 'orange'}}>{idExpanded}</i></div>
+          </div>
+
           <PlotPanel {...this.props} style={plotStyle} />
         </div>
       </Drawer>
