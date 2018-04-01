@@ -106,10 +106,14 @@ class TermDetailsPanel extends Component {
       }
     }
 
+    let hidden = entry.Hidden
+
     const title = data.name
     let networkProps = {}
     if (interactions !== undefined && interactions !== null) {
       networkProps = interactions.data
+    } else {
+      hidden = true
     }
 
     const visualStyle = this.props.interactionStyle.get('defaultStyle')
@@ -148,8 +152,6 @@ class TermDetailsPanel extends Component {
       width: '100%',
       maxWidth: 450
     }
-
-    const hidden = entry.Hidden
 
     return (
       <div style={containerStyle}>
