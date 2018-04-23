@@ -5,6 +5,7 @@ import {
   SHOW_SEARCH_WINDOW,
   SHOW_MAIN_MENU,
   SHOW_PLOT_PANEL,
+  RUN_ENRICHMENT,
   CHANGE_VIEWER
 } from '../actions/ui-state'
 
@@ -18,6 +19,7 @@ const defaultState = Map({
   showResult: false,
   showSearchWindow: false,
   showPlotPanel: false,
+  runEnrichment: false,
   changeViewer: false
 })
 
@@ -33,6 +35,10 @@ export default handleActions(
       state.set('showMainMenu', action.payload),
     [SHOW_PLOT_PANEL]: (state, action) =>
       state.set('showPlotPanel', action.payload),
+
+    [RUN_ENRICHMENT]: (state, action) =>
+      state.set('runEnrichment', action.payload),
+
     [CHANGE_VIEWER]: (state, action) => {
 
       console.log("UPDATE viewer: ", action)

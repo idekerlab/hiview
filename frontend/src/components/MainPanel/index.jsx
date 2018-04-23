@@ -167,6 +167,7 @@ export default class MainPanel extends Component {
           enrichmentActions={this.props.enrichmentActions}
           groups={this.props.groups}
           groupsActions={this.props.groupsActions}
+          uiState={uiState}
         />
 
         <FullSearch

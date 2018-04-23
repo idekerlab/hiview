@@ -181,6 +181,7 @@ class TermDetailsPanel extends Component {
             expanded={this.props.expanded}
             enrichment={this.props.enrichment}
             enrichmentActions={this.props.enrichmentActions}
+            uiState={this.props.uiState}
           />
         )}
 

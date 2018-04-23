@@ -1,5 +1,27 @@
 class EventHandlerFactory {
+
+
   selectNode = (id, data, zoom) => {
+
+
+
+    const wrappedData = {
+      props: data
+    }
+
+    if (zoom) {
+      this.props.selectNodes([id], { [id]: wrappedData })
+    } else {
+      this.selectGroups(
+        id,
+        wrappedData,
+        this.props.groups,
+        this.props.interactionsCommandActions
+      )
+    }
+  }
+
+  unselectNodes = (id, data, zoom) => {
     const wrappedData = {
       props: data
     }

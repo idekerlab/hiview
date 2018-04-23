@@ -11,6 +11,7 @@ export const SHOW_MAIN_MENU = 'SHOW_MAIN_MENU'
 
 // State of the enrichment result
 export const SHOW_PLOT_PANEL = 'SHOW_PLOT_PANEL'
+export const RUN_ENRICHMENT = 'RUN_ENRICHMENT'
 
 export const CHANGE_VIEWER = 'CHANGE_VIEWER'
 
@@ -24,6 +25,9 @@ export const showPlotPanel = createAction(SHOW_PLOT_PANEL)
 
 // For showing/hiding search window
 export const showSearchWindow = createAction(SHOW_SEARCH_WINDOW)
+
+// RUN enrichment or not
+export const runEnrichment = createAction(RUN_ENRICHMENT)
 
 // Switch viewer type
 export const changeViewer = createAction(CHANGE_VIEWER)

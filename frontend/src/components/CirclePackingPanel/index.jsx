@@ -53,6 +53,8 @@ class CirclePackingPanel extends Component {
 
   getEventHandlers = () => {
     const selectNode = (id, data, zoom) => {
+
+
       const wrappedData = {
         props: data
       }
@@ -131,8 +133,13 @@ class CirclePackingPanel extends Component {
       // }, 0)
     }
 
-    const hoverOnNode = (id, data) => {
+    const selectNodes = (id, data) => {
 
+      console.log('$$$ New! Select nodes called:', data)
+
+    }
+
+    const hoverOnNode = (id, data) => {
 
       this.props.selectionActions.enterNode(data)
 
@@ -188,6 +195,7 @@ class CirclePackingPanel extends Component {
 
     return {
       selectNode,
+      selectNodes,
       hoverOutNode,
       hoverOnNode,
       deselectNode

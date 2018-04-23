@@ -9,6 +9,9 @@ import List, {
 } from 'material-ui/List'
 import Divider from 'material-ui/Divider'
 
+import Switch from 'material-ui/Switch'
+
+
 import HomeIcon from 'material-ui-icons/Home'
 import TuneIcon from 'material-ui-icons/Tune'
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft'
@@ -71,6 +74,14 @@ class RendererOptionsPanel extends Component {
     }
 
     this.setState({ viewer: val })
+  }
+
+  handleEnrichmentChange = event => {
+    const val = this.props.uiState.get('runEnrichment')
+
+    console.log("GSEA: ", val)
+    this.props.uiStateActions.runEnrichment(!val)
+
   }
 
   onAfterChange = value => {
@@ -235,6 +246,23 @@ class RendererOptionsPanel extends Component {
               trackStyle={[trackStyle]}
               handleStyle={[handleStyle]}
               onAfterChange={this.onAfterEdgeRangeChange}
+            />
+          </ListItem>
+
+          <ListItem>
+            <ListItemIcon>
+              <TuneIcon />
+            </ListItemIcon>
+            <ListItemText primary="Enrichment Options:" />
+          </ListItem>
+
+          <Divider />
+
+          <ListItem>
+            <ListItemText primary="Run Gene Set Enrichment Analysis:" />
+            <Switch
+              checked={this.props.uiState.get('runEnrichment')}
+              onChange={this.handleEnrichmentChange}
             />
           </ListItem>
         </List>

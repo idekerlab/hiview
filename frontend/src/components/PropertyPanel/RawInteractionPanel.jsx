@@ -11,6 +11,12 @@ class RawInteractionPanel extends Component {
 
   componentWillReceiveProps(nextProps) {
 
+    const runAnalysys = nextProps.uiState.get('runEnrichment')
+
+    if(!runAnalysys) {
+      return
+    }
+
     const newNetwork = nextProps.subnet
 
     const running = nextProps.enrichment.get('running')

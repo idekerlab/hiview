@@ -13,27 +13,44 @@ class BarPlot extends Component {
     }
   }
 
-  componentDidMount() {}
 
-  sortData = () => {
+  shouldComponentUpdate(nextProps, nextState) {
+    const dataPoints = this.props.data
+    const newDataPoints = nextProps.data
 
+    if(dataPoints === newDataPoints) {
+      return false
+    }
+
+    return true
   }
 
   render() {
     const dataPoints = this.props.data
+
+
+    // Create label-value array
+    const dataMap = new Map()
+
+    dataPoints.forEach(data => {
+      dataMap.set(data[1].split('_')[0], data[4])
+    })
+
+    const sorted = new Map([...dataMap.entries()].sort((a, b) => (a[1] - b[1])))
+
+
     const { selectedIndex } = this.state
 
     // Sort
-
     const max =
       dataPoints.length < RANKING_MAX ? dataPoints.length : RANKING_MAX
 
     // Pick top 10 data
-    const originalData = dataPoints.slice(0, max)
+    const originalData = [...sorted.entries()].slice(0, max)
 
     const data = originalData.map((d, i) => ({
-      y: d[1].split('_')[0],
-      x: d[4],
+      y: d[0],
+      x: d[1],
       index: i
     }))
 
@@ -75,7 +92,6 @@ class BarPlot extends Component {
             this.setState({ selectedIndex: -1 })
           }
           onValueMouseOver={(datapoint, event) => {
-            console.log(datapoint)
             this.setState({
               selectedIndex: datapoint.index
             })
