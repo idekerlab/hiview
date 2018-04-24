@@ -41,7 +41,7 @@ const styles = theme => ({
   }
 })
 
-const version = '0.3'
+const version = '1.0'
 
 const TopPage = props => {
   const { classes } = props
@@ -51,7 +51,7 @@ const TopPage = props => {
       <AppBar position="fixed">
         <Toolbar>
           <Typography variant="title" color="inherit">
-            HiView v{version}&alpha;
+            HiView v{version} &beta;
           </Typography>
         </Toolbar>
       </AppBar>
