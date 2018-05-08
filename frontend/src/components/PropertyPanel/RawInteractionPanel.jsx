@@ -79,7 +79,9 @@ class RawInteractionPanel extends Component {
     const visualStyle = this.props.networkStyle
 
     if (newNet === null || newNet === undefined || visualStyle === null) {
+      console.log('NULL Interaction!!!!!!!!!!')
       return <div />
+
     }
 
     const filters = this.props.filters

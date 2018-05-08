@@ -85,8 +85,7 @@ class NetworkPanel extends Component {
     // From NDEx to CYJS converter
     const linkEntry = props[NDEX_LINK_TAG]
     if (linkEntry === undefined) {
-      console.log('----------------- NO LINK2 -----------------')
-
+      console.log('----------------- NO LINK2: This means no inetraction data')
 
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
       this.props.propertyActions.setProperty(props.id, props, 'term')

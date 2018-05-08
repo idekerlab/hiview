@@ -194,7 +194,9 @@ class TermDetailsPanel extends Component {
             )}
 
             {hidden ? (
-              <div />
+              <div>
+                <h1>Supporting network not uploaded!</h1>
+              </div>
             ) : (
               <div style={controlPanelStyle}>
                 <LegendPanel networkProps={networkProps} />
