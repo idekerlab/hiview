@@ -15,6 +15,7 @@ import GeneList from './GeneList'
 import * as StyleFactory from './StyleFactory'
 
 import LayoutSelector from '../LayoutSelector'
+import EmptyInteractionPanel from './EmptyInteractionPanel.jsx'
 
 class TermDetailsPanel extends Component {
   constructor(props) {
@@ -162,7 +163,9 @@ class TermDetailsPanel extends Component {
         )}
 
         {hidden ? (
-          <div />
+          <EmptyInteractionPanel
+            height={this.props.height}
+          />
         ) : (
           <RawInteractionPanel
             subnet={interactions}
@@ -194,9 +197,7 @@ class TermDetailsPanel extends Component {
             )}
 
             {hidden ? (
-              <div>
-                <h1>Supporting network not uploaded!</h1>
-              </div>
+              <div />
             ) : (
               <div style={controlPanelStyle}>
                 <LegendPanel networkProps={networkProps} />
