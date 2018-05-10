@@ -23,7 +23,6 @@ const buttonStyle = {
   paddingLedt: '0.5em'
 }
 
-
 const titleStyle = {
   display: 'inline-flex',
   width: '100%',
@@ -34,9 +33,8 @@ const titleStyle = {
 
 const titleText = {
   color: '#555555',
-  fontSize: '1.3em',
-  fontWeight: 300,
-  borderBottom: '1px solid #888888'
+  fontSize: '1.4em',
+  fontWeight: 500
 }
 
 class BottomPanel extends Component {
@@ -55,11 +53,10 @@ class BottomPanel extends Component {
   }
 
   render() {
-
     const expanded = this.props.selection.get('main')
 
     let idExpanded = '-'
-    if(expanded !== undefined) {
+    if (expanded !== undefined) {
       idExpanded = expanded.nodeProps.Label
     }
 
@@ -76,8 +73,9 @@ class BottomPanel extends Component {
               <CloseIcon onClick={e => this.handleClose()} />
             </IconButton>
             <div style={titleText}>
-              Gene Set Enrichment Analysis result
-              for selected subsystem <i style={{color: 'orange'}}>{idExpanded}</i></div>
+              Gene set enrichment by Enricher for subsystem{' '}
+              <i style={{ color: 'orange' }}>{idExpanded}</i>
+            </div>
           </div>
 
           <PlotPanel {...this.props} style={plotStyle} />

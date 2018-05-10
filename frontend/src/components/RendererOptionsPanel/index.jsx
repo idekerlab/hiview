@@ -158,7 +158,7 @@ class RendererOptionsPanel extends Component {
               value={this.state.viewer}
               onChange={this.handleViewerChange}
             >
-              <MenuItem value={'Node-Link Diagram'}>Tree Diagram</MenuItem>
+              <MenuItem value={'Node-Link Diagram'}>Node-Link Diagram</MenuItem>
               <MenuItem value={'Circle Packing'}>Circle Packing</MenuItem>
             </Select>
           </ListItem>

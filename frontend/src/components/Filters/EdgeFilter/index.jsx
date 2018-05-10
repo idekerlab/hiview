@@ -9,7 +9,7 @@ import Typography from "material-ui/Typography";
 
 
 // Color map for 5 categorical data
-const COLORS = ['#d01c8b','#0571b0','#f7f7f7','#66c2a5','#4dac26']
+const COLORS = ['#7570b3','#0571b0','#aaaaaa','#66c2a5','#018571']
 const colorMap = idx => COLORS[idx];
 
 const FILTER_TYPES = {
