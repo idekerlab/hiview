@@ -259,7 +259,7 @@ class RendererOptionsPanel extends Component {
           <Divider />
 
           <ListItem>
-            <ListItemText primary="Run Gene Set Enrichment Analysis:" />
+            <ListItemText primary="Automatically run gene set analysis with Enricher:" />
             <Switch
               checked={this.props.uiState.get('runEnrichment')}
               onChange={this.handleEnrichmentChange}

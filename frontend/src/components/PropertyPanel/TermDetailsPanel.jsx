@@ -16,6 +16,7 @@ import * as StyleFactory from './StyleFactory'
 
 import LayoutSelector from '../LayoutSelector'
 import EmptyInteractionPanel from './EmptyInteractionPanel.jsx'
+import MaxEdgePanel from './MaxEdgePanel';
 
 class TermDetailsPanel extends Component {
   constructor(props) {
@@ -212,6 +213,14 @@ class TermDetailsPanel extends Component {
                 <LayoutSelector
                   commandActions={this.props.interactionsCommandActions}
                 />
+
+                <MaxEdgePanel
+                  maxEdgeCount={this.props.maxEdgeCount}
+                  uiState={this.props.uiState}
+                  uiStateActions={this.props.uiStateActions}
+                  rawInteractionsActions={this.props.rawInteractionsActions}
+
+                />
               </div>
             )}
 
@@ -219,6 +228,7 @@ class TermDetailsPanel extends Component {
               <div />
             ) : (
               <div style={filterPanelStyle}>
+
                 <EdgeFilter
                   filters={raw.filters}
                   commandActions={this.props.interactionsCommandActions}
