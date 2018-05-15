@@ -90,7 +90,11 @@ export default class MainPanel extends Component {
     return (
       <div style={this.props.style}>
 
-        <Overlay selection={selection} />
+        <Overlay
+          network={network}
+          datasource={this.props.datasource}
+          cxtoolUrl={CXTOOL_URL}
+          selection={selection} />
 
         <MainMenuPanel
           uiState={uiState}
