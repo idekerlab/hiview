@@ -2,7 +2,8 @@ import {FETCH_NETWORK, RECEIVE_NETWORK, DELETE_NETWORK} from '../actions/network
 import {Map} from 'immutable'
 
 const defState = Map({
-  loading: false
+  loading: false,
+  error: null
 });
 
 
@@ -16,6 +17,7 @@ export default function networkState(state = defState, action) {
     case RECEIVE_NETWORK:
       return state
         .set('loading', false)
+        .set('error', action.error)
         .set(action.url, action.network)
     case DELETE_NETWORK:
       return state.delete(action.url)

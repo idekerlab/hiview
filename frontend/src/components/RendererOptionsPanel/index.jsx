@@ -4,35 +4,24 @@ import List, {
   ListItem,
   ListItemIcon,
   ListItemText,
-  ListItemSecondaryAction,
   ListItemAvatar
 } from 'material-ui/List'
+
 import Divider from 'material-ui/Divider'
-
 import Switch from 'material-ui/Switch'
-
-
-import HomeIcon from 'material-ui-icons/Home'
 import TuneIcon from 'material-ui-icons/Tune'
-import ChevronLeftIcon from 'material-ui-icons/ChevronLeft'
-import Typography from 'material-ui/Typography'
-import IconButton from 'material-ui/IconButton'
-
-import Input from 'material-ui/Input'
-import Dialog from 'material-ui/Dialog'
-import TextField from 'material-ui/TextField'
 
 import { deepOrange, blueGrey } from 'material-ui/colors'
 
 import Avatar from 'material-ui/Avatar'
-
 import Slider from 'rc-slider'
-
 import Select from 'material-ui/Select'
 import { MenuItem } from 'material-ui/Menu'
-
 import 'rc-slider/assets/index.css'
 import { teal } from 'material-ui/colors/index'
+
+const CIRCLE_PACKING = 'Circle Packing'
+const NODE_LINK = 'Node-Link Diagram'
 
 const createSliderWithTooltip = Slider.createSliderWithTooltip
 
@@ -54,7 +43,7 @@ class RendererOptionsPanel extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      viewer: 'Circle Packing'
+      viewer: CIRCLE_PACKING
     }
   }
 
@@ -65,7 +54,7 @@ class RendererOptionsPanel extends Component {
   handleViewerChange = event => {
     const val = event.target.value
 
-    console.log("VIEWER: ", val)
+    console.log('VIEWER: ', val)
 
     if (val === 'Node-Link Diagram') {
       this.props.uiStateActions.changeViewer(true)
@@ -79,9 +68,8 @@ class RendererOptionsPanel extends Component {
   handleEnrichmentChange = event => {
     const val = this.props.uiState.get('runEnrichment')
 
-    console.log("GSEA: ", val)
+    console.log('GSEA: ', val)
     this.props.uiStateActions.runEnrichment(!val)
-
   }
 
   onAfterChange = value => {
@@ -114,7 +102,7 @@ class RendererOptionsPanel extends Component {
     console.log(value)
   }
 
-  render() {
+  getOptions = () => {
     const nodeStyle = {
       color: 'white',
       backgroundColor: deepOrange[600]
@@ -135,6 +123,104 @@ class RendererOptionsPanel extends Component {
       50.0: 50.0
     }
 
+    if (this.state.viewer === CIRCLE_PACKING) {
+      return <div />
+    }
+
+    return (
+      <List>
+        <Divider />
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar style={nodeStyle}>N</Avatar>
+          </ListItemAvatar>
+
+          <ListItemText primary="Node Ratio:" />
+          <SliderWithTooltip
+            style={{ width: '55%' }}
+            defaultValue={this.props.renderingOptions.get('nodesPowRatio')}
+            min={0.001}
+            max={2.0}
+            step={0.001}
+            // marks={marks}
+            trackStyle={trackStyle}
+            handleStyle={[handleStyle]}
+            onAfterChange={this.onAfterChange}
+          />
+        </ListItem>
+
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar style={nodeStyle}>N</Avatar>
+          </ListItemAvatar>
+
+          <ListItemText primary="Node Size:" />
+
+          <Range
+            style={{ width: '55%' }}
+            defaultValue={[
+              this.props.renderingOptions.get('minNodeSize'),
+              this.props.renderingOptions.get('maxNodeSize')
+            ]}
+            min={0.0}
+            max={50.0}
+            step={0.1}
+            allowCross={false}
+            // marks={rangeMarks}
+            trackStyle={[trackStyle]}
+            handleStyle={[handleStyle]}
+            onAfterChange={this.onAfterRangeChange}
+          />
+        </ListItem>
+
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar style={nodeStyle}>N</Avatar>
+          </ListItemAvatar>
+
+          <ListItemText primary="Label Size Ratio:" />
+          <SliderWithTooltip
+            style={{ width: '55%' }}
+            defaultValue={this.props.renderingOptions.get('labelSizeRatio')}
+            min={0.0}
+            max={5.0}
+            step={0.001}
+            // marks={marks}
+            trackStyle={trackStyle}
+            handleStyle={[handleStyle]}
+            onAfterChange={this.onAfterLabelChange}
+          />
+        </ListItem>
+
+        <ListItem>
+          <ListItemAvatar>
+            <Avatar style={edgeStyle}>E</Avatar>
+          </ListItemAvatar>
+
+          <ListItemText primary="Edge Width:" />
+
+          <Range
+            style={{ width: '55%' }}
+            defaultValue={[
+              this.props.renderingOptions.get('minEdgeSize'),
+              this.props.renderingOptions.get('maxEdgeSize')
+            ]}
+            min={0.0}
+            max={5.0}
+            step={0.01}
+            allowCross={false}
+            // marks={rangeMarks}
+            trackStyle={[trackStyle]}
+            handleStyle={[handleStyle]}
+            onAfterChange={this.onAfterEdgeRangeChange}
+          />
+        </ListItem>
+      </List>
+    )
+  }
+
+  render() {
+
     return (
       <div style={baseStyle}>
         <List>
@@ -142,10 +228,8 @@ class RendererOptionsPanel extends Component {
             <ListItemIcon>
               <TuneIcon />
             </ListItemIcon>
-            <ListItemText primary="Hierarchy Viewer Options:" />
+            <ListItemText primary="Main Hierarchy Viewer Options:" />
           </ListItem>
-
-          <Divider />
 
           <ListItem>
             <ListItemAvatar>
@@ -158,97 +242,18 @@ class RendererOptionsPanel extends Component {
               value={this.state.viewer}
               onChange={this.handleViewerChange}
             >
-              <MenuItem value={'Node-Link Diagram'}>Node-Link Diagram</MenuItem>
-              <MenuItem value={'Circle Packing'}>Circle Packing</MenuItem>
+              <MenuItem value={NODE_LINK}>{NODE_LINK}</MenuItem>
+              <MenuItem value={CIRCLE_PACKING}>{CIRCLE_PACKING}</MenuItem>
             </Select>
           </ListItem>
 
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar style={nodeStyle}>N</Avatar>
-            </ListItemAvatar>
 
-            <ListItemText primary="Node Ratio:" />
-            <SliderWithTooltip
-              style={{ width: '55%' }}
-              defaultValue={this.props.renderingOptions.get('nodesPowRatio')}
-              min={0.001}
-              max={2.0}
-              step={0.001}
-              // marks={marks}
-              trackStyle={trackStyle}
-              handleStyle={[handleStyle]}
-              onAfterChange={this.onAfterChange}
-            />
-          </ListItem>
+          {this.getOptions()}
+        </List>
 
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar style={nodeStyle}>N</Avatar>
-            </ListItemAvatar>
+        <Divider />
 
-            <ListItemText primary="Node Size:" />
-
-            <Range
-              style={{ width: '55%' }}
-              defaultValue={[
-                this.props.renderingOptions.get('minNodeSize'),
-                this.props.renderingOptions.get('maxNodeSize')
-              ]}
-              min={0.0}
-              max={50.0}
-              step={0.1}
-              allowCross={false}
-              // marks={rangeMarks}
-              trackStyle={[trackStyle]}
-              handleStyle={[handleStyle]}
-              onAfterChange={this.onAfterRangeChange}
-            />
-          </ListItem>
-
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar style={nodeStyle}>N</Avatar>
-            </ListItemAvatar>
-
-            <ListItemText primary="Label Size Ratio:" />
-            <SliderWithTooltip
-              style={{ width: '55%' }}
-              defaultValue={this.props.renderingOptions.get('labelSizeRatio')}
-              min={0.0}
-              max={5.0}
-              step={0.001}
-              // marks={marks}
-              trackStyle={trackStyle}
-              handleStyle={[handleStyle]}
-              onAfterChange={this.onAfterLabelChange}
-            />
-          </ListItem>
-
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar style={edgeStyle}>E</Avatar>
-            </ListItemAvatar>
-
-            <ListItemText primary="Edge Width:" />
-
-            <Range
-              style={{ width: '55%' }}
-              defaultValue={[
-                this.props.renderingOptions.get('minEdgeSize'),
-                this.props.renderingOptions.get('maxEdgeSize')
-              ]}
-              min={0.0}
-              max={5.0}
-              step={0.01}
-              allowCross={false}
-              // marks={rangeMarks}
-              trackStyle={[trackStyle]}
-              handleStyle={[handleStyle]}
-              onAfterChange={this.onAfterEdgeRangeChange}
-            />
-          </ListItem>
-
+        <List>
           <ListItem>
             <ListItemIcon>
               <TuneIcon />
@@ -256,7 +261,6 @@ class RendererOptionsPanel extends Component {
             <ListItemText primary="Enrichment Options:" />
           </ListItem>
 
-          <Divider />
 
           <ListItem>
             <ListItemText primary="Automatically run gene set analysis with Enricher:" />

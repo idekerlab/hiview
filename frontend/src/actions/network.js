@@ -40,11 +40,12 @@ const fetchNetwork = url => {
 }
 
 export const RECEIVE_NETWORK = 'RECEIVE_NETWORK'
-const receiveNetwork = (url, json) => {
+const receiveNetwork = (url, json, error) => {
   return {
     type: RECEIVE_NETWORK,
     url,
-    network: json
+    network: json,
+    error: error
   }
 }
 
@@ -85,13 +86,23 @@ export const fetchNetworkFromUrl = url => {
 
     return (
       fetchNet(url)
-        .then(response => response.json())
+        .then(response => {
+          if(!response.ok) {
+            throw Error(response.statusText)
+          } else {
+            return response.json()
+          }
+        })
         // .then(rawCyjs => (filterEdges(rawCyjs)))
         // .then(rawCyjs => (filterNodes(rawCyjs)))
         // .then(rawCyjs => (filterLeafs(rawCyjs)))
         // .then(json => (layout(json)))
         .then(json => createLabel2IdMap(json))
-        .then(network => dispatch(receiveNetwork(url, network)))
+        .then(network => dispatch(receiveNetwork(url, network, null)))
+        .catch(err => {
+          return dispatch(receiveNetwork(url, null, 'Error!'))
+
+        })
     )
   }
 }

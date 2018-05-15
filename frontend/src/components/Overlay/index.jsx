@@ -88,7 +88,6 @@ const Overlay = props => {
 }
 
 const getLink = (link, title) => {
-  console.log('NO link:::: ', link)
   if(title === DEF_TITLE) {
 
     return DEF_TITLE
