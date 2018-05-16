@@ -20,6 +20,9 @@ import { MenuItem } from 'material-ui/Menu'
 import 'rc-slider/assets/index.css'
 import { teal } from 'material-ui/colors/index'
 
+import { ChromePicker } from 'react-color'
+import Button from 'material-ui/Button'
+
 const CIRCLE_PACKING = 'Circle Packing'
 const NODE_LINK = 'Node-Link Diagram'
 
@@ -39,13 +42,44 @@ const handleStyle = {
   borderColor: sliderColor
 }
 
+const popover = {
+  position: 'absolute',
+  zIndex: '2'
+}
+const cover = {
+  position: 'fixed',
+  top: '0px',
+  right: '0px',
+  bottom: '0px',
+  left: '0px'
+}
+
 class RendererOptionsPanel extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      viewer: CIRCLE_PACKING
+      viewer: CIRCLE_PACKING,
+      displayColorPicker: false,
+      rootColor: 'orange',
+      leafColor: 'blue'
     }
   }
+
+  handleColorPickerOpen = () => {
+    this.setState({ displayColorPicker: !this.state.displayColorPicker })
+  }
+
+  handleColorPickerClose = () => {
+    this.setState({ displayColorPicker: false })
+  }
+
+  handleChangeCompleteRoot = (color, event) => {
+    this.setState({ rootColor: color.hex });
+  };
+
+  handleChangeCompleteLeaf = (color, event) => {
+    this.setState({ leafColor: color.hex });
+  };
 
   handleClose = () => {
     this.setState({ open: false })
@@ -124,7 +158,70 @@ class RendererOptionsPanel extends Component {
     }
 
     if (this.state.viewer === CIRCLE_PACKING) {
-      return <div />
+
+      const rootColorStyle = {
+        backgroundColor: this.state.rootColor
+      }
+
+      const leafColorStyle = {
+        backgroundColor: this.state.leafColor
+      }
+
+      return (
+        <List>
+          <ListItem>
+            <ListItemIcon>
+              <TuneIcon />
+            </ListItemIcon>
+            <ListItemText primary="Circle background colors:" />
+          </ListItem>
+
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar style={rootColorStyle}></Avatar>
+            </ListItemAvatar>
+
+            <ListItemText primary="Root Color" />
+            <Button
+              variant="raised"
+              color="default"
+              onClick={this.handleColorPickerOpen}
+            >
+              Select
+            </Button>
+            {this.state.displayColorPicker ? (
+              <div style={popover}>
+                <div style={cover} onClick={this.handleColorPickerClose} />
+                <ChromePicker
+                  color={this.state.rootColor}
+                  onChangeComplete={this.handleChangeCompleteRoot}
+                />
+              </div>
+            ) : null}
+          </ListItem>
+          <ListItem>
+            <ListItemAvatar>
+              <Avatar style={leafColorStyle}></Avatar>
+            </ListItemAvatar>
+
+            <ListItemText primary="Leaf Color" />
+            <Button
+              onClick={this.handleColorPickerOpen}
+              variant="raised" color="default">
+              Select
+            </Button>
+            {this.state.displayColorPicker ? (
+              <div style={popover}>
+                <div style={cover} onClick={this.handleColorPickerClose} />
+                <ChromePicker
+                  color={this.state.leafColor}
+                  onChangeComplete={this.handleChangeCompleteLeaf}
+                />
+              </div>
+            ) : null}
+          </ListItem>
+        </List>
+      )
     }
 
     return (
@@ -220,7 +317,6 @@ class RendererOptionsPanel extends Component {
   }
 
   render() {
-
     return (
       <div style={baseStyle}>
         <List>
@@ -247,7 +343,6 @@ class RendererOptionsPanel extends Component {
             </Select>
           </ListItem>
 
-
           {this.getOptions()}
         </List>
 
@@ -260,7 +355,6 @@ class RendererOptionsPanel extends Component {
             </ListItemIcon>
             <ListItemText primary="Enrichment Options:" />
           </ListItem>
-
 
           <ListItem>
             <ListItemText primary="Automatically run gene set analysis with Enricher:" />
