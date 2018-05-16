@@ -59,26 +59,32 @@ class RendererOptionsPanel extends Component {
     super(props)
     this.state = {
       viewer: CIRCLE_PACKING,
-      displayColorPicker: false,
-      rootColor: 'orange',
-      leafColor: 'blue'
+      displayColorPickerRoot: false,
+      displayColorPickerLeaf: false
     }
   }
 
-  handleColorPickerOpen = () => {
-    this.setState({ displayColorPicker: !this.state.displayColorPicker })
+  handleColorPickerOpenRoot = () => {
+    this.setState({ displayColorPickerRoot: !this.state.displayColorPickerRoot })
+  }
+
+  handleColorPickerOpenLeaf = () => {
+    this.setState({ displayColorPickerLeaf: !this.state.displayColorPickerLeaf })
   }
 
   handleColorPickerClose = () => {
-    this.setState({ displayColorPicker: false })
+    this.setState({
+      displayColorPickerRoot: false,
+      displayColorPickerLeaf: false
+    })
   }
 
   handleChangeCompleteRoot = (color, event) => {
-    this.setState({ rootColor: color.hex });
+    this.props.renderingOptionsActions.setRootColor(color.hex)
   };
 
   handleChangeCompleteLeaf = (color, event) => {
-    this.setState({ leafColor: color.hex });
+    this.props.renderingOptionsActions.setLeafColor(color.hex)
   };
 
   handleClose = () => {
@@ -159,16 +165,21 @@ class RendererOptionsPanel extends Component {
 
     if (this.state.viewer === CIRCLE_PACKING) {
 
+      const rootColor = this.props.renderingOptions.get('rootColor')
+      const leafColor = this.props.renderingOptions.get('leafColor')
+
       const rootColorStyle = {
-        backgroundColor: this.state.rootColor
+        backgroundColor: rootColor
       }
 
       const leafColorStyle = {
-        backgroundColor: this.state.leafColor
+        backgroundColor: leafColor
       }
+
 
       return (
         <List>
+          <Divider />
           <ListItem>
             <ListItemIcon>
               <TuneIcon />
@@ -185,15 +196,15 @@ class RendererOptionsPanel extends Component {
             <Button
               variant="raised"
               color="default"
-              onClick={this.handleColorPickerOpen}
+              onClick={this.handleColorPickerOpenRoot}
             >
-              Select
+              Change
             </Button>
-            {this.state.displayColorPicker ? (
+            {this.state.displayColorPickerRoot ? (
               <div style={popover}>
                 <div style={cover} onClick={this.handleColorPickerClose} />
                 <ChromePicker
-                  color={this.state.rootColor}
+                  color={rootColor}
                   onChangeComplete={this.handleChangeCompleteRoot}
                 />
               </div>
@@ -206,15 +217,15 @@ class RendererOptionsPanel extends Component {
 
             <ListItemText primary="Leaf Color" />
             <Button
-              onClick={this.handleColorPickerOpen}
+              onClick={this.handleColorPickerOpenLeaf}
               variant="raised" color="default">
-              Select
+              Change
             </Button>
-            {this.state.displayColorPicker ? (
+            {this.state.displayColorPickerLeaf ? (
               <div style={popover}>
                 <div style={cover} onClick={this.handleColorPickerClose} />
                 <ChromePicker
-                  color={this.state.leafColor}
+                  color={leafColor}
                   onChangeComplete={this.handleChangeCompleteLeaf}
                 />
               </div>

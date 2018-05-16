@@ -217,6 +217,7 @@ class CirclePackingPanel extends Component {
             eventHandlers={this.getEventHandlers()}
             width={this.props.style.width}
             height={this.props.style.height}
+            rendererOptions={this.props.renderingOptions}
           />
         )}
       </div>

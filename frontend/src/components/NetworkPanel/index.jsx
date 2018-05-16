@@ -344,6 +344,7 @@ class NetworkPanel extends Component {
             style={circleAreaStyle}
             selectPrimaryNode={this.selectNodes}
             commandActions={this.props.commandActions}
+            renderingOptions={this.props.renderingOptions.toJS()}
           />
         </div>
       )
