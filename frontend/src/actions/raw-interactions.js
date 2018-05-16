@@ -36,13 +36,22 @@ export const fetchInteractionsFromUrl = (url, maxEdgeCount= 500) => {
     dispatch(fetchNetwork(url))
 
     return fetchNet(url)
-      .then(response => (response.json()))
+      .then(response => {
+        if(!response.ok) {
+          throw Error(response.statusText)
+        } else {
+          return response.json()
+        }
+      })
       .then(network => (sortEdges(network, maxEdgeCount)))
       .then(network => (createFilter(network)))
       .then(netAndFilter => (createGroups(netAndFilter)))
       .then( netAndFilter =>
         dispatch(receiveNetwork(url, netAndFilter[0], netAndFilter[1], netAndFilter[2], netAndFilter[3]))
-      )
+      ).catch(err => {
+        console.log("ERRRRR: ", err)
+        return dispatch(receiveNetwork(url, null, 'Error!'))
+      })
   }
 }
 

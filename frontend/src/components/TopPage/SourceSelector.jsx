@@ -103,7 +103,7 @@ class SourceSelector extends Component {
 
 
     return (
-      <div>
+      <div style={{paddingTop: '2em'}}>
         <div style={{width: '450px'}}>
           <TextField
             style={textFieldStyle}

@@ -1,12 +1,19 @@
 import React from 'react'
+import 'typeface-roboto'
+
 import SourceSelector from './SourceSelector'
 
 import { withStyles } from 'material-ui/styles'
 
-import { blueGrey, grey } from 'material-ui/colors'
+import { grey } from 'material-ui/colors'
 import Typography from 'material-ui/Typography'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
+
+import SvgIcon from 'material-ui/SvgIcon'
+
+import IconButton from 'material-ui/IconButton'
+import GitHubIcon from '../../assets/images/github-white.svg'
 
 const styles = theme => ({
   container: {
@@ -18,11 +25,14 @@ const styles = theme => ({
     height: '100%',
     margin: 0,
     padding: 0,
-    background: blueGrey[50],
+    background: '#FFFFFF',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column'
+  },
+  bar: {
+    background: '#333333'
   },
   footer: {
     position: 'fixed',
@@ -30,14 +40,26 @@ const styles = theme => ({
     left: 0,
     width: '100%',
     color: grey[800],
-    background: blueGrey[100],
+    background: grey[100],
     height: '3em',
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center'
   },
+  display4: {
+    color: '#222222',
+    fontWeight: 400,
+    fontSize: '17em'
+  },
+  display2: {
+    color: '#777777',
+    fontWeight: 300,
+    fontSize: '2em',
+    paddingLeft: '0.5em'
+  },
   noDecoration: {
-    textDecoration: 'none'
+    textDecoration: 'none',
+    color:'inherit'
   }
 })
 
@@ -48,7 +70,7 @@ const TopPage = props => {
 
   return (
     <div className={classes.container}>
-      <AppBar position="fixed">
+      <AppBar position="fixed" className={classes.bar}>
         <Toolbar>
           <Typography variant="title" color="inherit">
             HiView v{version} &beta;
@@ -58,17 +80,15 @@ const TopPage = props => {
 
       <div className={classes.root}>
         <div>
-          <Typography variant="display4" color="primary">
+          <Typography variant="display4" className={classes.display4}>
             HiView
           </Typography>
-          <Typography variant="headline">
+          <Typography variant="display2" className={classes.display2}>
             Universal browser for hierarchical data
           </Typography>
         </div>
 
-        <div>
-          <SourceSelector {...props} />
-        </div>
+        <SourceSelector {...props} />
       </div>
 
       <footer className={classes.footer}>
