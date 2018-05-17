@@ -20,8 +20,6 @@ class AliasList extends Component {
 
   componentWillReceiveProps(nextProps) {
     const newPath = nextProps.currentPath;
-    console.log("NEW PATH=========================");
-    console.log(newPath);
 
     if (newPath !== undefined && newPath !== null) {
       const path = newPath.get("currentPath");
@@ -61,7 +59,6 @@ class AliasList extends Component {
                 <Button
                   aria-label='Find path'
                   variant="raised"
-                  color={'accent'}
                   onClick={e => this.handleClick(key)}
                 >
                   <NavigationIcon />

@@ -1,5 +1,3 @@
-
-
 export const SEARCH = 'SEARCH'
 
 const search = (query, options) => {
@@ -10,10 +8,8 @@ const search = (query, options) => {
   }
 }
 
-
 export const RECEIVE_SEARCH_RESULT = 'RECEIVE_SEARCH_RESULT'
 const receiveSearchResult = (query, json, options) => {
-
   return {
     type: RECEIVE_SEARCH_RESULT,
     query,
@@ -21,7 +17,6 @@ const receiveSearchResult = (query, json, options) => {
     result: json
   }
 }
-
 
 export const CLEAR_SEARCH_RESULT = 'CLEAR_SEARCH_RESULT'
 const clearSearchResult = () => {
@@ -31,7 +26,6 @@ const clearSearchResult = () => {
   }
 }
 
-
 const sendQuery = (query, options) => {
   const baseUrl = options.baseUrl
   const uuid = options.uuid
@@ -39,21 +33,17 @@ const sendQuery = (query, options) => {
   const url = baseUrl + uuid + '/nodes'
 
   const payload = {
-    'searchString': query
+    searchString: query
     // 'searchString': 'nodeName:' + query
-
   }
 
   return fetch(url, {
     mode: 'cors',
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(payload)
   })
-
 }
-
-
 
 export const clear = () => {
   return dispatch => {
@@ -61,20 +51,21 @@ export const clear = () => {
   }
 }
 
-const toIdList = (json) => (json.map(entry => (entry.id)))
+const toIdList = json => json.map(entry => entry.id)
 
 export const searchNdex = (query, options) => {
-
   return dispatch => {
     dispatch(search(query, options))
 
     return sendQuery(query, options)
-      .then(response => (response.json()))
-      .then(json => (toIdList(json)))
-      .then(idList =>
-        dispatch(receiveSearchResult(query, idList, options))
-      )
+      .then(response => response.json())
+      .then(json => {
+        console.log('RES!!!!!!', json)
+        return toIdList(json)
+      })
+      .then(idList => dispatch(receiveSearchResult(query, idList, options)))
+      .catch(err => {
+        console.error('Error in search!!!', err)
+      })
   }
 }
-
-

@@ -91,6 +91,7 @@ export default class MainPanel extends Component {
       <div style={this.props.style}>
 
         <Overlay
+          uiState={uiState}
           network={network}
           datasource={this.props.datasource}
           cxtoolUrl={CXTOOL_URL}

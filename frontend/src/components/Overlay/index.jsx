@@ -27,25 +27,22 @@ const textStyle = {
 
 const DEF_TITLE = '(No hierarchy data yet)'
 
-
 const Overlay = props => {
+  const isCirclePacking = props.uiState.get('changeViewer')
 
   let title = DEF_TITLE
   let link = null
 
   const datasource = props.datasource
-  if(datasource !== undefined) {
-
+  if (datasource !== undefined) {
     const uuid = datasource.get('uuid')
     link = datasource.get('serverUrl') + '/#/network/' + uuid
-
-
 
     const url = props.cxtoolUrl + uuid + '?server=test'
     const networkProp = props.network
     const networkData = networkProp.get(url)
 
-    if(networkData !== null && networkData !== undefined) {
+    if (networkData !== null && networkData !== undefined) {
       title = networkData.data.name
     }
   }
@@ -69,30 +66,39 @@ const Overlay = props => {
     typeExpanded = expanded.nodeProps.NodeType
   }
 
-
-  if(link !== null) {
+  if (link !== null) {
     document.title = title
   }
 
   return (
     <div style={style}>
       <div style={titleStyle}>Hierarchy Name: {getLink(link, title)}</div>
-      <div style={textStyle}>
-        Expanded Subsystem: <i style={{ color: 'orange' }}>{idExpanded}</i>
-      </div>
-      <div style={textStyle}>
-        Current Subsystem: <i style={{ color: 'red' }}>{id}</i>
-      </div>
+
+      {isCirclePacking ? (
+        <div />
+      ) : (
+        <div>
+          <div style={textStyle}>
+            Expanded Subsystem: <i style={{ color: 'orange' }}>{idExpanded}</i>
+          </div>
+          <div style={textStyle}>
+            Current Subsystem: <i style={{ color: 'red' }}>{id}</i>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
 
 const getLink = (link, title) => {
-  if(title === DEF_TITLE) {
-
+  if (title === DEF_TITLE) {
     return DEF_TITLE
   } else {
-    return (<a href={link} target='_blank'>{title}</a>)
+    return (
+      <a href={link} target="_blank">
+        {title}
+      </a>
+    )
   }
 }
 

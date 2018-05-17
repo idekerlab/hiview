@@ -1,24 +1,18 @@
-import React, {Component} from 'react'
-import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List'
+import React, { Component } from 'react'
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import OpenIcon from 'material-ui-icons/OpenInNew'
 
-import Collapse from 'material-ui/transitions/Collapse';
+import Collapse from 'material-ui/transitions/Collapse'
 
-import ExpandLess from 'material-ui-icons/ExpandLess';
-import ExpandMore from 'material-ui-icons/ExpandMore';
-
+import ExpandLess from 'material-ui-icons/ExpandLess'
+import ExpandMore from 'material-ui-icons/ExpandMore'
 
 import AliasList from './AliaseList'
 
-
-
-
 class SearchResult extends Component {
-
   state = {}
 
   buildNestedList = (idList, id2prop) => {
-
     const nestedList = {}
 
     // Creates basic structure only with original nodes
@@ -39,7 +33,7 @@ class SearchResult extends Component {
       if (props.Hidden) {
         const label = props.Label
         const parent = nestedList[label]
-        if(parent !== undefined) {
+        if (parent !== undefined) {
           parent.children[id] = props
         }
       }
@@ -50,13 +44,13 @@ class SearchResult extends Component {
 
   handleClick = (nodeId, rootId) => {
     this.props.commandActions.findPath([nodeId, rootId])
-  };
+  }
 
-  handleToggle = (label) => {
-    if(this.state[label] === undefined) {
-      this.setState({[label]: true});
+  handleToggle = label => {
+    if (this.state[label] === undefined) {
+      this.setState({ [label]: true })
     } else {
-      this.setState({[label]: !this.state[label]});
+      this.setState({ [label]: !this.state[label] })
     }
   }
 
@@ -65,7 +59,7 @@ class SearchResult extends Component {
 
     const resultStyle = {
       height: windowHeight,
-      overflow: 'auto',
+      overflow: 'auto'
     }
 
     let results = this.props.search.result
@@ -74,9 +68,7 @@ class SearchResult extends Component {
       return (
         <List style={resultStyle}>
           <ListItem>
-            <ListItemText
-              primary={'No result!'}
-            />
+            <ListItemText primary={'No result!'} />
           </ListItem>
         </List>
       )
@@ -88,51 +80,48 @@ class SearchResult extends Component {
 
     return (
       <List style={resultStyle}>
-        {
-          parents.map((parent, i) =>
-
-            (
-              <div
-                key={'parent-' + i}
+        {parents.map((parent, i) => (
+          <div key={'parent-' + i}>
+            <ListItem>
+              <ListItemIcon
+                onClick={e =>
+                  this.handleClick(
+                    nestedList[parent].props.id,
+                    this.props.rootId
+                  )
+                }
               >
-                <ListItem
-                >
-                  <ListItemIcon
-                    onClick={(e) => this.handleClick(nestedList[parent].props.id, this.props.rootId)}
-                  >
-                    <OpenIcon
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={nestedList[parent].props.Label}
-                    secondary={nestedList[parent].props.NodeType}
-                  />
-                  {this.state[parent] ?
-                    <ExpandLess
-                      onClick={(e) => this.handleToggle(parent)}
-                    /> :
-                    <ExpandMore
-                      onClick={(e) => this.handleToggle(parent)}
-                    />
-                  }
-                </ListItem>
+                <OpenIcon />
+              </ListItemIcon>
+              <ListItemText
+                primary={nestedList[parent].props.Label}
+                secondary={nestedList[parent].props.NodeType}
+              />
+              {this.state[parent] ? (
+                <ExpandLess onClick={e => this.handleToggle(parent)} />
+              ) : (
+                <ExpandMore onClick={e => this.handleToggle(parent)} />
+              )}
+            </ListItem>
 
-                <Collapse component="li" in={this.state[parent]} timeout="auto" unmountOnExit>
-                  <AliasList
-                    rootId={this.props.rootId}
-                    aliases={nestedList[parent].children}
-                    commandActions={this.props.commandActions}
-                    currentPath={this.props.currentPath}
-                  />
-                </Collapse>
-              </div>
-            )
-          )
-        }
+            <Collapse
+              component="li"
+              in={this.state[parent]}
+              timeout="auto"
+              unmountOnExit
+            >
+              <AliasList
+                rootId={this.props.rootId}
+                aliases={nestedList[parent].children}
+                commandActions={this.props.commandActions}
+                currentPath={this.props.currentPath}
+              />
+            </Collapse>
+          </div>
+        ))}
       </List>
     )
   }
 }
-
 
 export default SearchResult

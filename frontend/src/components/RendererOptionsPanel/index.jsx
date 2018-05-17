@@ -204,6 +204,7 @@ class RendererOptionsPanel extends Component {
               <div style={popover}>
                 <div style={cover} onClick={this.handleColorPickerClose} />
                 <ChromePicker
+                  disableAlpha={true}
                   color={rootColor}
                   onChangeComplete={this.handleChangeCompleteRoot}
                 />
@@ -225,6 +226,7 @@ class RendererOptionsPanel extends Component {
               <div style={popover}>
                 <div style={cover} onClick={this.handleColorPickerClose} />
                 <ChromePicker
+                  disableAlpha={true}
                   color={leafColor}
                   onChangeComplete={this.handleChangeCompleteLeaf}
                 />
