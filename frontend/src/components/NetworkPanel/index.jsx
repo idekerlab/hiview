@@ -85,8 +85,6 @@ class NetworkPanel extends Component {
     // From NDEx to CYJS converter
     const linkEntry = props[NDEX_LINK_TAG]
     if (linkEntry === undefined) {
-      console.log('----------------- NO LINK2: This means no inetraction data')
-
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
       this.props.propertyActions.setProperty(props.id, props, 'term')
       return
@@ -95,9 +93,6 @@ class NetworkPanel extends Component {
     const linkId = linkEntry.split('(')[1].replace(')', '')
 
     const link = this.props.cxtoolUrl + linkId + '?server=test'
-    console.log('----------------- Selected3 -----------------')
-
-    console.log(props)
     window.setTimeout(() => {
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
@@ -127,7 +122,7 @@ class NetworkPanel extends Component {
       const path = result
 
       if (path !== undefined && path.notFound) {
-        this.props.commandActions.zoomToNode(path.startId)
+        // this.props.commandActions.zoomToNode(path.startId)
         return
       }
 
@@ -136,7 +131,7 @@ class NetworkPanel extends Component {
       if (path !== undefined && path.length !== 0 && path.length !== 1) {
         if (path[0] !== undefined) {
           const start = path[0].id
-          this.props.commandActions.zoomToNode(start)
+          // this.props.commandActions.zoomToNode(start)
         } else {
         }
       }

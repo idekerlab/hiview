@@ -1,49 +1,37 @@
-import React from "react";
-import { ContextMenu, MenuItem, SubMenu} from "react-contextmenu";
-
-
-const handleClick = (e, data) => {
-  console.log("right click")
-  console.log(data);
-}
+import React from 'react'
+import { ContextMenu, MenuItem} from 'react-contextmenu'
 
 const toggleShowGenes = (id, props) => {
-  console.log("Show/Hide edges")
-  console.log(id);
+  console.log('Show/Hide edges')
+  console.log(id)
   console.log(props)
 
-  props.commandActions.hideNeighbours([id, "Gene", false])
+  props.commandActions.hideNeighbours([id, 'Gene', false])
 }
 
-const NetworkContextMenu = (props) => {
-
+const NetworkContextMenu = props => {
   let selected = null
-  if(props.hoverNode !== null) {
+
+
+  if (props.hoverNode !== null) {
     selected = props.hoverNode.Label
+  } else {
+    return <div/>
   }
 
   return (
     <ContextMenu id="networkContextMenu">
-
-      <MenuItem disabled={true} data={{title: selected}} onClick={handleClick}>
+      <MenuItem disabled={true} data={{ title: selected }}>
         {selected}
       </MenuItem>
 
       <MenuItem divider />
 
-      <MenuItem data={{}} onClick={(e) => toggleShowGenes(props.hoverNode.id, props)}>
+      <MenuItem
+        data={{}}
+        onClick={e => toggleShowGenes(props.hoverNode.id, props)}
+      >
         Show / Hide Genes
-      </MenuItem>
-
-      <SubMenu title='Move to...'>
-        <MenuItem onClick={handleClick} data={{ item: 'subsubitem 1' }}>Parents</MenuItem>
-        <MenuItem onClick={handleClick} data={{ item: 'subsubitem 2' }}>Children</MenuItem>
-      </SubMenu>
-
-      <MenuItem divider />
-
-      <MenuItem data={{data3: "some_data"}} onClick={handleClick}>
-        Show help...
       </MenuItem>
     </ContextMenu>
   )
