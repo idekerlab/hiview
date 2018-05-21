@@ -55,12 +55,20 @@ class MainPanel extends React.Component {
 
 
   search = (query) => {
+    const index = this.props.network.index
+
+    const results = index.search(query)
+    const ids = results.map(result => result.id)
+    console.log("### Search DONE!: ", results, ids)
+
     const options = {
       baseUrl: SEARCH_URL,
       uuid: this.props.datasource.uuid,
     }
 
-    this.props.searchActions.searchNdex(query, options)
+
+    // this.props.searchActions.searchNdex(query, options)
+    this.props.searchActions.setSearchResult(query, options, ids)
 
     this.setState({
       expand: true,

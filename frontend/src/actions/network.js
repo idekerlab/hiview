@@ -1,36 +1,96 @@
 import * as d3Hierarchy from 'd3-hierarchy'
 import cytoscape from 'cytoscape'
 
+import Fuse from 'fuse.js'
+
 export const FETCH_NETWORK = 'FETCH_NETWORK'
 
-const DB_NAME = 'HiViewNetworkDB'
-const request = window.indexedDB.open(DB_NAME, 3)
-console.log('** IndexedDB', request)
+const generateIndex = networkJson => {
+  console.log(networkJson)
+  const nodes = networkJson.elements.nodes
+  const nodeData = nodes.map(node => node.data)
 
-request.onerror = event => {
-  console.error('Failed to connect DB')
+  const options = {
+    shouldSort: true,
+    threshold: 0.0,
+    tokenize: true,
+    location: 0,
+    matchAllTokens: true,
+    distance: 100,
+    maxPatternLength: 32,
+    minMatchCharLength: 1,
+    keys: ['name', 'Label', 'GO_term_aligned']
+  }
+
+  return new Fuse(nodeData, options)
 }
 
-
-let db
-
-request.onsuccess = () => {
-  db = event.target.result
-}
-
-let index
-let store
-
-request.onupgradeneeded = () => {
-  db = request.result
-
-  store = db.createObjectStore('NetworkStore', { keyPath: 'id' })
-  index = store.createIndex('NameIndex', ['data.name'])
-}
-
-
-
-
+// const testDb = networkJson => {
+//   // Use UUID as store name
+//   const objectStoreName = networkJson.cxData.ndexStatus[0].externalId
+//   // const objectStoreName = 'NDEXTEST'
+//
+//   const open = indexedDB.open(DB_NAME, DB_VERSION)
+//
+//   open.onupgradeneeded = function() {
+//     const db = open.result
+//     const store = db.createObjectStore(objectStoreName, {
+//       keyPath: PRIMARY_KEY
+//     })
+//     const index = store.createIndex('NameIndex', ['name.last', 'name.first'])
+//     const labelIdx = store.createIndex(INDEX_LABEL, ['Label'])
+//   }
+//
+//   open.onsuccess = function() {
+//     // Start a new transaction
+//     const db = open.result
+//     const tx = db.transaction(objectStoreName, 'readwrite')
+//     const store = tx.objectStore(objectStoreName)
+//     const index = store.index('NameIndex')
+//     const indexLabel = store.index(INDEX_LABEL)
+//
+//     generateIndex(store, networkJson)
+//     // Add some data
+//     store.put({
+//       [PRIMARY_KEY]: 12345,
+//       name: {
+//         first: 'John',
+//         last: 'Doe'
+//       },
+//       age: 42
+//     })
+//
+//     store.put({
+//       [PRIMARY_KEY]: 67890,
+//       name: { first: 'Bob', last: 'Smith' },
+//       age: 35
+//     })
+//
+//     // Query the data
+//     var getJohn = store.get(12345)
+//     var getBob = index.get(['Smith', 'Bob'])
+//
+//     const get1 = indexLabel.get(['DNA'])
+//
+//     get1.onsuccess = function() {
+//       console.log(get1) // => "John"
+//     }
+//     getJohn.onsuccess = function() {
+//       console.log(getJohn.result.name.first) // => "John"
+//     }
+//
+//     getBob.onsuccess = function() {
+//       console.log(getBob.result.name.first) // => "Bob"
+//     }
+//
+//     // Close the db when the transaction is done
+//     tx.oncomplete = function() {
+//       db.close()
+//     }
+//   }
+//
+//   return networkJson
+// }
 
 const fetchNetwork = url => {
   return {
@@ -41,9 +101,12 @@ const fetchNetwork = url => {
 
 export const RECEIVE_NETWORK = 'RECEIVE_NETWORK'
 const receiveNetwork = (url, json, error) => {
+  const index = generateIndex(json)
+
   return {
     type: RECEIVE_NETWORK,
     url,
+    index,
     network: json,
     error: error
   }
@@ -84,26 +147,19 @@ export const fetchNetworkFromUrl = url => {
   return dispatch => {
     dispatch(fetchNetwork(url))
 
-    return (
-      fetchNet(url)
-        .then(response => {
-          if(!response.ok) {
-            throw Error(response.statusText)
-          } else {
-            return response.json()
-          }
-        })
-        // .then(rawCyjs => (filterEdges(rawCyjs)))
-        // .then(rawCyjs => (filterNodes(rawCyjs)))
-        // .then(rawCyjs => (filterLeafs(rawCyjs)))
-        // .then(json => (layout(json)))
-        .then(json => createLabel2IdMap(json))
-        .then(network => dispatch(receiveNetwork(url, network, null)))
-        .catch(err => {
-          return dispatch(receiveNetwork(url, null, 'Error!'))
-
-        })
-    )
+    return fetchNet(url)
+      .then(response => {
+        if (!response.ok) {
+          throw Error(response.statusText)
+        } else {
+          return response.json()
+        }
+      })
+      .then(json => createLabel2IdMap(json))
+      .then(network => dispatch(receiveNetwork(url, network, null)))
+      .catch(err => {
+        return dispatch(receiveNetwork(url, null, 'Error!'))
+      })
   }
 }
 

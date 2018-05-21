@@ -42,6 +42,8 @@ class SearchBox extends Component {
 
 
   search = (query) => {
+
+
     const options = {
       baseUrl: SEARCH_URL,
       uuid: this.props.datasource.uuid,

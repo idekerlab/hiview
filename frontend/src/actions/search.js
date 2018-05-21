@@ -1,3 +1,5 @@
+import { createAction } from 'redux-actions'
+
 export const SEARCH = 'SEARCH'
 
 const search = (query, options) => {
@@ -10,6 +12,7 @@ const search = (query, options) => {
 
 export const RECEIVE_SEARCH_RESULT = 'RECEIVE_SEARCH_RESULT'
 const receiveSearchResult = (query, json, options) => {
+  console.log('RES!!!!!!!!! ', json)
   return {
     type: RECEIVE_SEARCH_RESULT,
     query,
@@ -69,3 +72,14 @@ export const searchNdex = (query, options) => {
       })
   }
 }
+
+export const SET_SEARCH_RESULT = 'SET_SEARCH_RESULT'
+export const setSearchResult = (query, options, result) => {
+  return {
+    type: SET_SEARCH_RESULT,
+    query,
+    options,
+    result
+  }
+}
+
