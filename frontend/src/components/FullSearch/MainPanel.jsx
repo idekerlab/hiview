@@ -5,33 +5,27 @@ import SearchIcon from 'material-ui-icons/Search'
 import RefreshIcon from 'material-ui-icons/Refresh'
 import Input from 'material-ui/Input'
 
-import SearchPanel from './SearchPanel'
 const SEARCH_URL = 'http://test.ndexbio.org/v2/search/network/'
 
 const baseStyle = {
   width: '100%',
   display: 'flex',
   flexWrap: 'wrap',
-  alignItems: 'center',
-
+  alignItems: 'center'
 }
 
-
-
 class MainPanel extends React.Component {
-
   constructor(props) {
     super(props)
     this.state = {
-      query: '',
+      query: ''
     }
   }
 
-
   handleChange = event => {
     this.setState({
-      query: event.target.value,
-    });
+      query: event.target.value
+    })
   }
 
   handleKey = event => {
@@ -53,81 +47,66 @@ class MainPanel extends React.Component {
     this.props.searchActions.clear()
   }
 
-
-  search = (query) => {
+  search = query => {
     const index = this.props.network.index
 
     const results = index.search(query)
     const ids = results.map(result => result.id)
-    console.log("### Search DONE!: ", results, ids)
 
     const options = {
       baseUrl: SEARCH_URL,
-      uuid: this.props.datasource.uuid,
+      uuid: this.props.datasource.uuid
     }
-
 
     // this.props.searchActions.searchNdex(query, options)
     this.props.searchActions.setSearchResult(query, options, ids)
 
     this.setState({
-      expand: true,
+      expand: true
     })
   }
 
-  handleOpen = (event) => {
+  handleOpen = event => {
     const currentPanelState = this.props.uiState.get('showMainMenu')
     this.props.uiStateActions.showMainMenu(!currentPanelState)
   }
 
-
   render() {
-
-    const { classes } = this.props;
+    const { classes } = this.props
 
     return (
       <div style={baseStyle}>
-
-        <IconButton
-          aria-label="Open main menu"
-          onClick={this.handleOpen}
-        >
-          <MenuIcon/>
+        <IconButton aria-label="Open main menu" onClick={this.handleOpen}>
+          <MenuIcon />
         </IconButton>
 
-
         <Input
-          style={{flexGrow: 5, height: '2em', border: 'none'}}
+          style={{ flexGrow: 5, height: '2em', border: 'none' }}
           placeholder="Enter search term."
           inputProps={{
-            'aria-label': 'Description',
+            'aria-label': 'Description'
           }}
           onChange={this.handleChange}
           onKeyPress={this.handleKey}
         />
 
-
-        <IconButton
-          aria-label="Search nodes"
-          onClick={this.handleStart}
-        >
-          <SearchIcon/>
+        <IconButton aria-label="Search nodes" onClick={this.handleStart}>
+          <SearchIcon />
         </IconButton>
 
-        <div style={{width: '0.1em', height: '2em', borderLeft: '1px solid #aaaaaa'}}/>
-        <IconButton
-          aria-label="Reset"
-          onClick={this.handleReset}
-        >
-          <RefreshIcon/>
+        <div
+          style={{
+            width: '0.1em',
+            height: '2em',
+            borderLeft: '1px solid #aaaaaa'
+          }}
+        />
+        <IconButton aria-label="Reset" onClick={this.handleReset}>
+          <RefreshIcon />
         </IconButton>
-
       </div>
     )
   }
 }
-
-
-
 
 export default MainPanel

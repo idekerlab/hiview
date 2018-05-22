@@ -12,7 +12,6 @@ const search = (query, options) => {
 
 export const RECEIVE_SEARCH_RESULT = 'RECEIVE_SEARCH_RESULT'
 const receiveSearchResult = (query, json, options) => {
-  console.log('RES!!!!!!!!! ', json)
   return {
     type: RECEIVE_SEARCH_RESULT,
     query,
@@ -82,4 +81,3 @@ export const setSearchResult = (query, options, result) => {
     result
   }
 }
-

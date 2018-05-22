@@ -15,7 +15,7 @@ import { Map } from 'immutable'
 const defaultState = Map({
   showMainMenu: false,
   showAppBar: true,
-  showCommands: true,
+  showCommands: false,
   showResult: false,
   showSearchWindow: false,
   showPlotPanel: false,
