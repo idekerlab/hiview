@@ -14,15 +14,19 @@ const ErrorDialog = props => (
     aria-describedby="alert-dialog-description"
   >
     <DialogTitle id="alert-dialog-title">
-      {'Please enter a NDEx UUID'}
+      {props.title}
     </DialogTitle>
     <DialogContent>
       <DialogContentText id="alert-dialog-description">
-        You have to provide a NDEx UUID or select one from the example list.
+        {props.message}
       </DialogContentText>
     </DialogContent>
     <DialogActions>
-      <Button onClick={() => props.openErrorDialogAction(false)} color="primary" autoFocus>
+      <Button
+        onClick={() => props.openErrorDialogAction(false)}
+        color="primary"
+        autoFocus
+      >
         OK
       </Button>
     </DialogActions>

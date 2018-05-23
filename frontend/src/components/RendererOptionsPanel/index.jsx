@@ -192,7 +192,7 @@ class RendererOptionsPanel extends Component {
               <Avatar style={rootColorStyle}></Avatar>
             </ListItemAvatar>
 
-            <ListItemText primary="Root Color" />
+            <ListItemText primary="Root Node Color" />
             <Button
               variant="raised"
               color="default"
@@ -216,7 +216,7 @@ class RendererOptionsPanel extends Component {
               <Avatar style={leafColorStyle}></Avatar>
             </ListItemAvatar>
 
-            <ListItemText primary="Leaf Color" />
+            <ListItemText primary="Leaf Node Color" />
             <Button
               onClick={this.handleColorPickerOpenLeaf}
               variant="raised" color="default">
@@ -337,7 +337,7 @@ class RendererOptionsPanel extends Component {
             <ListItemIcon>
               <TuneIcon />
             </ListItemIcon>
-            <ListItemText primary="Main Hierarchy Viewer Options:" />
+            <ListItemText primary="Main Options:" />
           </ListItem>
 
           <ListItem>

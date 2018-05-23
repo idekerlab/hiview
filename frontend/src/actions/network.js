@@ -7,6 +7,11 @@ export const FETCH_NETWORK = 'FETCH_NETWORK'
 
 const generateIndex = networkJson => {
   console.log(networkJson)
+
+  if (networkJson === null || networkJson === undefined) {
+    throw Error('Network not loaded')
+  }
+
   const nodes = networkJson.elements.nodes
   const nodeData = nodes.map(node => node.data)
 
@@ -101,6 +106,17 @@ const fetchNetwork = url => {
 
 export const RECEIVE_NETWORK = 'RECEIVE_NETWORK'
 const receiveNetwork = (url, json, error) => {
+
+  if(error !== null) {
+    return {
+      type: RECEIVE_NETWORK,
+      url,
+      index: null,
+      network: null,
+      error: error
+    }
+  }
+
   const index = generateIndex(json)
 
   return {
@@ -108,7 +124,7 @@ const receiveNetwork = (url, json, error) => {
     url,
     index,
     network: json,
-    error: error
+    error: null
   }
 }
 
@@ -147,7 +163,7 @@ export const fetchNetworkFromUrl = url => {
   return dispatch => {
     dispatch(fetchNetwork(url))
 
-    return fetchNet(url)
+    return fetch(url)
       .then(response => {
         if (!response.ok) {
           throw Error(response.statusText)
@@ -158,7 +174,8 @@ export const fetchNetworkFromUrl = url => {
       .then(json => createLabel2IdMap(json))
       .then(network => dispatch(receiveNetwork(url, network, null)))
       .catch(err => {
-        return dispatch(receiveNetwork(url, null, 'Error!'))
+        console.log("Fetch Error: ", err)
+        return dispatch(receiveNetwork(url, null, err))
       })
   }
 }

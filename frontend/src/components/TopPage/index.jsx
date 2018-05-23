@@ -59,7 +59,7 @@ const styles = theme => ({
   },
   noDecoration: {
     textDecoration: 'none',
-    color:'inherit'
+    color: 'inherit'
   }
 })
 
