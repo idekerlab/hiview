@@ -80,8 +80,16 @@ const createGroups = netAndFilter => {
           const tagParts = nodePropName.split('_')
           const tag = tagParts[1]+ ':' + tagParts[2]
           const value = nodeData[nodePropName]
+
           if(value) {
-            groupMap[tag].push(nodeData.id)
+            const targetList = groupMap[tag]
+
+            if(targetList === undefined) {
+              // For subsystem without prefix (:)
+              groupMap[tagParts[1]].push(nodeData.id)
+            } else {
+              groupMap[tag].push(nodeData.id)
+            }
 
           }
         }
