@@ -115,6 +115,7 @@ class SearchResult extends Component {
                 aliases={nestedList[parent].children}
                 commandActions={this.props.commandActions}
                 currentPath={this.props.currentPath}
+                uiState={this.props.uiState}
               />
             </Collapse>
           </div>
