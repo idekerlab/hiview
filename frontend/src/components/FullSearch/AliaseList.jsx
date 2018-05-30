@@ -50,9 +50,9 @@ class AliasList extends Component {
               </ListItemAvatar>
 
               {this.getItemText(i, key, aliases[key].Size)}
+              {this.getPathButton(key)}
             </ListItem>
 
-            {this.getPathButton()}
 
             <Collapse component="li" in={true} timeout="auto" unmountOnExit>
               <PathList
@@ -78,7 +78,7 @@ class AliasList extends Component {
     )
   }
 
-  getPathButton = () => {
+  getPathButton = (key) => {
     if (!this.props.uiState.get('changeViewer')) {
       return <div />
     }
