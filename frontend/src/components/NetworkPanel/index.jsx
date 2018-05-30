@@ -115,9 +115,6 @@ class NetworkPanel extends Component {
 
   // Callback
   commandFinished = (lastCommand, result = {}) => {
-    console.log('Custom command handler: Command Finished: ' + lastCommand)
-    console.log(result)
-
     if (lastCommand === 'findPath') {
       const path = result
 
@@ -310,22 +307,15 @@ class NetworkPanel extends Component {
     if (this.props.uiState.get('changeViewer')) {
       return (
         <div style={{ width: '100%', height: this.props.height }}>
-          <ContextMenuTrigger id="networkContextMenu">
-            <Viewer
-              key="mainView"
-              network={networkData}
-              networkType={'cyjs'}
-              style={networkAreaStyle}
-              // networkStyle={style}
-              eventHandlers={this.getCustomEventHandlers()}
-              command={commands}
-              rendererOptions={rendOpts}
-            />
-          </ContextMenuTrigger>
-
-          <NetworkContextMenu
-            hoverNode={this.state.hoverNode}
-            commandActions={this.props.commandActions}
+          <Viewer
+            key="mainView"
+            network={networkData}
+            networkType={'cyjs'}
+            style={networkAreaStyle}
+            // networkStyle={style}
+            eventHandlers={this.getCustomEventHandlers()}
+            command={commands}
+            rendererOptions={rendOpts}
           />
         </div>
       )
