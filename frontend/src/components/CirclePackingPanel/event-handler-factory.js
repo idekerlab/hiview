@@ -62,7 +62,7 @@ class EventHandlerFactory {
       return
     }
 
-    console.log(data)
+    console.log('Hover:, ', data)
     const name = data.props.name.split('.')[0]
 
     const groups = this.props.groups

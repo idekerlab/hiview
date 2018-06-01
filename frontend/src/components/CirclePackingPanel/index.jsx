@@ -139,7 +139,9 @@ class CirclePackingPanel extends Component {
 
     }
 
-    const hoverOnNode = (id, data) => {
+    const hoverOnNode = (id, data, parent) => {
+
+      console.log('Hover nodes called:', id, data, parent)
 
       this.props.selectionActions.enterNode(data)
 
@@ -151,19 +153,24 @@ class CirclePackingPanel extends Component {
         return
       }
 
-      if(data.NodeType === 'Gene') {
-        console.log([id])
-        this.setState({
-          hover: id,
-          hoverNodes: [id]
-        })
-
-        this.props.interactionsCommandActions.selectNodes({
-          idList: [id],
-          selectedColor: 'red'
-        })
-
-      }
+      // if(data.NodeType === 'Gene') {
+      //
+      //   // If the circle is a gene, need a special handler
+      //
+      //   const parentNodeId = data.parent
+      //   console.log('Parent: ', parentNodeId)
+      //
+      //   this.setState({
+      //     hover: id,
+      //     hoverNodes: []
+      //   })
+      //
+      //   this.props.interactionsCommandActions.selectNodes({
+      //     idList: [id],
+      //     selectedColor: 'red'
+      //   })
+      //
+      // }
 
       const name = data.props.name.split('.')[0]
       const groups = this.props.groups
@@ -171,6 +178,7 @@ class CirclePackingPanel extends Component {
         return
       }
 
+      console.log('Groups: ', groups)
       const geneIds = groups[name]
 
       if (geneIds === null || geneIds === undefined) {

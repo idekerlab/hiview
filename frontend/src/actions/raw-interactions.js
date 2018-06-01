@@ -69,11 +69,16 @@ const createGroups = netAndFilter => {
       groupMap[group] = []
     })
 
+    // Special case: genes
+    groupMap['genes'] = []
+
     const nodes = network.elements.nodes
 
     nodes.forEach(node => {
       const nodeData = node.data
       const nodePropNames = Object.keys(nodeData)
+
+      let geneFlag = false
 
       nodePropNames.forEach(nodePropName => {
         if(nodePropName.startsWith('Group')) {
@@ -82,9 +87,12 @@ const createGroups = netAndFilter => {
           const value = nodeData[nodePropName]
 
           if(value) {
+
+            geneFlag = true
+
             const targetList = groupMap[tag]
 
-            if(targetList === undefined) {
+            if (targetList === undefined) {
               // For subsystem without prefix (:)
               groupMap[tagParts[1]].push(nodeData.id)
             } else {
@@ -94,6 +102,12 @@ const createGroups = netAndFilter => {
           }
         }
       })
+
+      if(!geneFlag) {
+        groupMap[nodeData.name] = [nodeData.id]
+      }
+
+
     })
     netAndFilter.push(groupMap)
 
