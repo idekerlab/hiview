@@ -96,6 +96,7 @@ class CirclePackingPanel extends Component {
       }
     }
 
+
     const hoverOutNode = (id, data) => {
       // Case 1: No permanent selection
       if (this.state.hoverNodes === null) {
@@ -198,6 +199,7 @@ class CirclePackingPanel extends Component {
           <div />
         ) : (
           <TreeViewer
+            command={this.props.command}
             selected={this.props.search.result}
             tree={this.state.tree}
             eventHandlers={this.getEventHandlers()}

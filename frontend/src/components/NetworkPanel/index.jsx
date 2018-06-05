@@ -324,6 +324,7 @@ class NetworkPanel extends Component {
         <div style={{ width: '100%', height: this.props.height }}>
           <CirclePackingPanel
             {...this.props}
+            command={commands}
             network={networkData}
             groups={this.props.rawInteractions.get('groups')}
             style={circleAreaStyle}
