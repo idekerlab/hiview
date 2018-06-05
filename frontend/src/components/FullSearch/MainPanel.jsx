@@ -46,7 +46,7 @@ class MainPanel extends React.Component {
   handleReset = event => {
     this.props.searchActions.clear()
     this.props.commandActions.reset()
-    this.props.commandActions.fit()
+    // this.props.commandActions.fit()
   }
 
   search = query => {

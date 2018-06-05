@@ -45,11 +45,11 @@ class AliasList extends Component {
             <ListItem>
               <ListItemAvatar>
                 <Avatar>
-                  <PlaceIcon />
+                  <PlaceIcon color={aliases[key].Original_Name ? 'inherit': 'primary'}/>
                 </Avatar>
               </ListItemAvatar>
 
-              {this.getItemText(i, key, aliases[key].Size)}
+              {this.getItemText(i, key, aliases[key].Original_Name)}
               {this.getPathButton(key)}
             </ListItem>
 
@@ -66,10 +66,15 @@ class AliasList extends Component {
     )
   }
 
-  getItemText = (i, key, size) => {
+  getItemText = (i, key, originalName) => {
     if (!this.props.uiState.get('changeViewer')) {
+
+      let primary = '(primary instance)'
+      if(originalName !== undefined) {
+        primary = ''
+      }
       return (
-        <ListItemText primary={'Instance ' + (i + 1) + ' (Size: ' + size +')'} secondary={'Node ID: ' + key} />
+        <ListItemText primary={'Instance ' + (i + 1) + ' ' + primary } secondary={'Node ID: ' + key} />
       )
     }
 

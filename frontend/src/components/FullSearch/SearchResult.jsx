@@ -83,16 +83,6 @@ class SearchResult extends Component {
         {parents.map((parent, i) => (
           <div key={'parent-' + i}>
             <ListItem>
-              <ListItemIcon
-                onClick={e =>
-                  this.handleClick(
-                    nestedList[parent].props.id,
-                    this.props.rootId
-                  )
-                }
-              >
-                <OpenIcon />
-              </ListItemIcon>
               <ListItemText
                 primary={nestedList[parent].props.Label}
                 secondary={nestedList[parent].props.NodeType}
