@@ -10,6 +10,8 @@ import FullSearch from '../FullSearch'
 import SplitPane from 'react-split-pane'
 
 import Overlay from '../Overlay'
+import MessageBox from '../MessageBox'
+
 import BottomPanel from '../BottomPanel'
 
 const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
@@ -96,6 +98,8 @@ export default class MainPanel extends Component {
           datasource={this.props.datasource}
           cxtoolUrl={CXTOOL_URL}
           selection={selection} />
+
+        <MessageBox/>
 
         <MainMenuPanel
           uiState={uiState}
