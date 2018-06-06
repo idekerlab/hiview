@@ -136,7 +136,13 @@ class NetworkPanel extends Component {
   }
 
   hoverOnNode = (nodeId, nodeProps) => {
+    this.props.selectionActions.enterNode(nodeProps)
     this.setState({ hoverNode: nodeProps })
+  }
+
+  hoverOutNode = (nodeId, nodeProps) => {
+    this.props.selectionActions.leaveNode()
+    this.setState({ hoverNode: null })
   }
 
   // Then use it as a custom handler
@@ -144,7 +150,8 @@ class NetworkPanel extends Component {
     selectNodes: this.selectNodes,
     selectEdges: this.selectEdges,
     commandFinished: this.commandFinished,
-    hoverOnNode: this.hoverOnNode
+    hoverOnNode: this.hoverOnNode,
+    hoverOutNode: this.hoverOutNode
   })
 
   handleBack = () => {

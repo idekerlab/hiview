@@ -15,8 +15,8 @@ const style = {
 
 const titleStyle = {
   fontWeight: 500,
-  fontSize: '1.5em',
-  lineHeight: '1.6em'
+  fontSize: '1.2em',
+  lineHeight: '1.3em'
 }
 
 const textStyle = {
@@ -28,9 +28,28 @@ const textStyle = {
 const DEF_TITLE = '(No hierarchy data yet)'
 
 const MessageBox = props => {
+
+  const isCirclePacking = props.uiState.get('changeViewer')
+
+  if(!isCirclePacking) {
+    return (<div/>)
+  }
+
+  const selection = props.selection.get('enter')
+  if(selection === undefined) {
+    return <div/>
+  }
+
+  let originalName = selection.Original_Name
+  if(originalName === undefined) {
+    originalName = 'Left-click on node to show its other instances and the supporting interaction data'
+  } else {
+    originalName = 'Left-click on node to show its main instance (blue edge) and other instances (red edge)'
+  }
+
   return (
     <div style={style}>
-      <div style={titleStyle}>Message</div>
+      <div style={titleStyle}>{originalName}</div>
     </div>
   )
 }

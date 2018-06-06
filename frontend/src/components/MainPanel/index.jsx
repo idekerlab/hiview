@@ -99,7 +99,9 @@ export default class MainPanel extends Component {
           cxtoolUrl={CXTOOL_URL}
           selection={selection} />
 
-        <MessageBox/>
+        <MessageBox
+          uiState={uiState}
+          selection={selection} />
 
         <MainMenuPanel
           uiState={uiState}
