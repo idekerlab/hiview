@@ -79,8 +79,9 @@ export const createStyle = originalNetwork => {
   }
 
   const networkData = interactions.data
-  const primaryEdgeType = networkData[MAIN_INTERACTION_TYPE_TAG]
+  let primaryEdgeType = networkData[MAIN_INTERACTION_TYPE_TAG]
 
+  console.log('************** PE Type: ', primaryEdgeType, interactions)
   // This is the generator for custom styling
   const similarityMin = networkData[`${primaryEdgeType} ${ATTR_TYPES.MIN}`]
   const similarityMax = networkData[`${primaryEdgeType} ${ATTR_TYPES.MAX}`]
@@ -92,21 +93,24 @@ export const createStyle = originalNetwork => {
     similarityMax,
   ])
 
+  // Need to remove space due to current cxtool limitation
+  primaryEdgeType = primaryEdgeType.replace(/ /g, '_')
+
   const edgeStyle = BASE_STYLE.edge
 
-  edgeStyle.css['width'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.5, 4)`
+  edgeStyle.css['width'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 4)`
   edgeStyle.css['line-color'] = (d) => {
-    if (d.data('RF_score') === undefined) {
+    if (d.data(primaryEdgeType) === undefined) {
       return '#aaaaaa'
     } else {
-      return colorScale(d.data('RF_score'))
+      return colorScale(d.data(primaryEdgeType))
     }
   }
 
-  edgeStyle.css['opacity'] = `mapData(RF_score,${similarityMin},${similarityMax}, 0.2, 0.95)`
+  edgeStyle.css['opacity'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.2, 0.95)`
   edgeStyle.css['display'] = (d) => {
 
-    if (d.data('RF_score') === undefined) {
+    if (d.data(primaryEdgeType) === undefined) {
       return 'none'
     }
     return 'element'

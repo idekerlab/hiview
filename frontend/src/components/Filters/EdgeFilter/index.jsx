@@ -115,6 +115,7 @@ class EdgeFilter extends Component {
     const filterType = filter.type;
 
     if (filterType === FILTER_TYPES.CONTINUOUS) {
+      console.log("FILTER: ", filter)
       return (
         <ContinuousFilter
           key={filter.attributeName}

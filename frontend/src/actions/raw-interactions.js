@@ -132,6 +132,10 @@ const compareBy = fieldName => (a, b) => {
 
 const sortEdges = (network, maxEdgeCount) => {
 
+  let mainEdgeType = network.data[MAIN_EDGE_TAG]
+  if(mainEdgeType !== undefined) {
+    mainEdgeType = mainEdgeType.replace(/ /g, '_')
+  }
   const nodes = network.elements.nodes
   const edges = network.elements.edges
 
@@ -140,7 +144,9 @@ const sortEdges = (network, maxEdgeCount) => {
     return network
   }
 
-  edges.sort(compareBy('RF_score'))
+
+  edges.sort(compareBy(mainEdgeType))
+  // edges.sort(compareBy('RF_score'))
 
   const subset = edges.slice(0,maxEdgeCount)
   const subsetLen = subset.length
@@ -188,8 +194,12 @@ const createFilter = network => {
 
     const keyParts = key.split(' ')
     const suffix = keyParts[keyParts.length - 1]
-    const realKey = key.replace(suffix, '').trim()
+
+    let realKey = key.replace(suffix, '').trim()
+
     const edgeTypeName = realKey.replace(PATTERN, '_')
+    console.log("ETName ORG = ", key,suffix,realKey, edgeTypeName)
+
     const currentValue = edgeTypes[edgeTypeName]
     if (currentValue === undefined) {
       const newEntry = {}
@@ -202,7 +212,11 @@ const createFilter = network => {
   }
 
 
+  console.log("ALL ET = ", edgeTypes, network.data)
+
   for (let [key, value] of Object.entries(edgeTypes)) {
+    console.log('ET===> ', value)
+
     if (value.type === 'numeric') {
       const isPrimary = (mainEdgeType === key)
 
