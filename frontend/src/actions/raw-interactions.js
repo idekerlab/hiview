@@ -194,11 +194,8 @@ const createFilter = network => {
 
     const keyParts = key.split(' ')
     const suffix = keyParts[keyParts.length - 1]
-
-    let realKey = key.replace(suffix, '').trim()
-
+    let realKey = keyParts.slice(0, keyParts.length-1).join('_')
     const edgeTypeName = realKey.replace(PATTERN, '_')
-    console.log("ETName ORG = ", key,suffix,realKey, edgeTypeName)
 
     const currentValue = edgeTypes[edgeTypeName]
     if (currentValue === undefined) {
@@ -211,11 +208,7 @@ const createFilter = network => {
     }
   }
 
-
-  console.log("ALL ET = ", edgeTypes, network.data)
-
   for (let [key, value] of Object.entries(edgeTypes)) {
-    console.log('ET===> ', value)
 
     if (value.type === 'numeric') {
       const isPrimary = (mainEdgeType === key)
