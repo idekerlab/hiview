@@ -30,6 +30,7 @@ class CirclePackingPanel extends Component {
       return
     }
 
+
     const name = data.props.name.split('.')[0]
     const geneIds = groups[name]
 
@@ -43,17 +44,18 @@ class CirclePackingPanel extends Component {
 
     geneIds.forEach(gene => this.state.selectedGenes.add(gene))
 
-    window.setTimeout(() => {
-      actions.selectNodes({
-        idList: [...this.state.selectedGenes],
-        selectedColor: 'green'
-      })
-    }, 0)
+    // window.setTimeout(() => {
+    //   actions.selectNodes({
+    //     idList: [...this.state.selectedGenes],
+    //     selectedColor: 'green'
+    //   })
+    // }, 0)
   }
 
   getEventHandlers = () => {
     const selectNode = (id, data, zoom) => {
 
+      console.log("000000000000000000SG called-=----------------------------------")
 
       const wrappedData = {
         props: data
@@ -72,6 +74,7 @@ class CirclePackingPanel extends Component {
 
         this.props.selectPrimaryNode([id], { [id]: wrappedData })
       } else {
+        console.log("SG called-=----------------------------------")
         this.selectGroups(
           id,
           wrappedData,
@@ -134,9 +137,9 @@ class CirclePackingPanel extends Component {
       // }, 0)
     }
 
-    const selectNodes = (id, data) => {
+    const selectNodes = (nodeIds, properties) => {
 
-      console.log('$$$ New! Select nodes called:', data)
+      console.log('$$$ Multiple Select nodes called:', nodeIds, properties)
 
     }
 

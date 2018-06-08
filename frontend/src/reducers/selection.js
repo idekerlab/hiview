@@ -1,9 +1,17 @@
 import { handleActions } from 'redux-actions'
 import { Map } from 'immutable'
-import {ENTER_NODE, LEAVE_NODE, SELECT_NODE, DESELECT_NODE} from '../actions/selection'
+import {
+  ENTER_NODE,
+  LEAVE_NODE,
+  SELECT_NODE,
+  DESELECT_NODE,
+  DESELECT_ALL_NODES,
+  SELECT_NODES
+} from '../actions/selection'
 
 const defaultState = Map({
-  enter: undefined
+  enter: undefined,
+  multiple: []
 })
 
 export default handleActions(
@@ -31,7 +39,17 @@ export default handleActions(
 
     [LEAVE_NODE]: (state, action) => {
       return state.set('enter', undefined)
-    }
+    },
+
+    [SELECT_NODES]: (state, action) => {
+      const nodeIds = action.payload
+      console.log('List Model Update!!: ', action.payload)
+      return state.set('multiple', nodeIds)
+    },
+
+    [DESELECT_ALL_NODES]: (state, action) =>
+      // Multiple selection is empty
+      state.set('multiple', [])
   },
   defaultState
 )
