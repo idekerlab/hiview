@@ -11,7 +11,7 @@ class CirclePackingPanel extends Component {
     hover: null,
     hoverNodes: null,
     selectedGroups: Set(),
-    selectedGenes: Set()
+    selectedGenes: []
   }
 
   componentDidMount() {
@@ -29,7 +29,6 @@ class CirclePackingPanel extends Component {
     if (data.props.name === undefined) {
       return
     }
-
 
     const name = data.props.name.split('.')[0]
     const geneIds = groups[name]
@@ -54,8 +53,9 @@ class CirclePackingPanel extends Component {
 
   getEventHandlers = () => {
     const selectNode = (id, data, zoom) => {
-
-      console.log("000000000000000000SG called-=----------------------------------")
+      console.log(
+        '000000000000000000SG called-=----------------------------------'
+      )
 
       const wrappedData = {
         props: data
@@ -74,7 +74,7 @@ class CirclePackingPanel extends Component {
 
         this.props.selectPrimaryNode([id], { [id]: wrappedData })
       } else {
-        console.log("SG called-=----------------------------------")
+        console.log('SG called-=----------------------------------')
         this.selectGroups(
           id,
           wrappedData,
@@ -99,31 +99,85 @@ class CirclePackingPanel extends Component {
       }
     }
 
+    const getName = (id, data) => {
+      if (data === null || data === undefined) {
+        return null
+      }
+
+      let name = data.Original_Name
+      if (name === undefined) {
+        name = data.name
+      }
+
+      return name
+    }
+
+    const getGeneIds = name => {
+      const groups = this.props.groups
+      if (groups === undefined) {
+        return
+      }
+
+      return groups[name]
+    }
 
     const hoverOutNode = (id, data) => {
-      // Case 1: No permanent selection
-      if (this.state.hoverNodes === null) {
+      const name = getName(id, data)
+      if (name === null) {
+        return
+      }
+
+      const geneIds = getGeneIds(name)
+      if (geneIds === null || geneIds === undefined) {
+        return
+      }
+
+      const subSelectionSet = this.props.selection.get('subSelection')
+
+      // 1. No sub selection
+      if(subSelectionSet.size === 0) {
+        this.props.interactionsCommandActions.unselectNodes({
+          idList: geneIds
+        })
+        return
+      }
+
+      if (subSelectionSet.has(name)) {
+        this.props.interactionsCommandActions.selectNodes({
+          idList: this.state.selectedGenes,
+          selectedColor: 'green'
+        })
         return
       }
 
       // Case 2: Hover, but no permanent selection
-      if (this.state.selectedGenes.size === 0) {
-        this.props.interactionsCommandActions.unselectNodes({
-          idList: this.state.hoverNodes
-        })
+      this.props.interactionsCommandActions.unselectNodes({
+        idList: geneIds
+      })
 
-        this.setState({
-          hover: null,
-          hoverNodes: null
+      if (subSelectionSet.size !== 0) {
+        this.props.interactionsCommandActions.selectNodes({
+          idList: this.state.selectedGenes,
+          selectedColor: 'green'
         })
-
-        return
       }
 
-      // Case 3: permanent selection is not empty
+      // // Case 3: permanent selection is not empty
+      // this.props.interactionsCommandActions.unselectNodes({
+      //   idList: this.state.hoverNodes
+      // })
+      // this.setState({
+      //   hover: null,
+      //   hoverNodes: null
+      // })
+      //
+      // this.props.interactionsCommandActions.selectNodes({
+      //   idList: this.state.selectedGenes,
+      //   color: 'red'
+      // })
 
-      const hoverSelectionSet = Set(this.state.hoverNodes)
-      const permanentSelectionSet = this.state.selectedGenes
+      // const hoverSelectionSet = Set(this.state.hoverNodes)
+      // const permanentSelectionSet = this.state.selectedGenes
 
       // this.props.interactionsCommandActions.unselectNodes({
       //   idList: this.state.hoverNodes
@@ -137,16 +191,57 @@ class CirclePackingPanel extends Component {
       // }, 0)
     }
 
-    const selectNodes = (nodeIds, properties) => {
+    const selectNodes = (nodeId, data) => {
+      const subSelectionSet = this.props.selection.get('subSelection')
 
-      console.log('$$$ Multiple Select nodes called:', nodeIds, properties)
+      let name = data.Original_Name
+      if (name === undefined) {
+        name = data.name
+      }
 
+      const groups = this.props.groups
+      if (groups === undefined) {
+        return
+      }
+
+      let selectedSubsystems = null
+
+      if (subSelectionSet.has(name)) {
+        this.props.selectionActions.deselectSubNode(name)
+        selectedSubsystems = subSelectionSet.delete(name)
+        if(selectedSubsystems.size === 0) {
+          this.props.interactionsCommandActions.unselectNodes({
+            idList: groups[name]
+          })
+          return
+        }
+      } else {
+        this.props.selectionActions.selectSubNode(name)
+        selectedSubsystems = subSelectionSet.add(name)
+      }
+
+      const geneIds = []
+
+      selectedSubsystems.forEach(subsystemName => {
+        const genes = groups[subsystemName]
+        genes.forEach(gene => {
+          geneIds.push(gene.toString())
+        })
+      })
+
+      const geneSet = new Set(geneIds)
+      const idList = [...geneSet]
+
+      this.setState({ selectedGenes: idList })
+
+      this.props.interactionsCommandActions.selectNodes({
+        idList,
+        selectedColor: 'green'
+      })
     }
 
     const hoverOnNode = (id, data, parent) => {
-
-      this.props.selectionActions.enterNode(data)
-
+      // Check invalid parameter.  Name is always required
       if (
         data === null ||
         data.props === null ||
@@ -155,10 +250,17 @@ class CirclePackingPanel extends Component {
         return
       }
 
-      const name = data.props.name.split('.')[0]
       const groups = this.props.groups
       if (groups === undefined) {
         return
+      }
+
+      // Set selected state
+      this.props.selectionActions.enterNode(data)
+
+      let name = data.props.Original_Name
+      if (name === undefined) {
+        name = data.props.name
       }
 
       const geneIds = groups[name]
@@ -167,19 +269,9 @@ class CirclePackingPanel extends Component {
         return
       }
 
-      if (this.state.selectedGroups.has(id)) {
-        return
-      }
-
-
       this.props.interactionsCommandActions.selectNodes({
         idList: geneIds,
         selectedColor: 'red'
-      })
-
-      this.setState({
-        hover: id,
-        hoverNodes: geneIds
       })
     }
 
