@@ -222,6 +222,10 @@ class NetworkPanel extends Component {
       return true
     }
 
+    if(this.props.selection !== nextProps.selection) {
+      return true
+    }
+
     if (
       this.props.uiState.get('changeViewer') !==
       nextProps.uiState.get('changeViewer')
@@ -331,6 +335,7 @@ class NetworkPanel extends Component {
         <div style={{ width: '100%', height: this.props.height }}>
           <CirclePackingPanel
             {...this.props}
+            selection={this.props.selection}
             command={commands}
             network={networkData}
             groups={this.props.rawInteractions.get('groups')}

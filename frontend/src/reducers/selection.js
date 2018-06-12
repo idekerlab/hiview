@@ -1,17 +1,18 @@
 import { handleActions } from 'redux-actions'
-import { Map } from 'immutable'
+import { Map, Set } from 'immutable'
 import {
   ENTER_NODE,
   LEAVE_NODE,
   SELECT_NODE,
   DESELECT_NODE,
-  DESELECT_ALL_NODES,
-  SELECT_NODES
+  DESELECT_ALL_SUB_NODES,
+  SELECT_SUB_NODE,
+  DESELECT_SUB_NODE
 } from '../actions/selection'
 
 const defaultState = Map({
   enter: undefined,
-  multiple: []
+  subSelection: Set()
 })
 
 export default handleActions(
@@ -41,15 +42,23 @@ export default handleActions(
       return state.set('enter', undefined)
     },
 
-    [SELECT_NODES]: (state, action) => {
-      const nodeIds = action.payload
-      console.log('List Model Update!!: ', action.payload)
-      return state.set('multiple', nodeIds)
+    [SELECT_SUB_NODE]: (state, action) => {
+      const nodeId = action.payload
+      const currentSelection = state.get('subSelection')
+      const newSet = currentSelection.add(nodeId)
+      return state.set('subSelection', newSet)
     },
 
-    [DESELECT_ALL_NODES]: (state, action) =>
+    [DESELECT_SUB_NODE]: (state, action) => {
+      const nodeId = action.payload
+      const currentSelection = state.get('subSelection')
+      const newSet = currentSelection.delete(nodeId)
+      return state.set('subSelection', newSet)
+    },
+
+    [DESELECT_ALL_SUB_NODES]: (state, action) =>
       // Multiple selection is empty
-      state.set('multiple', [])
+      state.set('subSelection', Set())
   },
   defaultState
 )
