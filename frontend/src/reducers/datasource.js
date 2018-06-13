@@ -11,7 +11,8 @@ export default handleActions(
     ADD_DATA_SOURCE: (state, action) =>
       state
         .set('uuid', action.payload.uuid)
-        .set('serverUrl', action.payload.serverUrl),
+        .set('serverUrl', action.payload.serverUrl)
+        .set('serverType', action.payload.serverType),
     REMOVE_DATA_SOURCE: (state, action) => defaultState
   },
   defaultState

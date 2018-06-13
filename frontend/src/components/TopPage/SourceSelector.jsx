@@ -42,9 +42,12 @@ class SourceSelector extends Component {
     super(props)
 
     const defUrl = props.dataSource.get('serverUrl')
+    const defType = this.getServerType(defUrl)
+
     this.state = {
       uuid: '',
       serverUrl: defUrl,
+      serverType: defType,
       example: EXAMPLE_UUIDS['DNA Repair'],
       openError: false,
       openWarning: false,
@@ -84,9 +87,25 @@ class SourceSelector extends Component {
   }
 
   handleUrlChange = event => {
+    const url = event.target.value
+    const type = this.getServerType(url)
+
     this.setState({
-      serverUrl: event.target.value
+      serverUrl: event.target.value,
+      serverType: type
     })
+  }
+
+  getServerType = url => {
+    const parts = url.split('/')
+    const address = parts[parts.length - 1]
+    const type = address.split('.')[0]
+
+    if(!type) {
+      throw Error('Invalid URL')
+    }
+
+    return type
   }
 
   handleExampleChange = (event, idx) => {

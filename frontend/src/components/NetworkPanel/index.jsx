@@ -92,7 +92,8 @@ class NetworkPanel extends Component {
 
     const linkId = linkEntry.split('(')[1].replace(')', '')
 
-    const link = this.props.cxtoolUrl + linkId + '?server=test'
+    const serverType = this.props.datasource.get('serverType')
+    const link = this.props.cxtoolUrl + linkId + '?server=' + serverType
     window.setTimeout(() => {
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
@@ -162,7 +163,9 @@ class NetworkPanel extends Component {
   componentWillMount() {
     // const url = this.props.trees[this.props.currentNetwork.id].url
     const uuid = this.props.datasource.get('uuid')
-    const url = this.props.cxtoolUrl + uuid + '?server=test'
+    const serverType = this.props.datasource.get('serverType')
+
+    const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
 
     this.setState({ networkUrl: url })
     this.props.networkActions.fetchNetworkFromUrl(url)
@@ -170,9 +173,11 @@ class NetworkPanel extends Component {
 
   componentWillReceiveProps(nextProps) {
     const uuid = this.props.datasource.get('uuid')
+    const serverType = this.props.datasource.get('serverType')
+
     const nextUuid = nextProps.datasource.get('uuid')
 
-    const url = this.props.cxtoolUrl + uuid + '?server=test'
+    const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
     const network = this.props.network.get(url)
 
     const search = this.props.search

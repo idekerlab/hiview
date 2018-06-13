@@ -137,7 +137,8 @@ class TermDetailsPanel extends Component {
     }
 
     const uuid = this.props.datasource.get('uuid')
-    const url = this.props.cxtoolUrl + uuid + '?server=test'
+    const serverType = this.props.datasource.get('serverType')
+    const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
     const network = this.props.network.get(url)
 
     let networkData = {}

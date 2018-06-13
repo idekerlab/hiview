@@ -36,9 +36,11 @@ const Overlay = props => {
   const datasource = props.datasource
   if (datasource !== undefined) {
     const uuid = datasource.get('uuid')
+    const serverType = datasource.get('serverType')
+
     link = datasource.get('serverUrl') + '/#/network/' + uuid
 
-    const url = props.cxtoolUrl + uuid + '?server=test'
+    const url = props.cxtoolUrl + uuid + '?server=' + serverType
     const networkProp = props.network
     const networkData = networkProp.get(url)
 

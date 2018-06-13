@@ -160,6 +160,9 @@ const filterNodes = network => {
 }
 
 export const fetchNetworkFromUrl = url => {
+
+
+  console.log('NET URL: ', url)
   return dispatch => {
     dispatch(fetchNetwork(url))
 
