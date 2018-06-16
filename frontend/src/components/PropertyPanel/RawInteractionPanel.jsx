@@ -27,8 +27,6 @@ class RawInteractionPanel extends Component {
     }
 
     if(newNetwork === null || newNetwork === undefined) {
-
-      console.log("&& Null net: ", nextProps)
       return
     }
 
@@ -79,7 +77,6 @@ class RawInteractionPanel extends Component {
     const visualStyle = this.props.networkStyle
 
     if (newNet === null || newNet === undefined || visualStyle === null) {
-      console.log('NULL Interaction!!!!!!!!!!')
       return <div />
 
     }
@@ -156,7 +153,7 @@ class RawInteractionPanel extends Component {
   // Then use it as a custom handler
   getCustomEventHandlers = () => ({
     selectNodes: this.selectNodes,
-    selectEdges: this.selectEdges,
+    // selectEdges: this.selectEdges,
     commandFinished: this.commandFinished
   })
 }

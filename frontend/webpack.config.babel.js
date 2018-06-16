@@ -66,7 +66,7 @@ export default () => ({
         ]
       },
       {
-        test: /\.(png|jpg|jpeg|svg)$/,
+        test: /\.(png|jpg|jpeg)$/,
         exclude: /node_modules/,
         use: [
           { loader: 'url-loader' }

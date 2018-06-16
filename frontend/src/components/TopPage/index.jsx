@@ -11,6 +11,7 @@ import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
 
 import SvgIcon from 'material-ui/SvgIcon'
+import HelpIcon from 'material-ui-icons/HelpOutline'
 
 import IconButton from 'material-ui/IconButton'
 import GitHubIcon from '../../assets/images/github-white.svg'
@@ -34,6 +35,7 @@ const styles = theme => ({
   bar: {
     background: '#333333'
   },
+  toolbar: {},
   footer: {
     position: 'fixed',
     bottom: 0,
@@ -60,10 +62,22 @@ const styles = theme => ({
   noDecoration: {
     textDecoration: 'none',
     color: 'inherit'
+  },
+  logo: {
+    width: '2em',
+    height: '2em'
+  },
+  barButtons: {
+    position: 'fixed',
+    right: '1em'
   }
 })
 
 const version = '1.0'
+
+const handleClickGh = () => {
+  window.open('https://github.com/idekerlab/hiview')
+}
 
 const TopPage = props => {
   const { classes } = props
@@ -71,10 +85,20 @@ const TopPage = props => {
   return (
     <div className={classes.container}>
       <AppBar position="fixed" className={classes.bar}>
-        <Toolbar>
-          <Typography variant="title" color="inherit">
-            HiView v{version} &beta;
+        <Toolbar className={classes.toolBar}>
+          <Typography variant="display1" color="inherit">
+            HiView {version}
           </Typography>
+
+
+          <div className={classes.barButtons}>
+            <IconButton onClick={handleClickGh}>
+              <HelpIcon style={{color: 'white', width: '2em', height: '2em'}}/>
+            </IconButton>
+            <IconButton onClick={handleClickGh}>
+              <img src={GitHubIcon} className={classes.logo} />
+            </IconButton>
+          </div>
         </Toolbar>
       </AppBar>
 

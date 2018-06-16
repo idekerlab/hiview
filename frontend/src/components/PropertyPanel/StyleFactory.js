@@ -40,8 +40,9 @@ const BASE_STYLE = {
       width: 4,
       'line-color': '#555555',
       opacity: 1,
-      'curve-style': 'bezier',
-      // 'edge-distances': 'node-position',
+      "curve-style": "bezier",
+      "control-point-step-size": 45
+      // 'haystack-radius': '0.8'
     },
   },
   edgeSelected: {

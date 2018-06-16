@@ -53,9 +53,6 @@ class CirclePackingPanel extends Component {
 
   getEventHandlers = () => {
     const selectNode = (id, data, zoom) => {
-      console.log(
-        '000000000000000000SG called-=----------------------------------'
-      )
 
       const wrappedData = {
         props: data
@@ -74,7 +71,6 @@ class CirclePackingPanel extends Component {
 
         this.props.selectPrimaryNode([id], { [id]: wrappedData })
       } else {
-        console.log('SG called-=----------------------------------')
         this.selectGroups(
           id,
           wrappedData,
