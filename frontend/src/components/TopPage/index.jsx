@@ -79,6 +79,10 @@ const handleClickGh = () => {
   window.open('https://github.com/idekerlab/hiview')
 }
 
+const handleClickHelp = () => {
+  window.open('https://github.com/idekerlab/hiview/blob/master/README.md')
+}
+
 const TopPage = props => {
   const { classes } = props
 
@@ -92,7 +96,7 @@ const TopPage = props => {
 
 
           <div className={classes.barButtons}>
-            <IconButton onClick={handleClickGh}>
+            <IconButton onClick={handleClickHelp}>
               <HelpIcon style={{color: 'white', width: '2em', height: '2em'}}/>
             </IconButton>
             <IconButton onClick={handleClickGh}>
