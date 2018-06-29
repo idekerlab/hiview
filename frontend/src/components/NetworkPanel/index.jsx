@@ -90,7 +90,16 @@ class NetworkPanel extends Component {
       return
     }
 
-    const linkId = linkEntry.split('(')[1].replace(')', '')
+    const linkParts = linkEntry.split(']')
+    if(linkParts.length !== 2) {
+      console.error('Invalid LINK entry.  Check format of the link.')
+      return
+    }
+    const uuidWithExtraStr = linkParts[1]
+    const linkId = uuidWithExtraStr.replace(')', '').replace('(', '')
+
+    // const linkId = linkEntry.split('(')[1].replace(')', '')
+
 
     const serverType = this.props.datasource.get('serverType')
     const link = this.props.cxtoolUrl + linkId + '?server=' + serverType

@@ -94,7 +94,10 @@ const createGroups = netAndFilter => {
 
             if (targetList === undefined) {
               // For subsystem without prefix (:)
-              groupMap[tagParts[1]].push(nodeData.id)
+              const entry = groupMap[tagParts[1]]
+              if(entry !== undefined) {
+                entry.push(nodeData.id)
+              }
             } else {
               groupMap[tag].push(nodeData.id)
             }
