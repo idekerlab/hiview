@@ -117,9 +117,23 @@ export const createStyle = originalNetwork => {
     return 'element'
   }
 
+
+  // Define edge selection style
+  const edgeSelectedStyle = BASE_STYLE.edgeSelected
+
+  edgeSelectedStyle.css['label'] = d => {
+    const primaryScore = d.data(primaryEdgeType)
+
+    const edgeType = d.data('interaction')
+    if (edgeType !== undefined) {
+      return d.data('interaction')
+    }
+    return primaryScore.toFixed(5)
+  }
+
   return {
     'style': [
       BASE_STYLE.node, BASE_STYLE.nodeSelected,
-      edgeStyle, BASE_STYLE.edgeSelected, BASE_STYLE.hidden],
+      edgeStyle, edgeSelectedStyle, BASE_STYLE.hidden],
   }
 }
