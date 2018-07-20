@@ -175,6 +175,7 @@ export const fetchNetworkFromUrl = url => {
         }
       })
       .then(json => createLabel2IdMap(json))
+      .then(network => addChildrenToAlias(network))
       .then(network => dispatch(receiveNetwork(url, network, null)))
       .catch(err => {
         console.log("Fetch Error: ", err)
@@ -206,6 +207,25 @@ const createLabel2IdMap = network => {
   network['id2prop'] = id2prop
 
   return network
+}
+
+const addChildrenToAlias = network => {
+
+  const nodes = network.elements.nodes
+
+  let i = nodes.length
+  while (i--) {
+    const nodeData = nodes[i].data
+    const hidden = nodeData.Hidden
+    const nodeType = nodeData.NodeType
+
+    if (hidden && nodeType === 'Term') {
+     console.log('Term ALIAS: ', nodeData)
+    }
+  }
+
+  return network
+
 }
 
 const filterLeafs = network => {
