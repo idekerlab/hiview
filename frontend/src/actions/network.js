@@ -209,9 +209,18 @@ const createLabel2IdMap = network => {
   return network
 }
 
+/**
+ *
+ * Add children to alias nodes and make it expandable
+ *
+ * @param network
+ * @returns {*}
+ */
 const addChildrenToAlias = network => {
 
   const nodes = network.elements.nodes
+  const id2prop = network['id2prop']
+  const label2id = network['label2id']
 
   let i = nodes.length
   while (i--) {
@@ -220,7 +229,8 @@ const addChildrenToAlias = network => {
     const nodeType = nodeData.NodeType
 
     if (hidden && nodeType === 'Term') {
-     console.log('Term ALIAS: ', nodeData)
+      const originalId = label2id[nodeData.Original_Name]
+     console.log('Term ALIAS2: ', nodeData, id2prop[originalId], originalId )
     }
   }
 
