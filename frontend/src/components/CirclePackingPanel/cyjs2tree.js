@@ -33,7 +33,7 @@ const cyjs2tree = cyjs => {
     }
   }
 
-  console.log(cyjs)
+  console.log('CyJS data: ', cyjs)
   console.log(Object.keys(nodeMap).length)
   console.log(root)
 
@@ -47,6 +47,7 @@ const cyjs2tree = cyjs => {
     .id(d => d.id)
     .parentId(d => d.parent)(table)
 }
+
 
 const transform = (rootId, edges, nodeMap) => {
   const table = []
@@ -69,18 +70,30 @@ const transform = (rootId, edges, nodeMap) => {
       nodeMap[source.id] !== undefined &&
       nodeMap[target.id] !== undefined
     ) {
+      let isAlias = source.Hidden
+      if(isAlias && source.NodeType === 'Term') {
+        console.log('++ORIGINALNAME: ', source.Original_Name)
+        isAlias = true
+      } else {
+        isAlias = false
+      }
+
       table.push({
         id: source.id,
         Label: source.Label,
         parent: target.id,
         value: source.Size,
         NodeType: source.NodeType,
-        props: source
+        props: source,
+        alias: isAlias
       })
     }
   })
 
   return table
 }
+
+
+
 
 export default cyjs2tree

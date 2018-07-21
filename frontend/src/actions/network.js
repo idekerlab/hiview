@@ -175,7 +175,7 @@ export const fetchNetworkFromUrl = url => {
         }
       })
       .then(json => createLabel2IdMap(json))
-      .then(network => addChildrenToAlias(network))
+      .then(network => addOriginalToAlias(network))
       .then(network => dispatch(receiveNetwork(url, network, null)))
       .catch(err => {
         console.log("Fetch Error: ", err)
@@ -184,11 +184,16 @@ export const fetchNetworkFromUrl = url => {
   }
 }
 
+
+let primaryName2prop = new Map()
+
 const createLabel2IdMap = network => {
   const nodes = network.elements.nodes
 
   const label2id = {}
   const id2prop = {}
+  // primaryId2prop = new Map()
+  primaryName2prop = new Map()
 
   let i = nodes.length
   while (i--) {
@@ -198,6 +203,11 @@ const createLabel2IdMap = network => {
 
     if (isRoot) {
       network['rootId'] = nodeData.id
+    }
+
+    const hidden = nodeData.Hidden
+    if(!hidden && nodeData.NodeType === 'Term') {
+      primaryName2prop.set(nodeData.name, nodeData)
     }
 
     label2id[label] = nodeData.id
@@ -216,7 +226,7 @@ const createLabel2IdMap = network => {
  * @param network
  * @returns {*}
  */
-const addChildrenToAlias = network => {
+const addOriginalToAlias = network => {
 
   const nodes = network.elements.nodes
   const id2prop = network['id2prop']
@@ -229,8 +239,10 @@ const addChildrenToAlias = network => {
     const nodeType = nodeData.NodeType
 
     if (hidden && nodeType === 'Term') {
-      const originalId = label2id[nodeData.Original_Name]
-     console.log('Term ALIAS2: ', nodeData, id2prop[originalId], originalId )
+      const originalData = primaryName2prop.get(nodeData.Original_Name)
+
+      nodeData['originalId'] = originalData.id
+      console.log('Term ALIAS5: ', nodeData, originalData)
     }
   }
 
