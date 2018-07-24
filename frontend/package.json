@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "cy-network-viewer": "1.0.1",
+    "cy-network-viewer": "1.0.0",
     "cy-tree-viewer": "^0.2.0",
     "cytoscape": "^3.2.12",
     "cytoscapejs-renderer": "^0.1.0",

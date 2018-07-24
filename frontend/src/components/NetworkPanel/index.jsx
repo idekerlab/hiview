@@ -58,6 +58,8 @@ class NetworkPanel extends Component {
     const nodeId = nodeIds[0]
     const props = nodeProps[nodeId].props
 
+    console.log("##########", nodeId, props)
+
     const newSelectionState = {
       networkId: 'main',
       nodeId: nodeId,
@@ -193,8 +195,6 @@ class NetworkPanel extends Component {
     const nextSearch = nextProps.search
 
     if (search.result !== nextSearch.result) {
-      console.log('+++ Search result updated')
-
       // Select result
       const selectedIds = nextSearch.result
       if (selectedIds !== undefined && selectedIds !== null) {
@@ -244,12 +244,10 @@ class NetworkPanel extends Component {
       this.props.uiState.get('changeViewer') !==
       nextProps.uiState.get('changeViewer')
     ) {
-      console.log('!!!!!!!!!! CHANGE VIEW !!!!!!!!!!!!!!!!!')
       return true
     }
 
     if (this.props.rawInteractions !== nextProps.rawInteractions) {
-      console.log('!!!!!!!!!! NEWNETWORK !!!!!!!!!!!!!!!!!')
       return true
     }
 
@@ -286,8 +284,6 @@ class NetworkPanel extends Component {
 
     if (loading) {
       let message = 'Loading hierarchy.  Please wait...'
-
-      console.log('ND::: ', networkData)
 
       if (networkData !== undefined) {
         message = 'Data Loaded!'

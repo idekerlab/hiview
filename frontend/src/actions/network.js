@@ -161,8 +161,6 @@ const filterNodes = network => {
 
 export const fetchNetworkFromUrl = url => {
 
-
-  console.log('NET URL: ', url)
   return dispatch => {
     dispatch(fetchNetwork(url))
 
@@ -229,9 +227,6 @@ const createLabel2IdMap = network => {
 const addOriginalToAlias = network => {
 
   const nodes = network.elements.nodes
-  const id2prop = network['id2prop']
-  const label2id = network['label2id']
-
   let i = nodes.length
   while (i--) {
     const nodeData = nodes[i].data
@@ -242,12 +237,12 @@ const addOriginalToAlias = network => {
       const originalData = primaryName2prop.get(nodeData.Original_Name)
 
       nodeData['originalId'] = originalData.id
-      console.log('Term ALIAS5: ', nodeData, originalData)
+      nodeData['alias'] = true
+    } else {
+      nodeData['alias'] = false
     }
   }
-
   return network
-
 }
 
 const filterLeafs = network => {
