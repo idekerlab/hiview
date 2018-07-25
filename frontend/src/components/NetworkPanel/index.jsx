@@ -58,8 +58,6 @@ class NetworkPanel extends Component {
     const nodeId = nodeIds[0]
     const props = nodeProps[nodeId].props
 
-    console.log("##########", nodeId, props)
-
     const newSelectionState = {
       networkId: 'main',
       nodeId: nodeId,

@@ -239,6 +239,11 @@ const createFilter = network => {
         } else {
           th = values[thPosition]
         }
+
+        // Error handling: TH not found:
+        if(!th) {
+         th = value.min
+        }
       }
 
       filters.push({

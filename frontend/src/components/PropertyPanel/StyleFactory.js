@@ -82,10 +82,10 @@ export const createStyle = originalNetwork => {
   const networkData = interactions.data
   let primaryEdgeType = networkData[MAIN_INTERACTION_TYPE_TAG]
 
-  console.log('************** PE Type: ', primaryEdgeType, interactions)
   // This is the generator for custom styling
   const similarityMin = networkData[`${primaryEdgeType} ${ATTR_TYPES.MIN}`]
   const similarityMax = networkData[`${primaryEdgeType} ${ATTR_TYPES.MAX}`]
+
 
   // const colorScale = d3Scale.scaleSequential(d3ScaleChromatic.interpolateGnBu)
   //   .domain([parentWidth,0])
