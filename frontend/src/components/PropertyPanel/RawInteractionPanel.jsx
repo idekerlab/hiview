@@ -110,7 +110,7 @@ class RawInteractionPanel extends Component {
         style={networkAreaStyle}
         eventHandlers={this.getCustomEventHandlers()}
         rendererOptions={{
-          layout: 'cose-bilkent',
+          layout: this.checkPresetLayout(this.props.subnet),
           defaultFilter: {
             command: 'filter',
             parameters: {
@@ -130,6 +130,21 @@ class RawInteractionPanel extends Component {
         command={this.props.commands}
       />
     )
+  }
+
+  checkPresetLayout = network => {
+    const nodes = network.elements.nodes
+    const sampleNode = nodes[0]
+    if(!sampleNode) {
+      return 'cose-bilkent'
+    }
+
+    const position = sampleNode.position
+    if(position.x === 0 && position.y === 0) {
+      return 'cose-bilkent'
+    } else {
+      return 'preset'
+    }
   }
 
   selectNodes = (nodeIds, nodeProps) => {

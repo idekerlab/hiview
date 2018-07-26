@@ -1,4 +1,6 @@
 const MAIN_EDGE_TAG = 'Main Feature'
+const THRESHOLD_TAG = 'Main Feature Default Cutoff'
+
 const MAX_EDGE = 400
 
 const PATTERN = /[ -]/g
@@ -180,6 +182,9 @@ const sortEdges = (network, maxEdgeCount) => {
 
 const createFilter = network => {
 
+  console.log("Creating filter = ", network)
+  const defCutoff = network.data[THRESHOLD_TAG]
+
   const filters = []
 
   const edges = network.elements.edges
@@ -218,28 +223,32 @@ const createFilter = network => {
 
       let th = null
       if(isPrimary) {
-        // Find best threshold
-        let values = new Array(edgeCount)
-        while(edgeCount--) {
-          const edge = edges[edgeCount]
-          values[edgeCount] = edge.data[key]
-        }
+        // If default cutoff is available, use it
+        if(defCutoff) {
+          th = defCutoff
+        } else {
+          // Find best threshold
+          let values = new Array(edgeCount)
+          while(edgeCount--) {
+            const edge = edges[edgeCount]
+            values[edgeCount] = edge.data[key]
+          }
 
-        values.sort()
-        const thPosition = parseInt(edges.length * 0.9, 10)
+          values.sort()
+          const thPosition = parseInt(edges.length * 0.9, 10)
 
-        if(edges.length < MAX_EDGE) {
-          if(edges.length < 100) {
-            th = value.min
+          if(edges.length < MAX_EDGE) {
+            if(edges.length < 100) {
+              th = value.min
+            } else {
+              th = values[thPosition]
+            }
+          } else if(thPosition > MAX_EDGE) {
+            th = values[edges.length - MAX_EDGE]
           } else {
             th = values[thPosition]
           }
-        } else if(thPosition > MAX_EDGE) {
-          th = values[edges.length - MAX_EDGE]
-        } else {
-          th = values[thPosition]
         }
-
         // Error handling: TH not found:
         if(!th) {
          th = value.min
