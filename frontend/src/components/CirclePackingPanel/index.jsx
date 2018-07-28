@@ -188,6 +188,7 @@ class CirclePackingPanel extends Component {
     }
 
     const selectNodes = (nodeId, data) => {
+      consoloe.log("+++ SN", nodeId, data)
       const subSelectionSet = this.props.selection.get('subSelection')
 
       let name = data.Original_Name

@@ -54,6 +54,7 @@ class NetworkPanel extends Component {
   }
 
   selectNodes = (nodeIds, nodeProps) => {
+    console.log('##########NSSS final', nodeIds)
     // First node in the selection
     const nodeId = nodeIds[0]
     const props = nodeProps[nodeId].props
