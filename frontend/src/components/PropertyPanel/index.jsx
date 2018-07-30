@@ -127,7 +127,6 @@ class PropertyPanel extends Component {
       label = this.props.currentProperty.id
     }
 
-    const barColor = propType === PANEL_TYPES.GENE ? 'orange' : blueGrey
     const barTitle = label
 
     const drawerContentsStyle = {
@@ -141,7 +140,6 @@ class PropertyPanel extends Component {
       appBarPosition = 'absolute'
     }
 
-    const fontType = propType === PANEL_TYPES.GENE ? 'display2' : 'title'
     const fontColor = propType === PANEL_TYPES.GENE ? '#666666' : 'orange'
 
     return (

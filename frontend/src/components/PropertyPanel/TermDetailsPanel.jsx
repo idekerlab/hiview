@@ -18,7 +18,35 @@ import LayoutSelector from '../LayoutSelector'
 import EmptyInteractionPanel from './EmptyInteractionPanel.jsx'
 import MaxEdgePanel from './MaxEdgePanel';
 
+const controlWrapperStyle = {
+  width: '100%',
+  maxWidth: 450
+}
+
+const filterPanelStyle = {
+  display: 'inline-flex',
+  height: '17em',
+  width: '100%',
+  padding: '0.6em',
+  background: '#FFFFFF'
+}
+
+const controlPanelStyle = {
+  padding: '1em',
+  background: '#FFFFFF'
+}
+
+const loadingStyle = {
+  display: 'flex',
+  width: '100%',
+  height: '100%',
+  justifyContent: 'center',
+  alignItems: 'center'
+}
+
+
 class TermDetailsPanel extends Component {
+
   constructor(props) {
     super(props)
     this.state = {
@@ -62,24 +90,20 @@ class TermDetailsPanel extends Component {
   }
 
   render() {
-    const raw = this.props.rawInteractions.toJS()
-    const interactions = raw.interactions
 
-    // Loading
-    if (raw.loading) {
-      const loadingStyle = {
-        display: 'flex',
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center'
-      }
+
+    // Still loading interaction...
+    const loading = this.props.rawInteractions.get('loading')
+    if (loading) {
       return (
         <div style={loadingStyle}>
           <CircularProgress size={300} thickness={2} />
         </div>
       )
     }
+
+    const raw = this.props.rawInteractions.toJS()
+    const interactions = raw.interactions
 
     // Term property
     const details = this.props.currentProperty
@@ -92,7 +116,17 @@ class TermDetailsPanel extends Component {
       return <div />
     }
 
+    console.log('New props panel', this.props)
+
+    // This is the details about current subsystem
+    let hidden = false
     const data = details.data
+    if(!data['ndex_internalLink']) {
+      // No interaction data
+      hidden = true
+    }
+
+
     let entry = {}
     let subnet = null
 
@@ -108,14 +142,11 @@ class TermDetailsPanel extends Component {
       }
     }
 
-    let hidden = entry.Hidden
 
     const title = data.name
     let networkProps = {}
     if (interactions !== undefined && interactions !== null) {
       networkProps = interactions.data
-    } else {
-      hidden = true
     }
 
     const visualStyle = this.props.interactionStyle.get('defaultStyle')
@@ -123,18 +154,6 @@ class TermDetailsPanel extends Component {
       visualStyle.name = 'defaultStyle'
     }
 
-    const filterPanelStyle = {
-      display: 'inline-flex',
-      height: '17em',
-      width: '100%',
-      padding: '0.6em',
-      background: '#FFFFFF'
-    }
-
-    const controlPanelStyle = {
-      padding: '1em',
-      background: '#FFFFFF'
-    }
 
     const uuid = this.props.datasource.get('uuid')
     const serverType = this.props.datasource.get('serverType')
@@ -151,10 +170,6 @@ class TermDetailsPanel extends Component {
       flexDirection: this.props.expanded ? 'row' : 'column'
     }
 
-    const controlWrapperStyle = {
-      width: '100%',
-      maxWidth: 450
-    }
 
     return (
       <div style={containerStyle}>

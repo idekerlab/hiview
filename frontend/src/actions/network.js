@@ -6,9 +6,7 @@ import Fuse from 'fuse.js'
 export const FETCH_NETWORK = 'FETCH_NETWORK'
 
 const generateIndex = networkJson => {
-  console.log(networkJson)
-
-  if (networkJson === null || networkJson === undefined) {
+  if (!networkJson) {
     throw Error('Network not loaded')
   }
 
@@ -29,73 +27,6 @@ const generateIndex = networkJson => {
 
   return new Fuse(nodeData, options)
 }
-
-// const testDb = networkJson => {
-//   // Use UUID as store name
-//   const objectStoreName = networkJson.cxData.ndexStatus[0].externalId
-//   // const objectStoreName = 'NDEXTEST'
-//
-//   const open = indexedDB.open(DB_NAME, DB_VERSION)
-//
-//   open.onupgradeneeded = function() {
-//     const db = open.result
-//     const store = db.createObjectStore(objectStoreName, {
-//       keyPath: PRIMARY_KEY
-//     })
-//     const index = store.createIndex('NameIndex', ['name.last', 'name.first'])
-//     const labelIdx = store.createIndex(INDEX_LABEL, ['Label'])
-//   }
-//
-//   open.onsuccess = function() {
-//     // Start a new transaction
-//     const db = open.result
-//     const tx = db.transaction(objectStoreName, 'readwrite')
-//     const store = tx.objectStore(objectStoreName)
-//     const index = store.index('NameIndex')
-//     const indexLabel = store.index(INDEX_LABEL)
-//
-//     generateIndex(store, networkJson)
-//     // Add some data
-//     store.put({
-//       [PRIMARY_KEY]: 12345,
-//       name: {
-//         first: 'John',
-//         last: 'Doe'
-//       },
-//       age: 42
-//     })
-//
-//     store.put({
-//       [PRIMARY_KEY]: 67890,
-//       name: { first: 'Bob', last: 'Smith' },
-//       age: 35
-//     })
-//
-//     // Query the data
-//     var getJohn = store.get(12345)
-//     var getBob = index.get(['Smith', 'Bob'])
-//
-//     const get1 = indexLabel.get(['DNA'])
-//
-//     get1.onsuccess = function() {
-//       console.log(get1) // => "John"
-//     }
-//     getJohn.onsuccess = function() {
-//       console.log(getJohn.result.name.first) // => "John"
-//     }
-//
-//     getBob.onsuccess = function() {
-//       console.log(getBob.result.name.first) // => "Bob"
-//     }
-//
-//     // Close the db when the transaction is done
-//     tx.oncomplete = function() {
-//       db.close()
-//     }
-//   }
-//
-//   return networkJson
-// }
 
 const fetchNetwork = url => {
   return {

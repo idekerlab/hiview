@@ -54,7 +54,6 @@ class NetworkPanel extends Component {
   }
 
   selectNodes = (nodeIds, nodeProps) => {
-    console.log('##########NSSS final', nodeIds)
     // First node in the selection
     const nodeId = nodeIds[0]
     const props = nodeProps[nodeId].props
@@ -85,7 +84,8 @@ class NetworkPanel extends Component {
 
     // From NDEx to CYJS converter
     const linkEntry = props[NDEX_LINK_TAG]
-    if (linkEntry === undefined) {
+    if (!linkEntry) {
+      // Link is not available = no raw interaction available
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
       this.props.propertyActions.setProperty(props.id, props, 'term')
       return
@@ -98,9 +98,6 @@ class NetworkPanel extends Component {
     }
     const uuidWithExtraStr = linkParts[1]
     const linkId = uuidWithExtraStr.replace(')', '').replace('(', '')
-
-    // const linkId = linkEntry.split('(')[1].replace(')', '')
-
 
     const serverType = this.props.datasource.get('serverType')
     const link = this.props.cxtoolUrl + linkId + '?server=' + serverType

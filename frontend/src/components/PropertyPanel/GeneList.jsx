@@ -1,45 +1,34 @@
-import React, {Component} from 'react'
+import React from 'react'
 
-import List, {ListItem, ListItemIcon, ListItemText} from 'material-ui/List'
+import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import OpenIcon from 'material-ui-icons/OpenInNew'
 
+const GENECARDS_URL = 'http://www.genecards.org/cgi-bin/carddisp.pl?gene='
 
-class GeneList extends Component {
-
-  render() {
-    let genes = this.props.genes
-    if (genes === undefined || genes === null) {
-      genes = []
-    }
-
-    console.log(genes.sort())
-    return (
-
-      <div style={{overflow: 'auto'}}>
-        <List>
-          {
-            genes.map((gene, i) =>
-
-              (<ListItem
-                button
-                onClick={this.handleClick(gene)}
-                key={i}
-              >
-                <ListItemIcon>
-                  <OpenIcon/>
-                </ListItemIcon>
-                <ListItemText primary={gene}/>
-              </ListItem>))
-          }
-        </List>
-      </div>
-    )
+const GeneList = props => {
+  let genes = props.genes
+  if (!genes) {
+    genes = []
   }
 
-  handleClick = gene => () => {
-    window.open(`http://www.genecards.org/cgi-bin/carddisp.pl?gene=${gene}`)
-  }
+  return (
+    <div style={{ overflow: 'auto' }}>
+      <List>
+        {genes.map((gene, i) => (
+          <ListItem button onClick={handleClick(gene)} key={i}>
+            <ListItemIcon>
+              <OpenIcon />
+            </ListItemIcon>
+            <ListItemText primary={gene} />
+          </ListItem>
+        ))}
+      </List>
+    </div>
+  )
+}
 
+const handleClick = gene => () => {
+  window.open(`${GENECARDS_URL}${gene}`)
 }
 
 export default GeneList
