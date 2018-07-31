@@ -1,5 +1,11 @@
-import {FETCH_INTERACTIONS, RECEIVE_INTERACTIONS, SET_VALUE, SET_MAX_EDGE_COUNT} from '../actions/raw-interactions'
-import {Map} from 'immutable'
+import {
+  FETCH_INTERACTIONS,
+  RECEIVE_INTERACTIONS,
+  SET_VALUE,
+  SET_MAX_EDGE_COUNT,
+  SET_SELECTED
+} from '../actions/raw-interactions'
+import { Map } from 'immutable'
 
 const DEF_MAX_EDGE_COUNT = 500
 
@@ -8,16 +14,14 @@ const defState = Map({
   interactions: null,
   filters: null,
   extraEdges: null,
-  maxEdgeCount: DEF_MAX_EDGE_COUNT
+  maxEdgeCount: DEF_MAX_EDGE_COUNT,
+  selected: []
 })
 
 export default function networkState(state = defState, action) {
-
   switch (action.type) {
     case FETCH_INTERACTIONS:
-      return state
-        .set('loading', true)
-        .set('interactions', null)
+      return state.set('loading', true).set('interactions', null)
     case RECEIVE_INTERACTIONS:
       return state
         .set('loading', false)
@@ -26,31 +30,32 @@ export default function networkState(state = defState, action) {
         .set('groups', action.groups)
         .set('extraEdges', action.extraEdges)
     case SET_VALUE:
-
       const filters = state.get('filters')
       const attributeName = action.payload.attributeName
       let filterCount = attributeName.length
 
       let filter = null
-      while(filterCount--) {
+      while (filterCount--) {
         const current = filters[filterCount]
-        if(current.attributeName === attributeName) {
-          filter = current;
-          break;
+        if (current.attributeName === attributeName) {
+          filter = current
+          break
         }
       }
 
       // const filter = state.get(action.payload.attributeName)
-      if(filter.type === 'continuous') {
+      if (filter.type === 'continuous') {
         filter.value = action.payload.value
       } else {
         filter.enabled = action.payload.enabled
       }
 
-
       return state.set('filters', filters)
     case SET_MAX_EDGE_COUNT:
       return state.set('maxEdgeCount', action.payload)
+
+    case SET_SELECTED:
+      return state.set('selected', action.payload)
 
     default:
       return state

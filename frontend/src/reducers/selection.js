@@ -25,9 +25,6 @@ export default handleActions(
         nodeId: nodeId,
         nodeProps: nodeProps
       }
-
-      console.log('Model Update: ')
-      console.log(props)
       return state.set(networkId, props)
     },
 

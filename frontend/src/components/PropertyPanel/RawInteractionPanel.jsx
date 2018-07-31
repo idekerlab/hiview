@@ -101,10 +101,16 @@ class RawInteractionPanel extends Component {
       }
     })
 
+    const selected = {
+      nodes: this.props.subnetSelected,
+      edges: this.props.subnetSelectedEdge
+    }
+
     return (
       <Viewer
         key="subNetworkView"
         network={this.props.subnet}
+        selected={selected}
         networkType={'cyjs'}
         networkStyle={visualStyle}
         style={networkAreaStyle}

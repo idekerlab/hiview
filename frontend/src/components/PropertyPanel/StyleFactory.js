@@ -31,7 +31,7 @@ const BASE_STYLE = {
       'height': 55,
       'font-size': 15,
       color: '#444444',
-      'background-color': '#FFFFFF',
+      'background-color': '#FF0000'
     },
   },
   edge: {

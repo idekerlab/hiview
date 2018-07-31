@@ -181,8 +181,6 @@ const sortEdges = (network, maxEdgeCount) => {
 }
 
 const createFilter = network => {
-
-  console.log("Creating filter = ", network)
   const defCutoff = network.data[THRESHOLD_TAG]
 
   const filters = []
@@ -287,3 +285,6 @@ export const setValue = createAction(SET_VALUE)
 export const SET_MAX_EDGE_COUNT = 'SET_MAX_EDGE_COUNT'
 export const setMaxEdgeCount = createAction(SET_MAX_EDGE_COUNT)
 
+// Selected nodes
+export const SET_SELECTED = 'SET_SELECTED'
+export const setSelected = createAction(SET_SELECTED)

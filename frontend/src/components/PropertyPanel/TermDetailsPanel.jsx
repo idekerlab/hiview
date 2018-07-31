@@ -91,7 +91,6 @@ class TermDetailsPanel extends Component {
 
   render() {
 
-
     // Still loading interaction...
     const loading = this.props.rawInteractions.get('loading')
     if (loading) {
@@ -104,6 +103,7 @@ class TermDetailsPanel extends Component {
 
     const raw = this.props.rawInteractions.toJS()
     const interactions = raw.interactions
+    const selected = raw.selected
 
     // Term property
     const details = this.props.currentProperty
@@ -115,8 +115,6 @@ class TermDetailsPanel extends Component {
     ) {
       return <div />
     }
-
-    console.log('New props panel', this.props)
 
     // This is the details about current subsystem
     let hidden = false
@@ -186,6 +184,7 @@ class TermDetailsPanel extends Component {
         ) : (
           <RawInteractionPanel
             subnet={interactions}
+            subnetSelected={selected}
             selectedTerm={this.props.currentProperty.id}
             handleClose={this.props.handleClose}
             commandActions={this.props.interactionsCommandActions}

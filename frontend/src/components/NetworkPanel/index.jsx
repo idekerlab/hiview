@@ -92,7 +92,7 @@ class NetworkPanel extends Component {
     }
 
     const linkParts = linkEntry.split(']')
-    if(linkParts.length !== 2) {
+    if (linkParts.length !== 2) {
       console.error('Invalid LINK entry.  Check format of the link.')
       return
     }
@@ -101,18 +101,16 @@ class NetworkPanel extends Component {
 
     const serverType = this.props.datasource.get('serverType')
     const link = this.props.cxtoolUrl + linkId + '?server=' + serverType
-    window.setTimeout(() => {
-      this.props.eventActions.selected(nodeProps[nodeIds[0]])
+    this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
-      if (props.Size < 500) {
-        // Directly set prop from node attributes
-        this.props.rawInteractionsActions.fetchInteractionsFromUrl(
-          link,
-          this.props.maxEdgeCount
-        )
-        this.props.propertyActions.setProperty(props.id, props, 'term')
-      }
-    }, 0)
+    if (props.Size < 500) {
+      // Directly set prop from node attributes
+      this.props.rawInteractionsActions.fetchInteractionsFromUrl(
+        link,
+        this.props.maxEdgeCount
+      )
+      this.props.propertyActions.setProperty(props.id, props, 'term')
+    }
   }
 
   selectEdges = (edgeIds, edgeProps) => {
@@ -232,7 +230,7 @@ class NetworkPanel extends Component {
       return true
     }
 
-    if(this.props.selection !== nextProps.selection) {
+    if (this.props.selection !== nextProps.selection) {
       return true
     }
 
