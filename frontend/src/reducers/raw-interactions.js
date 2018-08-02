@@ -3,9 +3,11 @@ import {
   RECEIVE_INTERACTIONS,
   SET_VALUE,
   SET_MAX_EDGE_COUNT,
-  SET_SELECTED
+  SET_SELECTED,
+  SET_SELECTED_PERM,
+  CLEAR_SELECTED_PERM
 } from '../actions/raw-interactions'
-import { Map } from 'immutable'
+import { Map, Set } from 'immutable'
 
 const DEF_MAX_EDGE_COUNT = 500
 
@@ -15,7 +17,8 @@ const defState = Map({
   filters: null,
   extraEdges: null,
   maxEdgeCount: DEF_MAX_EDGE_COUNT,
-  selected: []
+  selected: [],
+  selectedPerm: Set()
 })
 
 export default function networkState(state = defState, action) {
@@ -56,6 +59,14 @@ export default function networkState(state = defState, action) {
 
     case SET_SELECTED:
       return state.set('selected', action.payload)
+
+    case SET_SELECTED_PERM:
+      const currentSelection = state.get('selectedPerm')
+      const newSet = currentSelection.union(Set(action.payload))
+      return state.set('selectedPerm', newSet)
+
+    case CLEAR_SELECTED_PERM:
+      return state.set('selectedPerm', Set())
 
     default:
       return state

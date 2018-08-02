@@ -167,8 +167,12 @@ const addOriginalToAlias = network => {
     if (hidden && nodeType === 'Term') {
       const originalData = primaryName2prop.get(nodeData.Original_Name)
 
-      nodeData['originalId'] = originalData.id
-      nodeData['alias'] = true
+      if(originalData) {
+        nodeData['originalId'] = originalData.id
+        nodeData['alias'] = true
+      } else {
+        nodeData['alias'] = false
+      }
     } else {
       nodeData['alias'] = false
     }
@@ -187,9 +191,6 @@ const filterLeafs = network => {
     }
     return false
   })
-
-  console.log('TOTAL: ' + network.elements.nodes.length)
-  console.log('FILTERED: ' + toBeRemovedNodes.length)
 
   const toBeRemovedEdges = cy.nodes().edgesWith(toBeRemovedNodes)
   cy.remove(toBeRemovedEdges)
@@ -247,7 +248,6 @@ const findRoot = network => {
 const layout = network => {
   const rootNodeId = findRoot(network)
   if (rootNodeId === null) {
-    console.log('FAILED!!!!!!!!!!!!!!!!!!!!!!!!! Root Node not found: ')
     // Return network as-is
     return network
   }

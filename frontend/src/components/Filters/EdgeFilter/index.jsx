@@ -77,7 +77,7 @@ class EdgeFilter extends Component {
     const filters = this.props.filters;
 
     if (filters === null || filters.length === 0) {
-      return <div />;
+      return <div />
     }
 
     let primaryFilter = null;

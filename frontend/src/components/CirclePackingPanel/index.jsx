@@ -69,6 +69,7 @@ class CirclePackingPanel extends Component {
         })
 
         this.props.selectPrimaryNode([id], { [id]: wrappedData })
+        this.props.rawInteractionsActions.clearSelectedPerm()
       } else {
         this.selectGroups(
           id,
@@ -191,6 +192,34 @@ class CirclePackingPanel extends Component {
     }
 
     const selectNodes = (nodeId, data) => {
+      // This will be called only when CTR-click is called in renderer.
+
+      console.log('S called:::', nodeId, data)
+      if (!data) {
+        return
+      }
+
+      if(!data.name) {
+        return
+      }
+
+      const groups = this.props.groups
+      if (!groups) {
+        return
+      }
+
+      let name = data.Original_Name
+      if (name === undefined) {
+        name = data.name
+      }
+
+      const geneIds = groups[name]
+      console.log('GENES:::', geneIds)
+
+
+      this.props.rawInteractionsActions.setSelectedPerm(geneIds)
+
+
       // const subSelectionSet = this.props.selection.get('subSelection')
       //
       // let name = data.Original_Name

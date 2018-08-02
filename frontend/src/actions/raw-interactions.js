@@ -190,7 +190,10 @@ const createFilter = network => {
 
   // 1. Extract props from network data
   const edgeTypes = {}
-  let mainEdgeType = network.data[MAIN_EDGE_TAG].replace(PATTERN, '_')
+  let mainEdgeType = network.data[MAIN_EDGE_TAG]
+  if(mainEdgeType !== undefined) {
+    mainEdgeType = mainEdgeType.replace(PATTERN, '_')
+  }
 
   for (let [key, value] of Object.entries(network.data)) {
 
@@ -288,3 +291,9 @@ export const setMaxEdgeCount = createAction(SET_MAX_EDGE_COUNT)
 // Selected nodes
 export const SET_SELECTED = 'SET_SELECTED'
 export const setSelected = createAction(SET_SELECTED)
+
+// CTR-Click select
+export const SET_SELECTED_PERM = 'SET_SELECTED_PERM'
+export const setSelectedPerm = createAction(SET_SELECTED_PERM)
+export const CLEAR_SELECTED_PERM = 'CLEAR_SELECTED_PERM'
+export const clearSelectedPerm = createAction(CLEAR_SELECTED_PERM)
