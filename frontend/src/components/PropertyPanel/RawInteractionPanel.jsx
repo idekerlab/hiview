@@ -103,7 +103,9 @@ class RawInteractionPanel extends Component {
 
     const selected = {
       nodes: this.props.subnetSelected,
-      edges: this.props.subnetSelectedEdge
+      edges: this.props.subnetSelectedEdge,
+      nodesPerm: this.props.subnetSelectedPerm,
+      edgesPerm: this.props.subnetSelectedEdgePerm
     }
 
     return (

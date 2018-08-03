@@ -104,6 +104,8 @@ class TermDetailsPanel extends Component {
     const raw = this.props.rawInteractions.toJS()
     const interactions = raw.interactions
     const selected = raw.selected
+    // Permanent selection
+    const selectedPerm = raw.selectedPerm
 
     // Term property
     const details = this.props.currentProperty
@@ -185,6 +187,7 @@ class TermDetailsPanel extends Component {
           <RawInteractionPanel
             subnet={interactions}
             subnetSelected={selected}
+            subnetSelectedPerm={selectedPerm}
             selectedTerm={this.props.currentProperty.id}
             handleClose={this.props.handleClose}
             commandActions={this.props.interactionsCommandActions}

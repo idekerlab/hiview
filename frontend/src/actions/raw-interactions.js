@@ -295,5 +295,9 @@ export const setSelected = createAction(SET_SELECTED)
 // CTR-Click select
 export const SET_SELECTED_PERM = 'SET_SELECTED_PERM'
 export const setSelectedPerm = createAction(SET_SELECTED_PERM)
+
+export const DESELECT_PERM = 'DESELECT_PERM'
+export const deselectPerm = createAction(DESELECT_PERM)
+
 export const CLEAR_SELECTED_PERM = 'CLEAR_SELECTED_PERM'
 export const clearSelectedPerm = createAction(CLEAR_SELECTED_PERM)

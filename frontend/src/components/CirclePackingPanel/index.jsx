@@ -81,121 +81,8 @@ class CirclePackingPanel extends Component {
       // this.props.commandActions.zoomToNode(id)
     }
 
-    const deselectNode = id => {
-      if (id === null) {
-        return
-      }
-
-      if (this.state.hoverNodes !== null) {
-        if (!this.state.selectedGroups.has(id)) {
-          this.props.interactionsCommandActions.unselectNodes({
-            idList: this.state.hoverNodes
-          })
-        }
-      }
-    }
-
-    const getName = (id, data) => {
-      if (data === null || data === undefined) {
-        return null
-      }
-
-      let name = data.Original_Name
-      if (name === undefined) {
-        name = data.name
-      }
-
-      return name
-    }
-
-    const getGeneIds = name => {
-      const groups = this.props.groups
-      if (groups === undefined) {
-        return
-      }
-
-      return groups[name]
-    }
-
-    const hoverOutNode = (id, data) => {
-      if (this.props.rawInteractions.get('selected').length !== 0) {
-        this.props.rawInteractionsActions.setSelected([])
-      }
-
-      // const name = getName(id, data)
-      // if (name === null) {
-      //   return
-      // }
-      //
-      // const geneIds = getGeneIds(name)
-      // if (geneIds === null || geneIds === undefined) {
-      //   return
-      // }
-      //
-      // const subSelectionSet = this.props.selection.get('subSelection')
-      //
-      // // 1. No sub selection
-      // if(subSelectionSet.size === 0) {
-      //   this.props.interactionsCommandActions.unselectNodes({
-      //     idList: geneIds
-      //   })
-      //   return
-      // }
-      //
-      // if (subSelectionSet.has(name)) {
-      //   this.props.interactionsCommandActions.selectNodes({
-      //     idList: this.state.selectedGenes,
-      //     selectedColor: 'green'
-      //   })
-      //   return
-      // }
-      //
-      // // Case 2: Hover, but no permanent selection
-      // this.props.interactionsCommandActions.unselectNodes({
-      //   idList: geneIds
-      // })
-      //
-      // if (subSelectionSet.size !== 0) {
-      //   this.props.interactionsCommandActions.selectNodes({
-      //     idList: this.state.selectedGenes,
-      //     selectedColor: 'green'
-      //   })
-      // }
-
-      // // Case 3: permanent selection is not empty
-      // this.props.interactionsCommandActions.unselectNodes({
-      //   idList: this.state.hoverNodes
-      // })
-      // this.setState({
-      //   hover: null,
-      //   hoverNodes: null
-      // })
-      //
-      // this.props.interactionsCommandActions.selectNodes({
-      //   idList: this.state.selectedGenes,
-      //   color: 'red'
-      // })
-
-      // const hoverSelectionSet = Set(this.state.hoverNodes)
-      // const permanentSelectionSet = this.state.selectedGenes
-
-      // this.props.interactionsCommandActions.unselectNodes({
-      //   idList: this.state.hoverNodes
-      // })
-      //
-      // window.setTimeout(() => {
-      //   this.props.interactionsCommandActions.selectNodes({
-      //     idList: [...this.state.selectedGenes],
-      //     selectedColor: 'green'
-      //   })
-      // }, 0)
-    }
-
-    const selectNodes = (nodeId, data) => {
-      // This will be called only when CTR-click is called in renderer.
-
-      console.log('S called:::', nodeId, data)
-      if (!data) {
+    const deselectNode = (id, data) => {
+      if (!id || !data) {
         return
       }
 
@@ -214,58 +101,48 @@ class CirclePackingPanel extends Component {
       }
 
       const geneIds = groups[name]
-      console.log('GENES:::', geneIds)
+      this.props.rawInteractionsActions.deselectPerm(geneIds)
+      this.props.selectionActions.deselectSubNode(id)
+
+      const subSelection = this.props.selection.get('subSelection')
+      console.log('deselect called: GENES:::', geneIds, subSelection)
+
+    }
+
+    const hoverOutNode = (id, data) => {
+      if (this.props.rawInteractions.get('selected').length !== 0) {
+        this.props.rawInteractionsActions.setSelected([])
+      }
+    }
+
+    const selectNodes = (nodeId, data) => {
+      // This will be called only when CTR-click is called in renderer.
+      if (!data) {
+        return
+      }
+
+      if(!data.name) {
+        return
+      }
+
+      const groups = this.props.groups
+      if (!groups) {
+        return
+      }
+
+      let name = data.Original_Name
+      if (name === undefined) {
+        name = data.name
+      }
 
 
+      const geneIds = groups[name]
       this.props.rawInteractionsActions.setSelectedPerm(geneIds)
+      this.props.selectionActions.selectSubNode(nodeId)
 
+      const subSelection = this.props.selection.get('subSelection')
+      console.log('Selected called: GENES:::', geneIds, subSelection)
 
-      // const subSelectionSet = this.props.selection.get('subSelection')
-      //
-      // let name = data.Original_Name
-      // if (name === undefined) {
-      //   name = data.name
-      // }
-      //
-      // const groups = this.props.groups
-      // if (groups === undefined) {
-      //   return
-      // }
-      //
-      // let selectedSubsystems = null
-      //
-      // if (subSelectionSet.has(name)) {
-      //   this.props.selectionActions.deselectSubNode(name)
-      //   selectedSubsystems = subSelectionSet.delete(name)
-      //   if(selectedSubsystems.size === 0) {
-      //     this.props.interactionsCommandActions.unselectNodes({
-      //       idList: groups[name]
-      //     })
-      //     return
-      //   }
-      // } else {
-      //   this.props.selectionActions.selectSubNode(name)
-      //   selectedSubsystems = subSelectionSet.add(name)
-      // }
-      //
-      // const geneIds = []
-      //
-      // selectedSubsystems.forEach(subsystemName => {
-      //   const genes = groups[subsystemName]
-      //   genes.forEach(gene => {
-      //     geneIds.push(gene.toString())
-      //   })
-      // })
-      //
-      // const geneSet = new Set(geneIds)
-      // const idList = [...geneSet]
-      //
-      // this.setState({ selectedGenes: idList })
-      //
-      // this.props.interactionsCommandActions.selectNodes({
-      //   idList,
-      //   selectedColor: 'green'
-      // })
     }
 
     const hoverOnNode = (id, data, parent) => {
