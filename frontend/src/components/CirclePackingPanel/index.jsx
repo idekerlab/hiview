@@ -100,13 +100,16 @@ class CirclePackingPanel extends Component {
         name = data.name
       }
 
-      const geneIds = groups[name]
-      this.props.rawInteractionsActions.deselectPerm(geneIds)
       this.props.selectionActions.deselectSubNode(id)
-
-      const subSelection = this.props.selection.get('subSelection')
-      console.log('deselect called: GENES:::', geneIds, subSelection)
-
+      const subNodes = this.props.selection.get('subSelection').toJS()
+      const currentSelection = this.props.rawInteractions.get('selectedPerm')
+      const subNodeKeys = Object.keys(subNodes)
+      let remaining = Set()
+      subNodeKeys.forEach(key => {
+        remaining = remaining.union(Set(subNodes[key]))
+      })
+      const toBeRemoved = currentSelection.subtract(remaining)
+      this.props.rawInteractionsActions.deselectPerm(toBeRemoved.toJS())
     }
 
     const hoverOutNode = (id, data) => {
@@ -138,11 +141,10 @@ class CirclePackingPanel extends Component {
 
       const geneIds = groups[name]
       this.props.rawInteractionsActions.setSelectedPerm(geneIds)
-      this.props.selectionActions.selectSubNode(nodeId)
-
-      const subSelection = this.props.selection.get('subSelection')
-      console.log('Selected called: GENES:::', geneIds, subSelection)
-
+      this.props.selectionActions.selectSubNode({
+        nodeId,
+        geneIds
+      })
     }
 
     const hoverOnNode = (id, data, parent) => {

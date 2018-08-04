@@ -12,7 +12,7 @@ import {
 
 const defaultState = Map({
   enter: undefined,
-  subSelection: Set()
+  subSelection: Map()
 })
 
 export default handleActions(
@@ -40,22 +40,24 @@ export default handleActions(
     },
 
     [SELECT_SUB_NODE]: (state, action) => {
-      const nodeId = action.payload
+      const nodeId = action.payload.nodeId
+      const genes = action.payload.geneIds
       const currentSelection = state.get('subSelection')
-      const newSet = currentSelection.add(nodeId)
-      return state.set('subSelection', newSet)
+      const newMap = currentSelection.set(nodeId, genes)
+
+      return state.set('subSelection', newMap)
     },
 
     [DESELECT_SUB_NODE]: (state, action) => {
       const nodeId = action.payload
       const currentSelection = state.get('subSelection')
-      const newSet = currentSelection.delete(nodeId)
-      return state.set('subSelection', newSet)
+      const newMap = currentSelection.delete(nodeId)
+      return state.set('subSelection', newMap)
     },
 
     [DESELECT_ALL_SUB_NODES]: (state, action) =>
       // Multiple selection is empty
-      state.set('subSelection', Set())
+      state.set('subSelection', Map())
   },
   defaultState
 )
