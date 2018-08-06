@@ -85,7 +85,14 @@ const createGroups = netAndFilter => {
       nodePropNames.forEach(nodePropName => {
         if(nodePropName.startsWith('Group')) {
           const tagParts = nodePropName.split('_')
-          const tag = tagParts[1]+ ':' + tagParts[2]
+          let tag = tagParts[1]+ ':' + tagParts[2]
+          if(tagParts.length >= 3) {
+            let idx = 3
+            while(idx < tagParts.length) {
+              tag = tag + '-' + tagParts[idx]
+              idx++
+            }
+          }
           const value = nodeData[nodePropName]
 
           if(value) {

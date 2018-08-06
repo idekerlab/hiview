@@ -177,7 +177,6 @@ class CirclePackingPanel extends Component {
       }
 
       const geneIds = groups[name]
-
       if (!geneIds) {
         this.props.rawInteractionsActions.setSelected([])
       } else {
