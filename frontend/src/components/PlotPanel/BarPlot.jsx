@@ -102,7 +102,6 @@ class BarPlot extends Component {
   }
 
   handleBarSelection = (event, title, dataPoints) => {
-    console.log('CLICK BAR22!')
     event.title = title
     console.log(event)
     const genes = dataPoints[event.index][5]

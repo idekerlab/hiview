@@ -73,7 +73,7 @@ class BottomPanel extends Component {
               <CloseIcon onClick={e => this.handleClose()} />
             </IconButton>
             <div style={titleText}>
-              Gene set enrichment by Enricher for subsystem{' '}
+              Gene set enrichment by Enrichr for subsystem{' '}
               <i style={{ color: 'orange' }}>{idExpanded}</i>
             </div>
           </div>
