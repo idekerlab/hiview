@@ -68,12 +68,11 @@ class NetworkPanel extends Component {
 
     const nodeTypeTag = 'NodeType'
     let nodeType = props[nodeTypeTag]
-    if (nodeType === null || nodeType === undefined) {
+    if (!nodeType) {
       nodeType = props['nodeType']
     }
 
-    if (nodeType === null || nodeType === undefined) {
-      // Error handler will be here...
+    if (!nodeType) {
       return
     }
 
@@ -103,14 +102,12 @@ class NetworkPanel extends Component {
     const link = this.props.cxtoolUrl + linkId + '?server=' + serverType
     this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
-    if (props.Size < 500) {
-      // Directly set prop from node attributes
-      this.props.rawInteractionsActions.fetchInteractionsFromUrl(
-        link,
-        this.props.maxEdgeCount
-      )
-      this.props.propertyActions.setProperty(props.id, props, 'term')
-    }
+    // Directly set prop from node attributes
+    this.props.rawInteractionsActions.fetchInteractionsFromUrl(
+      link,
+      this.props.maxEdgeCount
+    )
+    this.props.propertyActions.setProperty(props.id, props, 'term')
   }
 
   selectEdges = (edgeIds, edgeProps) => {
