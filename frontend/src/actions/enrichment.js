@@ -4,6 +4,9 @@ import axios from 'axios'
 const ENRICHR_URL = 'http://amp.pharm.mssm.edu/Enrichr/addList'
 
 const backgrounds = [
+  'GO_Biological_Process_2018',
+  'GO_Cellular_Component_2018',
+  'GO_Molecular_Function_2018',
   'KEGG_2016',
   'Reactome_2016',
   'WikiPathways_2016',

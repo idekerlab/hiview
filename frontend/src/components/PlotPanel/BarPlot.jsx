@@ -78,7 +78,7 @@ class BarPlot extends Component {
         height={this.props.height}
         yType="ordinal"
         stackBy="x"
-        margin={{ left: 270, right: 10, top: 0, bottom: 30 }}
+        margin={{ left: 330, right: 10, top: 0, bottom: 30 }}
       >
         <XAxis />
         <YAxis />
