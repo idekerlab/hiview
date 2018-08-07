@@ -39,7 +39,6 @@ const receiveAnalysisResult = (url, result, subsystemId) => ({
 const send = (url, genes) => {
   const geneString = genes.reduce((gene1, gene2) => gene1 + '\n' + gene2)
   console.log(geneString)
-  const postUrl = 'http://amp.pharm.mssm.edu/Enrichr/addList'
 
   const data = new FormData()
   data.append('list', geneString)
@@ -48,7 +47,7 @@ const send = (url, genes) => {
   // Return promise
   return axios({
     method: 'post',
-    url: postUrl,
+    url: ENRICHR_URL,
     data,
     headers: { 'Content-Type': 'multipart/form-data' }
   })
@@ -100,10 +99,6 @@ export const runEnrichment = (
   }
 }
 
-
-const getResult = (jobId) => {
-
-}
 
 export const addGeneList = createAction(ADD_GENE_LIST)
 export const clearGeneList = createAction(CLEAR_GENE_LIST)

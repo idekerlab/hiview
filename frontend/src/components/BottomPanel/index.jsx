@@ -8,16 +8,12 @@ import PlotPanel from '../PlotPanel'
 
 const panelStyle = {
   width: '100%',
-  height: '26em',
+  height: '320px',
   backgroundColor: 'rgba(255,255,255,1)',
-  padding: 0
+  padding: 0,
+  margin: 0
 }
 
-const plotStyle = {
-  height: 300,
-  width: '100%',
-  background: 'red'
-}
 
 const buttonStyle = {
   paddingLedt: '0.5em'
@@ -78,7 +74,7 @@ class BottomPanel extends Component {
             </div>
           </div>
 
-          <PlotPanel {...this.props} style={plotStyle} />
+          <PlotPanel {...this.props} />
         </div>
       </Drawer>
     )

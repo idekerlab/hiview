@@ -1,8 +1,19 @@
 import React, { Component } from 'react'
+import { Map, List } from 'immutable'
 
-import { XYPlot, XAxis, YAxis, HorizontalBarSeries } from 'react-vis'
+import {
+  XYPlot,
+  XAxis,
+  YAxis,
+  HorizontalBarSeries,
+  DiscreteColorLegend
+} from 'react-vis'
 
 const RANKING_MAX = 10
+
+const ADJ_PVAL_IDX = 6
+
+const VALS = ['Adjusted p-value (-log10)']
 
 class BarPlot extends Component {
   constructor() {
@@ -13,12 +24,11 @@ class BarPlot extends Component {
     }
   }
 
-
   shouldComponentUpdate(nextProps, nextState) {
     const dataPoints = this.props.data
     const newDataPoints = nextProps.data
 
-    if(dataPoints === newDataPoints) {
+    if (dataPoints === newDataPoints) {
       return false
     }
 
@@ -28,63 +38,63 @@ class BarPlot extends Component {
   render() {
     const dataPoints = this.props.data
 
-
     // Create label-value array
-    const dataMap = new Map()
+    const dataMap = {}
 
     dataPoints.forEach(data => {
-      dataMap.set(data[1].split('_')[0], data[4])
+      dataMap[data[1].split('_')[0]] = data[ADJ_PVAL_IDX]
     })
 
-    const sorted = new Map([...dataMap.entries()].sort((a, b) => (a[1] - b[1])))
+    const sorted = Map(dataMap).sort((f1, f2) => {
+      const a = parseFloat(f1)
+      const b = parseFloat(f2)
 
+      if (a < b) {
+        return -1
+      }
+      if (a > b) {
+        return 1
+      }
+      if (a === b) {
+        return 0
+      }
+    })
 
-    const { selectedIndex } = this.state
+    // const { selectedIndex } = this.state
 
     // Sort
     const max =
       dataPoints.length < RANKING_MAX ? dataPoints.length : RANKING_MAX
 
-    // Pick top 10 data
+    // Pick top n (default = 10) data
     const originalData = [...sorted.entries()].slice(0, max)
 
     const data = originalData.map((d, i) => ({
       y: d[0],
-      x: d[1],
+      x: -Math.log10(d[1]),
       index: i
     }))
 
-    // data.forEach(d => {
-    //   if (selectedIndex === -1) {
-    //     d.opacity = 1
-    //   } else {
-    //     if (d.index === selectedIndex) {
-    //       d.opacity = 1
-    //       d.color = 2
-    //     } else {
-    //       d.opacity = 0.2
-    //     }
-    //   }
-    // })
-
-    // console.log(data)
+    const reversed = List([...data])
+      .reverse()
+      .toJS()
 
     return (
       <XYPlot
         colorType="category"
         onMouseLeave={() => this.setState({ selectedIndex: -1 })}
-        animation={false}
-        width={530}
+        animation={true}
+        width={1200}
         height={this.props.height}
         yType="ordinal"
         stackBy="x"
-        margin={{ left: 330, right: 10, top: 0, bottom: 30 }}
+        margin={{ left: 550, right: 10, top: 0, bottom: 30 }}
       >
         <XAxis />
         <YAxis />
 
         <HorizontalBarSeries
-          data={data}
+          data={reversed}
           onValueClick={event =>
             this.handleBarSelection(event, this.props.title, dataPoints)
           }

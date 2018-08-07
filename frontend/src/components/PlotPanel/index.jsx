@@ -1,31 +1,58 @@
 import React from 'react'
-import Typography from 'material-ui/Typography'
+
+import Tabs, { Tab } from 'material-ui/Tabs'
 import style from './style.css'
 
 import BarPlot from './BarPlot'
 import Progress from './Progress'
 
-const PlotPanel = props => {
-  const containerStyle = {
-    height: '100%',
+const containerStyle = {
+  paddingTop: '0.5em',
+  margin: 0,
+  overflow: 'scroll',
+  width: '80%'
+}
 
-    overflow: 'scroll',
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-    marginTop: '-3em',
-    padding: 0
+class PlotPanel extends React.Component {
+  state = {
+    idx: 0
   }
 
-  const loading = props.enrichment.get('running')
-  if (loading) {
+  handleChange = (event, idx) => {
+    this.setState({ idx })
+  }
 
-    return <Progress />
-  } else if (props.data === null) {
-    return <div />
-  } else {
-    return <div style={containerStyle}>{plots(props)}</div>
+  render() {
+    const { idx } = this.state
+
+    const loading = this.props.enrichment.get('running')
+    if (loading) {
+      return <Progress />
+    } else if (this.props.data === null) {
+      return <div />
+    } else {
+      const titles = Object.keys(this.props.data)
+      const plotList = plots(this.props)
+
+      return (
+        <div style={containerStyle}>
+          <Tabs
+            value={idx}
+            scrollable={true}
+            onChange={this.handleChange}>
+            {titles.map((title, i) => {
+              return <Tab key={i} label={title} />
+            })}
+          </Tabs>
+
+          {this.getPanel(plotList, idx)}
+        </div>
+      )
+    }
+  }
+
+  getPanel = (panels, idx) => {
+    return panels[idx]
   }
 }
 
@@ -35,10 +62,7 @@ const plots = props => {
   for (let [k, v] of Object.entries(props.data)) {
     plotList.push(
       <div className={style.plotContainer} key={k}>
-        <Typography variant="subheading" gutterBottom>
-          {k}
-        </Typography>
-        <BarPlot height={240} data={v} title={k} />
+        <BarPlot height={220} data={v} title={k} />
       </div>
     )
   }
