@@ -39,6 +39,7 @@ class MainPanel extends React.Component {
   handleStart = event => {
     const query = this.state.query
     if (query !== '') {
+
       this.search(query)
     }
   }
@@ -50,6 +51,9 @@ class MainPanel extends React.Component {
   }
 
   search = query => {
+    this.props.searchActions.clear()
+    this.props.commandActions.reset()
+
     const index = this.props.network.index
 
     const results = index.search(query)
