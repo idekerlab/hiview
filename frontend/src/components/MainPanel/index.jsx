@@ -181,6 +181,7 @@ export default class MainPanel extends Component {
           uiState={uiState}
           uiStateActions={uiStateActions}
           maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
+          originalEdgeCount={this.props.rawInteractions.get('originalEdgeCount')}
         />
 
         <FullSearch

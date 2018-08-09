@@ -16,7 +16,8 @@ import * as StyleFactory from './StyleFactory'
 
 import LayoutSelector from '../LayoutSelector'
 import EmptyInteractionPanel from './EmptyInteractionPanel.jsx'
-import MaxEdgePanel from './MaxEdgePanel';
+import MaxEdgePanel from './MaxEdgePanel'
+import MessageBar from './MessageBar'
 
 const controlWrapperStyle = {
   width: '100%',
@@ -205,7 +206,13 @@ class TermDetailsPanel extends Component {
             enrichmentActions={this.props.enrichmentActions}
             uiState={this.props.uiState}
           />
+
         )}
+
+        <MessageBar
+          originalEdgeCount={this.props.originalEdgeCount}
+          maxEdgeCount={this.props.maxEdgeCount}
+        />
 
         <div style={{ zIndex: 1111 }}>
           <div style={controlWrapperStyle}>

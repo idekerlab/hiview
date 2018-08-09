@@ -3,6 +3,7 @@ import {
   RECEIVE_INTERACTIONS,
   SET_VALUE,
   SET_MAX_EDGE_COUNT,
+  SET_ORIGINAL_EDGE_COUNT,
   SET_SELECTED,
   SET_SELECTED_PERM,
   DESELECT_PERM,
@@ -18,6 +19,7 @@ const defState = Map({
   filters: null,
   extraEdges: null,
   maxEdgeCount: DEF_MAX_EDGE_COUNT,
+  originalEdgeCount: 0,
   selected: [],
   selectedPerm: Set()
 })
@@ -25,7 +27,9 @@ const defState = Map({
 export default function networkState(state = defState, action) {
   switch (action.type) {
     case FETCH_INTERACTIONS:
-      return state.set('loading', true).set('interactions', null)
+      return state.set('loading', true)
+        .set('interactions', null)
+        .set('originalEdgeCount', 0)
     case RECEIVE_INTERACTIONS:
       return state
         .set('loading', false)
@@ -57,6 +61,8 @@ export default function networkState(state = defState, action) {
       return state.set('filters', filters)
     case SET_MAX_EDGE_COUNT:
       return state.set('maxEdgeCount', action.payload)
+    case SET_ORIGINAL_EDGE_COUNT:
+      return state.set('originalEdgeCount', action.payload)
 
     case SET_SELECTED:
       return state.set('selected', action.payload)

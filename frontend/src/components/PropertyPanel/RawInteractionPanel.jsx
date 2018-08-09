@@ -7,13 +7,10 @@ import { Set } from 'immutable'
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
 class RawInteractionPanel extends Component {
-
-
   componentWillReceiveProps(nextProps) {
-
     const runAnalysys = nextProps.uiState.get('runEnrichment')
 
-    if(!runAnalysys) {
+    if (!runAnalysys) {
       return
     }
 
@@ -26,7 +23,7 @@ class RawInteractionPanel extends Component {
       return
     }
 
-    if(newNetwork === null || newNetwork === undefined) {
+    if (newNetwork === null || newNetwork === undefined) {
       return
     }
 
@@ -35,10 +32,8 @@ class RawInteractionPanel extends Component {
     const subsystemId = this.props.enrichment.get('subsystemId')
     const nextSubsystemId = nextProps.selectedTerm
 
-    if (subsystemId === null || (subsystemId !== nextSubsystemId)) {
-
-
-      if(lastRunning) {
+    if (subsystemId === null || subsystemId !== nextSubsystemId) {
+      if (lastRunning) {
         return
       }
 
@@ -78,7 +73,6 @@ class RawInteractionPanel extends Component {
 
     if (newNet === null || newNet === undefined || visualStyle === null) {
       return <div />
-
     }
 
     const filters = this.props.filters
@@ -143,12 +137,12 @@ class RawInteractionPanel extends Component {
   checkPresetLayout = network => {
     const nodes = network.elements.nodes
     const sampleNode = nodes[0]
-    if(!sampleNode) {
+    if (!sampleNode) {
       return 'cose-bilkent'
     }
 
     const position = sampleNode.position
-    if(position.x === 0 && position.y === 0) {
+    if (position.x === 0 && position.y === 0) {
       return 'cose-bilkent'
     } else {
       return 'preset'
@@ -167,7 +161,6 @@ class RawInteractionPanel extends Component {
 
     this.props.selectionActions.selectNode(newSelectionState)
   }
-
 
   commandFinished = (lastCommand, status = {}) => {
     this.props.commandActions.clearCommand()
