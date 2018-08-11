@@ -12,14 +12,16 @@ const BASE_STYLE = {
   node: {
     'selector': 'node',
     'css': {
-      'width': 40,
-      'height': 15,
+      'width': 48,
+      'height': 13,
       'shape': 'roundrectangle',
       'text-valign': 'center',
       'text-halign': 'center',
-      'color': '#EEEEEE',
-      'background-color': '#000000',
-      'font-size': 9,
+      'color': '#FFFFFF',
+      'background-opacity': 0,
+      'background-color': '#222222',
+      'border-width': 0,
+      'font-size': 10,
       'label': 'data(name)',
     },
   },
@@ -27,10 +29,11 @@ const BASE_STYLE = {
     'selector': 'node:selected',
     'css': {
       'shape': 'ellipse',
-      'width': 55,
-      'height': 55,
-      'font-size': 15,
-      color: '#444444',
+      'width': 60,
+      'height': 60,
+      'font-size': 12,
+      color: '#FFFFFF',
+      'background-opacity': 1,
       'background-color': '#FF0000'
     },
   },
@@ -99,7 +102,7 @@ export const createStyle = originalNetwork => {
 
   const edgeStyle = BASE_STYLE.edge
 
-  edgeStyle.css['width'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 4)`
+  edgeStyle.css['width'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.7, 3)`
   edgeStyle.css['line-color'] = (d) => {
     if (d.data(primaryEdgeType) === undefined) {
       return '#aaaaaa'
@@ -108,7 +111,7 @@ export const createStyle = originalNetwork => {
     }
   }
 
-  edgeStyle.css['opacity'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.2, 0.95)`
+  edgeStyle.css['opacity'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.6, 1)`
   edgeStyle.css['display'] = (d) => {
 
     if (d.data(primaryEdgeType) === undefined) {
