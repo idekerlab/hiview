@@ -37,8 +37,8 @@ const EXAMPLE_UUIDS = {
   [DEFAULT_EXAMPLE]: 'dcc10ad6-8b85-11e8-9d1c-0660b7976219',
   'New example 2 (preset layout)': '5c397367-8f73-11e8-9a23-0660b7976219',
   'DNA Repair': 'ab704ae4-0719-11e8-b03c-0660b7976219',
-  'Large hierarchy': '7ae8907a-b395-11e7-b629-0660b7976219',
-  '80K Subsystems': '77c476e6-2bb1-11e8-84e4-0660b7976219'
+  'louvain_hierarchy_0.4.ont': '1bb9e2a4-99b4-11e8-9a23-0660b7976219',
+  '55.5K Subsystems': 'a82a5344-9f56-11e8-9a23-0660b7976219'
 }
 
 class SourceSelector extends Component {

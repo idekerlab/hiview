@@ -244,7 +244,6 @@ class TermDetailsPanel extends Component {
                   uiState={this.props.uiState}
                   uiStateActions={this.props.uiStateActions}
                   rawInteractionsActions={this.props.rawInteractionsActions}
-
                 />
               </div>
             )}

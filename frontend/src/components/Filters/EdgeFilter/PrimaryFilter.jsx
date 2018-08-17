@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
 import {withStyles} from 'material-ui/styles'
 
+import TextField from 'material-ui/TextField'
+import Button from 'material-ui/Button'
+
 
 import Slider, {createSliderWithTooltip} from 'rc-slider'
 import 'rc-slider/assets/index.css'
