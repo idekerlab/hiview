@@ -31,16 +31,16 @@ const BASE_STYLE = {
       'shape': 'ellipse',
       'width': 60,
       'height': 60,
-      'font-size': 12,
-      color: '#FFFFFF',
+      'font-size': 11,
+      color: '#333333',
       'background-opacity': 1,
-      'background-color': '#FF0000'
+      'background-color': '#FFFFFF'
     },
   },
   edge: {
     'selector': 'edge',
     'css': {
-      width: 4,
+      width: 1,
       'line-color': '#555555',
       opacity: 1,
       "curve-style": "bezier",
@@ -52,7 +52,7 @@ const BASE_STYLE = {
     'selector': 'edge:selected',
     'css': {
       // 'line-color': 'rgb(255,0,0)',
-      'width': 10,
+      'width': 30,
       opacity: 1,
       'label': 'data(interaction)',
       'color': '#FFFFFF'
@@ -82,13 +82,24 @@ export const createStyle = originalNetwork => {
     return null
   }
 
+  const edges = network.interactions.elements.edges
+
+
+
+
   const networkData = interactions.data
   let primaryEdgeType = networkData[MAIN_INTERACTION_TYPE_TAG]
 
-  // This is the generator for custom styling
-  const similarityMin = networkData[`${primaryEdgeType} ${ATTR_TYPES.MIN}`]
-  const similarityMax = networkData[`${primaryEdgeType} ${ATTR_TYPES.MAX}`]
 
+  // This is the generator for custom styling
+  // const similarityMin = networkData[`${primaryEdgeType} ${ATTR_TYPES.MIN}`]
+  // const similarityMax = networkData[`${primaryEdgeType} ${ATTR_TYPES.MAX}`]
+
+  // Need to remove space due to current cxtool limitation
+  primaryEdgeType = primaryEdgeType.replace(/ /g, '_')
+
+  const similarityMax = edges[0].data[primaryEdgeType]
+  const similarityMin = edges[edges.length - 1].data[primaryEdgeType]
 
   // const colorScale = d3Scale.scaleSequential(d3ScaleChromatic.interpolateGnBu)
   //   .domain([parentWidth,0])
@@ -97,12 +108,13 @@ export const createStyle = originalNetwork => {
     similarityMax,
   ])
 
-  // Need to remove space due to current cxtool limitation
-  primaryEdgeType = primaryEdgeType.replace(/ /g, '_')
+
+
+  // console.log(primaryEdgeType, '#CUR range = ', similarityMin, similarityMax)
 
   const edgeStyle = BASE_STYLE.edge
 
-  edgeStyle.css['width'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.7, 3)`
+  edgeStyle.css['width'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.1, 25)`
   edgeStyle.css['line-color'] = (d) => {
     if (d.data(primaryEdgeType) === undefined) {
       return '#aaaaaa'
@@ -111,7 +123,7 @@ export const createStyle = originalNetwork => {
     }
   }
 
-  edgeStyle.css['opacity'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.6, 1)`
+  edgeStyle.css['opacity'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 1)`
   edgeStyle.css['display'] = (d) => {
 
     if (d.data(primaryEdgeType) === undefined) {

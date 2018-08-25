@@ -16,7 +16,7 @@ import { withStyles } from 'material-ui/styles'
 
 import { blueGrey } from 'material-ui/colors'
 
-const MAX_WIDTH = 450.0
+const MAX_WIDTH = 900.0
 const MIN_WIDTH = 350.0
 
 const PANEL_TYPES = {
@@ -54,7 +54,7 @@ class PropertyPanel extends Component {
     this.state = {
       open: false,
       panelWidth: this.getWidth(),
-      panelHeight: window.innerHeight * 0.4,
+      panelHeight: window.innerHeight * 0.5,
       expand: false
     }
   }
@@ -73,7 +73,7 @@ class PropertyPanel extends Component {
     if (expand) {
       this.setState({
         panelWidth: this.getWidth(),
-        panelHeight: window.innerHeight * 0.4,
+        panelHeight: window.innerHeight * 0.5,
         expand: false
       })
     } else {
@@ -99,7 +99,7 @@ class PropertyPanel extends Component {
   }
 
   getWidth = () => {
-    let w = window.innerWidth * 0.45
+    let w = window.innerWidth * 0.5
     if (w > MAX_WIDTH) {
       w = MAX_WIDTH
     }

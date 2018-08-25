@@ -50,7 +50,7 @@ class RawInteractionPanel extends Component {
     let containerStyle = {
       width: '100%',
       height: this.props.panelHeight,
-      background: '#292929',
+      background: '#999999',
       flexGrow: 3
     }
 

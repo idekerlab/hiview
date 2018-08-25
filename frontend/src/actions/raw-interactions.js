@@ -33,23 +33,33 @@ export const fetchInteractionsFromUrl = (url, maxEdgeCount = 500) => {
   return dispatch => {
     dispatch(fetchNetwork(url))
 
+    const t0 = performance.now()
+    let t1, t2, t3, t4
+
     return fetchNet(url)
       .then(response => {
         if (!response.ok) {
           throw Error(response.statusText)
         } else {
+          t1 = performance.now()
+          console.log('Data fetch  TIME = ', t1-t0)
           return response.json()
         }
       })
       .then(network => {
         dispatch(setOriginalEdgeCount(network.elements.edges.length))
+        t2 = performance.now()
+        console.log('Data Update TIME = ', t2-t1)
         return network
       })
       .then(network => sortEdges(network, maxEdgeCount))
       .then(network => createFilter(network, maxEdgeCount))
       .then(netAndFilter => createGroups(netAndFilter))
-      .then(netAndFilter =>
-        dispatch(
+      .then(netAndFilter => {
+        t3 = performance.now()
+        console.log('* total Update TIME = ', t3-t0)
+
+        return dispatch(
           receiveNetwork(
             url,
             netAndFilter[0],
@@ -57,7 +67,7 @@ export const fetchInteractionsFromUrl = (url, maxEdgeCount = 500) => {
             netAndFilter[2],
             netAndFilter[3]
           )
-        )
+        )}
       )
       .catch(err => {
         console.log('Raw interaction fetch ERROR! ', err)
@@ -148,6 +158,7 @@ const compareBy = fieldName => (a, b) => {
 }
 
 const sortEdges = (network, maxEdgeCount) => {
+
   let mainEdgeType = network.data[MAIN_EDGE_TAG]
   if (mainEdgeType !== undefined) {
     mainEdgeType = mainEdgeType.replace(/ /g, '_')
@@ -155,13 +166,21 @@ const sortEdges = (network, maxEdgeCount) => {
   const nodes = network.elements.nodes
   const edges = network.elements.edges
 
+  console.log("Original nodes = ", nodes.length)
+
   const edgeCount = edges.length
   if (edgeCount < maxEdgeCount) {
     return network
   }
 
+  const t0 = performance.now()
   edges.sort(compareBy(mainEdgeType))
-  // edges.sort(compareBy('RF_score'))
+  const t1 = performance.now()
+  console.log('Edge Sort TIME = ', t1-t0)
+
+  const maxScore = edges[0].data[mainEdgeType]
+  const minScore = edges[edges.length-1].data[mainEdgeType]
+  console.log("MAX / MIN = ", maxScore, minScore)
 
   const subset = edges.slice(0, maxEdgeCount)
   const subsetLen = subset.length
@@ -186,6 +205,8 @@ const sortEdges = (network, maxEdgeCount) => {
   }
   network.elements.edges = subset
   network.elements.nodes = newNodes
+
+  console.log("new nodes = ", newNodes.length)
 
   return network
 }
