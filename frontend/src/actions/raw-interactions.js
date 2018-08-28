@@ -4,6 +4,10 @@ const THRESHOLD_TAG = 'Main Feature Default Cutoff'
 const PATTERN = /[ -]/g
 import { createAction } from 'redux-actions'
 
+const NDEX_PUBLIC_API = 'http://test.ndexbio.org/v2'
+
+
+
 export const FETCH_INTERACTIONS = 'FETCH_INTERACTIONS'
 const fetchNetwork = url => {
   return {
@@ -26,30 +30,40 @@ const receiveNetwork = (url, network, filters, groups, extraEdges) => {
 
 
 const fetchNet = url => {
+  console.log("Loading: ", url)
   return fetch(url)
 }
 
-export const fetchInteractionsFromUrl = (url, maxEdgeCount = 500) => {
+export const fetchInteractionsFromUrl = (uuid, server, url, maxEdgeCount = 500) => {
   return dispatch => {
     dispatch(fetchNetwork(url))
 
     const t0 = performance.now()
     let t1, t2, t3, t4
 
+
+    // return fetchNet(NDEX_PUBLIC_API + '/network/' + uuid)
+    //   .then(response => response.json())
+    //   .then(netJson => {
+    //     const t01 = performance.now()
+    //     console.log(netJson, url, ' :NDEx Data fetch  TIME = ', t01-t0)
+    //
+    //   })
+
+
     return fetchNet(url)
       .then(response => {
+        let t10 = performance.now()
+        console.log(url, ' :Data fetch  TIME = ', t10-t0)
+
         if (!response.ok) {
           throw Error(response.statusText)
         } else {
-          t1 = performance.now()
-          console.log('Data fetch  TIME = ', t1-t0)
           return response.json()
         }
       })
       .then(network => {
         dispatch(setOriginalEdgeCount(network.elements.edges.length))
-        t2 = performance.now()
-        console.log('Data Update TIME = ', t2-t1)
         return network
       })
       .then(network => sortEdges(network, maxEdgeCount))

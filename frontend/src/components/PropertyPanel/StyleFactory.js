@@ -31,10 +31,10 @@ const BASE_STYLE = {
       'shape': 'ellipse',
       'width': 60,
       'height': 60,
-      'font-size': 11,
-      color: '#333333',
+      'font-size': 10,
+      color: '#FFFFFF',
       'background-opacity': 1,
-      'background-color': '#FFFFFF'
+      'background-color': '#FF0000'
     },
   },
   edge: {

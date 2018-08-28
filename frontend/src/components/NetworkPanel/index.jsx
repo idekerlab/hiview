@@ -104,6 +104,8 @@ class NetworkPanel extends Component {
 
     // Directly set prop from node attributes
     this.props.rawInteractionsActions.fetchInteractionsFromUrl(
+      linkId,
+      serverType,
       link,
       this.props.maxEdgeCount
     )

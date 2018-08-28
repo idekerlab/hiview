@@ -92,11 +92,18 @@ const filterNodes = network => {
 
 export const fetchNetworkFromUrl = url => {
 
+
+  console.log('Main network loading: start')
+  
+  const t0 = performance.now()
   return dispatch => {
     dispatch(fetchNetwork(url))
 
     return fetch(url)
       .then(response => {
+        const t1 = performance.now()
+        console.log('Main network fetch TIME = ', t1-t0)
+
         if (!response.ok) {
           throw Error(response.statusText)
         } else {
