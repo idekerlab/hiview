@@ -162,6 +162,11 @@ class RawInteractionPanel extends Component {
     this.props.selectionActions.selectNode(newSelectionState)
   }
 
+  selectEdges = (edgeIds, edgeProps) => {
+
+    console.log('Selected Edge:', edgeIds, edgeProps)
+  }
+
   commandFinished = (lastCommand, status = {}) => {
     this.props.commandActions.clearCommand()
   }
@@ -169,7 +174,7 @@ class RawInteractionPanel extends Component {
   // Then use it as a custom handler
   getCustomEventHandlers = () => ({
     selectNodes: this.selectNodes,
-    // selectEdges: this.selectEdges,
+    selectEdges: this.selectEdges,
     commandFinished: this.commandFinished
   })
 }

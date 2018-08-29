@@ -30,7 +30,6 @@ const receiveNetwork = (url, network, filters, groups, extraEdges) => {
 
 
 const fetchNet = url => {
-  console.log("Loading: ", url)
   return fetch(url)
 }
 
@@ -39,22 +38,11 @@ export const fetchInteractionsFromUrl = (uuid, server, url, maxEdgeCount = 500) 
     dispatch(fetchNetwork(url))
 
     const t0 = performance.now()
-    let t1, t2, t3, t4
-
-
-    // return fetchNet(NDEX_PUBLIC_API + '/network/' + uuid)
-    //   .then(response => response.json())
-    //   .then(netJson => {
-    //     const t01 = performance.now()
-    //     console.log(netJson, url, ' :NDEx Data fetch  TIME = ', t01-t0)
-    //
-    //   })
-
 
     return fetchNet(url)
       .then(response => {
-        let t10 = performance.now()
-        console.log(url, ' :Data fetch  TIME = ', t10-t0)
+        let t1 = performance.now()
+        console.log(url, ' :Data fetch  TIME = ', t1-t0)
 
         if (!response.ok) {
           throw Error(response.statusText)
@@ -70,8 +58,8 @@ export const fetchInteractionsFromUrl = (uuid, server, url, maxEdgeCount = 500) 
       .then(network => createFilter(network, maxEdgeCount))
       .then(netAndFilter => createGroups(netAndFilter))
       .then(netAndFilter => {
-        t3 = performance.now()
-        console.log('* total Update TIME = ', t3-t0)
+        const t3 = performance.now()
+        console.log('* Total raw interaction update time = ', t3-t0)
 
         return dispatch(
           receiveNetwork(

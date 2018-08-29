@@ -29,9 +29,9 @@ const BASE_STYLE = {
     'selector': 'node:selected',
     'css': {
       'shape': 'ellipse',
-      'width': 60,
-      'height': 60,
-      'font-size': 10,
+      'width': 40,
+      'height': 40,
+      'font-size': 11,
       color: '#FFFFFF',
       'background-opacity': 1,
       'background-color': '#FF0000'
@@ -46,25 +46,36 @@ const BASE_STYLE = {
       "curve-style": "bezier",
       "control-point-step-size": 45
       // 'haystack-radius': '0.8'
-    },
+    }
   },
   edgeSelected: {
     'selector': 'edge:selected',
     'css': {
-      // 'line-color': 'rgb(255,0,0)',
-      'width': 30,
       opacity: 1,
-      'label': 'data(interaction)',
-      'color': '#FFFFFF'
-    },
+      // 'line-color': '#FF0000'
+      // width: 15
+      // 'label': 'data(interaction)',
+      // 'color': '#FFFFFF'
+    }
   },
   hidden: {
     selector: '.hidden',
     css: {
-      // display: 'none',
-      'line-color': 'blue',
-      // visibility: 'hidden'
-    },
+      'line-color': '#444444',
+      'background-color': '#444444',
+      opacity: 0.2,
+      color: '#FFFFFF'
+    }
+  },
+  seed: {
+    selector: '.seed',
+    css: {
+      'background-color': '#FFFFFF',
+      color: '#FF0000',
+      'width': 50,
+      'height': 50,
+
+    }
   }
 }
 
@@ -83,8 +94,6 @@ export const createStyle = originalNetwork => {
   }
 
   const edges = network.interactions.elements.edges
-
-
 
 
   const networkData = interactions.data
@@ -109,14 +118,13 @@ export const createStyle = originalNetwork => {
   ])
 
 
-
   // console.log(primaryEdgeType, '#CUR range = ', similarityMin, similarityMax)
 
   const edgeStyle = BASE_STYLE.edge
 
-  edgeStyle.css['width'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.1, 25)`
+  edgeStyle.css['width'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.1, 10)`
   edgeStyle.css['line-color'] = (d) => {
-    if (d.data(primaryEdgeType) === undefined) {
+    if (!d.data(primaryEdgeType)) {
       return '#aaaaaa'
     } else {
       return colorScale(d.data(primaryEdgeType))
@@ -124,31 +132,34 @@ export const createStyle = originalNetwork => {
   }
 
   edgeStyle.css['opacity'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 1)`
-  edgeStyle.css['display'] = (d) => {
-
-    if (d.data(primaryEdgeType) === undefined) {
-      return 'none'
-    }
-    return 'element'
-  }
-
-
+  // edgeStyle.css['display'] = (d) => {
+  //
+  //   if (!d.data(primaryEdgeType)) {
+  //     return 'none'
+  //   }
+  //   return 'element'
+  // }
+  //
+  //
   // Define edge selection style
   const edgeSelectedStyle = BASE_STYLE.edgeSelected
 
-  edgeSelectedStyle.css['label'] = d => {
-    const primaryScore = d.data(primaryEdgeType)
-
-    const edgeType = d.data('interaction')
-    if (edgeType !== undefined) {
-      return d.data('interaction')
-    }
-    return primaryScore.toFixed(5)
-  }
+  // edgeSelectedStyle.css['label'] = d => {
+  //   const primaryScore = d.data(primaryEdgeType)
+  //
+  //   const edgeType = d.data('interaction')
+  //   if (!edgeType) {
+  //     return d.data('interaction')
+  //   }
+  //   if(primaryScore && (typeof primaryScore === 'number')) {
+  //     return primaryScore.toFixed(5)
+  //   }
+  //   return '-'
+  // }
 
   return {
     'style': [
       BASE_STYLE.node, BASE_STYLE.nodeSelected,
-      edgeStyle, edgeSelectedStyle, BASE_STYLE.hidden],
+      edgeStyle, edgeSelectedStyle, BASE_STYLE.hidden, BASE_STYLE.seed],
   }
 }
