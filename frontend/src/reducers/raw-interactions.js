@@ -11,7 +11,7 @@ import {
 } from '../actions/raw-interactions'
 import { Map, Set } from 'immutable'
 
-const DEF_MAX_EDGE_COUNT = 500
+const DEF_MAX_EDGE_COUNT = 1000
 
 const defState = Map({
   loading: false,

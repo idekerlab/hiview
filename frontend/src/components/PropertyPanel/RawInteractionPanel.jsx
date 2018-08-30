@@ -163,8 +163,7 @@ class RawInteractionPanel extends Component {
   }
 
   selectEdges = (edgeIds, edgeProps) => {
-
-    console.log('Selected Edge:', edgeIds, edgeProps)
+    // console.log('Selected Edge:', edgeIds, edgeProps)
   }
 
   commandFinished = (lastCommand, status = {}) => {

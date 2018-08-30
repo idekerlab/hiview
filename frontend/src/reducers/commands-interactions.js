@@ -1,4 +1,5 @@
 import {handleActions} from 'redux-actions'
+import {FIT, FIT_SELECTED} from '../actions/commands-interactions'
 
 const defaultState = {
   command: '',
@@ -30,8 +31,12 @@ export default handleActions({
     command: 'expandEdges',
     parameters: action.payload
   }),
-  FIT: (state, action) => ({
+  [FIT]: (state, action) => ({
     command: 'fit',
+    parameters: action.payload
+  }),
+  [FIT_SELECTED]: (state, action) => ({
+    command: 'fitSelected',
     parameters: action.payload
   }),
   COLLAPSE_EDGES: (state, action) => ({

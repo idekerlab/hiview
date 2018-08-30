@@ -1,15 +1,16 @@
-import React, {Component} from 'react'
-import { withStyles } from 'material-ui/styles';
+import React, { Component } from 'react'
+import { withStyles } from 'material-ui/styles'
 
-import { MenuItem } from 'material-ui/Menu';
-import { FormControl, FormHelperText } from 'material-ui/Form';
-import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu'
+import { FormControl, FormHelperText } from 'material-ui/Form'
+import Select from 'material-ui/Select'
 
-import Button from 'material-ui/Button';
-import ApplyIcon from 'material-ui-icons/Refresh';
+import Button from 'material-ui/Button'
+import IconButton from 'material-ui/IconButton'
 
-import FitContent from "material-ui-icons/ZoomOutMap";
-
+import ApplyIcon from 'material-ui-icons/Refresh'
+import FitContent from 'material-ui-icons/ZoomOutMap'
+import FitSelected from 'material-ui-icons/CenterFocusStrong'
 
 // Base style
 const styles = theme => ({
@@ -27,9 +28,11 @@ const styles = theme => ({
   button: {
     margin: theme.spacing.unit,
     height: '1em'
+  },
+  icon: {
+    fontSize: '2em'
   }
 })
-
 
 const LAYOUTS = {
   PRESET: 'preset',
@@ -40,17 +43,16 @@ const LAYOUTS = {
   BREADTHFIRST: 'breadthfirst'
 }
 
-
 class LayoutSelector extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      layout: LAYOUTS.COSE,
-    };
+      layout: LAYOUTS.COSE
+    }
   }
 
   handleChange = name => event => {
-    this.setState({ [name]: event.target.value });
+    this.setState({ [name]: event.target.value })
   }
 
   handleClick = event => {
@@ -58,7 +60,6 @@ class LayoutSelector extends Component {
     this.props.commandActions.applyLayout({
       name: layoutName,
       options: {}
-
     })
   }
 
@@ -66,12 +67,16 @@ class LayoutSelector extends Component {
     this.props.commandActions.fit()
   }
 
+  handleFitSelected = event => {
+    console.log('fitSelected:')
+    this.props.commandActions.fitSelected()
+  }
+
   render() {
     const { classes } = this.props
 
-    return(
+    return (
       <div className={classes.root}>
-
         <FormControl className={classes.formControl}>
           <Select
             value={this.state.layout}
@@ -90,20 +95,31 @@ class LayoutSelector extends Component {
         <Button
           className={classes.button}
           variant="raised"
-          color='primary'
+          color="primary"
           onClick={this.handleClick}
+          size='small'
         >
-          Apply
-          <ApplyIcon/>
+          <ApplyIcon className={classes.icon} />
         </Button>
 
         <Button
           className={classes.button}
           variant="raised"
-          color='default'
+          color="default"
           onClick={this.handleFit}
+          size='small'
         >
-          <FitContent/>
+          <FitContent className={classes.icon} />
+        </Button>
+
+        <Button
+          className={classes.button}
+          variant="raised"
+          color="default"
+          onClick={this.handleFitSelected}
+          size='small'
+        >
+          <FitSelected className={classes.icon} />
         </Button>
       </div>
     )
@@ -111,4 +127,3 @@ class LayoutSelector extends Component {
 }
 
 export default withStyles(styles)(LayoutSelector)
-

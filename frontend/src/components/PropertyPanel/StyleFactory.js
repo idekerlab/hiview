@@ -63,8 +63,8 @@ const BASE_STYLE = {
     css: {
       'line-color': '#444444',
       'background-color': '#444444',
-      opacity: 0.2,
-      color: '#FFFFFF'
+      opacity: 0.3,
+      color: '#222222'
     }
   },
   seed: {
