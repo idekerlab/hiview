@@ -94,10 +94,11 @@ const TopPage = props => {
             HiView {version}
           </Typography>
 
-
           <div className={classes.barButtons}>
             <IconButton onClick={handleClickHelp}>
-              <HelpIcon style={{color: 'white', width: '2em', height: '2em'}}/>
+              <HelpIcon
+                style={{ color: 'white', width: '2em', height: '2em' }}
+              />
             </IconButton>
             <IconButton onClick={handleClickGh}>
               <img src={GitHubIcon} className={classes.logo} />

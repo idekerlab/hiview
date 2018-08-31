@@ -6,8 +6,6 @@ import { createAction } from 'redux-actions'
 
 const NDEX_PUBLIC_API = 'http://test.ndexbio.org/v2'
 
-
-
 export const FETCH_INTERACTIONS = 'FETCH_INTERACTIONS'
 const fetchNetwork = url => {
   return {
@@ -28,12 +26,16 @@ const receiveNetwork = (url, network, filters, groups, extraEdges) => {
   }
 }
 
-
 const fetchNet = url => {
   return fetch(url)
 }
 
-export const fetchInteractionsFromUrl = (uuid, server, url, maxEdgeCount = 500) => {
+export const fetchInteractionsFromUrl = (
+  uuid,
+  server,
+  url,
+  maxEdgeCount = 500
+) => {
   return dispatch => {
     dispatch(fetchNetwork(url))
 
@@ -42,7 +44,7 @@ export const fetchInteractionsFromUrl = (uuid, server, url, maxEdgeCount = 500) 
     return fetchNet(url)
       .then(response => {
         let t1 = performance.now()
-        console.log(url, ' :Data fetch  TIME = ', t1-t0)
+        console.log(url, ' :Data fetch  TIME = ', t1 - t0)
 
         if (!response.ok) {
           throw Error(response.statusText)
@@ -59,7 +61,11 @@ export const fetchInteractionsFromUrl = (uuid, server, url, maxEdgeCount = 500) 
       .then(netAndFilter => createGroups(netAndFilter))
       .then(netAndFilter => {
         const t3 = performance.now()
-        console.log('* Total raw interaction update time = ', t3-t0)
+        console.log(
+          netAndFilter,
+          '* Total raw interaction update time = ',
+          t3 - t0
+        )
 
         return dispatch(
           receiveNetwork(
@@ -69,15 +75,14 @@ export const fetchInteractionsFromUrl = (uuid, server, url, maxEdgeCount = 500) 
             netAndFilter[2],
             netAndFilter[3]
           )
-        )}
-      )
+        )
+      })
       .catch(err => {
         console.log('Raw interaction fetch ERROR! ', err)
         return dispatch(receiveNetwork(url, null, 'Error!'))
       })
   }
 }
-
 
 const createGroups = netAndFilter => {
   const network = netAndFilter[0]
@@ -160,7 +165,6 @@ const compareBy = fieldName => (a, b) => {
 }
 
 const sortEdges = (network, maxEdgeCount) => {
-
   let mainEdgeType = network.data[MAIN_EDGE_TAG]
   if (mainEdgeType !== undefined) {
     mainEdgeType = mainEdgeType.replace(/ /g, '_')
@@ -168,21 +172,20 @@ const sortEdges = (network, maxEdgeCount) => {
   const nodes = network.elements.nodes
   const edges = network.elements.edges
 
-  console.log("Original nodes = ", nodes.length)
-
   const edgeCount = edges.length
-  if (edgeCount < maxEdgeCount) {
-    return network
-  }
+  // if (edgeCount < maxEdgeCount) {
+  //   return network
+  // }
 
   const t0 = performance.now()
   edges.sort(compareBy(mainEdgeType))
   const t1 = performance.now()
-  console.log('Edge Sort TIME = ', t1-t0)
+  console.log('Edge Sort TIME = ', t1 - t0)
 
   const maxScore = edges[0].data[mainEdgeType]
-  const minScore = edges[edges.length-1].data[mainEdgeType]
-  console.log("MAX / MIN = ", maxScore, minScore)
+  const minScore = edges[edges.length - 1].data[mainEdgeType]
+  network.data['edgeScoreRange'] = [minScore, maxScore]
+  console.log('RANGE SET: MAX / MIN = ', maxScore, minScore)
 
   const subset = edges.slice(0, maxEdgeCount)
   const subsetLen = subset.length
@@ -207,9 +210,6 @@ const sortEdges = (network, maxEdgeCount) => {
   }
   network.elements.edges = subset
   network.elements.nodes = newNodes
-
-  console.log("new nodes = ", newNodes.length)
-
   return network
 }
 
@@ -254,7 +254,13 @@ const createFilter = (network, maxEdgeCount) => {
       const isPrimary = mainEdgeType === key
 
       let th = null
+      let min = value.min
+      let max = value.max
+
       if (isPrimary) {
+        const range = network.data['edgeScoreRange']
+        min = range[0]
+        max = range[1]
         // If default cutoff is available, use it
         if (defCutoff) {
           th = defCutoff
@@ -271,7 +277,7 @@ const createFilter = (network, maxEdgeCount) => {
 
           if (edges.length < maxEdgeCount) {
             if (edges.length < 100) {
-              th = value.min
+              th = min
             } else {
               th = values[thPosition]
             }
@@ -283,15 +289,15 @@ const createFilter = (network, maxEdgeCount) => {
         }
         // Error handling: TH not found:
         if (!th) {
-          th = value.min
+          th = min
         }
       }
 
       filters.push({
         attributeName: key,
-        min: value.min,
-        max: value.max,
-        value: value.min,
+        min: min,
+        max: max,
+        value: min,
         isPrimary: isPrimary,
         enabled: isPrimary,
         type: 'continuous',
@@ -320,6 +326,12 @@ export const setMaxEdgeCount = createAction(SET_MAX_EDGE_COUNT)
 
 export const SET_ORIGINAL_EDGE_COUNT = 'SET_ORIGINAL_EDGE_COUNT'
 export const setOriginalEdgeCount = createAction(SET_ORIGINAL_EDGE_COUNT)
+
+// Current Range
+export const SET_PRIMARY_EDGE_SCORE_RANGE = 'SET_PRIMARY_EDGE_SCORE_RANGE'
+export const setPrimaryEdgeScoreRange = createAction(
+  SET_PRIMARY_EDGE_SCORE_RANGE
+)
 
 // Selected nodes
 export const SET_SELECTED = 'SET_SELECTED'

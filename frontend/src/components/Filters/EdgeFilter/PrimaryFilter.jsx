@@ -94,7 +94,7 @@ class PrimaryFilter extends Component {
 
     const marks = {
       [min]: min,
-      [max]: max,
+      [max]: max
     };
 
     return (

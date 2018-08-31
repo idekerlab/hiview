@@ -7,7 +7,8 @@ import {
   SET_SELECTED,
   SET_SELECTED_PERM,
   DESELECT_PERM,
-  CLEAR_SELECTED_PERM
+  CLEAR_SELECTED_PERM,
+  SET_PRIMARY_EDGE_SCORE_RANGE
 } from '../actions/raw-interactions'
 import { Map, Set } from 'immutable'
 
@@ -27,7 +28,8 @@ const defState = Map({
 export default function networkState(state = defState, action) {
   switch (action.type) {
     case FETCH_INTERACTIONS:
-      return state.set('loading', true)
+      return state
+        .set('loading', true)
         .set('interactions', null)
         .set('originalEdgeCount', 0)
     case RECEIVE_INTERACTIONS:
@@ -61,6 +63,8 @@ export default function networkState(state = defState, action) {
       return state.set('filters', filters)
     case SET_MAX_EDGE_COUNT:
       return state.set('maxEdgeCount', action.payload)
+    case SET_PRIMARY_EDGE_SCORE_RANGE:
+      return state.set('primaryEdgeScoreRange', action.payload)
     case SET_ORIGINAL_EDGE_COUNT:
       return state.set('originalEdgeCount', action.payload)
 
