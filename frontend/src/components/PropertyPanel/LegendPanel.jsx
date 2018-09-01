@@ -13,7 +13,7 @@ const legendPanelStyle = {
   padding: 0
 }
 
-const BAR_HEIGHT = 18
+const BAR_HEIGHT = 12
 
 
 class LegendPanel extends Component {
@@ -70,12 +70,13 @@ class LegendPanel extends Component {
     return (
       <div ref={container=> this.container = container} style={legendPanelStyle}>
 
-        <div style={minMaxStyle}>
-          <div style={titleStyle}>Integrated Similarity Score</div>
-        </div>
 
         <div style={barStyle}>
           <svg ref={legend => this.legend = legend}></svg>
+        </div>
+
+        <div style={minMaxStyle}>
+          <div style={titleStyle}>Integrated Similarity Score</div>
         </div>
       </div>
     )
@@ -112,10 +113,10 @@ const maxStyle = {
 
 const titleStyle = {
 
-  color: '#444444',
+  color: '#555555',
   fontFace: 'Roboto',
-  fontSize: '1em',
-  fontWeight: 500,
+  fontSize: '0.7em',
+  fontWeight: 400,
   padding: '0.3em'
 }
 

@@ -19,9 +19,11 @@ import EmptyInteractionPanel from './EmptyInteractionPanel.jsx'
 import MaxEdgePanel from './MaxEdgePanel'
 import MessageBar from './MessageBar'
 
+import CrossFilter from '../CrossFilter'
+
 const controlWrapperStyle = {
   width: '100%',
-  maxWidth: 450
+  // maxWidth: 450
 }
 
 const filterPanelStyle = {
@@ -226,6 +228,13 @@ class TermDetailsPanel extends Component {
               <div />
             ) : (
               <div style={controlPanelStyle}>
+
+                <CrossFilter
+                  networkData={interactions.data}
+                  originalEdgeCount={this.props.originalEdgeCount}
+                  maxEdgeCount={this.props.maxEdgeCount}
+                />
+
                 <LegendPanel networkProps={networkProps} />
 
                 <PrimaryFilter

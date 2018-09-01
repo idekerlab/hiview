@@ -6,6 +6,9 @@ import { createAction } from 'redux-actions'
 
 const NDEX_PUBLIC_API = 'http://test.ndexbio.org/v2'
 
+
+import * as d3Scale from 'd3-scale'
+
 export const FETCH_INTERACTIONS = 'FETCH_INTERACTIONS'
 const fetchNetwork = url => {
   return {
@@ -172,11 +175,6 @@ const sortEdges = (network, maxEdgeCount) => {
   const nodes = network.elements.nodes
   const edges = network.elements.edges
 
-  const edgeCount = edges.length
-  // if (edgeCount < maxEdgeCount) {
-  //   return network
-  // }
-
   const t0 = performance.now()
   edges.sort(compareBy(mainEdgeType))
   const t1 = performance.now()
@@ -185,9 +183,21 @@ const sortEdges = (network, maxEdgeCount) => {
   const maxScore = edges[0].data[mainEdgeType]
   const minScore = edges[edges.length - 1].data[mainEdgeType]
   network.data['edgeScoreRange'] = [minScore, maxScore]
-  console.log('RANGE SET: MAX / MIN = ', maxScore, minScore)
+  console.log('RANGE SET: min / max = ', minScore, maxScore)
+
+  const t2 = performance.now()
+  const forHistogram = createBuckets(edges, minScore, maxScore, mainEdgeType, 100)
+  console.log('Hist:', forHistogram)
+  console.log('Edge HIST TIME = ', performance.now() - t2)
+  network.data['edgeScoreDist'] = forHistogram
 
   const subset = edges.slice(0, maxEdgeCount)
+  const subMin = subset[subset.length - 1].data[mainEdgeType]
+
+  const subsetDist = createBuckets(subset, subMin, maxScore, mainEdgeType, 50, true)
+  network.data['subEdgeScoreDist'] = subsetDist
+
+
   const subsetLen = subset.length
   const nodeSet = new Set()
 
@@ -314,6 +324,41 @@ const createFilter = (network, maxEdgeCount) => {
   }
 
   return [network, filters]
+}
+
+const createBuckets = (edges, min, max, scoreFieldName, sliceCount=200, coloring = false) => {
+
+  const colorScale = d3Scale.scaleSequential(d3Scale.interpolateInferno).domain([
+    min,
+    max
+  ])
+
+
+  const range = max - min
+  const delta = range/sliceCount
+
+  let edgeCount = edges.length
+
+  let curRange = min + delta
+  let bucketCounter = 0
+  const result = []
+  while(edgeCount--) {
+    const score = edges[edgeCount].data[scoreFieldName]
+    if(score<curRange) {
+      bucketCounter++
+    } else {
+      const newBucket = {x:curRange.toString(), y: bucketCounter}
+      if(coloring) {
+        newBucket['color'] = colorScale(curRange)
+      }
+      result.push(newBucket)
+      bucketCounter = 1
+      curRange = curRange + delta
+    }
+  }
+
+  return result
+
 }
 
 // For filters
