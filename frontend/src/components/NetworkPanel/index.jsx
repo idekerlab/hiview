@@ -229,6 +229,10 @@ class NetworkPanel extends Component {
       return true
     }
 
+    if (this.props.width !== nextProps.height) {
+      return true
+    }
+
     if (this.props.selection !== nextProps.selection) {
       return true
     }
@@ -309,7 +313,7 @@ class NetworkPanel extends Component {
       left: 0,
       width: this.props.width,
       height: this.props.height,
-      background: 'red'
+      background: 'teal'
     }
 
     // Default layout
@@ -335,19 +339,17 @@ class NetworkPanel extends Component {
       )
     } else {
       return (
-        <div style={{ width: '100%', height: this.props.height }}>
-          <CirclePackingPanel
-            {...this.props}
-            selection={this.props.selection}
-            command={commands}
-            network={networkData}
-            groups={this.props.rawInteractions.get('groups')}
-            style={circleAreaStyle}
-            selectPrimaryNode={this.selectNodes}
-            commandActions={this.props.commandActions}
-            renderingOptions={this.props.renderingOptions.toJS()}
-          />
-        </div>
+        <CirclePackingPanel
+          {...this.props}
+          selection={this.props.selection}
+          command={commands}
+          network={networkData}
+          groups={this.props.rawInteractions.get('groups')}
+          style={circleAreaStyle}
+          selectPrimaryNode={this.selectNodes}
+          commandActions={this.props.commandActions}
+          renderingOptions={this.props.renderingOptions.toJS()}
+        />
       )
     }
   }

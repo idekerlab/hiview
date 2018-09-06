@@ -91,9 +91,10 @@ html, body, #root {
     display: block;
 }
 
+
 .Resizer {
-    background: #000;
-    opacity: .2;
+    background: #000000;
+    opacity: .3;
     z-index: 1;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -140,6 +141,8 @@ html, body, #root {
 .Resizer.disabled:hover {
     border-color: transparent;
 }
+
+
 .node {
     cursor: pointer;
 }
@@ -159,13 +162,13 @@ html, body, #root {
 .node:hover {
     stroke: red;
     opacity: 1;
-    stroke-width: 2px   ;
+    stroke-width: 1.5px   ;
 }
 
 .node-selected,.node-selected:hover {
     stroke: orange;
     opacity: 1;
-    stroke-width: 2px;
+    stroke-width: 1.5px;
 }
 
 

@@ -20,9 +20,10 @@ import MaxEdgePanel from './MaxEdgePanel'
 import MessageBar from './MessageBar'
 
 import CrossFilter from '../CrossFilter'
+import SplitPane from 'react-split-pane'
 
 const controlWrapperStyle = {
-  width: '100%',
+  width: '100%'
   // maxWidth: 450
 }
 
@@ -39,24 +40,15 @@ const controlPanelStyle = {
   background: '#FFFFFF'
 }
 
-const loadingStyle = {
-  display: 'flex',
-  width: '100%',
-  height: '100%',
-  justifyContent: 'center',
-  alignItems: 'center'
-}
-
-
 class TermDetailsPanel extends Component {
-
   constructor(props) {
     super(props)
     this.state = {
       subtree: {},
       scoreFilter: 1.0,
       subnet: {},
-      selectedTab: 0
+      selectedTab: 0,
+      networkPanelHeight: window.innerHeight * 0.5
     }
   }
 
@@ -92,14 +84,38 @@ class TermDetailsPanel extends Component {
     this.props.interactionsCommandActions.fit()
   }
 
-  render() {
 
+  handleHorizontalResize = topHeight => {
+    this.setState({
+      networkPanelHeight: topHeight
+    })
+    console.log('New H:', topHeight)
+  }
+
+  render() {
     // Still loading interaction...
     const loading = this.props.rawInteractions.get('loading')
     if (loading) {
+      const loadingStyle = {
+        display: 'flex',
+        width: this.props.width,
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
+        background: '#F0F0F0'
+      }
+
+      const loadingMessageStyle = {
+        color: '#555555',
+        fontSize: '2em',
+        fontWeight: 300
+      }
+
       return (
         <div style={loadingStyle}>
-          <CircularProgress size={300} thickness={2} />
+          <div style={loadingMessageStyle}>Loading Interactions...</div>
+          <CircularProgress size={300} thickness={1} />
         </div>
       )
     }
@@ -124,11 +140,10 @@ class TermDetailsPanel extends Component {
     // This is the details about current subsystem
     let hidden = false
     const data = details.data
-    if(!data['ndex_internalLink']) {
+    if (!data['ndex_internalLink']) {
       // No interaction data
       hidden = true
     }
-
 
     let entry = {}
     let subnet = null
@@ -145,7 +160,6 @@ class TermDetailsPanel extends Component {
       }
     }
 
-
     const title = data.name
     let networkProps = {}
     if (interactions !== undefined && interactions !== null) {
@@ -156,7 +170,6 @@ class TermDetailsPanel extends Component {
     if (visualStyle !== null && visualStyle !== undefined) {
       visualStyle.name = 'defaultStyle'
     }
-
 
     const uuid = this.props.datasource.get('uuid')
     const serverType = this.props.datasource.get('serverType')
@@ -169,134 +182,147 @@ class TermDetailsPanel extends Component {
     }
 
     const containerStyle = {
-      display: 'flex',
-      flexDirection: this.props.expanded ? 'row' : 'column'
     }
 
+    const propPanelStyle = {
+      width: this.props.width,
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column'
+    }
 
+    console.log('HHHHHHHHHHHHHHHHHHHHH - WWWWWW', this.state.networkPanelHeight, this.props.width)
     return (
       <div style={containerStyle}>
-        {this.props.expanded ? (
-          <div />
-        ) : (
-          <div style={{ width: '100%', height: '5.2em' }} />
-        )}
-
-        {hidden ? (
-          <EmptyInteractionPanel
-            height={this.props.height}
-          />
-        ) : (
-          <RawInteractionPanel
-            subnet={interactions}
-            subnetSelected={selected}
-            subnetSelectedPerm={selectedPerm}
-            selectedTerm={this.props.currentProperty.id}
-            handleClose={this.props.handleClose}
-            commandActions={this.props.interactionsCommandActions}
-            commands={this.props.interactionsCommands}
-            loading={raw.loading}
-            selection={this.props.selection}
-            selectionActions={this.props.selectionActions}
-            filters={raw.filters}
-            interactionStyleActions={this.props.interactionStyleActions}
-            networkStyle={visualStyle}
-            panelWidth={this.props.width}
-            panelHeight={this.props.height}
-            expanded={this.props.expanded}
-            enrichment={this.props.enrichment}
-            enrichmentActions={this.props.enrichmentActions}
-            uiState={this.props.uiState}
-          />
-
-        )}
-
-        <MessageBar
-          originalEdgeCount={this.props.originalEdgeCount}
-          maxEdgeCount={this.props.maxEdgeCount}
-        />
-
-        <div style={{ zIndex: 1111 }}>
-          <div style={controlWrapperStyle}>
-            {this.props.expanded ? (
-              <div style={{ height: '5.2em' }} />
-            ) : (
-              <div />
-            )}
+        <SplitPane
+          split="horizontal"
+          minSize={50}
+          size={this.state.networkPanelHeight}
+          onDragFinished={topHeight => this.handleHorizontalResize(topHeight)}
+        >
+          <div style={{background: ''}}>
+            <div style={{ width: '100%', height: '5.2em' }} />
 
             {hidden ? (
-              <div />
+              <EmptyInteractionPanel height={this.state.networkPanelHeight} />
             ) : (
-              <div style={controlPanelStyle}>
-
-                <CrossFilter
-                  networkData={interactions.data}
-                  originalEdgeCount={this.props.originalEdgeCount}
-                  maxEdgeCount={this.props.maxEdgeCount}
-                />
-
-                <LegendPanel networkProps={networkProps} />
-
-                <PrimaryFilter
-                  filters={raw.filters}
-                  commandActions={this.props.interactionsCommandActions}
-                  commands={this.props.interactionsCommands}
-                  filtersActions={this.props.filtersActions}
-                />
-
-                <LayoutSelector
-                  commandActions={this.props.interactionsCommandActions}
-                />
-
-                <MaxEdgePanel
-                  maxEdgeCount={this.props.maxEdgeCount}
-                  uiState={this.props.uiState}
-                  uiStateActions={this.props.uiStateActions}
-                  rawInteractionsActions={this.props.rawInteractionsActions}
-                />
-              </div>
+              <RawInteractionPanel
+                subnet={interactions}
+                subnetSelected={selected}
+                subnetSelectedPerm={selectedPerm}
+                selectedTerm={this.props.currentProperty.id}
+                handleClose={this.props.handleClose}
+                commandActions={this.props.interactionsCommandActions}
+                commands={this.props.interactionsCommands}
+                loading={raw.loading}
+                selection={this.props.selection}
+                selectionActions={this.props.selectionActions}
+                filters={raw.filters}
+                interactionStyleActions={this.props.interactionStyleActions}
+                networkStyle={visualStyle}
+                panelWidth={this.props.width}
+                panelHeight={this.state.networkPanelHeight}
+                expanded={this.props.expanded}
+                enrichment={this.props.enrichment}
+                enrichmentActions={this.props.enrichmentActions}
+                uiState={this.props.uiState}
+              />
             )}
-
-            {hidden ? (
-              <div />
-            ) : (
-              <div style={filterPanelStyle}>
-
-                <EdgeFilter
-                  filters={raw.filters}
-                  commandActions={this.props.interactionsCommandActions}
-                  commands={this.props.interactionsCommands}
-                  filtersActions={this.props.filtersActions}
-                />
-              </div>
-            )}
-
-            <div>
-              <Tabs value={this.state.selectedTab} onChange={this.handleChange}>
-                <Tab label="Subsystem Details" />
-                <Tab label="Assigned Genes" />
-                <Tab label="Interactions" />
-              </Tabs>
-            </div>
-
-            {this.state.selectedTab === 0 && (
-              <TabContainer>
-                <SubsystemPanel
-                  selectedTerm={this.props.currentProperty}
-                  networkData={networkData}
-                  title={title}
-                  description={'N/A'}
-                />
-              </TabContainer>
-            )}
-            {this.state.selectedTab === 1 && (
-              <TabContainer>
-                <GeneList genes={geneList} />
-              </TabContainer>
-            )}
-            {this.state.selectedTab === 2 && <TabContainer>N/A</TabContainer>}
           </div>
-        </div>
+
+          <div style={propPanelStyle}>
+            <MessageBar
+              originalEdgeCount={this.props.originalEdgeCount}
+              maxEdgeCount={this.props.maxEdgeCount}
+            />
+
+            <div style={{ zIndex: 1111 }}>
+              <div style={controlWrapperStyle}>
+                {this.props.expanded ? (
+                  <div style={{ height: '5.2em' }} />
+                ) : (
+                  <div />
+                )}
+
+                {hidden ? (
+                  <div />
+                ) : (
+                  <div style={controlPanelStyle}>
+                    <CrossFilter
+                      panelWidth={this.props.width}
+                      networkData={interactions.data}
+                      originalEdgeCount={this.props.originalEdgeCount}
+                      maxEdgeCount={this.props.maxEdgeCount}
+                    />
+
+                    <LegendPanel networkProps={networkProps} />
+
+                    <PrimaryFilter
+                      filters={raw.filters}
+                      commandActions={this.props.interactionsCommandActions}
+                      commands={this.props.interactionsCommands}
+                      filtersActions={this.props.filtersActions}
+                    />
+
+                    <LayoutSelector
+                      commandActions={this.props.interactionsCommandActions}
+                    />
+
+                    <MaxEdgePanel
+                      maxEdgeCount={this.props.maxEdgeCount}
+                      uiState={this.props.uiState}
+                      uiStateActions={this.props.uiStateActions}
+                      rawInteractionsActions={this.props.rawInteractionsActions}
+                    />
+                  </div>
+                )}
+
+                {hidden ? (
+                  <div />
+                ) : (
+                  <div style={filterPanelStyle}>
+                    <EdgeFilter
+                      filters={raw.filters}
+                      commandActions={this.props.interactionsCommandActions}
+                      commands={this.props.interactionsCommands}
+                      filtersActions={this.props.filtersActions}
+                    />
+                  </div>
+                )}
+
+                <div>
+                  <Tabs
+                    value={this.state.selectedTab}
+                    onChange={this.handleChange}
+                  >
+                    <Tab label="Subsystem Details" />
+                    <Tab label="Assigned Genes" />
+                    <Tab label="Interactions" />
+                  </Tabs>
+                </div>
+
+                {this.state.selectedTab === 0 && (
+                  <TabContainer>
+                    <SubsystemPanel
+                      selectedTerm={this.props.currentProperty}
+                      networkData={networkData}
+                      title={title}
+                      description={'N/A'}
+                    />
+                  </TabContainer>
+                )}
+                {this.state.selectedTab === 1 && (
+                  <TabContainer>
+                    <GeneList genes={geneList} />
+                  </TabContainer>
+                )}
+                {this.state.selectedTab === 2 && (
+                  <TabContainer>N/A</TabContainer>
+                )}
+              </div>
+            </div>
+          </div>
+        </SplitPane>
       </div>
     )
   }

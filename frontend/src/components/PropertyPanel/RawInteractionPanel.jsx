@@ -46,11 +46,12 @@ class RawInteractionPanel extends Component {
   }
 
   render() {
+    console.log('Network rendering--------------')
     // Style of this component's area
     let containerStyle = {
-      width: '100%',
+      width: this.props.panelWidth,
       height: this.props.panelHeight,
-      background: '#999999',
+      background: '#AAAAAA',
       flexGrow: 3
     }
 

@@ -1,13 +1,13 @@
 import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 
-import NetworkPanel from '../NetworkPanel'
 import PropertyPanel from '../PropertyPanel'
 import Commands from '../Commands'
 
 import MainMenuPanel from '../MainMenuPanel'
 import FullSearch from '../FullSearch'
 import SplitPane from 'react-split-pane'
+import BaseSplitPane from './BaseSplitPane'
 
 import Overlay from '../Overlay'
 import MessageBox from '../MessageBox'
@@ -59,31 +59,15 @@ export default class MainPanel extends Component {
     })
   }
 
-
-
   render() {
     const {
-      networkActions,
-      commands,
       commandActions,
-      events,
-      eventActions,
       uiState,
       uiStateActions,
-      currentProperty,
-      propertyActions,
       search,
       searchActions,
       network,
-      messageActions,
-      rawInteractionsActions,
       selection,
-      selectionActions,
-      filters,
-      filtersActions,
-      interactionStyle,
-      interactionStyleActions,
-      currentPathActions,
       currentPath,
       renderingOptions,
       renderingOptionsActions
@@ -91,17 +75,15 @@ export default class MainPanel extends Component {
 
     return (
       <div style={this.props.style}>
-
         <Overlay
           uiState={uiState}
           network={network}
           datasource={this.props.datasource}
           cxtoolUrl={CXTOOL_URL}
-          selection={selection} />
+          selection={selection}
+        />
 
-        <MessageBox
-          uiState={uiState}
-          selection={selection} />
+        <MessageBox uiState={uiState} selection={selection} />
 
         <MainMenuPanel
           uiState={uiState}
@@ -122,33 +104,7 @@ export default class MainPanel extends Component {
           selection={selection}
         />
 
-        <NetworkPanel
-          uiState={uiState}
-          uiStateActions={uiStateActions}
-          width={window.innerWidth}
-          height={window.innerHeight}
-          networkActions={networkActions}
-          commands={commands}
-          commandActions={commandActions}
-          events={events}
-          eventActions={eventActions}
-          currentProperty={currentProperty}
-          propertyActions={propertyActions}
-          network={network}
-          search={search}
-          messageActions={messageActions}
-          maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
-          rawInteractionsActions={rawInteractionsActions}
-          idmapActions={this.props.idmapActions}
-          datasource={this.props.datasource}
-          selection={selection}
-          selectionActions={selectionActions}
-          cxtoolUrl={CXTOOL_URL}
-          currentPathActions={currentPathActions}
-          renderingOptions={renderingOptions}
-          rawInteractions={this.props.rawInteractions}
-          interactionsCommandActions={this.props.interactionsCommandActions}
-        />
+        <BaseSplitPane cxtoolUrl={CXTOOL_URL} {...this.props} />
 
         <Commands
           commandActions={commandActions}
@@ -156,33 +112,7 @@ export default class MainPanel extends Component {
           uiStateActions={uiStateActions}
         />
 
-        <PropertyPanel
-          // commands={commands}
-          // commandActions={commandActions}
-          interactionsCommands={this.props.interactionsCommands}
-          interactionsCommandActions={this.props.interactionsCommandActions}
-          events={events}
-          currentProperty={currentProperty}
-          rawInteractions={this.props.rawInteractions}
-          rawInteractionsActions={this.props.rawInteractionsActions}
-          selection={selection}
-          selectionActions={selectionActions}
-          filters={filters}
-          filtersActions={filtersActions}
-          interactionStyle={interactionStyle}
-          interactionStyleActions={interactionStyleActions}
-          datasource={this.props.datasource}
-          network={network}
-          cxtoolUrl={CXTOOL_URL}
-          enrichment={this.props.enrichment}
-          enrichmentActions={this.props.enrichmentActions}
-          groups={this.props.groups}
-          groupsActions={this.props.groupsActions}
-          uiState={uiState}
-          uiStateActions={uiStateActions}
-          maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
-          originalEdgeCount={this.props.rawInteractions.get('originalEdgeCount')}
-        />
+
 
         <FullSearch
           datasource={this.props.datasource.toJS()}

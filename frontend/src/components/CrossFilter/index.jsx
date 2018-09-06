@@ -1,13 +1,5 @@
 import React, { Component } from 'react'
 
-import { MenuItem } from 'material-ui/Menu'
-import { FormControl, FormHelperText } from 'material-ui/Form'
-import Select from 'material-ui/Select'
-import Button from 'material-ui/Button'
-import ApplyIcon from 'material-ui-icons/Refresh'
-import FitContent from 'material-ui-icons/ZoomOutMap'
-import FitSelected from 'material-ui-icons/CenterFocusStrong'
-
 import {
   XYPlot,
   XAxis,
@@ -19,11 +11,9 @@ import {
 
 import Highlight from './highlight'
 
-const containerStyle = {
-  background: '#FFFFFF',
-  width: '100%',
-  height: '30em'
-}
+
+const PADDING_RIGHT = 10
+
 
 class CrossFilter extends Component {
   constructor(props) {
@@ -43,10 +33,17 @@ class CrossFilter extends Component {
   }
 
   render() {
+
     const data = this.props.networkData
     const edgeDist = data.edgeScoreDist
     const subEdgeDist = data.subEdgeScoreDist
-    console.log('CF data: ', edgeDist, subEdgeDist)
+
+    const w = this.props.panelWidth
+    const containerStyle = {
+      background: '#FFFFFF',
+      width: w,
+      height: '30em'
+    }
 
     return (
       <div
@@ -55,7 +52,7 @@ class CrossFilter extends Component {
       >
         <XYPlot
           xType="ordinal"
-          width={this.state.width}
+          width={w}
           height={(this.state.height / 3) * 2}
           colorType="literal"
         >
@@ -68,10 +65,10 @@ class CrossFilter extends Component {
 
         <XYPlot
           xType="ordinal"
-          width={this.state.width}
+          width={w}
           height={this.state.height / 3}
           color="#444444"
-          margin={{left: 0, right: 0, top: 10, bottom: 5}}
+          margin={{left: 10, right: 10, top: 0, bottom: 5}}
         >
           <YAxis />
           <VerticalBarSeries
