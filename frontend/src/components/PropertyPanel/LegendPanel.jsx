@@ -1,83 +1,87 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import * as d3Selection from 'd3-selection'
 import * as d3Array from 'd3-array'
 import * as d3Scale from 'd3-scale'
-import * as d3ScaleChromatic from 'd3-scale-chromatic'
 
 const legendPanelStyle = {
   display: 'flex',
   flexDirection: 'column',
-  color: '#555555',
-  fontFamily: 'Roboto',
-  background: 'white',
-  padding: 0
+  color: '#444444',
+  background: '#FFFFFF',
+  padding: 0,
+  paddingLeft: 30,
+  paddingRight: 30
 }
 
-const BAR_HEIGHT = 12
-
+const BAR_HEIGHT = 20
 
 class LegendPanel extends Component {
-
   componentDidMount() {
     const svgLegend = this.legend
-
     const parentWidth = this.container.parentNode.clientWidth
-
-
 
     const svg = d3Selection
       .select(svgLegend)
-      .attr('width', parentWidth * 0.95)
+      .attr('width', parentWidth)
       .attr('height', BAR_HEIGHT)
-      .append("g")
+      .append('g')
 
-    const colorScale = d3Scale.scaleSequential(d3Scale.interpolateInferno)
+    const colorScale = d3Scale
+      .scaleSequential(d3Scale.interpolateInferno)
       .domain([0, parentWidth])
 
-    const bars = svg.selectAll('.bars')
-      .data(d3Array.range(parentWidth), function (d) {
-        return d;
+    const bars = svg
+      .selectAll('.bars')
+      .data(d3Array.range(parentWidth), function(d) {
+        return d
       })
-      .enter().append('rect')
+      .enter()
+      .append('rect')
       .attr('class', 'bars')
-      .attr('x', function (d, i) {
-        return i;
+      .attr('x', function(d, i) {
+        return i
       })
       .attr('y', 0)
       .attr('height', BAR_HEIGHT)
       .attr('width', 2)
       .attr('stroke', 0)
-      .style('fill', function (d, i) {
-        return colorScale(d);
+      .style('fill', function(d, i) {
+        return colorScale(d)
       })
   }
 
   render() {
 
+    console.log('LEGEND prop: ', this.props)
     const minRaw = this.props.networkProps['RF score min']
     const maxRaw = this.props.networkProps['RF score max']
 
     let min = 0
     let max = 1
-    if(minRaw !== undefined) {
+    if (minRaw !== undefined) {
       min = Number(minRaw).toFixed(3)
     }
 
-    if(minRaw !== undefined) {
+    if (minRaw !== undefined) {
       max = Number(maxRaw).toFixed(3)
     }
 
     return (
-      <div ref={container=> this.container = container} style={legendPanelStyle}>
+      <div
+        ref={container => (this.container = container)}
+        style={legendPanelStyle}
+      >
 
+        {/*<div style={minMaxStyle}>*/}
+          {/*<div>1</div>*/}
+          {/*<div style={titleStyle}>Integrated Similarity Score</div>*/}
+          {/*<div>2</div>*/}
+        {/*</div>*/}
 
         <div style={barStyle}>
-          <svg ref={legend => this.legend = legend}></svg>
+          <svg ref={legend => (this.legend = legend)} />
         </div>
 
-        <div style={minMaxStyle}>
-          <div style={titleStyle}>Integrated Similarity Score</div>
-        </div>
       </div>
     )
   }
@@ -87,10 +91,8 @@ const barStyle = {
   display: 'inline-flex',
   width: '100%',
   alignItems: 'center',
-  justifyContent: 'center',
-
+  justifyContent: 'center'
 }
-
 
 const minMaxStyle = {
   display: 'inline-flex',
@@ -103,7 +105,6 @@ const minMaxStyle = {
 const minStyle = {
   width: '2em',
   paddingRight: '0.5em'
-
 }
 
 const maxStyle = {
@@ -112,13 +113,11 @@ const maxStyle = {
 }
 
 const titleStyle = {
-
   color: '#555555',
   fontFace: 'Roboto',
   fontSize: '0.7em',
   fontWeight: 400,
   padding: '0.3em'
 }
-
 
 export default LegendPanel

@@ -2,42 +2,60 @@ import React from 'react'
 import Typography from 'material-ui/Typography'
 import WarningIcon from 'material-ui-icons/ErrorOutline'
 
-const messageBarStyle = {
+const containerStyle = {
   display: 'flex',
+  flexDirection: 'row',
   alignItems: 'center',
-  justifyContent: 'center',
+  paddingLeft: '2em',
   margin: 0,
-  padding: '1em',
-  background: '#EEEEEE',
-  color: '#222222',
-  height: '2em',
-  width: '100%'
+  height: '4em',
+  background: '#444444'
 }
+
 
 const iconStyle = {
   color: 'red',
-  height: '1.3em',
-  width: '1.3em',
+  height: '1.2em',
+  width: '1.2em',
   paddingRight: '0.5em'
 }
 
-const MessageBar = props => {
+const warningStyle = {
+  display: 'inline-flex',
+  alignItems: 'center',
+  paddingLeft: '2em'
+}
 
-  if(props.originalEdgeCount < props.maxEdgeCount) {
-    return (<div/>)
+const getWarning = (originalCount, maxCount) => {
+  if (originalCount < maxCount) {
+    return <div />
+  } else {
+    return (
+      <div style={warningStyle}>
+        <WarningIcon style={iconStyle} />
+
+        <Typography
+          variant="display1"
+          style={{ color: '#FFFFFF', fontSize: '1.5em' }}
+        >
+          Showing top {maxCount} interactions out of {originalCount}
+        </Typography>
+      </div>
+    )
   }
+}
 
+const MessageBar = props => {
   return (
-    <div style={messageBarStyle}>
-
-      <WarningIcon style={iconStyle}/>
-
+    <div style={containerStyle}>
       <Typography
-        variant="display1"
-        style={{ color: '#222222', fontSize: '1.3em' }}
+        variant="display4"
+        style={{ color: props.titleColor, fontSize: '2em' }}
       >
-        Showing top {props.maxEdgeCount} interactions out of {props.originalEdgeCount}
+        {props.title}
       </Typography>
+
+      {getWarning(props.originalEdgeCount, props.maxEdgeCount)}
     </div>
   )
 }

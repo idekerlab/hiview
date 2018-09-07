@@ -46,26 +46,15 @@ class RawInteractionPanel extends Component {
   }
 
   render() {
-    console.log('Network rendering--------------')
-    // Style of this component's area
-    let containerStyle = {
-      width: this.props.panelWidth,
-      height: this.props.panelHeight,
-      background: '#AAAAAA',
-      flexGrow: 3
-    }
-
     const networkAreaStyle = {
-      width: this.props.panelWidth,
+      // width: this.props.panelWidth,
+      // height: this.props.panelHeight,
+      width: '100%',
       height: '100%',
-      top: 0,
-      right: 0,
-      position: 'relative'
+      background: '#AAAAAA'
     }
 
-    return (
-      <div style={containerStyle}>{this.getMainContents(networkAreaStyle)}</div>
-    )
+    return this.getMainContents(networkAreaStyle)
   }
 
   getMainContents = networkAreaStyle => {
@@ -103,6 +92,7 @@ class RawInteractionPanel extends Component {
       edgesPerm: this.props.subnetSelectedEdgePerm
     }
 
+    console.log('Calling resize:', this.props.panelHeight)
     return (
       <Viewer
         key="subNetworkView"

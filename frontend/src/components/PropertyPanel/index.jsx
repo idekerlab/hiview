@@ -5,6 +5,7 @@ import GenePropertyPanel from './GenePropertyPanel'
 
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
+import MessageBar from './MessageBar'
 
 const PANEL_TYPES = {
   GENE: 'gene',
@@ -48,31 +49,25 @@ class PropertyPanel extends Component {
     const barTitle = label
 
     const drawerContentsStyle = {
-      width: '100%',
-      height: '100%',
-      overflowX: 'hidden',
+      overflowX: 'auto',
+      height: window.innerHeight,
+      margin: 0,
+      padding: 0,
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      background: '#FFFFFF'
     }
-
-    let appBarPosition = 'absolute'
 
     const fontColor = propType === PANEL_TYPES.GENE ? '#666666' : 'orange'
 
     return (
       <div style={drawerContentsStyle}>
-        <AppBar position={appBarPosition} color={'default'}>
-          <Toolbar>
-            <h2 style={{ color: fontColor }}>{barTitle}</h2>
-          </Toolbar>
-        </AppBar>
-
-        {this.getPanel(this.props.width)}
+        {this.getPanel(this.props.width, fontColor, barTitle)}
       </div>
     )
   }
 
-  getPanel = (w) => {
+  getPanel = (w, color, title) => {
     // Do not return any component if nothing is selected.
     if (this.props.currentProperty.id === null) {
       return <div />
@@ -86,8 +81,9 @@ class PropertyPanel extends Component {
         <TermDetailsPanel
           {...this.props}
           width={w}
-          height={this.state.panelHeight}
-          expanded={this.state.expand}
+          height={window.innerHeight}
+          title={title}
+          color={color}
         />
       )
     } else if (propType === PANEL_TYPES.GENE) {

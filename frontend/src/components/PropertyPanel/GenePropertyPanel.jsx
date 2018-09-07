@@ -6,9 +6,6 @@ import Typography from 'material-ui/Typography'
 import { CircularProgress } from 'material-ui/Progress'
 import { blueGrey } from 'material-ui/colors'
 
-const containerStyle = {
-  paddingTop: '5.5em'
-}
 
 const descriptionStyle = {
   background: blueGrey[50],
@@ -55,7 +52,7 @@ class GenePropertyPanel extends Component {
     const entry = data.hits[0]
 
     return (
-      <div style={containerStyle}>
+      <div>
         <TitleBar
           title={entry.name}
           geneId={entry._id}

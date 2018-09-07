@@ -36,7 +36,9 @@ const filterPanelStyle = {
 }
 
 const controlPanelStyle = {
-  padding: '1em',
+  padding: 0,
+  margin: 0,
+  width: '100%',
   background: '#FFFFFF'
 }
 
@@ -162,7 +164,7 @@ class TermDetailsPanel extends Component {
 
     const title = data.name
     let networkProps = {}
-    if (interactions !== undefined && interactions !== null) {
+    if (!interactions) {
       networkProps = interactions.data
     }
 
@@ -186,12 +188,12 @@ class TermDetailsPanel extends Component {
 
     const propPanelStyle = {
       width: this.props.width,
-      height: '100%',
+      height: window.innerHeight - this.state.networkPanelHeight,
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
+      overflowY: 'auto'
     }
 
-    console.log('HHHHHHHHHHHHHHHHHHHHH - WWWWWW', this.state.networkPanelHeight, this.props.width)
     return (
       <div style={containerStyle}>
         <SplitPane
@@ -200,8 +202,13 @@ class TermDetailsPanel extends Component {
           size={this.state.networkPanelHeight}
           onDragFinished={topHeight => this.handleHorizontalResize(topHeight)}
         >
-          <div style={{background: ''}}>
-            <div style={{ width: '100%', height: '5.2em' }} />
+          <div style={{width: '100%'}}>
+            <MessageBar
+              title={this.props.title}
+              titleColor={this.props.color}
+              originalEdgeCount={this.props.originalEdgeCount}
+              maxEdgeCount={this.props.maxEdgeCount}
+            />
 
             {hidden ? (
               <EmptyInteractionPanel height={this.state.networkPanelHeight} />
@@ -231,10 +238,6 @@ class TermDetailsPanel extends Component {
           </div>
 
           <div style={propPanelStyle}>
-            <MessageBar
-              originalEdgeCount={this.props.originalEdgeCount}
-              maxEdgeCount={this.props.maxEdgeCount}
-            />
 
             <div style={{ zIndex: 1111 }}>
               <div style={controlWrapperStyle}>
@@ -253,16 +256,13 @@ class TermDetailsPanel extends Component {
                       networkData={interactions.data}
                       originalEdgeCount={this.props.originalEdgeCount}
                       maxEdgeCount={this.props.maxEdgeCount}
-                    />
-
-                    <LegendPanel networkProps={networkProps} />
-
-                    <PrimaryFilter
+                      networkProps={networkProps}
                       filters={raw.filters}
                       commandActions={this.props.interactionsCommandActions}
                       commands={this.props.interactionsCommands}
                       filtersActions={this.props.filtersActions}
                     />
+
 
                     <LayoutSelector
                       commandActions={this.props.interactionsCommandActions}

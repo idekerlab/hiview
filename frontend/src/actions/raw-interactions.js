@@ -185,17 +185,27 @@ const sortEdges = (network, maxEdgeCount) => {
   network.data['edgeScoreRange'] = [minScore, maxScore]
   console.log('RANGE SET: min / max = ', minScore, maxScore)
 
+  let barCount1 = 100
+  let barCount2 = 50
+
+  if(edges.length < 100) {
+    barCount1 = 10
+    barCount2 = 5
+  }
   const t2 = performance.now()
-  const forHistogram = createBuckets(edges, minScore, maxScore, mainEdgeType, 100)
+  const allData = createBuckets(edges, minScore, maxScore, mainEdgeType, barCount1)
+  const forHistogram = allData.result
   console.log('Hist:', forHistogram)
   console.log('Edge HIST TIME = ', performance.now() - t2)
   network.data['edgeScoreDist'] = forHistogram
+  network.data['maxFrequency'] = allData.maxFrequency
 
   const subset = edges.slice(0, maxEdgeCount)
   const subMin = subset[subset.length - 1].data[mainEdgeType]
 
-  const subsetDist = createBuckets(subset, subMin, maxScore, mainEdgeType, 50, true)
-  network.data['subEdgeScoreDist'] = subsetDist
+  const subData = createBuckets(subset, subMin, maxScore, mainEdgeType, barCount2, true)
+  network.data['subEdgeScoreDist'] = subData.result
+  network.data['maxFrequency'] = subData.maxFrequency
 
 
   const subsetLen = subset.length
@@ -337,6 +347,8 @@ const createBuckets = (edges, min, max, scoreFieldName, sliceCount=200, coloring
   const range = max - min
   const delta = range/sliceCount
 
+  let maxFrequency = 0
+
   let edgeCount = edges.length
 
   let curRange = min + delta
@@ -347,6 +359,9 @@ const createBuckets = (edges, min, max, scoreFieldName, sliceCount=200, coloring
     if(score<curRange) {
       bucketCounter++
     } else {
+      if(maxFrequency < bucketCounter) {
+        maxFrequency = bucketCounter
+      }
       const newBucket = {x:curRange.toString(), y: bucketCounter}
       if(coloring) {
         newBucket['color'] = colorScale(curRange)
@@ -357,7 +372,7 @@ const createBuckets = (edges, min, max, scoreFieldName, sliceCount=200, coloring
     }
   }
 
-  return result
+  return {result, maxFrequency}
 
 }
 

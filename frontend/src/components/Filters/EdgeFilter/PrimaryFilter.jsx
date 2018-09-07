@@ -1,57 +1,49 @@
-import React, {Component} from 'react'
-import {withStyles} from 'material-ui/styles'
-
-import TextField from 'material-ui/TextField'
-import Button from 'material-ui/Button'
-
-
-import Slider, {createSliderWithTooltip} from 'rc-slider'
+import React, { Component } from 'react'
+import Slider, { createSliderWithTooltip } from 'rc-slider'
 import 'rc-slider/assets/index.css'
 
-import { teal } from 'material-ui/colors';
-
+import { teal } from 'material-ui/colors'
 
 const SliderWithTooltip = createSliderWithTooltip(Slider)
 
-const railStyle={ }
-
-const styles = theme => ({
-  root: {
-    width: '100%',
-    display: 'inline-flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingTop: '1em',
-    paddingBottom: '1em',
-  }
-})
-
-const sliderColor = teal[300];
-const trackStyle= { backgroundColor: sliderColor}
-const handleStyle={
-  borderColor: sliderColor
+const rootStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  paddingTop: '0.8em',
+  paddingBottom: '0.8em',
+  paddingLeft: 40,
+  paddingRight: 20
 }
 
-class PrimaryFilter extends Component {
+const sliderColor = '#EEEEEE'
+const trackStyle = { backgroundColor: sliderColor }
+const handleStyle = {
+  borderColor: sliderColor
+}
+const railStyle = { backgroundColor: teal[300] }
 
+class PrimaryFilter extends Component {
   constructor(props) {
-    super(props);
+    super(props)
+
+    console.log("CONST+++++++++++++", props)
     this.state = {
       value: 0,
       primaryFilter: null
-    };
+    }
   }
 
   onAfterChange = value => {
+    this.setState({value})
     this.props.commandActions.filterEdges({
       options: {
         type: 'numeric',
         isPrimary: true,
-        range: '[' + this.state.primaryFilter.attributeName + ' < ' + value + ']',
-      },
+        range:
+          '[' + this.state.primaryFilter.attributeName + ' < ' + value + ']'
+      }
     })
   }
-
 
   componentDidMount() {
     const filters = this.props.filters
@@ -74,36 +66,36 @@ class PrimaryFilter extends Component {
       }
     })
 
-    this.setState({primaryFilter: primaryFilter})
+    const th = primaryFilter.threshold
+
+    this.setState({ primaryFilter: primaryFilter, value: th })
   }
 
-
   render() {
-
-    const {classes} = this.props
-
     if (this.state.primaryFilter === null) {
-      return (<div/>)
+      return <div />
     }
 
     const primaryFilter = this.state.primaryFilter
 
-
     const min = Number(primaryFilter.min).toFixed(3)
     const max = Number(primaryFilter.max).toFixed(3)
+    const val = this.state.value
 
     const marks = {
-      [min]: min,
-      [max]: max
-    };
+      [Number(min)]: { style: { color: '#666666', fontSize: '1em' }, label: min },
+      [val]: { style: { color: '#333333', fontSize: '1.2em' }, label: val + ' < score'},
+      [Number(max)]: { style: { color: '#666666', fontSize: '1em' }, label: max }
+    }
 
     return (
-      <div className={classes.root}>
+      <div style={rootStyle}>
+
         <SliderWithTooltip
-          style={{width: '96%', height: '2em'}}
+          style={{ height: '4em' }}
           defaultValue={Number(primaryFilter.threshold)}
-          min={Number(primaryFilter.min)}
-          max={Number(primaryFilter.max)}
+          min={Number(min)}
+          max={Number(max)}
           step={0.001}
           onAfterChange={this.onAfterChange}
           marks={marks}
@@ -114,9 +106,6 @@ class PrimaryFilter extends Component {
       </div>
     )
   }
-
-
 }
 
-export default withStyles(styles)(PrimaryFilter)
-
+export default PrimaryFilter
