@@ -8,14 +8,12 @@ const progressStyle = {
   alignItems: 'center',
   justifyContent: 'center',
   height: '100%',
-  width: '50%'
+  width: '100%'
 }
 
 const Progress = () => (
   <div style={progressStyle}>
-    <Typography type="headline" component="h2">
-      Running enrichment analysis...
-    </Typography>
+    <Typography style={{ padding: '1em' }} variant={'display1'}>Running enrichment analysis...</Typography>
 
     <LinearProgress mode="query" style={{ width: '300px' }} />
   </div>

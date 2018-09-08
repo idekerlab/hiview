@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import SplitPane from 'react-split-pane'
 
-import NetworkPanel from '../NetworkPanel'
+import LeftPanel from './LeftPanel'
 import PropertyPanel from '../PropertyPanel'
 import BlankPanel from './BlankPanel'
 
@@ -10,23 +10,7 @@ const MIN_WIDTH = 300
 const DEF_MAIN_PANEL_WIDTH = 800
 const DEF_NETWORK_PANEL_HEIGHT = 600
 
-const containerStyle = {}
 
-const mainViewerStyle = {
-  background: '#EFEFEF'
-}
-
-const networkViewerStyle = {
-  background: '#FF00FF',
-  width: '100%',
-  height: '100%'
-}
-
-const propPanelStyle = {
-  background: '#EEEEFF',
-  width: '100%',
-  height: '100%'
-}
 
 // Adjustable main split panes
 export default class BaseSplitPane extends Component {
@@ -91,40 +75,16 @@ export default class BaseSplitPane extends Component {
     const rightPanelWidth = window.innerWidth - this.state.mainPanelWidth
 
     return (
-      <div style={containerStyle}>
+      <div>
         <SplitPane
           split="vertical"
           minSize={50}
           size={this.state.mainPanelWidth}
           onDragFinished={leftWidth => this.handleVerticalResize(leftWidth)}
         >
-          <NetworkPanel
-            uiState={uiState}
-            uiStateActions={uiStateActions}
-            width={window.innerWidth}
-            height={window.innerHeight}
-            networkActions={networkActions}
-            commands={commands}
-            commandActions={commandActions}
-            events={events}
-            eventActions={eventActions}
-            currentProperty={currentProperty}
-            propertyActions={propertyActions}
-            network={network}
-            search={search}
-            messageActions={messageActions}
-            maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
-            rawInteractionsActions={rawInteractionsActions}
-            idmapActions={this.props.idmapActions}
-            datasource={this.props.datasource}
-            selection={selection}
-            selectionActions={selectionActions}
-            cxtoolUrl={cxtoolUrl}
-            currentPathActions={currentPathActions}
-            renderingOptions={renderingOptions}
-            rawInteractions={this.props.rawInteractions}
-            interactionsCommandActions={this.props.interactionsCommandActions}
-          />
+
+          <LeftPanel {...this.props} />
+
           {currentProperty.id === null ? (
             <BlankPanel />
           ) : (

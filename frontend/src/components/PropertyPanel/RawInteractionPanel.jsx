@@ -92,7 +92,6 @@ class RawInteractionPanel extends Component {
       edgesPerm: this.props.subnetSelectedEdgePerm
     }
 
-    console.log('Calling resize:', this.props.panelHeight)
     return (
       <Viewer
         key="subNetworkView"

@@ -15,6 +15,15 @@ const ADJ_PVAL_IDX = 6
 
 const VALS = ['Adjusted p-value (-log10)']
 
+
+const containerStyle = {
+  display: 'flex',
+  justifyContent: 'flex-start',
+  alignItems: 'center',
+  width: '100%',
+  height: '100%'
+}
+
 class BarPlot extends Component {
   constructor() {
     super()
@@ -80,34 +89,36 @@ class BarPlot extends Component {
       .toJS()
 
     return (
-      <XYPlot
-        colorType="category"
-        onMouseLeave={() => this.setState({ selectedIndex: -1 })}
-        animation={true}
-        width={1200}
-        height={this.props.height}
-        yType="ordinal"
-        stackBy="x"
-        margin={{ left: 550, right: 10, top: 0, bottom: 30 }}
-      >
-        <XAxis />
-        <YAxis />
+      <div style={containerStyle}>
+        <XYPlot
+          colorType="category"
+          onMouseLeave={() => this.setState({ selectedIndex: -1 })}
+          animation={true}
+          width={900}
+          height={this.props.height}
+          yType="ordinal"
+          stackBy="x"
+          margin={{ left: 550, right: 0, top: 0, bottom: 50 }}
+        >
+          <XAxis />
+          <YAxis />
 
-        <HorizontalBarSeries
-          data={reversed}
-          onValueClick={event =>
-            this.handleBarSelection(event, this.props.title, dataPoints)
-          }
-          onValueMouseOut={(datapoint, event) =>
-            this.setState({ selectedIndex: -1 })
-          }
-          onValueMouseOver={(datapoint, event) => {
-            this.setState({
-              selectedIndex: datapoint.index
-            })
-          }}
-        />
-      </XYPlot>
+          <HorizontalBarSeries
+            data={reversed}
+            onValueClick={event =>
+              this.handleBarSelection(event, this.props.title, dataPoints)
+            }
+            onValueMouseOut={(datapoint, event) =>
+              this.setState({ selectedIndex: -1 })
+            }
+            onValueMouseOver={(datapoint, event) => {
+              this.setState({
+                selectedIndex: datapoint.index
+              })
+            }}
+          />
+        </XYPlot>
+      </div>
     )
   }
 

@@ -183,9 +183,6 @@ class TermDetailsPanel extends Component {
       networkData = network.data
     }
 
-    const containerStyle = {
-    }
-
     const propPanelStyle = {
       width: this.props.width,
       height: window.innerHeight - this.state.networkPanelHeight,
@@ -195,7 +192,7 @@ class TermDetailsPanel extends Component {
     }
 
     return (
-      <div style={containerStyle}>
+      <div>
         <SplitPane
           split="horizontal"
           minSize={50}

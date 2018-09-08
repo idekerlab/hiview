@@ -7,10 +7,11 @@ import BarPlot from './BarPlot'
 import Progress from './Progress'
 
 const containerStyle = {
-  paddingTop: '0.5em',
+  paddingTop: '0em',
   margin: 0,
   overflow: 'scroll',
-  width: '80%'
+  width: '100%',
+  height: '100%',
 }
 
 class PlotPanel extends React.Component {
@@ -62,7 +63,7 @@ const plots = props => {
   for (let [k, v] of Object.entries(props.data)) {
     plotList.push(
       <div className={style.plotContainer} key={k}>
-        <BarPlot height={220} data={v} title={k} />
+        <BarPlot height={250} data={v} title={k} />
       </div>
     )
   }
