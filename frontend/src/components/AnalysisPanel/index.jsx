@@ -25,11 +25,23 @@ const settingStyle = {
   top: 0
 }
 
-
 class AnalysisPanel extends Component {
-  state = {
-    idx: 0
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      idx: 0,
+      barHeight: 0
+    }
+    this.tabRef = React.createRef()
   }
+
+  componentDidMount() {
+    const barHeight = this.tabRef.current
+    this.setState({barHeight})
+    console.log('BHH', barHeight)
+  }
+
 
   handleChange = (event, idx) => {
     this.setState({ idx })
@@ -37,45 +49,36 @@ class AnalysisPanel extends Component {
 
   render() {
     const containerStyle = {
+      width: '100%',
       height: this.props.height,
       backgroundColor: '#FFFFFF',
       padding: 0,
-      margin: 0,
+      margin: 0
     }
-    const tabsStyle = {
-
-    }
-
-
-    const { classes } = this.props
     const { idx } = this.state
 
-    const titles = ['panel 1', 'panel 2']
+    const titles = ['Enrichr']
     const panels = []
-    panels.push(<PlotPanel {...this.props} />)
-    panels.push(
-      <div>
-        <h1>Test 2</h1>
-      </div>
-    )
+    panels.push(<PlotPanel {...this.props} barHeight />)
 
     return (
       <div style={containerStyle}>
-        <Tabs style = {tabsStyle} classes={{root: classes.root}}
+        <Tabs
           value={idx}
           scrollable={true}
           onChange={this.handleChange}
+          ref={this.tabRef}
         >
           {titles.map((title, i) => {
             return <Tab key={i} label={title} />
           })}
         </Tabs>
 
-        <SettingsPanel style={settingStyle}/>
+        <SettingsPanel style={settingStyle} />
         {panels[idx]}
       </div>
     )
   }
 }
 
-export default withStyles(styles)(AnalysisPanel)
+export default AnalysisPanel

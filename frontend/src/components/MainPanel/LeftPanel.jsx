@@ -4,7 +4,7 @@ import SplitPane from 'react-split-pane'
 import NetworkPanel from '../NetworkPanel'
 
 import BottomPanel from '../BottomPanel'
-import AnalysisPanel from '../AnalysisPanel';
+import AnalysisPanel from '../AnalysisPanel'
 const mainViewerStyle = {
   background: '#EFEFEF'
 }
@@ -63,11 +63,7 @@ class LeftPanel extends Component {
       selectionActions,
       currentPathActions,
       renderingOptions,
-      cxtoolUrl,
-      filters,
-      filtersActions,
-      interactionStyle,
-      interactionStyleActions
+      cxtoolUrl
     } = this.props
 
     const bottomPanelHeight = window.innerHeight - this.state.topPanelHeight

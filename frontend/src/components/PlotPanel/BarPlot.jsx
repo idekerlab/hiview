@@ -10,15 +10,13 @@ import {
 } from 'react-vis'
 
 const RANKING_MAX = 10
-
 const ADJ_PVAL_IDX = 6
 
 const VALS = ['Adjusted p-value (-log10)']
 
-
 const containerStyle = {
   display: 'flex',
-  justifyContent: 'flex-start',
+  justifyContent: 'center',
   alignItems: 'center',
   width: '100%',
   height: '100%'
@@ -43,6 +41,8 @@ class BarPlot extends Component {
 
     return true
   }
+
+  countMaxTextLength = () => {}
 
   render() {
     const dataPoints = this.props.data
@@ -78,18 +78,31 @@ class BarPlot extends Component {
     // Pick top n (default = 10) data
     const originalData = [...sorted.entries()].slice(0, max)
 
-    const data = originalData.map((d, i) => ({
-      y: d[0],
-      x: -Math.log10(d[1]),
-      index: i
-    }))
+    let maxTextLength = 0
+
+    const data = originalData.map((d, i) => {
+      const text = d[0]
+      if (text.length > maxTextLength) {
+        maxTextLength = text.length
+      }
+
+      return {
+        y: d[0],
+        x: -Math.log10(d[1]),
+        index: i
+      }
+    })
 
     const reversed = List([...data])
       .reverse()
       .toJS()
 
+    console.log('Plot data', reversed)
+
+    const leftWidth = 6 * maxTextLength
+
     return (
-      <div style={containerStyle}>
+      <div>
         <XYPlot
           colorType="category"
           onMouseLeave={() => this.setState({ selectedIndex: -1 })}
@@ -98,7 +111,7 @@ class BarPlot extends Component {
           height={this.props.height}
           yType="ordinal"
           stackBy="x"
-          margin={{ left: 550, right: 0, top: 0, bottom: 50 }}
+          margin={{ left: leftWidth, right: 0, top: 0, bottom: 50 }}
         >
           <XAxis />
           <YAxis />
