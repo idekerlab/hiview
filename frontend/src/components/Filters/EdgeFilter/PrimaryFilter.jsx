@@ -26,7 +26,6 @@ class PrimaryFilter extends Component {
   constructor(props) {
     super(props)
 
-    console.log("CONST+++++++++++++", props)
     this.state = {
       value: 0,
       primaryFilter: null
@@ -48,7 +47,7 @@ class PrimaryFilter extends Component {
   componentDidMount() {
     const filters = this.props.filters
 
-    if (filters === null || filters.length === 0) {
+    if (!filters || filters.length === 0) {
       return
     }
 

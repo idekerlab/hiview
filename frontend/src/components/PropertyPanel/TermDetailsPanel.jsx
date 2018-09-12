@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 
 import Tabs, { Tab } from 'material-ui/Tabs'
-import { CircularProgress } from 'material-ui/Progress'
 
 import RawInteractionPanel from './RawInteractionPanel'
 import SubsystemPanel from './SubsystemPanel'
@@ -21,15 +20,15 @@ import MessageBar from './MessageBar'
 
 import CrossFilter from '../CrossFilter'
 import SplitPane from 'react-split-pane'
+import LoadingPanel from './LoadingPanel'
 
 const controlWrapperStyle = {
   width: '100%'
-  // maxWidth: 450
 }
 
 const filterPanelStyle = {
   display: 'inline-flex',
-  height: '17em',
+  height: '10em',
   width: '100%',
   padding: '0.6em',
   background: '#FFFFFF'
@@ -40,6 +39,13 @@ const controlPanelStyle = {
   margin: 0,
   width: '100%',
   background: '#FFFFFF'
+}
+
+const controllerStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  width: '100%',
+  height: '8em'
 }
 
 class TermDetailsPanel extends Component {
@@ -86,7 +92,6 @@ class TermDetailsPanel extends Component {
     this.props.interactionsCommandActions.fit()
   }
 
-
   handleHorizontalResize = topHeight => {
     this.setState({
       networkPanelHeight: topHeight
@@ -96,30 +101,10 @@ class TermDetailsPanel extends Component {
 
   render() {
     // Still loading interaction...
-    const loading = this.props.rawInteractions.get('loading')
+    const rawInteractions = this.props.rawInteractions
+    const loading = rawInteractions.get('loading')
     if (loading) {
-      const loadingStyle = {
-        display: 'flex',
-        width: this.props.width,
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        flexDirection: 'column',
-        background: '#F0F0F0'
-      }
-
-      const loadingMessageStyle = {
-        color: '#555555',
-        fontSize: '2em',
-        fontWeight: 300
-      }
-
-      return (
-        <div style={loadingStyle}>
-          <div style={loadingMessageStyle}>Loading Interactions...</div>
-          <CircularProgress size={300} thickness={1} />
-        </div>
-      )
+      return <LoadingPanel message={rawInteractions.get('message')} />
     }
 
     const raw = this.props.rawInteractions.toJS()
@@ -164,7 +149,7 @@ class TermDetailsPanel extends Component {
 
     const title = data.name
     let networkProps = {}
-    if (!interactions) {
+    if (interactions) {
       networkProps = interactions.data
     }
 
@@ -199,7 +184,7 @@ class TermDetailsPanel extends Component {
           size={this.state.networkPanelHeight}
           onDragFinished={topHeight => this.handleHorizontalResize(topHeight)}
         >
-          <div style={{width: '100%'}}>
+          <div style={{ width: '100%' }}>
             <MessageBar
               title={this.props.title}
               titleColor={this.props.color}
@@ -235,7 +220,6 @@ class TermDetailsPanel extends Component {
           </div>
 
           <div style={propPanelStyle}>
-
             <div style={{ zIndex: 1111 }}>
               <div style={controlWrapperStyle}>
                 {this.props.expanded ? (
@@ -250,7 +234,7 @@ class TermDetailsPanel extends Component {
                   <div style={controlPanelStyle}>
                     <CrossFilter
                       panelWidth={this.props.width}
-                      networkData={interactions.data}
+                      networkData={networkProps}
                       originalEdgeCount={this.props.originalEdgeCount}
                       maxEdgeCount={this.props.maxEdgeCount}
                       networkProps={networkProps}
@@ -260,17 +244,19 @@ class TermDetailsPanel extends Component {
                       filtersActions={this.props.filtersActions}
                     />
 
-
-                    <LayoutSelector
-                      commandActions={this.props.interactionsCommandActions}
-                    />
-
-                    <MaxEdgePanel
-                      maxEdgeCount={this.props.maxEdgeCount}
-                      uiState={this.props.uiState}
-                      uiStateActions={this.props.uiStateActions}
-                      rawInteractionsActions={this.props.rawInteractionsActions}
-                    />
+                    <div style={controllerStyle}>
+                      <LayoutSelector
+                        commandActions={this.props.interactionsCommandActions}
+                      />
+                      <MaxEdgePanel
+                        maxEdgeCount={this.props.maxEdgeCount}
+                        uiState={this.props.uiState}
+                        uiStateActions={this.props.uiStateActions}
+                        rawInteractionsActions={
+                          this.props.rawInteractionsActions
+                        }
+                      />
+                    </div>
                   </div>
                 )}
 

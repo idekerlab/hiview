@@ -8,7 +8,8 @@ import {
   SET_SELECTED_PERM,
   DESELECT_PERM,
   CLEAR_SELECTED_PERM,
-  SET_PRIMARY_EDGE_SCORE_RANGE
+  SET_PRIMARY_EDGE_SCORE_RANGE,
+  SET_MESSAGE
 } from '../actions/raw-interactions'
 import { Map, Set } from 'immutable'
 
@@ -16,6 +17,7 @@ const DEF_MAX_EDGE_COUNT = 1000
 
 const defState = Map({
   loading: false,
+  message: 'Downloading all interactions from NDEx...',
   interactions: null,
   filters: null,
   extraEdges: null,
@@ -80,6 +82,9 @@ export default function networkState(state = defState, action) {
       const originalSelection = state.get('selectedPerm')
       const diff = originalSelection.subtract(Set(action.payload))
       return state.set('selectedPerm', diff)
+
+    case SET_MESSAGE:
+      return state.set('message', action.payload)
 
     case CLEAR_SELECTED_PERM:
       return state.set('selectedPerm', Set())

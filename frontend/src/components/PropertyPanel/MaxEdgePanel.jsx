@@ -23,7 +23,7 @@ export default class MaxEdgePanel extends Component {
 
   render() {
     return (
-      <List style={{padding: 0, margin: 0}}>
+      <List style={{flexGrow: 1}}>
         <ListItem>
           <ListItemIcon>
             <NetworkIcon />

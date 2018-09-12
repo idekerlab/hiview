@@ -6,8 +6,11 @@ import { createAction } from 'redux-actions'
 
 const NDEX_PUBLIC_API = 'http://test.ndexbio.org/v2'
 
-
 import * as d3Scale from 'd3-scale'
+
+// Set loading message
+export const SET_MESSAGE = 'SET_MESSAGE'
+export const setMessage = createAction(SET_MESSAGE)
 
 export const FETCH_INTERACTIONS = 'FETCH_INTERACTIONS'
 const fetchNetwork = url => {
@@ -188,25 +191,35 @@ const sortEdges = (network, maxEdgeCount) => {
   let barCount1 = 100
   let barCount2 = 50
 
-  if(edges.length < 100) {
+  if (edges.length < 100) {
     barCount1 = 10
     barCount2 = 5
   }
   const t2 = performance.now()
-  const allData = createBuckets(edges, minScore, maxScore, mainEdgeType, barCount1)
+  const allData = createBuckets(
+    edges,
+    minScore,
+    maxScore,
+    mainEdgeType,
+    barCount1
+  )
   const forHistogram = allData.result
-  console.log('Hist:', forHistogram)
-  console.log('Edge HIST TIME = ', performance.now() - t2)
   network.data['edgeScoreDist'] = forHistogram
   network.data['maxFrequency'] = allData.maxFrequency
 
   const subset = edges.slice(0, maxEdgeCount)
   const subMin = subset[subset.length - 1].data[mainEdgeType]
 
-  const subData = createBuckets(subset, subMin, maxScore, mainEdgeType, barCount2, true)
+  const subData = createBuckets(
+    subset,
+    subMin,
+    maxScore,
+    mainEdgeType,
+    barCount2,
+    true
+  )
   network.data['subEdgeScoreDist'] = subData.result
   network.data['maxFrequency'] = subData.maxFrequency
-
 
   const subsetLen = subset.length
   const nodeSet = new Set()
@@ -336,16 +349,20 @@ const createFilter = (network, maxEdgeCount) => {
   return [network, filters]
 }
 
-const createBuckets = (edges, min, max, scoreFieldName, sliceCount=200, coloring = false) => {
-
-  const colorScale = d3Scale.scaleSequential(d3Scale.interpolateInferno).domain([
-    min,
-    max
-  ])
-
+const createBuckets = (
+  edges,
+  min,
+  max,
+  scoreFieldName,
+  sliceCount = 200,
+  coloring = false
+) => {
+  const colorScale = d3Scale
+    .scaleSequential(d3Scale.interpolateInferno)
+    .domain([min, max])
 
   const range = max - min
-  const delta = range/sliceCount
+  const delta = range / sliceCount
 
   let maxFrequency = 0
 
@@ -354,16 +371,16 @@ const createBuckets = (edges, min, max, scoreFieldName, sliceCount=200, coloring
   let curRange = min + delta
   let bucketCounter = 0
   const result = []
-  while(edgeCount--) {
+  while (edgeCount--) {
     const score = edges[edgeCount].data[scoreFieldName]
-    if(score<curRange) {
+    if (score < curRange) {
       bucketCounter++
     } else {
-      if(maxFrequency < bucketCounter) {
+      if (maxFrequency < bucketCounter) {
         maxFrequency = bucketCounter
       }
-      const newBucket = {x:curRange.toString(), y: bucketCounter}
-      if(coloring) {
+      const newBucket = { x: curRange.toString(), y: bucketCounter }
+      if (coloring) {
         newBucket['color'] = colorScale(curRange)
       }
       result.push(newBucket)
@@ -372,8 +389,7 @@ const createBuckets = (edges, min, max, scoreFieldName, sliceCount=200, coloring
     }
   }
 
-  return {result, maxFrequency}
-
+  return { result, maxFrequency }
 }
 
 // For filters
@@ -406,3 +422,4 @@ export const deselectPerm = createAction(DESELECT_PERM)
 
 export const CLEAR_SELECTED_PERM = 'CLEAR_SELECTED_PERM'
 export const clearSelectedPerm = createAction(CLEAR_SELECTED_PERM)
+

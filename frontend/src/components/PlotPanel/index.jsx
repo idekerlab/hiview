@@ -2,6 +2,7 @@ import React from 'react'
 import Tabs, { Tab } from 'material-ui/Tabs'
 import BarPlot from './BarPlot'
 import Progress from './Progress'
+import EmptyPanel from "./EmptyPanel";
 
 const containerStyle = {
   paddingTop: '0em',
@@ -45,7 +46,7 @@ class PlotPanel extends React.Component {
     if (loading) {
       return <Progress style={progressWrapperStyle} />
     } else if (this.props.data === null) {
-      return <div />
+      return <EmptyPanel style={progressWrapperStyle}/>
     } else {
       const titles = Object.keys(this.props.data)
       const plotList = plots(this.props)

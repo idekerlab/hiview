@@ -5,9 +5,6 @@ import { SigmaRenderer } from 'cytoscapejs-renderer'
 import { CircularProgress } from 'material-ui/Progress'
 
 // For context menu
-import { ContextMenuTrigger } from 'react-contextmenu'
-import NetworkContextMenu from '../NetworkContextMenu'
-
 import CirclePackingPanel from '../CirclePackingPanel'
 
 import { Map } from 'immutable'
@@ -110,6 +107,10 @@ class NetworkPanel extends Component {
       this.props.maxEdgeCount
     )
     this.props.propertyActions.setProperty(props.id, props, 'term')
+  }
+
+  checkNetworkSize = () => {
+
   }
 
   selectEdges = (edgeIds, edgeProps) => {

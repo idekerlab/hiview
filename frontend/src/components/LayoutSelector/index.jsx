@@ -15,15 +15,14 @@ import FitSelected from 'material-ui-icons/CenterFocusStrong'
 // Base style
 const styles = theme => ({
   root: {
-    width: '100%',
     color: '#333333',
     display: 'inline-flex',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-start',
+    minWidth: '22em',
+    paddingLeft: '1em'
   },
   formControl: {
-    // margin: theme.spacing.unit,
-    width: '50%',
-    padding: '1em'
+    minWidth: '15em',
   },
   button: {
     margin: theme.spacing.unit,
@@ -80,9 +79,9 @@ class LayoutSelector extends Component {
       <div className={classes.root}>
         <FormControl className={classes.formControl}>
           <Select
+            
             value={this.state.layout}
             onChange={this.handleChange('layout')}
-            autoWidth
           >
             <MenuItem value={LAYOUTS.COSE}>COSE (Force-Directed)</MenuItem>
             <MenuItem value={LAYOUTS.GRID}>Grid</MenuItem>

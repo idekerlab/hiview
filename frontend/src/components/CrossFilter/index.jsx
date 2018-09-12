@@ -1,6 +1,4 @@
 import React, { Component } from 'react'
-
-import LegendPanel from '../PropertyPanel/LegendPanel'
 import { PrimaryFilter } from '../Filters'
 import {
   XYPlot,
@@ -8,13 +6,11 @@ import {
   YAxis,
   VerticalGridLines,
   HorizontalGridLines,
-  VerticalBarSeries,
-  ContinuousColorLegend
+  VerticalBarSeries
 } from 'react-vis'
 
-import Highlight from './highlight'
-
 import Typography from 'material-ui/Typography'
+import AllEdgeDistribution from './AllEdgeDistribution'
 
 const PADDING_RIGHT = 10
 
@@ -52,11 +48,16 @@ class CrossFilter extends Component {
     const maxFrequency = data.maxFrequency
     const subEdgeDist = data.subEdgeScoreDist
 
+    let showAllEdgeDist = false
+    if (this.props.maxEdgeCount < this.props.originalEdgeCount) {
+      showAllEdgeDist = true
+    }
+
     const w = this.props.panelWidth
     const containerStyle = {
       background: '#FFFFFF',
       margin: 0,
-      padding: 0
+      paddingBottom: '1.5em'
     }
 
     const titleStyle = {
@@ -66,13 +67,13 @@ class CrossFilter extends Component {
       justifyContent: 'center'
     }
 
+    const tickTotal = this.getTickCount(maxFrequency)
+
     return (
       <div
         style={containerStyle}
         ref={divElement => (this.divElement = divElement)}
       >
-        {/*<LegendPanel networkProps={this.props.networkProps} />*/}
-
         <XYPlot
           xType="ordinal"
           width={w}
@@ -81,10 +82,7 @@ class CrossFilter extends Component {
           style={{ margin: 0, padding: 0 }}
           margin={{ left: 40, right: 20, top: 10, bottom: 10 }}
         >
-          <YAxis
-            tickTotal={this.getTickCount(maxFrequency)}
-            tickFormat={v => `${v.toFixed(0)}`}
-          />
+          <YAxis tickTotal={tickTotal} tickFormat={v => `${v.toFixed(0)}`} />
           <VerticalBarSeries
             className="vertical-bar-series-example"
             data={subEdgeDist}
@@ -107,51 +105,16 @@ class CrossFilter extends Component {
           filtersActions={this.props.filtersActions}
         />
 
-        <XYPlot
-          xType="ordinal"
-          margin={{ left: 40, right: 20, top: 0, bottom: 8 }}
-          width={w}
-          height={100}
-          color="#777777"
-        >
-          <YAxis
-            tickTotal={this.getTickCount(maxFrequency)}
-            tickFormat={v => `${v.toFixed(0)}`}
+        {showAllEdgeDist ? (
+          <AllEdgeDistribution
+            w={w}
+            edgeDist={edgeDist}
+            titleStyle={titleStyle}
+            tickTotal={tickTotal}
           />
-          <VerticalBarSeries
-            className="vertical-bar-series-example"
-            data={edgeDist}
-          />
-
-          {/*<Highlight*/}
-          {/*onBrushEnd={area => this.setState({ lastDrawLocation: area })}*/}
-          {/*onDrag={area => {*/}
-          {/*this.setState({*/}
-          {/*lastDrawLocation: {*/}
-          {/*bottom:*/}
-          {/*this.state.lastDrawLocation.bottom +*/}
-          {/*(area.top - area.bottom),*/}
-          {/*left:*/}
-          {/*this.state.lastDrawLocation.left - (area.right - area.left),*/}
-          {/*right:*/}
-          {/*this.state.lastDrawLocation.right -*/}
-          {/*(area.right - area.left),*/}
-          {/*top:*/}
-          {/*this.state.lastDrawLocation.top + (area.top - area.bottom)*/}
-          {/*}*/}
-          {/*})*/}
-          {/*}}*/}
-          {/*/>*/}
-        </XYPlot>
-
-        <div style={titleStyle}>
-          <Typography
-            variant="display1"
-            style={{ color: '#666666', fontSize: '1em' }}
-          >
-            Integrated Similarity Score Distribution (for all edges)
-          </Typography>
-        </div>
+        ) : (
+          <div />
+        )}
       </div>
     )
   }
