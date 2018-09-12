@@ -1,33 +1,17 @@
 import React, { Component } from 'react'
 import { Map, List } from 'immutable'
 
-import {
-  XYPlot,
-  XAxis,
-  YAxis,
-  HorizontalBarSeries,
-  DiscreteColorLegend
-} from 'react-vis'
+import { XYPlot, XAxis, YAxis, HorizontalBarSeries } from 'react-vis'
 
 const RANKING_MAX = 10
 const ADJ_PVAL_IDX = 6
-
-const VALS = ['Adjusted p-value (-log10)']
-
-const containerStyle = {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '100%',
-  height: '100%'
-}
+const FONT_SIZE = 7
 
 class BarPlot extends Component {
   constructor() {
     super()
     this.state = {
-      selectedIndex: -1,
-      data: []
+      selectedIndex: -1
     }
   }
 
@@ -41,8 +25,6 @@ class BarPlot extends Component {
 
     return true
   }
-
-  countMaxTextLength = () => {}
 
   render() {
     const dataPoints = this.props.data
@@ -68,8 +50,6 @@ class BarPlot extends Component {
         return 0
       }
     })
-
-    // const { selectedIndex } = this.state
 
     // Sort
     const max =
@@ -99,7 +79,7 @@ class BarPlot extends Component {
 
     console.log('Plot data', reversed)
 
-    const leftWidth = 6 * maxTextLength
+    const leftWidth = FONT_SIZE * maxTextLength + 10
 
     return (
       <div>
@@ -111,7 +91,7 @@ class BarPlot extends Component {
           height={this.props.height}
           yType="ordinal"
           stackBy="x"
-          margin={{ left: leftWidth, right: 0, top: 0, bottom: 50 }}
+          margin={{ left: leftWidth, right: 10, top: 0, bottom: 50 }}
         >
           <XAxis />
           <YAxis />

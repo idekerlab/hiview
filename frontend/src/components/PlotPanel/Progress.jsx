@@ -2,16 +2,8 @@ import React from 'react'
 import { LinearProgress } from 'material-ui/Progress'
 import Typography from 'material-ui/Typography'
 
-
-
-const wrapperStyle = {
-  width: '100%'
-}
-
-
-
-const Progress = () => (
-  <div style={wrapperStyle}>
+const Progress = props => (
+  <div style={props.style}>
     <Typography style={{ padding: '1em' }} variant={'display1'}>
       Running enrichment analysis...
     </Typography>

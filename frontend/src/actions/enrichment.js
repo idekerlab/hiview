@@ -38,8 +38,6 @@ const receiveAnalysisResult = (url, result, subsystemId) => ({
 
 const send = (url, genes) => {
   const geneString = genes.reduce((gene1, gene2) => gene1 + '\n' + gene2)
-  console.log(geneString)
-
   const data = new FormData()
   data.append('list', geneString)
   data.append('description', 'test2')
@@ -66,11 +64,7 @@ const parallelCall = (url, jobId) => {
   return tasks
 }
 
-export const runEnrichment = (
-  url = ENRICHR_URL,
-  genes,
-  subsystemId
-) => {
+export const runEnrichment = (url = ENRICHR_URL, genes, subsystemId) => {
   return dispatch => {
     // Set state to "running"
     dispatch(sendGeneList(url, genes, subsystemId))
@@ -98,7 +92,6 @@ export const runEnrichment = (
       })
   }
 }
-
 
 export const addGeneList = createAction(ADD_GENE_LIST)
 export const clearGeneList = createAction(CLEAR_GENE_LIST)

@@ -11,7 +11,6 @@ const containerStyle = {
   height: '100%'
 }
 
-
 class PlotPanel extends React.Component {
   state = {
     idx: 0
@@ -33,9 +32,18 @@ class PlotPanel extends React.Component {
       height: this.props.height - 90
     }
 
+    const progressWrapperStyle = {
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      width: '100%',
+      height: this.props.height - 90
+    }
+
     const loading = this.props.enrichment.get('running')
     if (loading) {
-      return <Progress />
+      return <Progress style={progressWrapperStyle} />
     } else if (this.props.data === null) {
       return <div />
     } else {
@@ -65,7 +73,7 @@ const plots = props => {
   const plotList = []
 
   for (let [k, v] of Object.entries(props.data)) {
-    plotList.push(<BarPlot key={k} height={250} data={v} title={k} />)
+    plotList.push(<BarPlot key={k} height={260} data={v} title={k} />)
   }
 
   return plotList
