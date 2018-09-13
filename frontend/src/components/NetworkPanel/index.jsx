@@ -99,18 +99,46 @@ class NetworkPanel extends Component {
     const link = this.props.cxtoolUrl + linkId + '?server=' + serverType
     this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
-    // Directly set prop from node attributes
-    this.props.rawInteractionsActions.fetchInteractionsFromUrl(
-      linkId,
-      serverType,
-      link,
-      this.props.maxEdgeCount
-    )
+    // this.props.rawInteractionsActions.getNetworkSummary(
+    //   linkId,
+    //   serverType,
+    //   link,
+    //   this.props.maxEdgeCount
+    // )
+
+
+    // Check size before
+    const NDEX_API = '.ndexbio.org/v2/network/'
+    const summaryUrl = 'http://' + serverType + NDEX_API + linkId + '/summary'
+
+    fetch(summaryUrl)
+      .then(response => {
+        if (!response.ok) {
+          throw Error(response.statusText)
+        } else {
+          return response.json()
+        }
+      })
+      .then(summary => {
+        console.log("* Summary0: ", summary)
+        const edgeCount = summary.edgeCount
+        this.props.rawInteractionsActions.setSummary(summary)
+
+        if(edgeCount < this.props.autoLoadThreshold) {
+          // Directly set prop from node attributes
+          this.props.rawInteractionsActions.fetchInteractionsFromUrl(
+            linkId,
+            serverType,
+            link,
+            this.props.maxEdgeCount
+          )
+        }
+      })
+      .catch(err => {
+        console.log('Network summary ERROR! ', err)
+      })
+
     this.props.propertyActions.setProperty(props.id, props, 'term')
-  }
-
-  checkNetworkSize = () => {
-
   }
 
   selectEdges = (edgeIds, edgeProps) => {

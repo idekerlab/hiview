@@ -9,7 +9,10 @@ import {
   DESELECT_PERM,
   CLEAR_SELECTED_PERM,
   SET_PRIMARY_EDGE_SCORE_RANGE,
-  SET_MESSAGE
+  SET_MESSAGE,
+  RECEIVE_SUMMARY,
+  SET_SUMMARY,
+  SET_AUTO_LOAD_THRESHOLD
 } from '../actions/raw-interactions'
 import { Map, Set } from 'immutable'
 
@@ -24,7 +27,9 @@ const defState = Map({
   maxEdgeCount: DEF_MAX_EDGE_COUNT,
   originalEdgeCount: 0,
   selected: [],
-  selectedPerm: Set()
+  selectedPerm: Set(),
+  summary: null,
+  autoLoadThreshold: 10000
 })
 
 export default function networkState(state = defState, action) {
@@ -41,6 +46,11 @@ export default function networkState(state = defState, action) {
         .set('filters', action.filters)
         .set('groups', action.groups)
         .set('extraEdges', action.extraEdges)
+    case RECEIVE_SUMMARY:
+      return state
+        .set('summary', action.summary)
+        .set('interactions', null)
+        .set('originalEdgeCount', 0)
     case SET_VALUE:
       const filters = state.get('filters')
       const attributeName = action.payload.attributeName
@@ -85,6 +95,14 @@ export default function networkState(state = defState, action) {
 
     case SET_MESSAGE:
       return state.set('message', action.payload)
+
+    case SET_SUMMARY:
+      return state
+        .set('interactions', null)
+        .set('summary', action.payload)
+
+    case SET_AUTO_LOAD_THRESHOLD:
+      return state.set('autoLoadThreshold', action.payload)
 
     case CLEAR_SELECTED_PERM:
       return state.set('selectedPerm', Set())

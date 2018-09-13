@@ -10,8 +10,6 @@ const MIN_WIDTH = 300
 const DEF_MAIN_PANEL_WIDTH = 800
 const DEF_NETWORK_PANEL_HEIGHT = 600
 
-
-
 // Adjustable main split panes
 export default class BaseSplitPane extends Component {
   constructor(props) {
@@ -82,7 +80,6 @@ export default class BaseSplitPane extends Component {
           size={this.state.mainPanelWidth}
           onDragFinished={leftWidth => this.handleVerticalResize(leftWidth)}
         >
-
           <LeftPanel {...this.props} />
 
           {currentProperty.id === null ? (
@@ -112,6 +109,9 @@ export default class BaseSplitPane extends Component {
               uiStateActions={uiStateActions}
               width={rightPanelWidth}
               maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
+              autoLoadThreshold={this.props.rawInteractions.get(
+                'autoLoadThreshold'
+              )}
               originalEdgeCount={this.props.rawInteractions.get(
                 'originalEdgeCount'
               )}

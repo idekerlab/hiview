@@ -4,7 +4,7 @@ const THRESHOLD_TAG = 'Main Feature Default Cutoff'
 const PATTERN = /[ -]/g
 import { createAction } from 'redux-actions'
 
-const NDEX_PUBLIC_API = 'http://test.ndexbio.org/v2'
+const NDEX_API = '.ndexbio.org/v2/network/'
 
 import * as d3Scale from 'd3-scale'
 
@@ -46,6 +46,13 @@ export const fetchInteractionsFromUrl = (
     dispatch(fetchNetwork(url))
 
     const t0 = performance.now()
+
+    // fetch(NDEX_PUBLIC_API + uuid)
+    //   .then(res => res.json())
+    //   .then(json => {
+    //     const t00 = performance.now()
+    //     console.log(t00 - t0, ': FETCH', json)
+    //   })
 
     return fetchNet(url)
       .then(response => {
@@ -423,3 +430,45 @@ export const deselectPerm = createAction(DESELECT_PERM)
 export const CLEAR_SELECTED_PERM = 'CLEAR_SELECTED_PERM'
 export const clearSelectedPerm = createAction(CLEAR_SELECTED_PERM)
 
+
+export const SET_AUTO_LOAD_THRESHOLD = 'SET_AUTO_LOAD_THRESHOLD'
+export const setAutoLoadThreshold = createAction(SET_AUTO_LOAD_THRESHOLD)
+
+export const SET_SUMMARY = 'SET_SUMMARY'
+export const setSummary = createAction(SET_SUMMARY)
+
+// Check size of the network
+
+export const RECEIVE_SUMMARY = 'RECEIVE_SUMMARY'
+const receiveSummary = (summary) => {
+  return {
+    type: RECEIVE_SUMMARY,
+    summary
+  }
+}
+
+export const getNetworkSummary = (uuid,
+                                  server,
+                                  url,
+                                  maxEdgeCount = 500) => {
+  return dispatch => {
+    const url = 'http://' + server + NDEX_API + uuid + '/summary'
+
+    return fetch(url)
+      .then(response => {
+        if (!response.ok) {
+          throw Error(response.statusText)
+        } else {
+          return response.json()
+        }
+      })
+      .then(summary => {
+        console.log("* Summary2: ", summary)
+        return dispatch(receiveSummary(summary))
+      })
+      .catch(err => {
+        console.log('Network summary ERROR! ', err)
+        return dispatch(receiveSummary(null))
+      })
+  }
+}

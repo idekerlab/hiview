@@ -94,6 +94,9 @@ class LeftPanel extends Component {
             search={search}
             messageActions={messageActions}
             maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
+            autoLoadThreshold={this.props.rawInteractions.get(
+              'autoLoadThreshold'
+            )}
             rawInteractionsActions={rawInteractionsActions}
             idmapActions={this.props.idmapActions}
             datasource={this.props.datasource}

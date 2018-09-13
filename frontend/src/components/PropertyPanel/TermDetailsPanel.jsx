@@ -21,6 +21,8 @@ import MessageBar from './MessageBar'
 import CrossFilter from '../CrossFilter'
 import SplitPane from 'react-split-pane'
 import LoadingPanel from './LoadingPanel'
+import AutoLoadThresholdPanel from './AutoLoadThresholdPanel'
+import LargeNetworkWarningPanel from './LargeNetworkWarningPanel'
 
 const controlWrapperStyle = {
   width: '100%'
@@ -52,6 +54,7 @@ class TermDetailsPanel extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      loaded: false,
       subtree: {},
       scoreFilter: 1.0,
       subnet: {},
@@ -96,18 +99,39 @@ class TermDetailsPanel extends Component {
     this.setState({
       networkPanelHeight: topHeight
     })
-    console.log('New H:', topHeight)
   }
+
 
   render() {
     // Still loading interaction...
-    const rawInteractions = this.props.rawInteractions
-    const loading = rawInteractions.get('loading')
+    const raw = this.props.rawInteractions.toJS()
+    const loading = raw['loading']
     if (loading) {
-      return <LoadingPanel message={rawInteractions.get('message')} />
+      return <LoadingPanel message={raw['message']} />
     }
 
-    const raw = this.props.rawInteractions.toJS()
+    const summary = raw.summary
+    const autoLoadTh = raw.autoLoadThreshold
+    const uuid = this.props.datasource.get('uuid')
+    const serverType = this.props.datasource.get('serverType')
+    const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
+
+    if (summary && summary.edgeCount > autoLoadTh && raw.interactions === null) {
+      const rawUuid = summary.externalId
+      const rawUrl = this.props.cxtoolUrl + rawUuid + '?server=' + serverType
+
+      return (
+        <LargeNetworkWarningPanel
+          summary={summary}
+          uuid={rawUuid}
+          server={serverType}
+          url={rawUrl}
+          maxEdgeCount={this.props.maxEdgeCount}
+          rawInteractionsActions={this.props.rawInteractionsActions}
+        />
+      )
+    }
+
     const interactions = raw.interactions
     const selected = raw.selected
     // Permanent selection
@@ -158,9 +182,6 @@ class TermDetailsPanel extends Component {
       visualStyle.name = 'defaultStyle'
     }
 
-    const uuid = this.props.datasource.get('uuid')
-    const serverType = this.props.datasource.get('serverType')
-    const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
     const network = this.props.network.get(url)
 
     let networkData = {}
@@ -252,6 +273,12 @@ class TermDetailsPanel extends Component {
                         maxEdgeCount={this.props.maxEdgeCount}
                         uiState={this.props.uiState}
                         uiStateActions={this.props.uiStateActions}
+                        rawInteractionsActions={
+                          this.props.rawInteractionsActions
+                        }
+                      />
+                      <AutoLoadThresholdPanel
+                        autoLoadThreshold={this.props.autoLoadThreshold}
                         rawInteractionsActions={
                           this.props.rawInteractionsActions
                         }
