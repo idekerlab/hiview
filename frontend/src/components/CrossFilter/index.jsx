@@ -44,7 +44,7 @@ class CrossFilter extends Component {
 
   render() {
     const data = this.props.networkData
-    const edgeDist = data.edgeScoreDist
+    const allEdgeDist = data.allEdgeScoreDist
     const maxFrequency = data.maxFrequency
     const subEdgeDist = data.subEdgeScoreDist
 
@@ -108,7 +108,7 @@ class CrossFilter extends Component {
         {showAllEdgeDist ? (
           <AllEdgeDistribution
             w={w}
-            edgeDist={edgeDist}
+            edgeDist={allEdgeDist}
             titleStyle={titleStyle}
             tickTotal={tickTotal}
           />

@@ -101,7 +101,6 @@ class TermDetailsPanel extends Component {
     })
   }
 
-
   render() {
     // Still loading interaction...
     const raw = this.props.rawInteractions.toJS()
@@ -116,7 +115,11 @@ class TermDetailsPanel extends Component {
     const serverType = this.props.datasource.get('serverType')
     const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
 
-    if (summary && summary.edgeCount > autoLoadTh && raw.interactions === null) {
+    if (
+      summary &&
+      summary.edgeCount > autoLoadTh &&
+      raw.interactions === null
+    ) {
       const rawUuid = summary.externalId
       const rawUrl = this.props.cxtoolUrl + rawUuid + '?server=' + serverType
 
@@ -194,7 +197,8 @@ class TermDetailsPanel extends Component {
       height: window.innerHeight - this.state.networkPanelHeight,
       display: 'flex',
       flexDirection: 'column',
-      overflowY: 'auto'
+      overflowY: 'auto',
+      overflowX: 'hidden'
     }
 
     return (
@@ -241,7 +245,7 @@ class TermDetailsPanel extends Component {
           </div>
 
           <div style={propPanelStyle}>
-            <div style={{ zIndex: 1111 }}>
+            <div style={{ zIndex: 1000 }}>
               <div style={controlWrapperStyle}>
                 {this.props.expanded ? (
                   <div style={{ height: '5.2em' }} />
@@ -265,10 +269,11 @@ class TermDetailsPanel extends Component {
                       filtersActions={this.props.filtersActions}
                     />
 
+                    <LayoutSelector
+                      commandActions={this.props.interactionsCommandActions}
+                    />
+
                     <div style={controllerStyle}>
-                      <LayoutSelector
-                        commandActions={this.props.interactionsCommandActions}
-                      />
                       <MaxEdgePanel
                         maxEdgeCount={this.props.maxEdgeCount}
                         uiState={this.props.uiState}

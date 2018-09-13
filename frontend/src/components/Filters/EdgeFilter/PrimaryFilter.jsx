@@ -33,6 +33,9 @@ class PrimaryFilter extends Component {
   }
 
   onAfterChange = value => {
+
+    console.log('New th value = ', value)
+
     this.setState({value})
     this.props.commandActions.filterEdges({
       options: {

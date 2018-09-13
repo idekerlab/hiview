@@ -38,7 +38,7 @@ const EXAMPLE_UUIDS = {
   'Small example 2': '6ee4bb3f-ab2a-11e8-9a23-0660b7976219',
   'DNA Repair': 'ab704ae4-0719-11e8-b03c-0660b7976219',
   'louvain_hierarchy_0.4.ont': '1bb9e2a4-99b4-11e8-9a23-0660b7976219',
-  '55.5K Subsystems': 'a82a5344-9f56-11e8-9a23-0660b7976219'
+  '8.3K Subsystems': '184b0b4c-b6e4-11e8-98d5-0660b7976219'
 }
 
 class SourceSelector extends Component {

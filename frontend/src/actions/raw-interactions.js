@@ -192,8 +192,8 @@ const sortEdges = (network, maxEdgeCount) => {
 
   const maxScore = edges[0].data[mainEdgeType]
   const minScore = edges[edges.length - 1].data[mainEdgeType]
-  network.data['edgeScoreRange'] = [minScore, maxScore]
-  console.log('RANGE SET: min / max = ', minScore, maxScore)
+  network.data['allEdgeScoreRange'] = [minScore, maxScore]
+  console.log('RANGE for ALL edges: min / max = ', minScore, maxScore, edges)
 
   let barCount1 = 100
   let barCount2 = 50
@@ -211,8 +211,8 @@ const sortEdges = (network, maxEdgeCount) => {
     barCount1
   )
   const forHistogram = allData.result
-  network.data['edgeScoreDist'] = forHistogram
-  network.data['maxFrequency'] = allData.maxFrequency
+  network.data['allEdgeScoreDist'] = forHistogram
+  network.data['allEdgeMaxFrequency'] = allData.maxFrequency
 
   const subset = edges.slice(0, maxEdgeCount)
   const subMin = subset[subset.length - 1].data[mainEdgeType]
@@ -227,6 +227,7 @@ const sortEdges = (network, maxEdgeCount) => {
   )
   network.data['subEdgeScoreDist'] = subData.result
   network.data['maxFrequency'] = subData.maxFrequency
+  network.data['edgeScoreRange'] = [subMin, maxScore]
 
   const subsetLen = subset.length
   const nodeSet = new Set()
@@ -436,6 +437,9 @@ export const setAutoLoadThreshold = createAction(SET_AUTO_LOAD_THRESHOLD)
 
 export const SET_SUMMARY = 'SET_SUMMARY'
 export const setSummary = createAction(SET_SUMMARY)
+
+export const SET_LOADING = 'SET_LOADING'
+export const setLoading = createAction(SET_LOADING)
 
 // Check size of the network
 

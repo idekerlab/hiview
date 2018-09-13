@@ -16,13 +16,14 @@ import FitSelected from 'material-ui-icons/CenterFocusStrong'
 const styles = theme => ({
   root: {
     color: '#333333',
-    display: 'inline-flex',
-    justifyContent: 'flex-start',
-    minWidth: '22em',
-    paddingLeft: '1em'
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
   },
   formControl: {
-    minWidth: '15em',
+    padding: '1em',
+    minWidth: '20em'
   },
   button: {
     margin: theme.spacing.unit,
@@ -43,7 +44,6 @@ const LAYOUTS = {
 }
 
 class LayoutSelector extends Component {
-
   constructor(props) {
     super(props)
     this.state = {
@@ -79,7 +79,7 @@ class LayoutSelector extends Component {
       <div className={classes.root}>
         <FormControl className={classes.formControl}>
           <Select
-            
+            fullWidth
             value={this.state.layout}
             onChange={this.handleChange('layout')}
           >
@@ -97,7 +97,7 @@ class LayoutSelector extends Component {
           variant="raised"
           color="primary"
           onClick={this.handleClick}
-          size='small'
+          size="small"
         >
           <ApplyIcon className={classes.icon} />
         </Button>
@@ -107,7 +107,7 @@ class LayoutSelector extends Component {
           variant="raised"
           color="default"
           onClick={this.handleFit}
-          size='small'
+          size="small"
         >
           <FitContent className={classes.icon} />
         </Button>
@@ -117,7 +117,7 @@ class LayoutSelector extends Component {
           variant="raised"
           color="default"
           onClick={this.handleFitSelected}
-          size='small'
+          size="small"
         >
           <FitSelected className={classes.icon} />
         </Button>

@@ -111,6 +111,7 @@ class NetworkPanel extends Component {
     const NDEX_API = '.ndexbio.org/v2/network/'
     const summaryUrl = 'http://' + serverType + NDEX_API + linkId + '/summary'
 
+    this.props.rawInteractionsActions.setLoading("Checking summary of the interaction network...")
     fetch(summaryUrl)
       .then(response => {
         if (!response.ok) {
