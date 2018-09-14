@@ -86,8 +86,8 @@ class PrimaryFilter extends Component {
     if(!minNumber || !maxNumber) {
       return <div />
     }
-    const min = minNumber.toFixed(3)
-    const max = maxNumber.toFixed(3)
+    const min = minNumber.toFixed(5)
+    const max = maxNumber.toFixed(5)
     const val = this.state.value
 
     const marks = {
@@ -104,7 +104,7 @@ class PrimaryFilter extends Component {
           defaultValue={Number(primaryFilter.threshold)}
           min={Number(min)}
           max={Number(max)}
-          step={0.001}
+          step={0.00001}
           onAfterChange={this.onAfterChange}
           marks={marks}
           trackStyle={trackStyle}
