@@ -178,3 +178,22 @@ html, body, #root {
     opacity: 1;
     stroke-width: 1px;
 }
+
+.tooltip-circle-packing {
+    color: #333333;
+    position: absolute;
+    width: 26em;
+    height: 6em;
+    padding: 0.5em;
+    background: #FFFFFF;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+}
+
+.tooltip-circle-packing-title {
+   color: #222222;
+    font-size: 1.5em;
+    padding-bottom: 1em;
+
+}
