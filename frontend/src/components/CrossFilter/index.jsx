@@ -81,12 +81,12 @@ class CrossFilter extends Component {
         >
           <YAxis
             tickTotal={tickTotal}
-            tickFormat={v => {
-              if (!v) {
-                return '0'
-              }
-              return `${v.toFixed(0)}`
-            }}
+            // tickFormat={v => {
+            //   if (!v) {
+            //     return '0'
+            //   }
+            //   return `${v.toFixed(5)}`
+            // }}
           />
           <VerticalBarSeries
             className="vertical-bar-series-example"
