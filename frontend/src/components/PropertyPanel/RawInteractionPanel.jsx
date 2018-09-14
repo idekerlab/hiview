@@ -47,11 +47,9 @@ class RawInteractionPanel extends Component {
 
   render() {
     const networkAreaStyle = {
-      // width: this.props.panelWidth,
-      // height: this.props.panelHeight,
       width: '100%',
       height: '100%',
-      background: '#AAAAAA'
+      background: '#999999'
     }
 
     return this.getMainContents(networkAreaStyle)

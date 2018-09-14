@@ -2,17 +2,6 @@ import React from 'react'
 import Typography from 'material-ui/Typography'
 import WarningIcon from 'material-ui-icons/ErrorOutline'
 
-const containerStyle = {
-  display: 'flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  paddingLeft: '2em',
-  margin: 0,
-  height: '4em',
-  background: '#444444'
-}
-
-
 const iconStyle = {
   color: 'red',
   height: '1.2em',
@@ -46,16 +35,39 @@ const getWarning = (originalCount, maxCount) => {
 }
 
 const MessageBar = props => {
-  return (
-    <div style={containerStyle}>
-      <Typography
-        variant="display4"
-        style={{ color: props.titleColor, fontSize: '2em' }}
-      >
-        {props.title}
-      </Typography>
+  const wrapperStyle = {
+    height: '5em',
+    padding: '1em',
+    margin: 0,
+    background: '#333333'
 
-      {getWarning(props.originalEdgeCount, props.maxEdgeCount)}
+  }
+  const containerStyle = {
+    display: 'flex',
+    paddingTop: '0.7em',
+    flexDirection: 'row',
+    alignItems: 'center'
+  }
+
+  const panelStyle = {
+    color: '#EEEEEE',
+    fontSize: '1em',
+    borderBottom: '1px solid #EEEEEE'
+  }
+
+  return (
+    <div style={wrapperStyle}>
+      <div style={panelStyle}>Data Viewer</div>
+      <div style={containerStyle}>
+        <Typography
+          variant="display4"
+          style={{ color: props.titleColor, fontSize: '2em' }}
+        >
+          {props.title}
+        </Typography>
+
+        {getWarning(props.originalEdgeCount, props.maxEdgeCount)}
+      </div>
     </div>
   )
 }

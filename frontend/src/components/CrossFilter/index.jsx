@@ -31,9 +31,6 @@ class CrossFilter extends Component {
     this.setState({ height, width })
   }
 
-  numberFormatter = (value, index, scale, tickTotal) =>
-    `${scale.tickFormat(tickTotal, 's')(value.toFixed(0))}`
-
   getTickCount = maxFrequency => {
     if (maxFrequency <= 1) {
       return 1
@@ -82,7 +79,15 @@ class CrossFilter extends Component {
           style={{ margin: 0, padding: 0 }}
           margin={{ left: 40, right: 20, top: 10, bottom: 10 }}
         >
-          <YAxis tickTotal={tickTotal} tickFormat={v => `${v.toFixed(0)}`} />
+          <YAxis
+            tickTotal={tickTotal}
+            tickFormat={v => {
+              if (!v) {
+                return '0'
+              }
+              return `${v.toFixed(0)}`
+            }}
+          />
           <VerticalBarSeries
             className="vertical-bar-series-example"
             data={subEdgeDist}

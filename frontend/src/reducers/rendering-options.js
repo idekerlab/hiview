@@ -26,8 +26,8 @@ const defaultState = Map({
   nodesPowRatio: 0.8,
   minEdgeSize: 0.01,
   maxEdgeSize: 0.5,
-  rootColor: 'steelblue',
-  leafColor: '#00C8F4'
+  rootColor: '#08306b',
+  leafColor: '#6baed6'
 })
 
 export default handleActions(

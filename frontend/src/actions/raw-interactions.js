@@ -193,7 +193,6 @@ const sortEdges = (network, maxEdgeCount) => {
   const maxScore = edges[0].data[mainEdgeType]
   const minScore = edges[edges.length - 1].data[mainEdgeType]
   network.data['allEdgeScoreRange'] = [minScore, maxScore]
-  console.log('RANGE for ALL edges: min / max = ', minScore, maxScore, edges)
 
   let barCount1 = 100
   let barCount2 = 50

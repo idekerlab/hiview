@@ -5,7 +5,7 @@ import { XYPlot, XAxis, YAxis, HorizontalBarSeries } from 'react-vis'
 
 const RANKING_MAX = 10
 const ADJ_PVAL_IDX = 6
-const FONT_SIZE = 7
+const FONT_SIZE = 6.5
 
 class BarPlot extends Component {
   constructor() {
@@ -79,7 +79,8 @@ class BarPlot extends Component {
 
     console.log('Plot data', reversed)
 
-    const leftWidth = FONT_SIZE * maxTextLength + 10
+    const leftWidth = FONT_SIZE * maxTextLength + 20
+    const panelWidth = leftWidth + 500
 
     return (
       <div>
@@ -87,7 +88,7 @@ class BarPlot extends Component {
           colorType="category"
           onMouseLeave={() => this.setState({ selectedIndex: -1 })}
           animation={true}
-          width={900}
+          width={panelWidth}
           height={this.props.height}
           yType="ordinal"
           stackBy="x"

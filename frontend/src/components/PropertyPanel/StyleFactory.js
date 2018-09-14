@@ -1,57 +1,56 @@
 const MAIN_INTERACTION_TYPE_TAG = 'Main Feature'
 const ATTR_TYPES = {
-  'MIN': 'min',
-  'MAX': 'max',
-  'TYPE': 'type',
+  MIN: 'min',
+  MAX: 'max',
+  TYPE: 'type'
 }
 
 import * as d3Scale from 'd3-scale'
 
-
 const BASE_STYLE = {
   node: {
-    'selector': 'node',
-    'css': {
-      'width': 48,
-      'height': 13,
-      'shape': 'roundrectangle',
+    selector: 'node',
+    css: {
+      width: 48,
+      height: 13,
+      shape: 'roundrectangle',
       'text-valign': 'center',
       'text-halign': 'center',
-      'color': '#FFFFFF',
+      color: '#FFFFFF',
       'background-opacity': 0,
       'background-color': '#222222',
       'border-width': 0,
       'font-size': 10,
-      'label': 'data(name)',
-    },
+      label: 'data(name)'
+    }
   },
   nodeSelected: {
-    'selector': 'node:selected',
-    'css': {
-      'shape': 'ellipse',
-      'width': 40,
-      'height': 40,
+    selector: 'node:selected',
+    css: {
+      shape: 'ellipse',
+      width: 40,
+      height: 40,
       'font-size': 11,
       color: '#FFFFFF',
       'background-opacity': 1,
       'background-color': '#FF0000'
-    },
+    }
   },
   edge: {
-    'selector': 'edge',
-    'css': {
+    selector: 'edge',
+    css: {
       width: 1,
       'line-color': '#555555',
       opacity: 1,
-      "curve-style": "bezier",
-      "control-point-step-size": 45
+      'curve-style': 'bezier',
+      'control-point-step-size': 45
       // 'haystack-radius': '0.8'
     }
   },
   edgeSelected: {
-    'selector': 'edge:selected',
-    'css': {
-      opacity: 1,
+    selector: 'edge:selected',
+    css: {
+      opacity: 1
       // 'line-color': '#FF0000'
       // width: 15
       // 'label': 'data(interaction)',
@@ -72,16 +71,13 @@ const BASE_STYLE = {
     css: {
       'background-color': '#FFFFFF',
       color: '#FF0000',
-      'width': 50,
-      'height': 50,
-
+      width: 50,
+      height: 50
     }
   }
 }
 
-
 export const createStyle = originalNetwork => {
-
   const network = originalNetwork.toJS()
 
   if (network.loading) {
@@ -95,35 +91,38 @@ export const createStyle = originalNetwork => {
 
   const edges = network.interactions.elements.edges
 
-
   const networkData = interactions.data
   let primaryEdgeType = networkData[MAIN_INTERACTION_TYPE_TAG]
-
-
-  // This is the generator for custom styling
-  // const similarityMin = networkData[`${primaryEdgeType} ${ATTR_TYPES.MIN}`]
-  // const similarityMax = networkData[`${primaryEdgeType} ${ATTR_TYPES.MAX}`]
 
   // Need to remove space due to current cxtool limitation
   primaryEdgeType = primaryEdgeType.replace(/ /g, '_')
 
-  const similarityMax = edges[0].data[primaryEdgeType]
-  const similarityMin = edges[edges.length - 1].data[primaryEdgeType]
+  let similarityMax = edges[0].data[primaryEdgeType]
+  let similarityMin = edges[edges.length - 1].data[primaryEdgeType]
 
+  if(!similarityMin) {
+    console.warn('Min was not defined for: ', edges[edges.length - 1])
+    similarityMin = 0
+  }
+
+  if(!similarityMax) {
+    console.warn('Max was not defined for: ', edges[0])
+    similarityMax = 1
+  }
   // const colorScale = d3Scale.scaleSequential(d3ScaleChromatic.interpolateGnBu)
   //   .domain([parentWidth,0])
-  const colorScale = d3Scale.scaleSequential(d3Scale.interpolateInferno).domain([
-    similarityMin,
-    similarityMax,
-  ])
-
+  const colorScale = d3Scale
+    .scaleSequential(d3Scale.interpolateInferno)
+    .domain([similarityMin, similarityMax])
 
   // console.log(primaryEdgeType, '#CUR range = ', similarityMin, similarityMax)
 
   const edgeStyle = BASE_STYLE.edge
 
-  edgeStyle.css['width'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.1, 10)`
-  edgeStyle.css['line-color'] = (d) => {
+  edgeStyle.css[
+    'width'
+  ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.1, 10)`
+  edgeStyle.css['line-color'] = d => {
     if (!d.data(primaryEdgeType)) {
       return '#aaaaaa'
     } else {
@@ -131,7 +130,9 @@ export const createStyle = originalNetwork => {
     }
   }
 
-  edgeStyle.css['opacity'] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 1)`
+  edgeStyle.css[
+    'opacity'
+  ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 1)`
   // edgeStyle.css['display'] = (d) => {
   //
   //   if (!d.data(primaryEdgeType)) {
@@ -158,8 +159,13 @@ export const createStyle = originalNetwork => {
   // }
 
   return {
-    'style': [
-      BASE_STYLE.node, BASE_STYLE.nodeSelected,
-      edgeStyle, edgeSelectedStyle, BASE_STYLE.hidden, BASE_STYLE.seed],
+    style: [
+      BASE_STYLE.node,
+      BASE_STYLE.nodeSelected,
+      edgeStyle,
+      edgeSelectedStyle,
+      BASE_STYLE.hidden,
+      BASE_STYLE.seed
+    ]
   }
 }

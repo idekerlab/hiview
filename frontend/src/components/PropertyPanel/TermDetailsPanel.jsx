@@ -201,16 +201,22 @@ class TermDetailsPanel extends Component {
       overflowX: 'hidden'
     }
 
+    // Calculate
+    const topHeight = this.state.networkPanelHeight
+
     return (
       <div>
+
         <SplitPane
           split="horizontal"
           minSize={50}
           size={this.state.networkPanelHeight}
           onDragFinished={topHeight => this.handleHorizontalResize(topHeight)}
         >
-          <div style={{ width: '100%' }}>
+          <div style={{ width: '100%', display: 'flex', flexDirection: 'column'}}>
+
             <MessageBar
+              height={50}
               title={this.props.title}
               titleColor={this.props.color}
               originalEdgeCount={this.props.originalEdgeCount}
@@ -218,7 +224,7 @@ class TermDetailsPanel extends Component {
             />
 
             {hidden ? (
-              <EmptyInteractionPanel height={this.state.networkPanelHeight} />
+              <EmptyInteractionPanel height={topHeight} />
             ) : (
               <RawInteractionPanel
                 subnet={interactions}
@@ -235,7 +241,6 @@ class TermDetailsPanel extends Component {
                 interactionStyleActions={this.props.interactionStyleActions}
                 networkStyle={visualStyle}
                 panelWidth={this.props.width}
-                panelHeight={this.state.networkPanelHeight}
                 expanded={this.props.expanded}
                 enrichment={this.props.enrichment}
                 enrichmentActions={this.props.enrichmentActions}

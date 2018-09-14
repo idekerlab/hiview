@@ -80,8 +80,14 @@ class PrimaryFilter extends Component {
 
     const primaryFilter = this.state.primaryFilter
 
-    const min = Number(primaryFilter.min).toFixed(3)
-    const max = Number(primaryFilter.max).toFixed(3)
+    const minNumber = Number(primaryFilter.min)
+    const maxNumber = Number(primaryFilter.max)
+
+    if(!minNumber || !maxNumber) {
+      return <div />
+    }
+    const min = minNumber.toFixed(3)
+    const max = maxNumber.toFixed(3)
     const val = this.state.value
 
     const marks = {
