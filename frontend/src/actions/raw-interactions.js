@@ -1,12 +1,11 @@
 const THRESHOLD_TAG = 'Main Feature Default Cutoff'
 
-const PATTERN = /[ -]/g
+
 import { createAction } from 'redux-actions'
 
-import {sortEdges, MAIN_EDGE_TAG} from './raw-interactions-util'
+import { sortEdges, filterEdge, MAIN_EDGE_TAG, PATTERN} from './raw-interactions-util'
 
 const NDEX_API = '.ndexbio.org/v2/network/'
-
 
 // Set loading message
 export const SET_MESSAGE = 'SET_MESSAGE'
@@ -47,46 +46,50 @@ export const fetchInteractionsFromUrl = (
 
     const t0 = performance.now()
 
-    return fetchNet(url)
-      .then(response => {
-        let t1 = performance.now()
-        console.log(url, ' :Data fetch  TIME = ', t1 - t0)
+    return (
+      fetchNet(url)
+        .then(response => {
+          let t1 = performance.now()
+          console.log(url, ' :Data fetch  TIME = ', t1 - t0)
 
-        if (!response.ok) {
-          throw Error(response.statusText)
-        } else {
-          return response.json()
-        }
-      })
-      .then(network => {
-        dispatch(setOriginalEdgeCount(network.elements.edges.length))
-        return network
-      })
-      .then(network => sortEdges(network, maxEdgeCount))
-      .then(network => createFilter(network, maxEdgeCount))
-      .then(netAndFilter => createGroups(netAndFilter))
-      .then(netAndFilter => {
-        const t3 = performance.now()
-        console.log(
-          netAndFilter,
-          '* Total raw interaction update time = ',
-          t3 - t0
-        )
-
-        return dispatch(
-          receiveNetwork(
-            url,
-            netAndFilter[0],
-            netAndFilter[1],
-            netAndFilter[2],
-            netAndFilter[3]
+          if (!response.ok) {
+            throw Error(response.statusText)
+          } else {
+            return response.json()
+          }
+        })
+        .then(network => {
+          dispatch(setOriginalEdgeCount(network.elements.edges.length))
+          return network
+        })
+        .then(network => filterEdge(network, maxEdgeCount))
+        // .then(network => sortEdges(network, maxEdgeCount))
+        .then(network => createFilter(network, maxEdgeCount))
+        .then(netAndFilter => createGroups(netAndFilter))
+        .then(netAndFilter => {
+          const t3 = performance.now()
+          console.log(
+            netAndFilter,
+            '* Total raw interaction update time = ',
+            t3 - t0,
+            netAndFilter[0].data
           )
-        )
-      })
-      .catch(err => {
-        console.log('Raw interaction fetch ERROR! ', err)
-        return dispatch(receiveNetwork(url, null, 'Error!'))
-      })
+
+          return dispatch(
+            receiveNetwork(
+              url,
+              netAndFilter[0],
+              netAndFilter[1],
+              netAndFilter[2],
+              netAndFilter[3]
+            )
+          )
+        })
+        .catch(err => {
+          console.log('Raw interaction fetch ERROR! ', err)
+          return dispatch(receiveNetwork(url, null, 'Error!'))
+        })
+    )
   }
 }
 
@@ -156,7 +159,6 @@ const createGroups = netAndFilter => {
 
   return netAndFilter
 }
-
 
 const createFilter = (network, maxEdgeCount) => {
   const defCutoff = network.data[THRESHOLD_TAG]
@@ -261,7 +263,6 @@ const createFilter = (network, maxEdgeCount) => {
   return [network, filters]
 }
 
-
 // For filters
 export const SET_VALUE = 'SET_VALUE'
 export const setValue = createAction(SET_VALUE)
@@ -293,7 +294,6 @@ export const deselectPerm = createAction(DESELECT_PERM)
 export const CLEAR_SELECTED_PERM = 'CLEAR_SELECTED_PERM'
 export const clearSelectedPerm = createAction(CLEAR_SELECTED_PERM)
 
-
 export const SET_AUTO_LOAD_THRESHOLD = 'SET_AUTO_LOAD_THRESHOLD'
 export const setAutoLoadThreshold = createAction(SET_AUTO_LOAD_THRESHOLD)
 
@@ -306,17 +306,14 @@ export const setLoading = createAction(SET_LOADING)
 // Check size of the network
 
 export const RECEIVE_SUMMARY = 'RECEIVE_SUMMARY'
-const receiveSummary = (summary) => {
+const receiveSummary = summary => {
   return {
     type: RECEIVE_SUMMARY,
     summary
   }
 }
 
-export const getNetworkSummary = (uuid,
-                                  server,
-                                  url,
-                                  maxEdgeCount = 500) => {
+export const getNetworkSummary = (uuid, server, url, maxEdgeCount = 500) => {
   return dispatch => {
     const url = 'http://' + server + NDEX_API + uuid + '/summary'
 
@@ -329,7 +326,7 @@ export const getNetworkSummary = (uuid,
         }
       })
       .then(summary => {
-        console.log("* Summary2: ", summary)
+        console.log('* Summary2: ', summary)
         return dispatch(receiveSummary(summary))
       })
       .catch(err => {

@@ -69,8 +69,9 @@ class PrimaryFilter extends Component {
     })
 
     const th = primaryFilter.threshold
+    const minNumber = Number(primaryFilter.min)
 
-    this.setState({ primaryFilter: primaryFilter, value: th })
+    this.setState({ primaryFilter: primaryFilter, value: minNumber })
   }
 
   render() {
@@ -101,7 +102,7 @@ class PrimaryFilter extends Component {
 
         <SliderWithTooltip
           style={{ height: '4em' }}
-          defaultValue={Number(primaryFilter.threshold)}
+          defaultValue={minNumber}
           min={Number(min)}
           max={Number(max)}
           step={0.00001}

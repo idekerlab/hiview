@@ -60,10 +60,7 @@ const BASE_STYLE = {
   hidden: {
     selector: '.hidden',
     css: {
-      'line-color': '#444444',
-      'background-color': '#444444',
-      opacity: 0.3,
-      color: '#222222'
+      opacity: 0.2
     }
   },
   seed: {
@@ -92,6 +89,13 @@ export const createStyle = originalNetwork => {
   const edges = network.interactions.elements.edges
 
   const networkData = interactions.data
+  const childWeight = networkData['Children weight']
+
+  let thresholds = []
+  if (childWeight) {
+    thresholds = childWeight.split('|')
+  }
+
   let primaryEdgeType = networkData[MAIN_INTERACTION_TYPE_TAG]
 
   // Need to remove space due to current cxtool limitation
@@ -100,12 +104,12 @@ export const createStyle = originalNetwork => {
   let similarityMax = edges[0].data[primaryEdgeType]
   let similarityMin = edges[edges.length - 1].data[primaryEdgeType]
 
-  if(!similarityMin) {
+  if (!similarityMin) {
     console.warn('Min was not defined for: ', edges[edges.length - 1])
     similarityMin = 0
   }
 
-  if(!similarityMax) {
+  if (!similarityMax) {
     console.warn('Max was not defined for: ', edges[0])
     similarityMax = 1
   }
@@ -121,15 +125,17 @@ export const createStyle = originalNetwork => {
 
   edgeStyle.css[
     'width'
-  ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.1, 10)`
-  edgeStyle.css['line-color'] = d => {
-    if (!d.data(primaryEdgeType)) {
-      return '#aaaaaa'
-    } else {
-      return colorScale(d.data(primaryEdgeType))
-    }
-  }
+  ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 15)`
+  // edgeStyle.css['line-color'] = d => {
+  //   if (!d.data(primaryEdgeType)) {
+  //     return '#aaaaaa'
+  //   } else {
+  //     return colorScale(d.data(primaryEdgeType))
+  //   }
+  // }
 
+  const edgeColor = 'color'
+  edgeStyle.css['line-color'] = `data(${edgeColor})`
   edgeStyle.css[
     'opacity'
   ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 1)`
