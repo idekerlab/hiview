@@ -54,7 +54,6 @@ const baseStyle = {
 class NetworkView extends Component {
   render() {
     const networkId = this.props.params.uri
-
     return (
       <MuiThemeProvider theme={theme}>
         <MainPanel {...this.props} networkId={networkId} style={baseStyle} />

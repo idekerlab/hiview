@@ -197,17 +197,25 @@ class NetworkPanel extends Component {
   componentWillMount() {
     // const url = this.props.trees[this.props.currentNetwork.id].url
     const uuid = this.props.datasource.get('uuid')
-    const serverType = this.props.datasource.get('serverType')
+    let serverType = this.props.datasource.get('serverType')
 
-    const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
+    if(serverType === undefined) {
+      serverType == 'test'
+    }
 
+    const url = this.props.cxtoolUrl + this.props.routeParams.uuid + '?server=' + serverType
     this.setState({ networkUrl: url })
     this.props.networkActions.fetchNetworkFromUrl(url)
   }
 
   componentWillReceiveProps(nextProps) {
     const uuid = this.props.datasource.get('uuid')
-    const serverType = this.props.datasource.get('serverType')
+    let serverType = this.props.datasource.get('serverType')
+
+    if(serverType === null || serverType === undefined) {
+
+      serverType = 'test'
+    }
 
     const nextUuid = nextProps.datasource.get('uuid')
 

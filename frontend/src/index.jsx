@@ -24,7 +24,7 @@ ReactDOM.render(
       />
       <Route
         component={NetworkView}
-        path="/app"
+        path="/:uuid"
       />
     </Router>
   </Provider>, document.getElementById('root'))

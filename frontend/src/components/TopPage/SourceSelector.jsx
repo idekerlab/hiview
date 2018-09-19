@@ -46,8 +46,8 @@ class SourceSelector extends Component {
   constructor(props) {
     super(props)
 
-    const defUrl = props.dataSource.get('serverUrl')
-    const defType = this.getServerType(defUrl)
+    let defUrl = props.dataSource.get('serverUrl')
+    let defType = this.getServerType(defUrl)
 
     this.state = {
       uuid: '',
@@ -166,7 +166,7 @@ class SourceSelector extends Component {
 
   loadNetwork = () => {
     this.props.dataSourceActions.addDataSource(this.state)
-    browserHistory.push('/app')
+    browserHistory.push('/' + this.state.uuid)
   }
 
   validateUrl = () => {

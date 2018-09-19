@@ -92,8 +92,7 @@ const filterNodes = network => {
 
 export const fetchNetworkFromUrl = url => {
 
-
-  console.log('Main network loading: start')
+  console.log('Main network loading: start', url)
   
   const t0 = performance.now()
   return dispatch => {

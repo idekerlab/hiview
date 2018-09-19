@@ -63,7 +63,8 @@ class LeftPanel extends Component {
       selectionActions,
       currentPathActions,
       renderingOptions,
-      cxtoolUrl
+      cxtoolUrl,
+      routeParams
     } = this.props
 
     const bottomPanelHeight = window.innerHeight - this.state.topPanelHeight
@@ -79,6 +80,7 @@ class LeftPanel extends Component {
           }
         >
           <NetworkPanel
+            routeParams={routeParams}
             uiState={uiState}
             uiStateActions={uiStateActions}
             width={window.innerWidth}
