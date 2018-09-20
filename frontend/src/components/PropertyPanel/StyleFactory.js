@@ -58,9 +58,9 @@ const BASE_STYLE = {
     }
   },
   hidden: {
-    selector: '.hidden',
+    selector: 'edge.hidden',
     css: {
-      opacity: 0.2
+      opacity: 0.1
     }
   },
   seed: {
