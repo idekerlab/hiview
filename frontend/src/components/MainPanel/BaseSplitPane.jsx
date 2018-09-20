@@ -86,6 +86,8 @@ export default class BaseSplitPane extends Component {
             <BlankPanel />
           ) : (
             <PropertyPanel
+              routeParams={this.props.routeParams}
+              location={this.props.location}
               interactionsCommands={this.props.interactionsCommands}
               interactionsCommandActions={this.props.interactionsCommandActions}
               events={events}

@@ -1,26 +1,25 @@
-import React, { Component } from "react";
-import List, { ListItem } from "material-ui/List";
+import React, { Component } from 'react'
+import List, { ListItem } from 'material-ui/List'
 
-import ContinuousFilter from "./ContinuousFilter";
-import BooleanFilter from "./BooleanFilter";
+import ContinuousFilter from './ContinuousFilter'
+import BooleanFilter from './BooleanFilter'
 
-import { withStyles } from "material-ui/styles";
-import Typography from "material-ui/Typography";
-
+import { withStyles } from 'material-ui/styles'
+import Typography from 'material-ui/Typography'
 
 // Color map for 5 categorical data
-const COLORS = ['#7570b3','#0571b0','#aaaaaa','#66c2a5','#018571']
-const colorMap = idx => COLORS[idx];
+const COLORS = ['#7570b3', '#0571b0', '#aaaaaa', '#66c2a5', '#018571']
+const colorMap = idx => COLORS[idx]
 
 const FILTER_TYPES = {
-  CONTINUOUS: "continuous",
-  BOOLEAN: "boolean"
-};
+  CONTINUOUS: 'continuous',
+  BOOLEAN: 'boolean'
+}
 
 const styles = theme => ({
   root: {
-    height: "inherit",
-    position: "relative",
+    height: 'inherit',
+    position: 'relative',
     background: 'inherit',
     flexGrow: 2,
     paddingRight: '0.6em'
@@ -29,90 +28,90 @@ const styles = theme => ({
     height: '2em'
   },
   list: {
-    overflow: "auto",
+    overflow: 'auto',
     height: '13em'
-
   },
   listItemLarge: {
-    height: "1.3em",
+    height: '1.3em',
     margin: 0,
-    padding: "0.3em"
+    padding: '0.3em'
   },
   listItem: {
-    height: "1.7em",
+    height: '1.7em',
     margin: 0,
-    padding: "0.3em",
+    padding: '0.3em'
     // paddingLeft: 0
-
   }
-});
+})
 
 class EdgeFilter extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       open: true,
       selected: new Array(5)
-    };
+    }
   }
 
   onAfterChange = value => {
-    console.log(value);
-  };
+    console.log(value)
+  }
 
   handleChange = name => event => {
-    this.setState({ [name]: event.target.checked });
-  };
+    this.setState({ [name]: event.target.checked })
+  }
 
   handleClick = event => {
-    const isOpen = this.state.open;
+    const isOpen = this.state.open
 
     this.setState({
       open: !isOpen
-    });
-  };
+    })
+  }
 
   render() {
-    const { classes } = this.props;
-    const filters = this.props.filters;
+    const { classes } = this.props
+    const filters = this.props.filters
 
-    if (filters === null || filters.length === 0) {
+    if (!filters || filters.length === 0) {
       return <div />
     }
 
-    let primaryFilter = null;
-    const filterNames = [];
-    const filterMap = {};
+    let primaryFilter = null
+    const filterNames = []
+    const filterMap = {}
 
     filters.forEach(filter => {
-      const isPrimary = filter.isPrimary;
+      const isPrimary = filter.isPrimary
       if (isPrimary) {
-        primaryFilter = filter;
+        primaryFilter = filter
       } else {
-        filterNames.push(filter.attributeName);
-        filterMap[filter.attributeName] = filter;
+        filterNames.push(filter.attributeName)
+        filterMap[filter.attributeName] = filter
       }
-    });
+    })
 
-    const sortedNames = filterNames.sort();
+    const sortedNames = filterNames.sort()
 
     return (
       <div className={classes.root}>
-        <Typography variant="title" className={classes.title}>Interaction Features:</Typography>
+        <Typography variant="title" className={classes.title}>
+          Interaction Features:
+        </Typography>
 
-          <List className={classes.list}>
-            {sortedNames.map(filterName => (
-              <ListItem className={classes.listItem} key={filterName}>
-                {this.getFilter(filterMap[filterName])}
-              </ListItem>
-            ))}
-          </List>
+        <List className={classes.list}>
+          {sortedNames.map(filterName => (
+            <ListItem className={classes.listItem} key={filterName}>
+              {this.getFilter(filterMap[filterName])}
+            </ListItem>
+          ))}
+        </List>
       </div>
-    );
+    )
   }
 
   getFilter(filter) {
-    const filterType = filter.type;
+    const filterType = filter.type
 
     if (filterType === FILTER_TYPES.CONTINUOUS) {
       return (
@@ -131,7 +130,7 @@ class EdgeFilter extends Component {
           selected={this.state.selected}
           colorMap={colorMap}
         />
-      );
+      )
     } else if (filterType === FILTER_TYPES.BOOLEAN) {
       return (
         <BooleanFilter
@@ -143,9 +142,9 @@ class EdgeFilter extends Component {
           selected={this.state.selected}
           colorMap={colorMap}
         />
-      );
+      )
     }
   }
 }
 
-export default withStyles(styles)(EdgeFilter);
+export default withStyles(styles)(EdgeFilter)

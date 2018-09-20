@@ -2,8 +2,6 @@ import * as d3Scale from 'd3-scale'
 export const MAIN_EDGE_TAG = 'Main Feature'
 export const PATTERN = /[ -]/g
 
-const createHistogramModel = () => {}
-
 const compareBy = fieldName => (a, b) => {
   const scoreA = a.data[fieldName]
   const scoreB = b.data[fieldName]
@@ -17,6 +15,14 @@ const compareBy = fieldName => (a, b) => {
   return comparison
 }
 
+/**
+ * Create subset of edges based on minimum score provided.
+ *
+ * @param edges
+ * @param scoreName
+ * @param min
+ * @returns {Array}
+ */
 const filter = (edges, scoreName, min) => {
   let size = edges.length
   const subset = []
@@ -33,8 +39,16 @@ const filter = (edges, scoreName, min) => {
       subset.push(edge)
     }
   }
-
   return subset
+}
+
+const filterOld = (edges, maxEdgeCount) => {
+  const numEdges = edges.length
+  if (numEdges < maxEdgeCount) {
+    return edges
+  }
+
+  return edges.slice(0, maxEdgeCount)
 }
 
 const generateColorMap = (weightRange, minVal, maxVal) => {
@@ -46,22 +60,19 @@ const generateColorMap = (weightRange, minVal, maxVal) => {
   let idx = slots
   const colorMap = []
 
-
-
-
   console.log('Range = ', weightRange, minVal, maxVal)
   //First entry
 
   colorMap.push({
     min: minVal,
-    max: weightRange[idx-1],
+    max: weightRange[idx - 1],
     color: '#888888'
   })
   while (idx--) {
     const v1 = weightRange[idx]
     const v2 = weightRange[idx - 1]
     const diff = v2 - v1
-    console.log(idx + " : Val & diff = ", v1, v2, diff, slots)
+    console.log(idx + ' : Val & diff = ', v1, v2, diff, slots)
 
     let color = ''
     if (diff === 0) {
@@ -94,7 +105,6 @@ const generateColorMap = (weightRange, minVal, maxVal) => {
     }
   }
 
-
   console.log('COL map = ', weightRange, colorMap)
 
   return colorMap
@@ -124,24 +134,32 @@ export const filterEdge = (network, maxEdgeCount) => {
   }
   const networkData = network.data
 
-  console.log('*** Network data', networkData)
-
+  // For new format
   const parentScore = networkData['Parent weight']
   const childrenWeight = networkData['Children weight']
-  const weightRange = childrenWeight.split('|').map(val => Number(val))
+  let weightRange = []
+  if (childrenWeight) {
+    // This is the new format
+    weightRange = childrenWeight.split('|').map(val => Number(val))
+  }
 
   const nodes = network.elements.nodes
   const originalEdges = network.elements.edges
-
-  const edges = filter(originalEdges, mainEdgeType, Number(parentScore))
-
-  const t0 = performance.now()
-  edges.sort(compareBy(mainEdgeType))
-  const t1 = performance.now()
-  console.log('Edge Sort TIME = ', t1 - t0, edges)
-
+  let edges = []
+  if (!parentScore) {
+    originalEdges.sort(compareBy(mainEdgeType))
+    edges = filterOld(originalEdges, maxEdgeCount)
+  } else {
+    edges = filter(originalEdges, mainEdgeType, Number(parentScore))
+    edges.sort(compareBy(mainEdgeType))
+  }
   const maxScore = Number(edges[0].data[mainEdgeType])
-  const minScore = Number(parentScore)
+  let minScore = 0
+  if (parentScore) {
+    minScore = Number(parentScore)
+  } else {
+    minScore = edges[edges.length - 1].data[mainEdgeType]
+  }
   network.data['allEdgeScoreRange'] = [minScore, maxScore]
 
   const colorMap = generateColorMap(weightRange, minScore, maxScore)
@@ -183,10 +201,21 @@ export const filterEdge = (network, maxEdgeCount) => {
   const subsetLen = subset.length
   const nodeSet = new Set()
 
+  const colorGenerator = d3Scale
+    .scaleSequential(d3Scale.interpolateInferno)
+    .domain([subMin, maxScore])
+
   for (let i = 0; i < subsetLen; i++) {
     const edge = subset[i]
     // Assign color
-    assignColor(colorMap, edge, mainEdgeType)
+    if(parentScore) {
+      assignColor(colorMap, edge, mainEdgeType)
+    } else {
+
+      const weight = edge.data[mainEdgeType]
+      edge.data['color'] = colorGenerator(weight)
+
+    }
 
     nodeSet.add(edge.data.source)
     nodeSet.add(edge.data.target)

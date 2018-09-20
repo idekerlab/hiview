@@ -1,9 +1,13 @@
 const THRESHOLD_TAG = 'Main Feature Default Cutoff'
 
-
 import { createAction } from 'redux-actions'
 
-import { sortEdges, filterEdge, MAIN_EDGE_TAG, PATTERN} from './raw-interactions-util'
+import {
+  sortEdges,
+  filterEdge,
+  MAIN_EDGE_TAG,
+  PATTERN
+} from './raw-interactions-util'
 
 const NDEX_API = '.ndexbio.org/v2/network/'
 

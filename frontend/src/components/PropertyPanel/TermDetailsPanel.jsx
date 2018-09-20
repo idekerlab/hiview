@@ -6,7 +6,6 @@ import RawInteractionPanel from './RawInteractionPanel'
 import SubsystemPanel from './SubsystemPanel'
 
 import TabContainer from './TabContainer'
-import LegendPanel from './LegendPanel'
 import { EdgeFilter, PrimaryFilter } from '../Filters'
 
 import GeneList from './GeneList'
@@ -111,8 +110,9 @@ class TermDetailsPanel extends Component {
 
     const summary = raw.summary
     const autoLoadTh = raw.autoLoadThreshold
-    const uuid = this.props.datasource.get('uuid')
-    const serverType = this.props.datasource.get('serverType')
+    const locationParams = this.props.location
+    const uuid = this.props.routeParams.uuid
+    let serverType = locationParams.query.type
     const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
 
     if (

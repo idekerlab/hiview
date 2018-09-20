@@ -109,17 +109,6 @@ class CrossFilter extends Component {
           commands={this.props.commands}
           filtersActions={this.props.filtersActions}
         />
-
-        {showAllEdgeDist ? (
-          <AllEdgeDistribution
-            w={w}
-            edgeDist={allEdgeDist}
-            titleStyle={titleStyle}
-            tickTotal={tickTotal}
-          />
-        ) : (
-          <div />
-        )}
       </div>
     )
   }
