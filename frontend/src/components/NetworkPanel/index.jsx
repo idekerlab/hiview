@@ -95,17 +95,10 @@ class NetworkPanel extends Component {
     const uuidWithExtraStr = linkParts[1]
     const linkId = uuidWithExtraStr.replace(')', '').replace('(', '')
 
-    const serverType = this.props.datasource.get('serverType')
+    const locationParams = this.props.location
+    let serverType = locationParams.query.type
     const link = this.props.cxtoolUrl + linkId + '?server=' + serverType
     this.props.eventActions.selected(nodeProps[nodeIds[0]])
-
-    // this.props.rawInteractionsActions.getNetworkSummary(
-    //   linkId,
-    //   serverType,
-    //   link,
-    //   this.props.maxEdgeCount
-    // )
-
 
     // Check size before
     const NDEX_API = '.ndexbio.org/v2/network/'
@@ -121,7 +114,6 @@ class NetworkPanel extends Component {
         }
       })
       .then(summary => {
-        console.log("* Summary0: ", summary)
         const edgeCount = summary.edgeCount
         this.props.rawInteractionsActions.setSummary(summary)
 
@@ -195,25 +187,27 @@ class NetworkPanel extends Component {
 
   // Initialize
   componentWillMount() {
-    // const url = this.props.trees[this.props.currentNetwork.id].url
-    const uuid = this.props.datasource.get('uuid')
-    let serverType = this.props.datasource.get('serverType')
+    const locationParams = this.props.location
+    const uuid = this.props.routeParams.uuid
+    let serverType = locationParams.query.type
 
     if(serverType === undefined) {
       serverType == 'test'
     }
 
-    const url = this.props.cxtoolUrl + this.props.routeParams.uuid + '?server=' + serverType
+    serverType = 'test'
+    const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
     this.setState({ networkUrl: url })
+
     this.props.networkActions.fetchNetworkFromUrl(url)
   }
 
   componentWillReceiveProps(nextProps) {
-    const uuid = this.props.datasource.get('uuid')
-    let serverType = this.props.datasource.get('serverType')
+    const locationParams = this.props.location
+    const uuid = this.props.routeParams.uuid
+    let serverType = locationParams.query.type
 
     if(serverType === null || serverType === undefined) {
-
       serverType = 'test'
     }
 
@@ -236,6 +230,7 @@ class NetworkPanel extends Component {
     if (url !== undefined && (network === undefined || network === null)) {
       // Need to fetch network data
       if (nextUuid !== uuid) {
+        const newUrl = this.props.cxtoolUrl + nextUuid + '?server=' + serverType
         this.props.networkActions.fetchNetworkFromUrl(newUrl)
       }
     } else {

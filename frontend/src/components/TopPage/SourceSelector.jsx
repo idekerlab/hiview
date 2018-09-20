@@ -5,7 +5,7 @@ import Button from 'material-ui/Button'
 
 import Menu, { MenuItem } from 'material-ui/Menu'
 
-import { browserHistory } from 'react-router'
+import { Link, browserHistory } from 'react-router'
 
 import WarningDialog from './WarningDialog'
 import ErrorDialog from './ErrorDialog'
@@ -31,7 +31,6 @@ const startStyle = {
 }
 
 const DEFAULT_EXAMPLE = 'Small Example 1'
-
 
 const EXAMPLE_UUIDS = {
   [DEFAULT_EXAMPLE]: '49bca313-ab2c-11e8-9a23-0660b7976219',
@@ -106,7 +105,7 @@ class SourceSelector extends Component {
     const address = parts[parts.length - 1]
     const type = address.split('.')[0]
 
-    if(!type) {
+    if (!type) {
       throw Error('Invalid URL')
     }
 
@@ -165,8 +164,16 @@ class SourceSelector extends Component {
   }
 
   loadNetwork = () => {
+
+    let url = this.state.serverUrl
+    let serverType = this.state.serverType
+    const uuid = this.state.uuid
+
+    if(serverType === undefined) {
+      serverType = 'test' // Default
+    }
     this.props.dataSourceActions.addDataSource(this.state)
-    browserHistory.push('/' + this.state.uuid)
+    browserHistory.push('/' + uuid + '?type=' + serverType + '&server=' + url)
   }
 
   validateUrl = () => {

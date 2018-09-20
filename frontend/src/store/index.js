@@ -9,6 +9,7 @@ import {
 } from '../middleware'
 import rootReducer from '../reducers'
 
+
 export default function configure(initialState) {
 
   const create = window.devToolsExtension ?

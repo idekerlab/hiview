@@ -64,6 +64,7 @@ class LeftPanel extends Component {
       currentPathActions,
       renderingOptions,
       cxtoolUrl,
+      location,
       routeParams
     } = this.props
 
@@ -81,6 +82,7 @@ class LeftPanel extends Component {
         >
           <NetworkPanel
             routeParams={routeParams}
+            location={location}
             uiState={uiState}
             uiStateActions={uiStateActions}
             width={window.innerWidth}

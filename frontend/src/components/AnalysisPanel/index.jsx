@@ -26,9 +26,8 @@ const settingStyle = {
 }
 
 class AnalysisPanel extends Component {
-
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       idx: 0,
       barHeight: 0
@@ -38,10 +37,8 @@ class AnalysisPanel extends Component {
 
   componentDidMount() {
     const barHeight = this.tabRef.current
-    this.setState({barHeight})
-    console.log('BHH', barHeight)
+    this.setState({ barHeight })
   }
-
 
   handleChange = (event, idx) => {
     this.setState({ idx })
