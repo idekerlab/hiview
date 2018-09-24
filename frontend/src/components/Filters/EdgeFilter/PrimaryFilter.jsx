@@ -33,10 +33,9 @@ class PrimaryFilter extends Component {
   }
 
   onAfterChange = value => {
-
     console.log('New th value = ', value)
 
-    this.setState({value})
+    this.setState({ value })
     this.props.commandActions.filterEdges({
       options: {
         type: 'numeric',
@@ -68,10 +67,22 @@ class PrimaryFilter extends Component {
       }
     })
 
-    const th = primaryFilter.threshold
     const minNumber = Number(primaryFilter.min)
 
     this.setState({ primaryFilter: primaryFilter, value: minNumber })
+    // Apply the filter once:
+    const attrName = primaryFilter.attributeName
+
+    this.setState({ value: minNumber })
+    const newOptions = {
+      options: {
+        type: 'numeric',
+        isPrimary: true,
+        range: '[' + attrName + ' < ' + minNumber + ']'
+      }
+    }
+    this.props.commandActions.filterEdges(newOptions)
+    console.log('DID update--------------------------------', newOptions)
   }
 
   render() {
@@ -84,7 +95,7 @@ class PrimaryFilter extends Component {
     const minNumber = Number(primaryFilter.min)
     const maxNumber = Number(primaryFilter.max)
 
-    if(!minNumber || !maxNumber) {
+    if (!minNumber || !maxNumber) {
       return <div />
     }
     const min = minNumber.toFixed(5)
@@ -92,14 +103,22 @@ class PrimaryFilter extends Component {
     const val = this.state.value
 
     const marks = {
-      [Number(min)]: { style: { color: '#666666', fontSize: '1em' }, label: min },
-      [val]: { style: { color: '#333333', fontSize: '1.2em' }, label: val + ' < score'},
-      [Number(max)]: { style: { color: '#666666', fontSize: '1em' }, label: max }
+      [Number(min)]: {
+        style: { color: '#666666', fontSize: '1em' },
+        label: min
+      },
+      [val]: {
+        style: { color: '#333333', fontSize: '1.2em' },
+        label: val + ' < score'
+      },
+      [Number(max)]: {
+        style: { color: '#666666', fontSize: '1em' },
+        label: max
+      }
     }
 
     return (
       <div style={rootStyle}>
-
         <SliderWithTooltip
           style={{ height: '4em' }}
           defaultValue={minNumber}

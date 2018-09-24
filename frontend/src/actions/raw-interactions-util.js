@@ -2,6 +2,8 @@ import * as d3Scale from 'd3-scale'
 export const MAIN_EDGE_TAG = 'Main Feature'
 export const PATTERN = /[ -]/g
 
+const category10 = d3Scale.schemeCategory10
+
 const compareBy = fieldName => (a, b) => {
   const scoreA = a.data[fieldName]
   const scoreB = b.data[fieldName]
@@ -72,7 +74,6 @@ const generateColorMap = (weightRange, minVal, maxVal) => {
     const v1 = weightRange[idx]
     const v2 = weightRange[idx - 1]
     const diff = v2 - v1
-    console.log(idx + ' : Val & diff = ', v1, v2, diff, slots)
 
     let color = ''
     if (diff === 0) {
@@ -120,11 +121,26 @@ const assignColor = (colorMap, edge, primaryName, min) => {
 
     if (mapEntry.min <= weight && weight <= mapEntry.max) {
       color = mapEntry.color
+      // color = category10[i]
       break
     }
   }
 
   edge.data['color'] = color
+}
+
+const getColorForRange = (colorMap, val) => {
+  let color = '#888888'
+
+  for (let i = 0; i < colorMap.length; i++) {
+    const mapEntry = colorMap[i]
+    if (mapEntry.min <= val && val <= mapEntry.max) {
+      color = mapEntry.color
+      break
+    }
+  }
+
+  return color
 }
 
 export const filterEdge = (network, maxEdgeCount) => {
@@ -133,6 +149,8 @@ export const filterEdge = (network, maxEdgeCount) => {
     mainEdgeType = mainEdgeType.replace(/ /g, '_')
   }
   const networkData = network.data
+
+  console.log('######### net data:', networkData)
 
   // For new format
   const parentScore = networkData['Parent weight']
@@ -192,7 +210,8 @@ export const filterEdge = (network, maxEdgeCount) => {
     maxScore,
     mainEdgeType,
     barCount2,
-    true
+    true,
+    colorMap
   )
   network.data['subEdgeScoreDist'] = subData.result
   network.data['maxFrequency'] = subData.maxFrequency
@@ -243,7 +262,8 @@ const createBuckets = (
   max,
   scoreFieldName,
   sliceCount = 200,
-  coloring = false
+  coloring = false,
+  colorMap
 ) => {
   const colorScale = d3Scale
     .scaleSequential(d3Scale.interpolateInferno)
@@ -268,7 +288,9 @@ const createBuckets = (
         maxFrequency = bucketCounter
       }
       const newBucket = { x: curRange.toString(), y: Math.log10(bucketCounter) }
-      if (coloring) {
+      if (coloring && colorMap) {
+        newBucket['color'] = getColorForRange(colorMap, curRange)
+      } else if(coloring) {
         newBucket['color'] = colorScale(curRange)
       }
       result.push(newBucket)
