@@ -210,8 +210,7 @@ export const filterEdge = (network, maxEdgeCount) => {
     maxScore,
     mainEdgeType,
     barCount2,
-    true,
-    colorMap
+    true
   )
   network.data['subEdgeScoreDist'] = subData.result
   network.data['maxFrequency'] = subData.maxFrequency
@@ -227,14 +226,12 @@ export const filterEdge = (network, maxEdgeCount) => {
   for (let i = 0; i < subsetLen; i++) {
     const edge = subset[i]
     // Assign color
-    if(parentScore) {
-      assignColor(colorMap, edge, mainEdgeType)
-    } else {
-
+    // if(parentScore) {
+    //   assignColor(colorMap, edge, mainEdgeType)
+    // } else {
       const weight = edge.data[mainEdgeType]
       edge.data['color'] = colorGenerator(weight)
-
-    }
+    // }
 
     nodeSet.add(edge.data.source)
     nodeSet.add(edge.data.target)

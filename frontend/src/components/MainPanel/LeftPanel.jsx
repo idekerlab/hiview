@@ -25,12 +25,12 @@ class LeftPanel extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      topPanelHeight: window.innerHeight * 0.7
+      topPanelHeight: window.innerHeight * 0.9
     }
   }
 
   componentDidMount() {
-    const topPanelHeight = window.innerHeight * 0.7
+    const topPanelHeight = window.innerHeight * 0.9
     this.setState({
       topPanelHeight
     })

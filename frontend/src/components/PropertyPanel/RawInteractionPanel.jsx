@@ -49,7 +49,7 @@ class RawInteractionPanel extends Component {
     const networkAreaStyle = {
       width: '100%',
       height: '100%',
-      background: '#555555'
+      background: '#444444'
     }
 
     return this.getMainContents(networkAreaStyle)
