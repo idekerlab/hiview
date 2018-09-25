@@ -104,7 +104,9 @@ class NetworkPanel extends Component {
     const NDEX_API = '.ndexbio.org/v2/network/'
     const summaryUrl = 'http://' + serverType + NDEX_API + linkId + '/summary'
 
-    this.props.rawInteractionsActions.setLoading("Checking summary of the interaction network...")
+    this.props.rawInteractionsActions.setLoading(
+      'Checking summary of the interaction network...'
+    )
     fetch(summaryUrl)
       .then(response => {
         if (!response.ok) {
@@ -117,7 +119,7 @@ class NetworkPanel extends Component {
         const edgeCount = summary.edgeCount
         this.props.rawInteractionsActions.setSummary(summary)
 
-        if(edgeCount < this.props.autoLoadThreshold) {
+        if (edgeCount < this.props.autoLoadThreshold) {
           // Directly set prop from node attributes
           this.props.rawInteractionsActions.fetchInteractionsFromUrl(
             linkId,
@@ -191,11 +193,10 @@ class NetworkPanel extends Component {
     const uuid = this.props.routeParams.uuid
     let serverType = locationParams.query.type
 
-    if(serverType === undefined) {
-      serverType == 'test'
+    if (serverType === undefined) {
+      serverType = 'test'
     }
 
-    serverType = 'test'
     const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
     this.setState({ networkUrl: url })
 
@@ -203,22 +204,8 @@ class NetworkPanel extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const locationParams = this.props.location
-    const uuid = this.props.routeParams.uuid
-    let serverType = locationParams.query.type
-
-    if(serverType === null || serverType === undefined) {
-      serverType = 'test'
-    }
-
-    const nextUuid = nextProps.datasource.get('uuid')
-
-    const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
-    const network = this.props.network.get(url)
-
     const search = this.props.search
     const nextSearch = nextProps.search
-
     if (search.result !== nextSearch.result) {
       // Select result
       const selectedIds = nextSearch.result
@@ -227,33 +214,25 @@ class NetworkPanel extends Component {
       }
     }
 
-    if (url !== undefined && (network === undefined || network === null)) {
-      // Need to fetch network data
-      if (nextUuid !== uuid) {
-        const newUrl = this.props.cxtoolUrl + nextUuid + '?server=' + serverType
-        this.props.networkActions.fetchNetworkFromUrl(newUrl)
-      }
-    } else {
-      // Check selection state
-      const newSelection = nextProps.selection
-      const selection = this.props.selection
+    // Check selection state
+    const newSelection = nextProps.selection
+    const selection = this.props.selection
 
-      const nextRawSelection = newSelection.get('raw')
-      const rawSelection = selection.get('raw')
-      if (rawSelection === undefined || nextRawSelection === undefined) {
-        return
-      }
+    const nextRawSelection = newSelection.get('raw')
+    const rawSelection = selection.get('raw')
+    if (rawSelection === undefined || nextRawSelection === undefined) {
+      return
+    }
 
-      const newId = nextRawSelection.nodeId
-      const originalId = rawSelection.nodeId
+    const newId = nextRawSelection.nodeId
+    const originalId = rawSelection.nodeId
 
-      if (newId !== originalId) {
-        const geneName = nextRawSelection.nodeProps.name
-        const networkProp = this.props.network
-        const networkData = networkProp.get(this.state.networkUrl)
-        const targetNodeId = networkData.label2id[geneName]
-        // this.props.commandActions.zoomToNode(targetNodeId)
-      }
+    if (newId !== originalId) {
+      // const geneName = nextRawSelection.nodeProps.name
+      // const networkProp = this.props.network
+      // const networkData = networkProp.get(this.state.networkUrl)
+      // const targetNodeId = networkData.label2id[geneName]
+      // this.props.commandActions.zoomToNode(targetNodeId)
     }
   }
 

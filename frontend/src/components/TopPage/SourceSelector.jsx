@@ -5,7 +5,7 @@ import Button from 'material-ui/Button'
 
 import Menu, { MenuItem } from 'material-ui/Menu'
 
-import { Link, browserHistory } from 'react-router'
+import { browserHistory } from 'react-router'
 
 import WarningDialog from './WarningDialog'
 import ErrorDialog from './ErrorDialog'
@@ -38,20 +38,17 @@ const EXAMPLE_UUIDS = {
   'New format sample': '7929fc61-b871-11e8-98d5-0660b7976219',
   'DNA Repair': 'ab704ae4-0719-11e8-b03c-0660b7976219',
   'louvain_hierarchy_0.4.ont': '1bb9e2a4-99b4-11e8-9a23-0660b7976219',
-  '8.3K Subsystems': '184b0b4c-b6e4-11e8-98d5-0660b7976219'
+  '8.3K Subsystems': 'abafcdc5-c067-11e8-98d5-0660b7976219'
 }
 
 class SourceSelector extends Component {
   constructor(props) {
     super(props)
 
-    let defUrl = props.dataSource.get('serverUrl')
-    let defType = this.getServerType(defUrl)
-
     this.state = {
       uuid: '',
-      serverUrl: defUrl,
-      serverType: defType,
+      serverUrl: 'http://test.ndexbio.org',
+      serverType: 'test',
       example: EXAMPLE_UUIDS[DEFAULT_EXAMPLE],
       openError: false,
       openWarning: false,
@@ -164,16 +161,15 @@ class SourceSelector extends Component {
   }
 
   loadNetwork = () => {
-
     let url = this.state.serverUrl
     let serverType = this.state.serverType
     const uuid = this.state.uuid
 
-    if(serverType === undefined) {
-      serverType = 'test' // Default
-    }
-    this.props.dataSourceActions.addDataSource(this.state)
-    browserHistory.push('/' + uuid + '?type=' + serverType + '&server=' + url)
+    // this.props.dataSourceActions.addDataSource(this.state)
+
+    // Encode parameters in URL
+    const newUrl = `/${uuid}?type=${serverType}&server=${url}`
+    browserHistory.push(newUrl)
   }
 
   validateUrl = () => {

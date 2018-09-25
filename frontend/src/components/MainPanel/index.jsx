@@ -6,7 +6,6 @@ import FullSearch from '../FullSearch'
 import BaseSplitPane from './BaseSplitPane'
 import Overlay from '../Overlay'
 import MessageBox from '../MessageBox'
-import BottomPanel from '../BottomPanel'
 
 const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
 
@@ -37,7 +36,6 @@ const MainPanel = props => {
       <Overlay
         uiState={uiState}
         network={network}
-        datasource={props.datasource}
         cxtoolUrl={CXTOOL_URL}
         selection={selection}
       />
@@ -63,7 +61,6 @@ const MainPanel = props => {
       />
 
       <FullSearch
-        datasource={props.datasource.toJS()}
         network={network.toJS()}
         commandActions={commandActions}
         searchActions={searchActions}

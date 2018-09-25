@@ -5,7 +5,6 @@ import visual_styles from './visualstyles'
 import cy_commands from './cycommands'
 import cy_events from './cy-events'
 import ui_state from './ui-state'
-import datasource from './datasource'
 import property from './property'
 import filters from './filters'
 import interaction_style from './interaction-style'
@@ -51,7 +50,6 @@ export default combineReducers({
   app_manager,
   visual_styles,
   network,
-  datasource,
   raw_interactions,
   idmap,
   filters,
