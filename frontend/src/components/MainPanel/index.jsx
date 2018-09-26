@@ -28,7 +28,9 @@ const MainPanel = props => {
     selection,
     currentPath,
     renderingOptions,
-    renderingOptionsActions
+    renderingOptionsActions,
+    routeParams,
+    location
   } = props
 
   return (
@@ -68,6 +70,8 @@ const MainPanel = props => {
         currentPath={currentPath}
         uiState={uiState}
         uiStateActions={uiStateActions}
+        routeParams={routeParams}
+        location={location}
       />
     </div>
   )

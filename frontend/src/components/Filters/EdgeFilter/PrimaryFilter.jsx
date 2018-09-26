@@ -102,18 +102,23 @@ class PrimaryFilter extends Component {
     const max = maxNumber.toFixed(5)
     const val = this.state.value
 
-    const marks = {
-      [Number(min)]: {
-        style: { color: '#666666', fontSize: '1em' },
-        label: min
-      },
-      [val]: {
-        style: { color: '#333333', fontSize: '1.2em' },
-        label: val + ' < score'
-      },
-      [Number(max)]: {
-        style: { color: '#666666', fontSize: '1em' },
-        label: max
+    let marks = this.props.marks
+
+
+    if(!marks) {
+      marks = {
+        [Number(min)]: {
+          style: { color: '#666666', fontSize: '1em' },
+          label: min
+        },
+        [val]: {
+          style: { color: '#333333', fontSize: '1.2em' },
+          label: val + ' < score'
+        },
+        [Number(max)]: {
+          style: { color: '#666666', fontSize: '1em' },
+          label: max
+        }
       }
     }
 

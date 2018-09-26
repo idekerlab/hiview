@@ -59,9 +59,10 @@ class MainPanel extends React.Component {
     const results = index.search(query)
     const ids = results.map(result => result.id)
 
+    const uuid = this.props.routeParams.uuid
     const options = {
       baseUrl: SEARCH_URL,
-      uuid: this.props.datasource.uuid
+      uuid: uuid
     }
 
     // this.props.searchActions.searchNdex(query, options)

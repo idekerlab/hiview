@@ -73,7 +73,7 @@ class SearchPanel extends Component {
       this.setState({ expanded: false })
     }
 
-    const uuid = nextProps.datasource.uuid
+    const uuid = this.props.routeParams.uuid
     const networkKey = Object.keys(nextProps.network)
 
     let networkData = null

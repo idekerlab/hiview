@@ -29,7 +29,7 @@ const controlWrapperStyle = {
 
 const filterPanelStyle = {
   display: 'inline-flex',
-  height: '10em',
+  height: '20em',
   width: '100%',
   padding: '0.6em',
   background: '#FFFFFF'
@@ -317,7 +317,6 @@ class TermDetailsPanel extends Component {
                   >
                     <Tab label="Subsystem Details" />
                     <Tab label="Assigned Genes" />
-                    <Tab label="Interactions" />
                   </Tabs>
                 </div>
 
