@@ -148,6 +148,7 @@ class CirclePackingPanel extends Component {
     }
 
     const hoverOnNode = (id, data, parent) => {
+      const t1 = performance.now()
       // Check invalid parameter.  Name is always required
       if (
         data === null ||
@@ -183,10 +184,7 @@ class CirclePackingPanel extends Component {
         this.props.rawInteractionsActions.setSelected(geneIds)
       }
 
-      // this.props.interactionsCommandActions.selectNodes({
-      //   idList: geneIds,
-      //   selectedColor: 'red'
-      // })
+      console.log('H on time = ', performance.now() - t1)
     }
 
     return {

@@ -284,7 +284,13 @@ const createBuckets = (
       if (maxFrequency < bucketCounter) {
         maxFrequency = bucketCounter
       }
-      const newBucket = { x: curRange, y: Math.log10(bucketCounter) }
+
+      let log10val = Math.log10(bucketCounter)
+      if(log10val <= 0) {
+        // for -infinity
+        log10val = 0
+      }
+      const newBucket = { x: curRange, y: log10val }
       if (coloring && colorMap) {
         newBucket['color'] = getColorForRange(colorMap, curRange)
       } else if(coloring) {
