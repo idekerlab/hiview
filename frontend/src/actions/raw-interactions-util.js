@@ -2,6 +2,10 @@ import * as d3Scale from 'd3-scale'
 export const MAIN_EDGE_TAG = 'Main Feature'
 export const PATTERN = /[ -]/g
 
+
+const PARENT_WT_TAG = 'Parent weight'
+const CHILDREN_WT_TAG = 'Children weight'
+
 const category10 = d3Scale.schemeCategory10
 
 const compareBy = fieldName => (a, b) => {
@@ -37,7 +41,6 @@ const filter = (edges, scoreName, min) => {
       score = Number(s)
     }
     if (score > min) {
-      edge.data[score]
       subset.push(edge)
     }
   }
@@ -153,8 +156,8 @@ export const filterEdge = (network, maxEdgeCount) => {
   console.log('######### net data:', networkData)
 
   // For new format
-  const parentScore = networkData['Parent weight']
-  const childrenWeight = networkData['Children weight']
+  const parentScore = networkData[PARENT_WT_TAG]
+  const childrenWeight = networkData[CHILDREN_WT_TAG]
   let weightRange = []
   if (childrenWeight) {
     // This is the new format
@@ -169,8 +172,14 @@ export const filterEdge = (network, maxEdgeCount) => {
     edges = filterOld(originalEdges, maxEdgeCount)
   } else {
     edges = filter(originalEdges, mainEdgeType, Number(parentScore))
-    edges.sort(compareBy(mainEdgeType))
+    if(edges.length < maxEdgeCount) {
+      originalEdges.sort(compareBy(mainEdgeType))
+      edges = filterOld(originalEdges, maxEdgeCount)
+    } else {
+      edges.sort(compareBy(mainEdgeType))
+    }
   }
+
   const maxScore = Number(edges[0].data[mainEdgeType])
   let minScore = 0
   if (parentScore) {
@@ -194,7 +203,9 @@ export const filterEdge = (network, maxEdgeCount) => {
     minScore,
     maxScore,
     mainEdgeType,
-    barCount1
+    barCount1,
+    true,
+    colorMap
   )
 
   const forHistogram = allData.result
@@ -210,7 +221,8 @@ export const filterEdge = (network, maxEdgeCount) => {
     maxScore,
     mainEdgeType,
     barCount2,
-    true
+    true,
+    colorMap
   )
   network.data['subEdgeScoreDist'] = subData.result
   network.data['maxFrequency'] = subData.maxFrequency
@@ -226,12 +238,12 @@ export const filterEdge = (network, maxEdgeCount) => {
   for (let i = 0; i < subsetLen; i++) {
     const edge = subset[i]
     // Assign color
-    // if(parentScore) {
-    //   assignColor(colorMap, edge, mainEdgeType)
-    // } else {
+    if(parentScore) {
+      assignColor(colorMap, edge, mainEdgeType)
+    } else {
       const weight = edge.data[mainEdgeType]
       edge.data['color'] = colorGenerator(weight)
-    // }
+    }
 
     nodeSet.add(edge.data.source)
     nodeSet.add(edge.data.target)
