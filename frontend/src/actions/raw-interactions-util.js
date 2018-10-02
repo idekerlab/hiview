@@ -8,6 +8,8 @@ const CHILDREN_WT_TAG = 'Children weight'
 
 const category10 = d3Scale.schemeCategory10
 
+const DEF_COLOR = '#777777'
+
 const compareBy = fieldName => (a, b) => {
   const scoreA = a.data[fieldName]
   const scoreB = b.data[fieldName]
@@ -49,36 +51,44 @@ const filter = (edges, scoreName, min) => {
 
 const filterOld = (edges, maxEdgeCount) => {
   const numEdges = edges.length
-  if (numEdges < maxEdgeCount) {
+  if (numEdges <= maxEdgeCount) {
     return edges
   }
 
   return edges.slice(0, maxEdgeCount)
 }
 
-const generateColorMap = (weightRange, minVal, maxVal) => {
+const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
+  // Create color mapper based on the local range (parent score to max)
   const colorScale = d3Scale
     .scaleSequential(d3Scale.interpolateInferno)
-    .domain([minVal, maxVal])
+    .domain([parentScore, maxVal])
 
+  weightRange.push(parentScore)
   const slots = weightRange.length
   let idx = slots
   const colorMap = []
 
   console.log('Range = ', weightRange, minVal, maxVal)
-  //First entry
 
+  //First entry: global minimum to Parent
+  console.log('Range 0 = ', minVal, parentScore)
   colorMap.push({
     min: minVal,
-    max: weightRange[idx - 1],
-    color: '#888888'
+    max: parentScore,
+    color: DEF_COLOR
   })
+
+
   while (idx--) {
     const v1 = weightRange[idx]
     const v2 = weightRange[idx - 1]
+    console.log('Range ' + idx, v1, v2)
     const diff = v2 - v1
 
     let color = ''
+
+    // Case 1: two numbers are the same
     if (diff === 0) {
       color = colorScale(v1)
       colorMap.push({
@@ -87,10 +97,8 @@ const generateColorMap = (weightRange, minVal, maxVal) => {
         color
       })
     } else {
-      // const midPoint = v1 + diff / 2
-      color = colorScale(v2)
-
-      console.log(color, minVal, maxVal)
+      const midPoint = v1 + diff / 2
+      color = colorScale(midPoint)
       colorMap.push({
         min: v1,
         max: v2,
@@ -115,7 +123,9 @@ const generateColorMap = (weightRange, minVal, maxVal) => {
 }
 
 const assignColor = (colorMap, edge, primaryName, min) => {
-  let color = '#888888'
+  let color = '#777777'
+  let zIndex = 0
+
   const weight = edge.data[primaryName]
 
   for (let i = 0; i < colorMap.length; i++) {
@@ -124,12 +134,14 @@ const assignColor = (colorMap, edge, primaryName, min) => {
 
     if (mapEntry.min <= weight && weight <= mapEntry.max) {
       color = mapEntry.color
+      zIndex = Math.floor(weight*200)
       // color = category10[i]
       break
     }
   }
 
   edge.data['color'] = color
+  edge.data['zIndex'] = zIndex
 }
 
 const getColorForRange = (colorMap, val) => {
@@ -156,7 +168,8 @@ export const filterEdge = (network, maxEdgeCount) => {
   console.log('######### net data:', networkData)
 
   // For new format
-  const parentScore = networkData[PARENT_WT_TAG]
+  const parentScoreStr = networkData[PARENT_WT_TAG]
+  const parentScore = Number(parentScoreStr)
   const childrenWeight = networkData[CHILDREN_WT_TAG]
   let weightRange = []
   if (childrenWeight) {
@@ -171,7 +184,7 @@ export const filterEdge = (network, maxEdgeCount) => {
     originalEdges.sort(compareBy(mainEdgeType))
     edges = filterOld(originalEdges, maxEdgeCount)
   } else {
-    edges = filter(originalEdges, mainEdgeType, Number(parentScore))
+    edges = filter(originalEdges, mainEdgeType, parentScore)
     if(edges.length < maxEdgeCount) {
       originalEdges.sort(compareBy(mainEdgeType))
       edges = filterOld(originalEdges, maxEdgeCount)
@@ -183,13 +196,14 @@ export const filterEdge = (network, maxEdgeCount) => {
   const maxScore = Number(edges[0].data[mainEdgeType])
   let minScore = 0
   if (parentScore) {
-    minScore = Number(parentScore)
+    minScore = parentScore
   } else {
     minScore = edges[edges.length - 1].data[mainEdgeType]
   }
   network.data['allEdgeScoreRange'] = [minScore, maxScore]
 
-  const colorMap = generateColorMap(weightRange, minScore, maxScore)
+  // Create colors for range.  0 is always global minimum
+  const colorMap = generateColorMap(weightRange, 0, maxScore, parentScore)
 
   let barCount1 = 50
   let barCount2 = 50

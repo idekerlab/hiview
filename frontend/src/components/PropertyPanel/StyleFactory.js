@@ -126,6 +126,10 @@ export const createStyle = originalNetwork => {
   edgeStyle.css[
     'width'
   ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 15)`
+
+  edgeStyle.css[
+    'z-index'
+    ] = `data(zIndex)`
   // edgeStyle.css['line-color'] = d => {
   //   if (!d.data(primaryEdgeType)) {
   //     return '#aaaaaa'
