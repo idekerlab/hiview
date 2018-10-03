@@ -85,6 +85,7 @@ class CrossFilter extends Component {
 
 
     const weights = this.props.networkData['Children weight']
+    const parent = this.props.networkData['Parent weight']
 
     let marks
 
@@ -93,15 +94,29 @@ class CrossFilter extends Component {
 
       const weightRange = weights.split('|').map(val => Number(val))
 
+      const parentWeight = Number(parent)
+
       marks[range[0]] = {
         style: {
           wordWrap: 'break-word',
           color: '#333333',
           fontSize: '0.9em'
         },
-        label: `Parent (${range[0].toFixed(3)})`
+        label: `Min (${range[0].toFixed(3)})`
       }
 
+      const parentMark = {
+        style: {
+          wordWrap: 'break-word',
+          color: 'orange',
+          transform: 'rotate(90deg)',
+          fontSize: '1.1em',
+          paddingLeft: '5em'
+        },
+        label: `Parent (${parentWeight.toFixed(3)})`
+      }
+
+      marks[parentWeight] = parentMark
 
       weightRange.forEach((weight, idx) => {
         marks[weight] = {

@@ -67,7 +67,7 @@ class PrimaryFilter extends Component {
       }
     })
 
-    const minNumber = Number(primaryFilter.min)
+    const minNumber = Number(primaryFilter.value)
 
     this.setState({ primaryFilter: primaryFilter, value: minNumber })
     // Apply the filter once:
@@ -82,11 +82,11 @@ class PrimaryFilter extends Component {
       }
     }
     this.props.commandActions.filterEdges(newOptions)
-    console.log('DID update--------------------------------', newOptions)
   }
 
   render() {
     if (this.state.primaryFilter === null) {
+      console.log('null--------------------------------', primaryFilter)
       return <div />
     }
 
@@ -95,17 +95,25 @@ class PrimaryFilter extends Component {
     const minNumber = Number(primaryFilter.min)
     const maxNumber = Number(primaryFilter.max)
 
-    if (!minNumber || !maxNumber) {
+    if (
+      minNumber === undefined ||
+      maxNumber === undefined ||
+      isNaN(minNumber) ||
+      isNaN(maxNumber)
+    ) {
+      console.log('nomax--------------------------------', primaryFilter)
       return <div />
     }
     const min = minNumber.toFixed(5)
     const max = maxNumber.toFixed(5)
-    const val = this.state.value
+    let val = this.state.value
+    if (val === undefined) {
+      val = 0
+    }
 
     let marks = this.props.marks
 
-
-    if(!marks) {
+    if (!marks) {
       marks = {
         [Number(min)]: {
           style: { color: '#666666', fontSize: '1em' },
@@ -126,7 +134,7 @@ class PrimaryFilter extends Component {
       <div style={rootStyle}>
         <SliderWithTooltip
           style={{ height: '4em' }}
-          defaultValue={minNumber}
+          defaultValue={val}
           min={Number(min)}
           max={Number(max)}
           step={0.00001}

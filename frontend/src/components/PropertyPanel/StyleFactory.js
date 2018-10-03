@@ -101,25 +101,15 @@ export const createStyle = originalNetwork => {
   // Need to remove space due to current cxtool limitation
   primaryEdgeType = primaryEdgeType.replace(/ /g, '_')
 
-  let similarityMax = edges[0].data[primaryEdgeType]
-  let similarityMin = edges[edges.length - 1].data[primaryEdgeType]
-
-  if (!similarityMin) {
-    console.warn('Min was not defined for: ', edges[edges.length - 1])
-    similarityMin = 0
-  }
+  const minEdge = edges[edges.length - 1]
+  const maxEdge = edges[0]
+  let similarityMax = maxEdge.data[primaryEdgeType]
+  let similarityMin = minEdge.data[primaryEdgeType]
 
   if (!similarityMax) {
     console.warn('Max was not defined for: ', edges[0])
     similarityMax = 1
   }
-  // const colorScale = d3Scale.scaleSequential(d3ScaleChromatic.interpolateGnBu)
-  //   .domain([parentWidth,0])
-  const colorScale = d3Scale
-    .scaleSequential(d3Scale.interpolateInferno)
-    .domain([similarityMin, similarityMax])
-
-  // console.log(primaryEdgeType, '#CUR range = ', similarityMin, similarityMax)
 
   const edgeStyle = BASE_STYLE.edge
 
@@ -127,16 +117,7 @@ export const createStyle = originalNetwork => {
     'width'
   ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 15)`
 
-  edgeStyle.css[
-    'z-index'
-    ] = `data(zIndex)`
-  // edgeStyle.css['line-color'] = d => {
-  //   if (!d.data(primaryEdgeType)) {
-  //     return '#aaaaaa'
-  //   } else {
-  //     return colorScale(d.data(primaryEdgeType))
-  //   }
-  // }
+  edgeStyle.css['z-index'] = `data(zIndex)`
 
   const edgeColor = 'color'
   edgeStyle.css['line-color'] = `data(${edgeColor})`

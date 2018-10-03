@@ -2,7 +2,6 @@ import * as d3Scale from 'd3-scale'
 export const MAIN_EDGE_TAG = 'Main Feature'
 export const PATTERN = /[ -]/g
 
-
 const PARENT_WT_TAG = 'Parent weight'
 const CHILDREN_WT_TAG = 'Children weight'
 
@@ -60,16 +59,19 @@ const filterOld = (edges, maxEdgeCount) => {
 
 const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
   // Create color mapper based on the local range (parent score to max)
+
+  weightRange.push(parentScore)
+  weightRange.sort()
+
+  const slots = weightRange.length
   const colorScale = d3Scale
     .scaleSequential(d3Scale.interpolateInferno)
     .domain([parentScore, maxVal])
 
-  weightRange.push(parentScore)
-  const slots = weightRange.length
-  let idx = slots
+  let len = slots
   const colorMap = []
 
-  console.log('Range = ', weightRange, minVal, maxVal)
+  console.log('Range = ', weightRange, parentScore, maxVal)
 
   //First entry: global minimum to Parent
   console.log('Range 0 = ', minVal, parentScore)
@@ -79,40 +81,32 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
     color: DEF_COLOR
   })
 
-
-  while (idx--) {
+  for (let idx = 0; idx < len; idx++) {
     const v1 = weightRange[idx]
-    const v2 = weightRange[idx - 1]
-    console.log('Range ' + idx, v1, v2)
+    const v2 = weightRange[idx + 1]
     const diff = v2 - v1
 
-    let color = ''
 
     // Case 1: two numbers are the same
-    if (diff === 0) {
-      color = colorScale(v1)
-      colorMap.push({
-        min: v1,
-        max: v1,
-        color
-      })
-    } else {
-      const midPoint = v1 + diff / 2
-      color = colorScale(midPoint)
+    if (diff !== 0) {
+      console.log('Range ' + idx, v1, v2)
       colorMap.push({
         min: v1,
         max: v2,
-        color
+        color: colorScale(v2)
       })
     }
 
-    if (idx === 1) {
-      // Last one
-      colorMap.push({
+    // Last entry
+    if (idx === len - 2) {
+      // Add last one
+      const lastEntry = {
         min: v2,
         max: maxVal,
         color: colorScale(maxVal)
-      })
+      }
+      console.log('Last eny:', lastEntry)
+      colorMap.push(lastEntry)
       break
     }
   }
@@ -134,7 +128,7 @@ const assignColor = (colorMap, edge, primaryName, min) => {
 
     if (mapEntry.min <= weight && weight <= mapEntry.max) {
       color = mapEntry.color
-      zIndex = Math.floor(weight*200)
+      zIndex = Math.floor(weight * 200)
       // color = category10[i]
       break
     }
@@ -145,7 +139,7 @@ const assignColor = (colorMap, edge, primaryName, min) => {
 }
 
 const getColorForRange = (colorMap, val) => {
-  let color = '#888888'
+  let color = DEF_COLOR
 
   for (let i = 0; i < colorMap.length; i++) {
     const mapEntry = colorMap[i]
@@ -185,7 +179,7 @@ export const filterEdge = (network, maxEdgeCount) => {
     edges = filterOld(originalEdges, maxEdgeCount)
   } else {
     edges = filter(originalEdges, mainEdgeType, parentScore)
-    if(edges.length < maxEdgeCount) {
+    if (edges.length < maxEdgeCount) {
       originalEdges.sort(compareBy(mainEdgeType))
       edges = filterOld(originalEdges, maxEdgeCount)
     } else {
@@ -194,12 +188,8 @@ export const filterEdge = (network, maxEdgeCount) => {
   }
 
   const maxScore = Number(edges[0].data[mainEdgeType])
-  let minScore = 0
-  if (parentScore) {
-    minScore = parentScore
-  } else {
-    minScore = edges[edges.length - 1].data[mainEdgeType]
-  }
+  console.log('E0 = ', mainEdgeType, edges[0], maxScore)
+  let minScore = edges[edges.length - 1].data[mainEdgeType]
   network.data['allEdgeScoreRange'] = [minScore, maxScore]
 
   // Create colors for range.  0 is always global minimum
@@ -241,6 +231,7 @@ export const filterEdge = (network, maxEdgeCount) => {
   network.data['subEdgeScoreDist'] = subData.result
   network.data['maxFrequency'] = subData.maxFrequency
   network.data['edgeScoreRange'] = [subMin, maxScore]
+  network.data['edgeColorMap'] = colorMap
 
   const subsetLen = subset.length
   const nodeSet = new Set()
@@ -252,7 +243,7 @@ export const filterEdge = (network, maxEdgeCount) => {
   for (let i = 0; i < subsetLen; i++) {
     const edge = subset[i]
     // Assign color
-    if(parentScore) {
+    if (parentScore) {
       assignColor(colorMap, edge, mainEdgeType)
     } else {
       const weight = edge.data[mainEdgeType]
@@ -312,14 +303,14 @@ const createBuckets = (
       }
 
       let log10val = Math.log10(bucketCounter)
-      if(log10val <= 0) {
+      if (log10val <= 0) {
         // for -infinity
         log10val = 0
       }
       const newBucket = { x: curRange, y: log10val }
       if (coloring && colorMap) {
         newBucket['color'] = getColorForRange(colorMap, curRange)
-      } else if(coloring) {
+      } else if (coloring) {
         newBucket['color'] = colorScale(curRange)
       }
       result.push(newBucket)

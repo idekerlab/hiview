@@ -212,8 +212,14 @@ const createFilter = (network, maxEdgeCount) => {
         const range = network.data['edgeScoreRange']
         min = range[0]
         max = range[1]
+
+        const pw = network.data['Parent weight']
+        console.log("PARENT---------", pw, min, max)
+        if( pw ) {
+          th = Number(pw)
+        }
         // If default cutoff is available, use it
-        if (defCutoff) {
+        else if (defCutoff) {
           th = defCutoff
         } else {
           // Find best threshold
@@ -248,7 +254,7 @@ const createFilter = (network, maxEdgeCount) => {
         attributeName: key,
         min: min,
         max: max,
-        value: min,
+        value: th,
         isPrimary: isPrimary,
         enabled: isPrimary,
         type: 'continuous',
