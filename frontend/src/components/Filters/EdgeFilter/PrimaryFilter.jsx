@@ -9,7 +9,7 @@ const SliderWithTooltip = createSliderWithTooltip(Slider)
 const rootStyle = {
   display: 'flex',
   alignItems: 'center',
-  paddingTop: '0.8em',
+  paddingTop: '3em',
   paddingBottom: '0.8em',
   paddingLeft: 40,
   paddingRight: 20
@@ -82,6 +82,7 @@ class PrimaryFilter extends Component {
       }
     }
     this.props.commandActions.filterEdges(newOptions)
+    console.log('apply--------------------------------', newOptions)
   }
 
   render() {
@@ -143,6 +144,7 @@ class PrimaryFilter extends Component {
           trackStyle={trackStyle}
           handleStyle={[handleStyle]}
           railStyle={railStyle}
+          onMouseEnter={ev => this.handleHover(ev)}
         />
       </div>
     )

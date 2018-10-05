@@ -53,7 +53,7 @@ class CrossFilter extends Component {
     }
   }
 
-  const
+
   render() {
     const data = this.props.networkData
     if (!data || Object.keys(data).length === 0) {
@@ -94,7 +94,27 @@ class CrossFilter extends Component {
 
       const weightRange = weights.split('|').map(val => Number(val))
 
+      const weightSet = new Set(weightRange)
+      const newWeights = [...weightSet].sort()
+
       const parentWeight = Number(parent)
+
+      const scoreMap = {}
+
+      groupNames.forEach((label, idx) => {
+        const weight = weightRange[idx]
+        let labels = scoreMap[weight]
+
+        if(!labels) {
+          labels = [label]
+        } else {
+          labels.push(label)
+        }
+
+        scoreMap[weight] = labels
+      })
+
+      // console.log("SCOREMAP=========> ", scoreMap)
 
       marks[range[0]] = {
         style: {
@@ -102,40 +122,83 @@ class CrossFilter extends Component {
           color: '#333333',
           fontSize: '0.9em'
         },
-        label: `Min (${range[0].toFixed(3)})`
+        label: `${range[0].toFixed(3)}`
       }
 
-      const parentMark = {
-        style: {
-          wordWrap: 'break-word',
-          color: 'orange',
-          transform: 'rotate(90deg)',
-          fontSize: '1.1em',
-          paddingLeft: '5em'
-        },
-        label: `Parent (${parentWeight.toFixed(3)})`
+      const baseStyle = {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        wordWrap: 'break-word',
+        color: '#222222',
+        fontWeight: 500,
+        fontSize: '1.1em',
+        // marginBottom: '200px',
+        marginTop: '-2.5em'
+        // borderRadius: '0.5em',
+        // border: 'solid 1px #777777',
+        // padding: '1em'
       }
+      const parentMark = {
+        style: baseStyle,
+        label: 'Parent'
+      }
+
 
       marks[parentWeight] = parentMark
 
-      weightRange.forEach((weight, idx) => {
+
+      let flag = false
+
+      let pad = 1.5
+
+      newWeights.forEach((weight, idx) => {
+
+        let position = 0
+        if(flag) {
+          position = -4.3
+        }
+
+        if(pad === 0) {
+          pad = 1.5
+        } else {
+          pad = 0
+        }
+        position = position + 'em'
+        flag = !flag
+
         marks[weight] = {
           style: {
-            transform: 'rotate(45deg)',
+            // display: 'flex',
+            // alignItems: 'center',
+            // justifyContent: 'center',
             wordWrap: 'break-word',
-            color: '#444444',
-            fontSize: '0.7em',
-            paddingLeft: '3em'
+            color: '#222222',
+            fontWeight: 500,
+            fontSize: '1em',
+            // width: '5em',
+            // height: '5em',
+            borderRadius: '0.5em',
+            border: 'solid 1.5px #999999',
+            padding: '0.5em',
+            background: 'rgba(250, 250, 250, 0.5)',
+            marginTop: position
+
           },
-          label: `${groupNames[idx]} (${weight})`
+          label: scoreMap[weight].reduce((l1, l2) => { return (l1 + ', ' + l2)})
         }
+
       })
 
       marks[range[1]] = {
         style: {
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           wordWrap: 'break-word',
-          color: '#333333',
-          fontSize: '0.9em'
+          color: '#222222',
+          fontWeight: 500,
+          fontSize: '1em'
         },
         label: range[1].toFixed(3)
       }
