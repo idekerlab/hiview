@@ -149,6 +149,9 @@ export const createStyle = originalNetwork => {
   //   return '-'
   // }
 
+  console.log('STYLE created===============> ', edgeStyle)
+
+
   return {
     style: [
       BASE_STYLE.node,

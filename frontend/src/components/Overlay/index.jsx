@@ -27,24 +27,26 @@ const textStyle = {
 
 const DEF_TITLE = '(No hierarchy data yet)'
 
+
 const Overlay = props => {
   const isCirclePacking = props.uiState.get('changeViewer')
 
   let title = DEF_TITLE
   let link = null
 
-  const datasource = props.datasource
-  if (datasource !== undefined) {
-    const uuid = datasource.get('uuid')
-    const serverType = datasource.get('serverType')
+  const location = props.location
 
-    link = datasource.get('serverUrl') + '/#/network/' + uuid
+  if (location !== undefined && props.network !== undefined) {
 
-    const url = props.cxtoolUrl + uuid + '?server=' + serverType
+    const locationParams = props.location
+    const uuid = props.routeParams.uuid
+    let serverType = locationParams.query.type
+
+    const url = props.cxUrl + uuid + '?server=' + serverType
     const networkProp = props.network
     const networkData = networkProp.get(url)
 
-    if (networkData !== null && networkData !== undefined) {
+    if (networkData !== undefined) {
       title = networkData.data.name
     }
   }

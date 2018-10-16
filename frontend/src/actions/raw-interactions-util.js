@@ -71,10 +71,8 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
   let len = slots
   const colorMap = []
 
-  console.log('Range = ', weightRange, parentScore, maxVal)
 
   //First entry: global minimum to Parent
-  console.log('Range 0 = ', minVal, parentScore)
   colorMap.push({
     min: minVal,
     max: parentScore,
@@ -105,16 +103,15 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
         max: maxVal,
         color: colorScale(maxVal)
       }
-      console.log('Last eny:', lastEntry)
       colorMap.push(lastEntry)
       break
     }
   }
 
-  console.log('COL map = ', weightRange, colorMap)
-
   return colorMap
 }
+
+const calculateZindex = (score) => (Math.floor(score * 200))
 
 const assignColor = (colorMap, edge, primaryName, min) => {
   let color = '#777777'
@@ -128,14 +125,13 @@ const assignColor = (colorMap, edge, primaryName, min) => {
 
     if (mapEntry.min <= weight && weight <= mapEntry.max) {
       color = mapEntry.color
-      zIndex = Math.floor(weight * 200)
       // color = category10[i]
       break
     }
   }
 
   edge.data['color'] = color
-  edge.data['zIndex'] = zIndex
+  edge.data['zIndex'] = calculateZindex(weight)
 }
 
 const getColorForRange = (colorMap, val) => {
@@ -248,6 +244,7 @@ export const filterEdge = (network, maxEdgeCount) => {
     } else {
       const weight = edge.data[mainEdgeType]
       edge.data['color'] = colorGenerator(weight)
+      edge.data['zIndex'] = calculateZindex(weight)
     }
 
     nodeSet.add(edge.data.source)

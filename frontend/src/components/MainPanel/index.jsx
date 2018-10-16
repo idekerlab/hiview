@@ -30,7 +30,7 @@ const MainPanel = props => {
     renderingOptions,
     renderingOptionsActions,
     routeParams,
-    location
+    location,
   } = props
 
   return (
@@ -38,8 +38,10 @@ const MainPanel = props => {
       <Overlay
         uiState={uiState}
         network={network}
-        cxtoolUrl={CXTOOL_URL}
+        cxUrl={CXTOOL_URL}
         selection={selection}
+        location={location}
+        routeParams={routeParams}
       />
 
       <MessageBox uiState={uiState} selection={selection} />
