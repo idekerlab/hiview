@@ -101,10 +101,8 @@ export const createStyle = originalNetwork => {
   // Need to remove space due to current cxtool limitation
   primaryEdgeType = primaryEdgeType.replace(/ /g, '_')
 
-  const minEdge = edges[edges.length - 1]
-  const maxEdge = edges[0]
-  let similarityMax = maxEdge.data[primaryEdgeType]
-  let similarityMin = minEdge.data[primaryEdgeType]
+  let similarityMin = networkData.edgeScoreRange[0]
+  let similarityMax = networkData.edgeScoreRange[1]
 
   if (!similarityMax) {
     console.warn('Max was not defined for: ', edges[0])
@@ -148,8 +146,6 @@ export const createStyle = originalNetwork => {
   //   }
   //   return '-'
   // }
-
-  console.log('STYLE created===============> ', edgeStyle)
 
 
   return {

@@ -31,6 +31,9 @@ const compareBy = fieldName => (a, b) => {
  * @returns {Array}
  */
 const filter = (edges, scoreName, min) => {
+
+  let subMax = -1.0
+
   let size = edges.length
   const subset = []
 
@@ -44,8 +47,16 @@ const filter = (edges, scoreName, min) => {
     if (score > min) {
       subset.push(edge)
     }
+
+    if(score > subMax) {
+      subMax = score
+    }
   }
-  return subset
+
+  return {
+    subset,
+    subMax
+  }
 }
 
 const filterOld = (edges, maxEdgeCount) => {
@@ -111,7 +122,17 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
   return colorMap
 }
 
-const calculateZindex = (score) => (Math.floor(score * 200))
+const calculateZindex = (score, edge, name) => {
+
+  if(score === undefined || isNaN(score)) {
+    // Fix invalid entry
+
+    edge.data[name] = 0
+    return 0 // Default value for the zIndex
+  }
+
+  return Math.floor(score * 200)
+}
 
 const assignColor = (colorMap, edge, primaryName, min) => {
   let color = '#777777'
@@ -129,9 +150,8 @@ const assignColor = (colorMap, edge, primaryName, min) => {
       break
     }
   }
-
   edge.data['color'] = color
-  edge.data['zIndex'] = calculateZindex(weight)
+  edge.data['zIndex'] = calculateZindex(weight, edge, primaryName)
 }
 
 const getColorForRange = (colorMap, val) => {
@@ -170,22 +190,45 @@ export const filterEdge = (network, maxEdgeCount) => {
   const nodes = network.elements.nodes
   const originalEdges = network.elements.edges
   let edges = []
+  let maxScore = -1
+  let minScore = -1
+
+  // Sort all edges and find max.
+  originalEdges.sort(compareBy(mainEdgeType))
+
+  // This is always the global maximum
+  maxScore = originalEdges[0].data[mainEdgeType]
+
   if (!parentScore) {
-    originalEdges.sort(compareBy(mainEdgeType))
     edges = filterOld(originalEdges, maxEdgeCount)
+    minScore = edges[edges.length - 1].data[mainEdgeType]
   } else {
-    edges = filter(originalEdges, mainEdgeType, parentScore)
+    // New data format
+    // const result = filter(originalEdges, mainEdgeType, parentScore)
+    // edges = result.subset
+    // edges.sort(compareBy(mainEdgeType))
+
+    maxScore = originalEdges[originalEdges.length -1].data[mainEdgeType]
+
+    edges = filterOld(originalEdges, maxEdgeCount)
     if (edges.length < maxEdgeCount) {
-      originalEdges.sort(compareBy(mainEdgeType))
-      edges = filterOld(originalEdges, maxEdgeCount)
+      minScore = parentScore
     } else {
-      edges.sort(compareBy(mainEdgeType))
+      minScore = parentScore
     }
+
   }
 
-  const maxScore = Number(edges[0].data[mainEdgeType])
-  console.log('E0 = ', mainEdgeType, edges[0], maxScore)
-  let minScore = edges[edges.length - 1].data[mainEdgeType]
+  if(maxScore === undefined) {
+    maxScore = 0.0
+  }
+
+  if(minScore === undefined) {
+    minScore = 0.0
+  }
+
+  // let minScore = edges[edges.length - 1].data[mainEdgeType]
+  console.log("MIN / Max ==========", minScore, maxScore, originalEdges)
   network.data['allEdgeScoreRange'] = [minScore, maxScore]
 
   // Create colors for range.  0 is always global minimum
@@ -244,7 +287,7 @@ export const filterEdge = (network, maxEdgeCount) => {
     } else {
       const weight = edge.data[mainEdgeType]
       edge.data['color'] = colorGenerator(weight)
-      edge.data['zIndex'] = calculateZindex(weight)
+      edge.data['zIndex'] = calculateZindex(weight, edge, mainEdgeType)
     }
 
     nodeSet.add(edge.data.source)

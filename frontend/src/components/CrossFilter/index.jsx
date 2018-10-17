@@ -114,8 +114,6 @@ class CrossFilter extends Component {
         scoreMap[weight] = labels
       })
 
-      // console.log("SCOREMAP=========> ", scoreMap)
-
       marks[range[0]] = {
         style: {
           wordWrap: 'break-word',

@@ -38,7 +38,8 @@ const EXAMPLE_UUIDS = {
   'New format sample': '7929fc61-b871-11e8-98d5-0660b7976219',
   'DNA Repair': 'ab704ae4-0719-11e8-b03c-0660b7976219',
   'louvain_hierarchy_0.4.ont': '1bb9e2a4-99b4-11e8-9a23-0660b7976219',
-  '8.3K Subsystems': 'abafcdc5-c067-11e8-98d5-0660b7976219'
+  '8.3K Subsystems': 'abafcdc5-c067-11e8-98d5-0660b7976219',
+  'CDK (latest)': '340d21d9-d0d4-11e8-a74b-0660b7976219'
 }
 
 class SourceSelector extends Component {
