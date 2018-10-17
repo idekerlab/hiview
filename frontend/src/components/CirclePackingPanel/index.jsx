@@ -183,8 +183,6 @@ class CirclePackingPanel extends Component {
       } else {
         this.props.rawInteractionsActions.setSelected(geneIds)
       }
-
-      console.log('H on time = ', performance.now() - t1)
     }
 
     return {

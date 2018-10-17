@@ -10,8 +10,21 @@ const category10 = d3Scale.schemeCategory10
 const DEF_COLOR = '#777777'
 
 const compareBy = fieldName => (a, b) => {
-  const scoreA = a.data[fieldName]
-  const scoreB = b.data[fieldName]
+  let scoreA = a.data[fieldName]
+  let scoreB = b.data[fieldName]
+
+  if(scoreA === undefined) {
+    scoreA = 0.0
+  }
+
+  if(scoreB === undefined) {
+    scoreB = 0.0
+  }
+
+  if(scoreA === 0) {
+    console.log('000000000000000000000000000000A')
+  }
+  // console.log('A, B = ', scoreA, scoreB)
 
   let comparison = 0
   if (scoreA > scoreB) {
@@ -57,6 +70,24 @@ const filter = (edges, scoreName, min) => {
     subset,
     subMax
   }
+}
+
+const removeZeroEdges = (edges, scoreName) => {
+  let size = edges.length
+
+  const filtered = []
+
+  while (size--) {
+    const edge = edges[size]
+    const s = edge.data[scoreName]
+
+
+    if (s !== 0 && s !== undefined) {
+      filtered.push(edge)
+    }
+  }
+
+  return filtered
 }
 
 const filterOld = (edges, maxEdgeCount) => {
@@ -188,47 +219,56 @@ export const filterEdge = (network, maxEdgeCount) => {
   }
 
   const nodes = network.elements.nodes
-  const originalEdges = network.elements.edges
+  const originalEdges = removeZeroEdges(network.elements.edges, mainEdgeType)
   let edges = []
-  let maxScore = -1
   let minScore = -1
 
   // Sort all edges and find max.
   originalEdges.sort(compareBy(mainEdgeType))
 
   // This is always the global maximum
-  maxScore = originalEdges[0].data[mainEdgeType]
+  const maxEdge = originalEdges[0]
+  const maxData = maxEdge.data
+  let maxScore = maxData[mainEdgeType]
+  console.log('MS-', maxScore, maxData, maxData.id)
 
-  if (!parentScore) {
+  if(maxScore === undefined ) {
+    maxScore = 0.0
+    console.warn('Missing max score:', mainEdgeType, maxScore, originalEdges[0])
+
+  }
+
+  // filter by edge count
+  edges = filterOld(originalEdges, maxEdgeCount)
+
+  // Last element is always the minimum
+  minScore = edges[edges.length - 1].data[mainEdgeType]
+
+  if(minScore === undefined) {
+    minScore = 0.0
+    console.warn('Missing min score:', minScore)
+  }
+
+  if (parentScore === undefined) {
+    console.warn('OLD format detected!!', parentScore)
     edges = filterOld(originalEdges, maxEdgeCount)
-    minScore = edges[edges.length - 1].data[mainEdgeType]
   } else {
+    // console.log('NEW******++++++++++++++++++++++ Parent - ----', minScore, maxScore)
     // New data format
     // const result = filter(originalEdges, mainEdgeType, parentScore)
     // edges = result.subset
     // edges.sort(compareBy(mainEdgeType))
 
-    maxScore = originalEdges[originalEdges.length -1].data[mainEdgeType]
-
-    edges = filterOld(originalEdges, maxEdgeCount)
-    if (edges.length < maxEdgeCount) {
-      minScore = parentScore
-    } else {
-      minScore = parentScore
-    }
-
-  }
-
-  if(maxScore === undefined) {
-    maxScore = 0.0
-  }
-
-  if(minScore === undefined) {
-    minScore = 0.0
+    // if (edges.length < maxEdgeCount) {
+    //   // Edge count threshold is larger than total number of edges --> Display everything
+    //   minScore = edges[edges.length - 1].data[mainEdgeType]
+    // } else {
+    //   minScore = parentScore
+    // }
   }
 
   // let minScore = edges[edges.length - 1].data[mainEdgeType]
-  console.log("MIN / Max ==========", minScore, maxScore, originalEdges)
+  // console.log("MIN / Max ==========", minScore, maxScore, edges)
   network.data['allEdgeScoreRange'] = [minScore, maxScore]
 
   // Create colors for range.  0 is always global minimum

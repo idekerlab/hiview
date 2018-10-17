@@ -34,12 +34,11 @@ const DEFAULT_EXAMPLE = 'Small Example 1'
 
 const EXAMPLE_UUIDS = {
   [DEFAULT_EXAMPLE]: '49bca313-ab2c-11e8-9a23-0660b7976219',
-  'Small example 2': '6ee4bb3f-ab2a-11e8-9a23-0660b7976219',
   'New format sample': '7929fc61-b871-11e8-98d5-0660b7976219',
   'DNA Repair': 'ab704ae4-0719-11e8-b03c-0660b7976219',
-  'louvain_hierarchy_0.4.ont': '1bb9e2a4-99b4-11e8-9a23-0660b7976219',
   '8.3K Subsystems': 'abafcdc5-c067-11e8-98d5-0660b7976219',
-  'CDK (latest)': '340d21d9-d0d4-11e8-a74b-0660b7976219'
+  'CDK (latest)': '340d21d9-d0d4-11e8-a74b-0660b7976219',
+  'CDK (Smaller)': '59594682-d103-11e8-a74b-0660b7976219'
 }
 
 class SourceSelector extends Component {
