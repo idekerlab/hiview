@@ -29,7 +29,6 @@ const controlWrapperStyle = {
 
 const filterPanelStyle = {
   display: 'inline-flex',
-  height: '20em',
   width: '100%',
   padding: '0.6em',
   background: '#FFFFFF'
@@ -306,6 +305,7 @@ class TermDetailsPanel extends Component {
                       commandActions={this.props.interactionsCommandActions}
                       commands={this.props.interactionsCommands}
                       filtersActions={this.props.filtersActions}
+                      networkData={networkProps}
                     />
                   </div>
                 )}
