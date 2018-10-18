@@ -3,11 +3,17 @@ import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
 import OpenIcon from 'material-ui-icons/OpenInNew'
 import Collapse from 'material-ui/transitions/Collapse'
 
+import KeyIcon from 'material-ui-icons/VpnKey'
+
+import ExpandLess from 'material-ui-icons/ExpandLess'
+import ExpandMore from 'material-ui-icons/ExpandMore'
+
 import ContinuousFilter from './ContinuousFilter'
 import BooleanFilter from './BooleanFilter'
 
 import { withStyles } from 'material-ui/styles'
 import Typography from 'material-ui/Typography'
+import ViewListIcon from 'material-ui/SvgIcon/SvgIcon';
 
 // Color map for 5 categorical data
 const COLORS = ['#7570b3', '#0571b0', '#aaaaaa', '#66c2a5', '#018571']
@@ -31,7 +37,7 @@ const styles = theme => ({
     height: '2em'
   },
   list: {
-    overflow: 'auto',
+    overflow: 'auto'
   },
   listItemLarge: {
     height: '1.3em',
@@ -46,6 +52,9 @@ const styles = theme => ({
   }
 })
 
+
+
+
 class EdgeFilter extends Component {
   constructor(props) {
     super(props)
@@ -57,6 +66,10 @@ class EdgeFilter extends Component {
 
   onAfterChange = value => {
     console.log(value)
+  }
+
+  handleExpand = () => {
+    this.setState({ open: !this.state.open })
   }
 
   handleChange = name => event => {
@@ -162,21 +175,44 @@ class EdgeFilter extends Component {
     )
   }
 
-  generateFilterList = (sortedNames, filterMap, categories, cat2filter) => {
-
-    if(!categories) {
-      return <List></List>
+  generateFilterList = (sortedNames, filterMap, filter2cat, cat2filter) => {
+    if (!filter2cat) {
+      return <List />
     }
-    const tags = new Set(Object.values(categories))
-    const sortedTags = [...tags].sort()
+    const tags = new Set(Object.values(filter2cat))
+    const sortedCategoryNames = [...tags].sort()
 
-    console.log(sortedTags)
+    console.log(sortedCategoryNames, filter2cat, cat2filter)
+
+    const filterListMap = this.getExistingFilters(
+      sortedNames,
+      cat2filter,
+      filter2cat,
+      filterMap
+    )
+
+    console.log('FINAl MAP = ', filterListMap)
 
     const filterList = (
       <List>
-        {sortedTags.map((tag, i) => (
+        {sortedCategoryNames.map((categoryName, i) => (
           <ListItem key={i}>
-            <ListItemText primary={tag} />
+            <ListItem
+              button
+              onClick={this.handleExpand}
+              style={{ background: '#EEEEEE' }}
+            >
+              <ListItemIcon>
+                <ViewListIcon />
+              </ListItemIcon>
+              <ListItemText inset primary={categoryName} />
+              {this.state.open ? <ExpandLess /> : <ExpandMore />}
+            </ListItem>
+
+
+            <Collapse in={this.state.open} unmountOnExit>
+              {filterListMap[categoryName]}
+            </Collapse>
           </ListItem>
         ))}
       </List>
@@ -185,18 +221,40 @@ class EdgeFilter extends Component {
     return filterList
   }
 
-  getExistingFilters = (categoryName, nameSet, cat2Filter) => {
-    const children = []
-    const allChildren = cat2Filter[categoryName]
-    {/*<Collapse in={true} timeout="auto" unmountOnExit>*/}
-    {/*<List>*/}
-    {/*{[...cat2filter[tag]].sort().map((filterName, j) => (*/}
-    {/*<ListItem key={j}>*/}
-    {/*{this.getFilter(filterMap[filterName])}*/}
-    {/*</ListItem>*/}
-    {/*))}*/}
-    {/*</List>*/}
-    {/*</Collapse>*/}
+  getExistingFilters = (allFilterNames, cat2filter, filter2cat, filterMap) => {
+    const newFilters = {}
+    console.log('Mapping data', filter2cat, cat2filter)
+
+    allFilterNames.forEach(filterName => {
+      // Check this filter has parent category or not
+      let categoryName = filter2cat[filterName]
+      if (categoryName === undefined) {
+        // This one does not have parent category
+        return
+      }
+
+      const filterSet = cat2filter[categoryName]
+
+      // console.log('name and set = ',filterName, categoryName, filterSet)
+
+      if (filterSet.has(filterName)) {
+        let listForCategory = newFilters[categoryName]
+
+        if (listForCategory === undefined) {
+          listForCategory = []
+        }
+        const filterListItem = (
+          <ListItem key={filterName}>
+            {this.getFilter(filterMap[filterName])}
+          </ListItem>
+        )
+        listForCategory.push(filterListItem)
+
+        newFilters[categoryName] = listForCategory
+      }
+    })
+
+    return newFilters
   }
 
   getFilter(filter) {
