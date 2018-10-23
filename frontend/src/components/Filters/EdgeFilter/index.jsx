@@ -1,10 +1,6 @@
 import React, { Component } from 'react'
 import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
-import OpenIcon from 'material-ui-icons/OpenInNew'
 import Collapse from 'material-ui/transitions/Collapse'
-
-import KeyIcon from 'material-ui-icons/VpnKey'
-
 import ExpandLess from 'material-ui-icons/ExpandLess'
 import ExpandMore from 'material-ui-icons/ExpandMore'
 
@@ -13,13 +9,15 @@ import BooleanFilter from './BooleanFilter'
 
 import { withStyles } from 'material-ui/styles'
 import Typography from 'material-ui/Typography'
-import ViewListIcon from 'material-ui/SvgIcon/SvgIcon';
+import ViewListIcon from 'material-ui-icons/ViewList'
 
 // Color map for 5 categorical data
 const COLORS = ['#7570b3', '#0571b0', '#aaaaaa', '#66c2a5', '#018571']
 const colorMap = idx => COLORS[idx]
 
 const EDGE_GROUP_TAG = 'edge groups'
+
+const OTHERS_TAG = 'Others'
 
 const FILTER_TYPES = {
   CONTINUOUS: 'continuous',
@@ -52,9 +50,6 @@ const styles = theme => ({
   }
 })
 
-
-
-
 class EdgeFilter extends Component {
   constructor(props) {
     super(props)
@@ -68,8 +63,8 @@ class EdgeFilter extends Component {
     console.log(value)
   }
 
-  handleExpand = () => {
-    this.setState({ open: !this.state.open })
+  handleExpand = (event, val) => {
+    this.setState({ [val]: !this.state[val] })
   }
 
   handleChange = name => event => {
@@ -106,8 +101,6 @@ class EdgeFilter extends Component {
       filter2cat: result,
       cat2filter
     }
-    console.log('CAT list', bothMap)
-
     return bothMap
   }
 
@@ -115,8 +108,6 @@ class EdgeFilter extends Component {
     const { classes } = this.props
     const filters = this.props.filters
     const networkData = this.props.networkData
-
-    console.log('FILTER NDL ', networkData)
 
     let edgeGroupsText = null
     let categories = {}
@@ -163,14 +154,6 @@ class EdgeFilter extends Component {
           categories.filter2cat,
           categories.cat2filter
         )}
-
-        {/*<List className={classes.list}>*/}
-        {/*{sortedNames.map(filterName => (*/}
-        {/*<ListItem className={classes.listItem} key={filterName}>*/}
-        {/*{this.getFilter(filterMap[filterName])}*/}
-        {/*</ListItem>*/}
-        {/*))}*/}
-        {/*</List>*/}
       </div>
     )
   }
@@ -180,9 +163,7 @@ class EdgeFilter extends Component {
       return <List />
     }
     const tags = new Set(Object.values(filter2cat))
-    const sortedCategoryNames = [...tags].sort()
-
-    console.log(sortedCategoryNames, filter2cat, cat2filter)
+    let sortedCategoryNames = [OTHERS_TAG, ...tags].sort()
 
     const filterListMap = this.getExistingFilters(
       sortedNames,
@@ -191,51 +172,68 @@ class EdgeFilter extends Component {
       filterMap
     )
 
-    console.log('FINAl MAP = ', filterListMap)
+    // Remove if no children
+    const catNameSet = new Set(sortedCategoryNames)
+    sortedCategoryNames.forEach(cat => {
+      if(filterListMap[cat] === undefined) {
+        catNameSet.delete(cat)
+      }
+    })
 
-    const filterList = (
-      <List>
+    sortedCategoryNames = [...catNameSet].sort()
+
+    return (
+      <List dense={true} style={{ margin: 0, padding: 0 }}>
         {sortedCategoryNames.map((categoryName, i) => (
-          <ListItem key={i}>
+          <div key={i}>
             <ListItem
               button
-              onClick={this.handleExpand}
+              onClick={d => this.handleExpand(d, categoryName)}
               style={{ background: '#EEEEEE' }}
             >
               <ListItemIcon>
                 <ViewListIcon />
               </ListItemIcon>
-              <ListItemText inset primary={categoryName} />
+              <ListItemText
+                primary={categoryName.replace(/_/g, ' ')}
+                style={{ fontSize: '1.2em' }}
+              />
               {this.state.open ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
-
-
-            <Collapse in={this.state.open} unmountOnExit>
+            <Collapse in={this.state[categoryName]} unmountOnExit>
               {filterListMap[categoryName]}
             </Collapse>
-          </ListItem>
+          </div>
         ))}
       </List>
     )
-
-    return filterList
   }
 
   getExistingFilters = (allFilterNames, cat2filter, filter2cat, filterMap) => {
     const newFilters = {}
-    console.log('Mapping data', filter2cat, cat2filter)
+
+    // All filters without parent categories will be here.
+    newFilters[OTHERS_TAG] = []
 
     allFilterNames.forEach(filterName => {
       // Check this filter has parent category or not
       let categoryName = filter2cat[filterName]
       if (categoryName === undefined) {
         // This one does not have parent category
+        const newFilterListItem = (
+          <ListItem key={filterName}>
+            {this.getFilter(filterMap[filterName])}
+          </ListItem>
+        )
+
+        const othersList = newFilters[OTHERS_TAG]
+        othersList.push(newFilterListItem)
+        newFilters[OTHERS_TAG] = othersList
+
         return
       }
 
       const filterSet = cat2filter[categoryName]
-
-      // console.log('name and set = ',filterName, categoryName, filterSet)
 
       if (filterSet.has(filterName)) {
         let listForCategory = newFilters[categoryName]
@@ -253,6 +251,7 @@ class EdgeFilter extends Component {
         newFilters[categoryName] = listForCategory
       }
     })
+
 
     return newFilters
   }

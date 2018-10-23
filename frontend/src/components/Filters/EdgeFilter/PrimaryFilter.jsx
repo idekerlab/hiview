@@ -33,8 +33,6 @@ class PrimaryFilter extends Component {
   }
 
   onAfterChange = value => {
-    console.log('New th value = ', value)
-
     this.setState({ value })
     this.props.commandActions.filterEdges({
       options: {
@@ -82,12 +80,10 @@ class PrimaryFilter extends Component {
       }
     }
     this.props.commandActions.filterEdges(newOptions)
-    console.log('apply--------------------------------', newOptions)
   }
 
   render() {
     if (this.state.primaryFilter === null) {
-      console.log('null--------------------------------', primaryFilter)
       return <div />
     }
 
@@ -102,7 +98,6 @@ class PrimaryFilter extends Component {
       isNaN(minNumber) ||
       isNaN(maxNumber)
     ) {
-      console.log('nomax--------------------------------', primaryFilter)
       return <div />
     }
     const min = minNumber.toFixed(5)
