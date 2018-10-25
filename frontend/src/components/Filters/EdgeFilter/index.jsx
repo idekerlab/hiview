@@ -140,8 +140,26 @@ class EdgeFilter extends Component {
 
     const sortedNames = filterNames.sort()
 
-    // Now creates sub-categories
+    if (edgeGroupsText === undefined) {
+      // Old data format.  Just render plain list
+      return (
+        <div className={classes.root}>
+          <Typography variant="title" className={classes.title}>
+            Interaction Features:
+          </Typography>
 
+          <List>
+            {sortedNames.map(filterName => (
+              <ListItem key={filterName}>
+                {this.getFilter(filterMap[filterName])}
+              </ListItem>
+            ))}
+          </List>
+        </div>
+      )
+    }
+
+    // Now creates sub-categories
     return (
       <div className={classes.root}>
         <Typography variant="title" className={classes.title}>
@@ -175,7 +193,7 @@ class EdgeFilter extends Component {
     // Remove if no children
     const catNameSet = new Set(sortedCategoryNames)
     sortedCategoryNames.forEach(cat => {
-      if(filterListMap[cat] === undefined) {
+      if (filterListMap[cat] === undefined) {
         catNameSet.delete(cat)
       }
     })
@@ -251,7 +269,6 @@ class EdgeFilter extends Component {
         newFilters[categoryName] = listForCategory
       }
     })
-
 
     return newFilters
   }
