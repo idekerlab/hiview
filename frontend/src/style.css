@@ -182,8 +182,8 @@ html, body, #root {
 .tooltip-circle-packing {
     color: #333333;
     position: absolute;
-    width: 26em;
-    height: 6em;
+    width: 20em;
+    height: 4em;
     padding: 0.5em;
     background: #FFFFFF;
     border: 0px;
