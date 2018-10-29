@@ -5,7 +5,7 @@ const ATTR_TYPES = {
   TYPE: 'type'
 }
 
-import * as d3Scale from 'd3-scale'
+const INTERACTION_TAG = 'interaction'
 
 const BASE_STYLE = {
   node: {
@@ -40,7 +40,11 @@ const BASE_STYLE = {
     selector: 'edge',
     css: {
       width: 1,
+      'text-rotation': 'autorotate',
       'line-color': '#555555',
+      'text-opacity': 0,
+      'font-size': 25,
+      color: '#FFFFFF',
       opacity: 1,
       'curve-style': 'bezier',
       'control-point-step-size': 45
@@ -51,10 +55,6 @@ const BASE_STYLE = {
     selector: 'edge:selected',
     css: {
       opacity: 1
-      // 'line-color': '#FF0000'
-      // width: 15
-      // 'label': 'data(interaction)',
-      // 'color': '#FFFFFF'
     }
   },
   hidden: {
@@ -134,19 +134,21 @@ export const createStyle = originalNetwork => {
   // Define edge selection style
   const edgeSelectedStyle = BASE_STYLE.edgeSelected
 
-  // edgeSelectedStyle.css['label'] = d => {
-  //   const primaryScore = d.data(primaryEdgeType)
-  //
-  //   const edgeType = d.data('interaction')
-  //   if (!edgeType) {
-  //     return d.data('interaction')
-  //   }
-  //   if(primaryScore && (typeof primaryScore === 'number')) {
-  //     return primaryScore.toFixed(5)
-  //   }
-  //   return '-'
-  // }
+  // Reaction for edge selection
+  edgeStyle.css['label'] = edge => {
+    const primaryScore = edge.data(primaryEdgeType)
+    // This is for optional edges
+    const edgeType = edge.data(INTERACTION_TAG)
+    if (edgeType !== undefined) {
+      const labelText = edgeType + ': ' + edge.data(edgeType)
+      return labelText
+    }
 
+    if (primaryScore && typeof primaryScore === 'number') {
+      return primaryScore.toFixed(4)
+    }
+    return '-'
+  }
 
   return {
     style: [
