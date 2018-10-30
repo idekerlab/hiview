@@ -72,7 +72,7 @@ const styles = theme => ({
   }
 })
 
-const version = '1.5'
+const version = '2.0'
 
 const handleClickGh = () => {
   window.open('https://github.com/idekerlab/hiview')
