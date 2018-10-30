@@ -15,10 +15,14 @@ class CirclePackingPanel extends Component {
   }
 
   componentDidMount() {
-    const tree = cyjs2tree(this.props.network)
-    this.setState({
-      tree
-    })
+    const t0 = performance.now()
+    // const tree = cyjs2tree(this.props.network)
+    const t1 = performance.now()
+
+    console.log('# Circle packing time = ', t1-t0)
+    // this.setState({
+    //   tree
+    // })
   }
 
   selectGroups = (id, data, groups, actions) => {
@@ -195,24 +199,25 @@ class CirclePackingPanel extends Component {
   }
 
   render() {
+    console.log('** Circle rendering')
     return (
       <div
         ref={containerElement => (this.containerElement = containerElement)}
         style={this.props.style}
       >
-        {this.state.tree === null ? (
-          <div />
-        ) : (
-          <TreeViewer
-            command={this.props.command}
-            selected={this.props.search.result}
-            tree={this.state.tree}
-            eventHandlers={this.getEventHandlers()}
-            width={this.props.style.width}
-            height={this.props.style.height}
-            rendererOptions={this.props.renderingOptions}
-          />
-        )}
+        {/*{this.state.tree === null ? (*/}
+          {/*<div />*/}
+        {/*) : (*/}
+          {/*<TreeViewer*/}
+            {/*command={this.props.command}*/}
+            {/*selected={this.props.search.result}*/}
+            {/*tree={this.state.tree}*/}
+            {/*eventHandlers={this.getEventHandlers()}*/}
+            {/*width={this.props.style.width}*/}
+            {/*height={this.props.style.height}*/}
+            {/*rendererOptions={this.props.renderingOptions}*/}
+          {/*/>*/}
+        {/*)}*/}
       </div>
     )
   }

@@ -3,8 +3,6 @@ import cytoscape from 'cytoscape'
 
 import Fuse from 'fuse.js'
 
-export const FETCH_NETWORK = 'FETCH_NETWORK'
-
 const generateIndex = networkJson => {
   if (!networkJson) {
     throw Error('Network not loaded')
@@ -28,6 +26,7 @@ const generateIndex = networkJson => {
   return new Fuse(nodeData, options)
 }
 
+export const FETCH_NETWORK = 'FETCH_NETWORK'
 const fetchNetwork = url => {
   return {
     type: FETCH_NETWORK,
@@ -37,8 +36,7 @@ const fetchNetwork = url => {
 
 export const RECEIVE_NETWORK = 'RECEIVE_NETWORK'
 const receiveNetwork = (url, json, error) => {
-
-  if(error !== null) {
+  if (error !== null) {
     return {
       type: RECEIVE_NETWORK,
       url,
@@ -48,7 +46,10 @@ const receiveNetwork = (url, json, error) => {
     }
   }
 
+  const tIndex = performance.now()
   const index = generateIndex(json)
+  const t1 = performance.now()
+  console.log('# Indexing time = ', t1 - tIndex)
 
   return {
     type: RECEIVE_NETWORK,
@@ -59,72 +60,65 @@ const receiveNetwork = (url, json, error) => {
   }
 }
 
-const fetchNet = url => {
-  return fetch(url)
-}
+let t0 = 0
 
-/**
- * remove unnecessary edges for visualization
- */
-const filterEdges = network => {
-  const edges = []
-  network.elements.edges.forEach(edge => {
-    if (edge.data.Is_Tree_Edge === 'Tree') {
-      edges.push(edge)
-    }
-  })
+let tout0 = 0
 
-  network.elements.edges = edges
-  return network
-}
+export const fetchNetworkFromUrl = url1 => {
+  const url =
+    'http://test.ndexbio.org/v2/network/c3179d6e-ca96-11e8-98d5-0660b7976219'
 
-const filterNodes = network => {
-  const nodes = []
-  network.elements.nodes.forEach(node => {
-    if (node.data.Gene_or_Term === 'Term') {
-      nodes.push(node)
-    }
-  })
+  console.log('# Main hierarchy loading start: ', url)
+  t0 = performance.now()
 
-  network.elements.nodes = nodes
-  return network
-}
-
-export const fetchNetworkFromUrl = url => {
-
-  console.log('Main network loading: start', url)
-  
-  const t0 = performance.now()
   return dispatch => {
     dispatch(fetchNetwork(url))
 
-    return fetch(url)
-      .then(response => {
-        const t1 = performance.now()
-        console.log('Main network fetch TIME = ', t1-t0)
+    const headers = new Headers()
+    headers.append('Content-Encoding', 'gzip')
 
-        if (!response.ok) {
-          throw Error(response.statusText)
-        } else {
-          return response.json()
-        }
-      })
-      .then(json => createLabel2IdMap(json))
-      .then(network => addOriginalToAlias(network))
-      .then(network => dispatch(receiveNetwork(url, network, null)))
-      .catch(err => {
-        console.log("Fetch Error: ", err)
-        return dispatch(receiveNetwork(url, null, err))
-      })
+    return (
+      fetch(url)
+        .then(response => {
+          const t1 = performance.now()
+          console.log('# Main network fetch time = ', t1 - t0, response.headers)
+
+          if (!response.ok) {
+            throw Error(response.statusText)
+          } else {
+            tout0 = performance.now()
+            console.log('# TOJSON start = ', response)
+            return response.json()
+          }
+        })
+        // .then(json => {
+        //   const t22 = performance.now()
+        //   console.log('# To JSON time = ', t22 - tout0)
+        //   console.log('# Total time = ', t22 - t0)
+        //   const t33 = performance.now()
+        //   console.log('# datasize = ', json.length)
+        //   // console.log('# datatext = ', json)
+        //   console.log('# data processing time = ', performance.now() - t33)
+        //
+        //   return json
+        // })
+        .then(json => createLabel2IdMap(json))
+        .then(network => addOriginalToAlias(network))
+        .then(network => dispatch(receiveNetwork(url, network, null)))
+        .catch(err => {
+          console.log('Fetch Error: ', err)
+          return dispatch(receiveNetwork(url, null, err))
+        })
+    )
   }
 }
-
 
 let primaryName2prop = new Map()
 
 const createLabel2IdMap = network => {
-  const nodes = network.elements.nodes
+  const tLabel = performance.now()
 
+  const nodes = network.elements.nodes
   const label2id = {}
   const id2prop = {}
   // primaryId2prop = new Map()
@@ -141,7 +135,7 @@ const createLabel2IdMap = network => {
     }
 
     const hidden = nodeData.Hidden
-    if(!hidden && nodeData.NodeType === 'Term') {
+    if (!hidden && nodeData.NodeType === 'Term') {
       primaryName2prop.set(nodeData.name, nodeData)
     }
 
@@ -150,6 +144,9 @@ const createLabel2IdMap = network => {
   }
   network['label2id'] = label2id
   network['id2prop'] = id2prop
+
+  const t1 = performance.now()
+  console.log('# ID Map creation time = ', t1 - tLabel)
 
   return network
 }
@@ -162,6 +159,7 @@ const createLabel2IdMap = network => {
  * @returns {*}
  */
 const addOriginalToAlias = network => {
+  const tAlias = performance.now()
 
   const nodes = network.elements.nodes
   let i = nodes.length
@@ -173,7 +171,7 @@ const addOriginalToAlias = network => {
     if (hidden && nodeType === 'Term') {
       const originalData = primaryName2prop.get(nodeData.Original_Name)
 
-      if(originalData) {
+      if (originalData) {
         nodeData['originalId'] = originalData.id
         nodeData['alias'] = true
       } else {
@@ -183,6 +181,9 @@ const addOriginalToAlias = network => {
       nodeData['alias'] = false
     }
   }
+
+  const t1 = performance.now()
+  console.log('# Alias creation time = ', t1 - tAlias)
   return network
 }
 
@@ -366,13 +367,13 @@ const applyLayout = (layoutMap, network) => {
 }
 
 const project = (x, y) => {
-  const angle = (x - 90) / 180 * Math.PI
+  const angle = ((x - 90) / 180) * Math.PI
   const radius = y
   return [radius * Math.cos(angle), radius * Math.sin(angle), angle]
 }
 
 const project2 = (x, y) => {
-  const angle = (x - 90) / 180 * Math.PI
+  const angle = ((x - 90) / 180) * Math.PI
   const radius = y
   return [radius * Math.cos(angle * 2), radius * Math.sin(angle * 2), angle]
 }
