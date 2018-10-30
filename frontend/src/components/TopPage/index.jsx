@@ -10,7 +10,6 @@ import Typography from 'material-ui/Typography'
 import AppBar from 'material-ui/AppBar'
 import Toolbar from 'material-ui/Toolbar'
 
-import SvgIcon from 'material-ui/SvgIcon'
 import HelpIcon from 'material-ui-icons/HelpOutline'
 
 import IconButton from 'material-ui/IconButton'
