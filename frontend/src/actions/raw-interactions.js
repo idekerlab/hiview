@@ -36,7 +36,14 @@ const receiveNetwork = (url, network, filters, groups, extraEdges) => {
 }
 
 const fetchNet = url => {
-  return fetch(url)
+  const headers = new Headers()
+  headers.set('Accept-Encoding', 'br')
+  const setting = {
+    method: 'GET',
+    mode: 'cors',
+    headers: headers
+  }
+  return fetch(url, setting)
 }
 
 export const fetchInteractionsFromUrl = (

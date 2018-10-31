@@ -30,6 +30,8 @@ class LeftPanel extends Component {
   }
 
   componentDidMount() {
+    this.props.networkActions.setUuid(this.props.params.uuid)
+    this.props.networkActions.setServer(this.props.location.query.server)
     const topPanelHeight = window.innerHeight * 0.9
     this.setState({
       topPanelHeight

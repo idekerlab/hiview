@@ -74,7 +74,14 @@ export const fetchNetworkFromUrl = url => {
   return dispatch => {
     dispatch(fetchNetwork(url))
 
-    return fetch(url)
+    const headers = new Headers()
+    headers.set('Accept-Encoding', 'br')
+    const setting = {
+      method: 'GET',
+      mode: 'cors',
+      headers: headers
+    }
+    return fetch(url, setting)
       .then(response => {
         const t1 = performance.now()
         console.log('Main network fetch TIME = ', t1-t0)
