@@ -15,6 +15,7 @@ const defState = Map({
   uuid: null,
   server: null,
   networkUrl: null,
+  cyjs: null
 })
 
 export default function networkState(state = defState, action) {
@@ -23,10 +24,12 @@ export default function networkState(state = defState, action) {
       return state.set('loading', true)
 
     case RECEIVE_NETWORK:
+
+      const net = action.network
       return state
+        .set('cyjs', net)
         .set('loading', false)
         .set('error', action.error)
-        .set(action.url, action.network)
         .set('index', action.index)
         .set('idx2', action.idx2)
     case DELETE_NETWORK:

@@ -66,11 +66,14 @@ const receiveNetwork = (url, json, error) => {
 }
 
 
+let t0 = 0
+let t1 = 0
 export const fetchNetworkFromUrl = url => {
 
+  // const url = 'http://localhost:3000/hiview.cyjs'
   console.log('Main network loading: start', url)
   
-  const t0 = performance.now()
+  t0 = performance.now()
   return dispatch => {
     dispatch(fetchNetwork(url))
 
@@ -83,8 +86,8 @@ export const fetchNetworkFromUrl = url => {
     }
     return fetch(url, setting)
       .then(response => {
-        const t1 = performance.now()
-        console.log('Main network fetch TIME = ', t1-t0)
+        t1 = performance.now()
+        console.log('Main network response TIME = ', t1-t0)
 
         if (!response.ok) {
           throw Error(response.statusText)
@@ -108,6 +111,8 @@ let primaryName2prop = new Map()
 const createLabel2IdMap = network => {
   const nodes = network.elements.nodes
 
+  const t2 = performance.now()
+  console.log('To JSON TIME = ', t2-t1)
   const label2id = {}
   const id2prop = {}
   // primaryId2prop = new Map()

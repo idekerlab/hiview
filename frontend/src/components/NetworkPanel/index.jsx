@@ -287,9 +287,9 @@ class NetworkPanel extends Component {
   }
 
   render() {
-    const loading = this.props.network.get('loading')
     const networkProp = this.props.network
-    const networkData = networkProp.get(this.state.networkUrl)
+    const loading = networkProp.get('loading')
+    const networkData = networkProp.get('cyjs')
 
     if (loading) {
       let message = 'Loading hierarchy.  Please wait...'

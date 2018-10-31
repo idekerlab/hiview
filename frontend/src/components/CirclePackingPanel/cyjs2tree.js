@@ -23,7 +23,7 @@ const cyjs2tree = cyjs => {
     .id(d => d.id)
     .parentId(d => d.parent)(table)
 
-
+  console.log('Tree created:', tree)
   getOriginalBranches(tree)
   addBranches(tree)
 

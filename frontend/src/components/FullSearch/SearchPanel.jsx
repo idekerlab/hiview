@@ -97,10 +97,13 @@ class SearchPanel extends Component {
     let id2prop = {}
     let rootId = null
     if (
-      this.props.network !== undefined &&
-      this.state.currentNetworkUrl !== undefined
+      this.props.network !== undefined
     ) {
-      const net = this.props.network[this.state.currentNetworkUrl]
+      const net = this.props.network['cyjs']
+      if(!net) {
+        return (<div />)
+      }
+      // const net = this.props.network[this.state.currentNetworkUrl]
       id2prop = net.id2prop
       rootId = net.rootId
     }
