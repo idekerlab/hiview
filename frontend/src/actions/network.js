@@ -1,7 +1,14 @@
 import * as d3Hierarchy from 'd3-hierarchy'
 import cytoscape from 'cytoscape'
 
+import { createAction } from 'redux-actions'
+
 import Fuse from 'fuse.js'
+
+export const SET_UUID = 'SET_UUID'
+export const SET_SERVER = 'SET_SERVER'
+export const setUuid = createAction(SET_UUID)
+export const setServer = createAction(SET_SERVER)
 
 export const FETCH_NETWORK = 'FETCH_NETWORK'
 
@@ -24,7 +31,6 @@ const generateIndex = networkJson => {
     minMatchCharLength: 1,
     keys: ['name', 'Label', 'GO_term_aligned']
   }
-
   return new Fuse(nodeData, options)
 }
 
@@ -59,36 +65,6 @@ const receiveNetwork = (url, json, error) => {
   }
 }
 
-const fetchNet = url => {
-  return fetch(url)
-}
-
-/**
- * remove unnecessary edges for visualization
- */
-const filterEdges = network => {
-  const edges = []
-  network.elements.edges.forEach(edge => {
-    if (edge.data.Is_Tree_Edge === 'Tree') {
-      edges.push(edge)
-    }
-  })
-
-  network.elements.edges = edges
-  return network
-}
-
-const filterNodes = network => {
-  const nodes = []
-  network.elements.nodes.forEach(node => {
-    if (node.data.Gene_or_Term === 'Term') {
-      nodes.push(node)
-    }
-  })
-
-  network.elements.nodes = nodes
-  return network
-}
 
 export const fetchNetworkFromUrl = url => {
 

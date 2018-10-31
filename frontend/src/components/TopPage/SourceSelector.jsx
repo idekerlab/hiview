@@ -167,6 +167,10 @@ class SourceSelector extends Component {
     let serverType = this.state.serverType
     const uuid = this.state.uuid
 
+    console.log('########## setting', uuid, url)
+    this.props.networkActions.setUuid(uuid)
+    this.props.networkActions.setServer(url)
+
     // this.props.dataSourceActions.addDataSource(this.state)
 
     // Encode parameters in URL

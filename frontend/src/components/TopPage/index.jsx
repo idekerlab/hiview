@@ -85,6 +85,8 @@ const handleClickHelp = () => {
 const TopPage = props => {
   const { classes } = props
 
+  console.log('Top props', props)
+
   return (
     <div className={classes.container}>
       <AppBar position="fixed" className={classes.bar}>
