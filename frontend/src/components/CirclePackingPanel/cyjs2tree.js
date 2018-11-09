@@ -1,38 +1,47 @@
 import * as d3Hierarchy from 'd3-hierarchy'
 
-const cyjs2tree = cyjs => {
-  if (cyjs === undefined || cyjs === null) {
-    // Return empty
+let originals = new Set()
+let aliases = new Set()
+const branches = new Map()
 
+/**
+ * Takes hierarchy in Cytoscape.js format and generates new D3 tree
+ * object
+ *
+ * @param cyjs
+ * @returns {*}
+ */
+const cyjs2tree = cyjs => {
+  const t0 = performance.now()
+  if (!cyjs) {
     return null
   }
 
-  //Find root
-  // console.log('CyJS data: ', cyjs)
+  //Find root of the tree
   const nodes = cyjs.elements.nodes
   const nodeMap = {}
-  const root = preprocessNodes(nodes, nodeMap )
-
+  const root = preprocessNodes(nodes, nodeMap)
   const rootId = root.data.id
   const edges = cyjs.elements.edges
 
+  // Create table first to use D3 function
   const table = transform(rootId, edges, nodeMap)
 
+  // Run stratification function
   const tree = d3Hierarchy
     .stratify()
     .id(d => d.id)
     .parentId(d => d.parent)(table)
 
-  console.log('Tree created:', tree)
+  // Re-wire tree to use reference for copy nodes
   getOriginalBranches(tree)
+
+  // Add it to copies
   addBranches(tree)
 
+  console.log('* re-wired tree generated in ', performance.now() - t0)
   return tree
 }
-
-
-let originals = new Set()
-let aliases = new Set()
 
 const preprocessNodes = (nodes, nodeMap) => {
   let idx = nodes.length
@@ -53,7 +62,7 @@ const preprocessNodes = (nodes, nodeMap) => {
       }
 
       const isAlias = data.alias
-      if(isAlias) {
+      if (isAlias) {
         originals.add(data.originalId)
         aliases.add(data.id)
       }
@@ -66,7 +75,7 @@ const preprocessNodes = (nodes, nodeMap) => {
 }
 
 /**
- * Convert CYJS to table
+ * Convert CYJS JSON to table
  * @param rootId
  * @param edges
  * @param nodeMap
@@ -93,7 +102,6 @@ const transform = (rootId, edges, nodeMap) => {
       nodeMap[source.id] !== undefined &&
       nodeMap[target.id] !== undefined
     ) {
-
       const node = {
         id: source.id,
         Label: source.Label,
@@ -104,7 +112,7 @@ const transform = (rootId, edges, nodeMap) => {
         alias: source.alias
       }
 
-      if(source.originalId) {
+      if (source.originalId) {
         node['originalId'] = source.originalId
       }
       table.push(node)
@@ -114,61 +122,41 @@ const transform = (rootId, edges, nodeMap) => {
   return table
 }
 
-let counter = 0
-
-const branches = new Map()
-
-const getOriginalBranches = (node) => {
-
-  const children = node.children
-
-  if(originals.has(node.id)) {
-    // console.log('Orignal=======> Orignal', node.data)
+const getOriginalBranches = node => {
+  if (originals.has(node.id)) {
     branches.set(node.id, node)
   }
 
-  if(children) {
+  const children = node.children
+  if (children) {
     let childCount = children.length
-    while(childCount--) {
-      const child = children[childCount]
-      getOriginalBranches(child)
+    while (childCount--) {
+      getOriginalBranches(children[childCount])
     }
-  } else {
-    return
   }
-
 }
 
-const addBranches = (node) => {
-
-  const children = node.children
+const addBranches = node => {
   const originalId = node.data.props.originalId
   const alias = node.data.props.alias
 
-
-  if(alias) {
+  if (alias) {
     const branch = branches.get(originalId)
-    // console.log('!!!!!!!!!!!!!!!!!!!BR======> ', branch)
-    // console.log('!!!!!!!!!!!!!!!!!!!ND======> ', node)
     node.depth = branch.depth
     node.height = branch.height
     node['children'] = branch.children
     node['data'] = branch.data
     node['id'] = branch.id
-    // console.log('!!!!!!!!!!!!!!!!!!!MOD======> ', node)
   }
 
-  if(children) {
+  const children = node.children
+  if (children) {
     let childCount = children.length
-    while(childCount--) {
+    while (childCount--) {
       const child = children[childCount]
       addBranches(child)
     }
-  } else {
-    return
   }
-
 }
-
 
 export default cyjs2tree

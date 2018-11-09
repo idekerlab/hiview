@@ -71,6 +71,7 @@ let t1 = 0
 export const fetchNetworkFromUrl = url => {
 
   // const url = 'http://localhost:3000/hiview.cyjs'
+  // const url = 'https://gist.github.com/9dc786195948150a592b7d5a30474c06'
   console.log('Main network loading: start', url)
   
   t0 = performance.now()
@@ -109,6 +110,7 @@ export const fetchNetworkFromUrl = url => {
 let primaryName2prop = new Map()
 
 const createLabel2IdMap = network => {
+
   const nodes = network.elements.nodes
 
   const t2 = performance.now()

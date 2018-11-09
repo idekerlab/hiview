@@ -15,9 +15,7 @@ class CirclePackingPanel extends Component {
   }
 
   componentDidMount() {
-    const t0 = performance.now()
     const tree = cyjs2tree(this.props.network)
-    console.log('To Circle Packing tree:', performance.now() - t0)
     this.setState({
       tree
     })
@@ -44,13 +42,6 @@ class CirclePackingPanel extends Component {
     })
 
     geneIds.forEach(gene => this.state.selectedGenes.add(gene))
-
-    // window.setTimeout(() => {
-    //   actions.selectNodes({
-    //     idList: [...this.state.selectedGenes],
-    //     selectedColor: 'green'
-    //   })
-    // }, 0)
   }
 
   getEventHandlers = () => {
@@ -88,7 +79,7 @@ class CirclePackingPanel extends Component {
         return
       }
 
-      if(!data.name) {
+      if (!data.name) {
         return
       }
 
@@ -126,7 +117,7 @@ class CirclePackingPanel extends Component {
         return
       }
 
-      if(!data.name) {
+      if (!data.name) {
         return
       }
 
@@ -139,7 +130,6 @@ class CirclePackingPanel extends Component {
       if (name === undefined) {
         name = data.name
       }
-
 
       const geneIds = groups[name]
       this.props.rawInteractionsActions.setSelectedPerm(geneIds)
@@ -218,10 +208,6 @@ class CirclePackingPanel extends Component {
       </div>
     )
   }
-}
-
-const handleClick = (nodeId, props) => {
-  props.commandActions.zoomToNode(nodeId)
 }
 
 export default CirclePackingPanel
