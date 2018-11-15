@@ -125,7 +125,8 @@ class NetworkPanel extends Component {
             linkId,
             serverType,
             link,
-            this.props.maxEdgeCount
+            this.props.maxEdgeCount,
+            summary
           )
         }
       })

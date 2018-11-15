@@ -9,6 +9,12 @@ import {
   PATTERN
 } from './raw-interactions-util'
 
+import cx2js from 'cytoscape-cx2js'
+
+// For CX --> cyjs conversion
+const utils = new cx2js.CyNetworkUtils()
+const cx2JsConverter = new cx2js.CxToJs(utils)
+
 const NDEX_API = '.ndexbio.org/v2/network/'
 
 // Set loading message
@@ -35,43 +41,224 @@ const receiveNetwork = (url, network, filters, groups, extraEdges) => {
   }
 }
 
-const fetchNet = url => {
-  const headers = new Headers()
-  headers.set('Accept-Encoding', 'br')
-  const setting = {
-    method: 'GET',
-    mode: 'cors',
-    headers: headers
+const fetchNet = (url, settings) => {
+  // const headers = new Headers()
+  // headers.set('Accept-Encoding', 'br')
+  // const setting = {
+  //
+  //   method: 'POST',
+  //   mode: 'no-cors',
+  //   headers: headers
+  // }
+  return fetch(url, settings)
+}
+
+const processCx = cx => {
+  let idx = cx.length
+
+  let nodes = []
+  let edges = []
+  let edgeAttributes = []
+  let nodeAttributes = []
+  let networkAttributes = []
+
+  let layout = []
+
+  while (idx--) {
+    const entry = cx[idx]
+
+    if (entry['nodes']) {
+      nodes = entry['nodes']
+    } else if (entry['edges']) {
+      edges = entry['edges']
+    } else if (entry['nodeAttributes']) {
+      nodeAttributes = entry['nodeAttributes']
+    } else if (entry['edgeAttributes']) {
+      edgeAttributes = entry['edgeAttributes']
+    } else if (entry['networkAttributes']) {
+      networkAttributes = entry['networkAttributes']
+    } else if (entry['cartesianLayout']) {
+      layout = entry['cartesianLayout']
+    }
   }
-  return fetch(url, setting)
+  const data = convertNetworkAttr(networkAttributes)
+
+
+  let nodeIdx = nodes.length
+  const nMap = new Map()
+
+  while (nodeIdx--) {
+    const n = nodes[nodeIdx]
+    const node = {
+      data: {
+        id: n['@id'],
+        name: n.n
+      }
+    }
+    nMap.set(n['@id'], node)
+  }
+
+  let layoutIdx = layout.length
+  while(layoutIdx--) {
+
+    const position = layout[layoutIdx]
+    const nodeId = position['node']
+    nMap.get(nodeId)['position'] = {
+      x: position.x,
+      y: position.y
+    }
+
+    // console.log(nMap.get(nodeId))
+  }
+
+  let edgeIdx = edges.length
+  const eMap = new Map()
+
+  while (edgeIdx--) {
+    const e = edges[edgeIdx]
+    const edge = {
+      data: {
+        source: e.s,
+        target: e.t,
+        id: 'e' + e['@id']
+      }
+    }
+
+    eMap.set(e['@id'], edge)
+  }
+
+  let eAttrIdx = edgeAttributes.length
+
+  while (eAttrIdx--) {
+    const eAttr = edgeAttributes[eAttrIdx]
+    const id = eAttr.po
+    const name = eAttr['n']
+    const nameSafe = name.replace(/ /g, '_')
+
+    const edge = eMap.get(id)
+    if (edge !== undefined) {
+      edge.data[nameSafe] = eAttr['v']
+    }
+  }
+
+  return {
+    data,
+    elements: {
+      nodes: [...nMap.values()],
+      edges: [...eMap.values()]
+    }
+  }
 }
 
 export const fetchInteractionsFromUrl = (
   uuid,
   server,
-  url,
-  maxEdgeCount = 500
+  url2,
+  maxEdgeCount = 500,
+  summary = {}
 ) => {
+  // const url =
+  //   'http://test.ndexbio.org/v2/network/4933e3ac-cda7-11e8-a74b-0660b7976219'
+
+  const url =
+    'http://dev2.ndexbio.org/edgefilter/v1/network/' + uuid + '/edgefilter?limit=10000'
+
+  const t0 = performance.now()
+  const networkAttr = summary.properties
+  let idx = networkAttr.length
+
+  let th = 0
+  let mainFeature = ''
+  while(idx--) {
+    const attr = networkAttr[idx]
+    const name = attr['predicateString']
+    if(name === 'Parent weight') {
+      th = attr['value']
+    } else if(name === 'Main Feature') {
+       mainFeature = attr['value']
+    }
+  }
+
+  console.log('--------Raw fetch start: FILTER = ', mainFeature, th)
+
   return dispatch => {
     dispatch(fetchNetwork(url))
 
-    const t0 = performance.now()
+    const query = [
+      {
+        name: mainFeature,
+        value: th,
+        operator: '>'
+      }
+    ]
+
+    const headers = new Headers()
+    headers.set('Content-Type', 'application/json')
+    const settings = {
+      method: 'POST',
+      body: JSON.stringify(query),
+      headers
+    }
 
     return (
-      fetchNet(url)
+      fetchNet(url, settings)
+        // .then(response => response.body.getReader())
+        // .then(reader => {
+        //   let buffer = ''
+        //   const decoder = new TextDecoder()
+        //
+        //   function readChunk({ done, value }) {
+        //     if (done) {
+        //       // 読み込みが終わっていれば最終的なテキストを表示する。
+        //       const cx = buffer.split('\n')
+        //
+        //       // const res1 = JSON.parse(cx[2])
+        //       console.log('Done reading in ', performance.now() - t0)
+        //       return
+        //     }
+        //
+        //     const text = decoder.decode(value)
+        //     // console.log('# VAL = ', text)
+        //     buffer += text
+        //
+        //     // 次の値を読みにいく。
+        //     reader.read().then(readChunk)
+        //   }
+        //
+        //   // 最初の値を読み込む。
+        //   reader.read().then(readChunk)
+        // })
         .then(response => {
           let t1 = performance.now()
           console.log(url, ' :Data fetch  TIME = ', t1 - t0)
 
           if (!response.ok) {
-            throw Error(response.statusText)
+            throw Error(response)
           } else {
             return response.json()
           }
         })
-        .then(network => {
-          dispatch(setOriginalEdgeCount(network.elements.edges.length))
-          return network
+        .then(cx => {
+
+          const newNet = processCx(cx)
+          console.log('text TIME = ', performance.now() - t0)
+
+          // const niceCX = utils.rawCXtoNiceCX(cx)
+
+          // const attributeNameMap = {}
+          // const elements = cx2JsConverter.cyElementsFromNiceCX(
+          //   niceCX,
+          //   attributeNameMap
+          // )
+
+          // const newNet = {
+          //   elements,
+          //   data: convertNetworkAttr(networkSummary['elements'])
+          // }
+          console.log('To JSON total TIME2 = ', performance.now() - t0)
+          // dispatch(setOriginalEdgeCount(network.elements.edges.length))
+          dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
+          return newNet
         })
         .then(network => filterEdge(network, maxEdgeCount))
         // .then(network => sortEdges(network, maxEdgeCount))
@@ -80,10 +267,8 @@ export const fetchInteractionsFromUrl = (
         .then(netAndFilter => {
           const t3 = performance.now()
           console.log(
-            netAndFilter,
             '* Total raw interaction update time = ',
-            t3 - t0,
-            netAndFilter[0].data
+            t3 - t0
           )
 
           return dispatch(
@@ -102,6 +287,20 @@ export const fetchInteractionsFromUrl = (
         })
     )
   }
+}
+
+const convertNetworkAttr = attr => {
+  let idx = attr.length
+
+  const data = {}
+  while (idx--) {
+    const el = attr[idx]
+    const name = el['n']
+    const value = el['v']
+    data[name] = value
+  }
+
+  return data
 }
 
 const createGroups = netAndFilter => {
@@ -221,8 +420,8 @@ const createFilter = (network, maxEdgeCount) => {
         max = range[1]
 
         const pw = network.data['Parent weight']
-        console.log("PARENT---------", pw, min, max)
-        if( pw ) {
+        console.log('PARENT---------', pw, min, max)
+        if (pw) {
           th = Number(pw)
         }
         // If default cutoff is available, use it

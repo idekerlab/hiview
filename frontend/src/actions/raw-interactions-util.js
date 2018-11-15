@@ -129,7 +129,6 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
 
     // Case 1: two numbers are the same
     if (diff !== 0) {
-      console.log('Range ' + idx, v1, v2)
       colorMap.push({
         min: v1,
         max: v2,
@@ -206,8 +205,6 @@ export const filterEdge = (network, maxEdgeCount) => {
   }
   const networkData = network.data
 
-  console.log('######### net data:', networkData)
-
   // For new format
   const parentScoreStr = networkData[PARENT_WT_TAG]
   const parentScore = Number(parentScoreStr)
@@ -230,7 +227,6 @@ export const filterEdge = (network, maxEdgeCount) => {
   const maxEdge = originalEdges[0]
   const maxData = maxEdge.data
   let maxScore = maxData[mainEdgeType]
-  console.log('MS-', maxScore, maxData, maxData.id)
 
   if(maxScore === undefined ) {
     maxScore = 0.0

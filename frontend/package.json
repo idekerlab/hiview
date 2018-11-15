@@ -49,6 +49,7 @@
         "cy-network-viewer": "1.0.0",
         "cy-tree-viewer": "^0.2.0",
         "cytoscape": "^3.2.12",
+        "cytoscape-cx2js": "^0.2.3",
         "cytoscapejs-renderer": "^0.1.0",
         "d3-array": "^1.2.1",
         "d3-color": "^1.1.0",

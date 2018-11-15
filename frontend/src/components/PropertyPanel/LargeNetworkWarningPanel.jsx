@@ -71,7 +71,8 @@ const handleImport = props => {
     props.uuid,
     props.server,
     props.url,
-    props.maxEdgeCount
+    props.maxEdgeCount,
+    props.summary
   )
 }
 

@@ -55,6 +55,7 @@ class CrossFilter extends Component {
 
 
   render() {
+
     const data = this.props.networkData
     if (!data || Object.keys(data).length === 0) {
       return (
@@ -78,7 +79,10 @@ class CrossFilter extends Component {
 
     const tickTotal = this.getTickCount(maxFrequency)
 
-    const range = this.props.networkData.edgeScoreRange
+    let range = this.props.networkData.edgeScoreRange
+
+    range = range.map(r => parseFloat(r))
+
     const subsystems = this.props.networkData.Group
 
     const groupNames = subsystems.split('|')
@@ -201,6 +205,8 @@ class CrossFilter extends Component {
         label: range[1].toFixed(3)
       }
     }
+
+    console.log('CF rendering!!!!!!!!!')
     return (
       <div
         style={containerStyle}
