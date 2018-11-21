@@ -206,7 +206,6 @@ class CrossFilter extends Component {
       }
     }
 
-    console.log('CF rendering!!!!!!!!!')
     return (
       <div
         style={containerStyle}

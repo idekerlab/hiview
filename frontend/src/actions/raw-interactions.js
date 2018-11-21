@@ -42,17 +42,15 @@ const receiveNetwork = (url, network, filters, groups, extraEdges) => {
 }
 
 const fetchNet = (url, settings) => {
-  // const headers = new Headers()
-  // headers.set('Accept-Encoding', 'br')
-  // const setting = {
-  //
-  //   method: 'POST',
-  //   mode: 'no-cors',
-  //   headers: headers
-  // }
   return fetch(url, settings)
 }
 
+/**
+ * This is a quick and dirty impl for CX to simplified CYJS
+ *
+ * @param cx
+ * @returns {{data, elements: {nodes: any[], edges: any[]}}}
+ */
 const processCx = cx => {
   let idx = cx.length
 
@@ -83,7 +81,6 @@ const processCx = cx => {
   }
   const data = convertNetworkAttr(networkAttributes)
 
-
   let nodeIdx = nodes.length
   const nMap = new Map()
 
@@ -99,16 +96,13 @@ const processCx = cx => {
   }
 
   let layoutIdx = layout.length
-  while(layoutIdx--) {
-
+  while (layoutIdx--) {
     const position = layout[layoutIdx]
     const nodeId = position['node']
     nMap.get(nodeId)['position'] = {
       x: position.x,
       y: position.y
     }
-
-    // console.log(nMap.get(nodeId))
   }
 
   let edgeIdx = edges.length
@@ -133,11 +127,15 @@ const processCx = cx => {
     const eAttr = edgeAttributes[eAttrIdx]
     const id = eAttr.po
     const name = eAttr['n']
+    const dataType = eAttr['d']
+    const strVal = eAttr['v']
+
+    const typedVal = typeConverter(dataType, strVal)
     const nameSafe = name.replace(/ /g, '_')
 
     const edge = eMap.get(id)
     if (edge !== undefined) {
-      edge.data[nameSafe] = eAttr['v']
+      edge.data[nameSafe] = typedVal
     }
   }
 
@@ -148,6 +146,23 @@ const processCx = cx => {
       edges: [...eMap.values()]
     }
   }
+}
+
+const TYPE_DOUBLE = 'double'
+const TYPE_BOOL = 'boolean'
+
+const typeConverter = (dataType, value) => {
+  if (dataType === TYPE_DOUBLE) {
+    return parseFloat(value)
+  } else if (dataType === TYPE_BOOL) {
+    if (value === 'true') {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  return value
 }
 
 export const fetchInteractionsFromUrl = (
@@ -161,7 +176,9 @@ export const fetchInteractionsFromUrl = (
   //   'http://test.ndexbio.org/v2/network/4933e3ac-cda7-11e8-a74b-0660b7976219'
 
   const url =
-    'http://dev2.ndexbio.org/edgefilter/v1/network/' + uuid + '/edgefilter?limit=10000'
+    'http://dev2.ndexbio.org/edgefilter/v1/network/' +
+    uuid +
+    '/edgefilter?limit=10000'
 
   const t0 = performance.now()
   const networkAttr = summary.properties
@@ -169,13 +186,13 @@ export const fetchInteractionsFromUrl = (
 
   let th = 0
   let mainFeature = ''
-  while(idx--) {
+  while (idx--) {
     const attr = networkAttr[idx]
     const name = attr['predicateString']
-    if(name === 'Parent weight') {
+    if (name === 'Parent weight') {
       th = attr['value']
-    } else if(name === 'Main Feature') {
-       mainFeature = attr['value']
+    } else if (name === 'Main Feature') {
+      mainFeature = attr['value']
     }
   }
 
@@ -239,9 +256,7 @@ export const fetchInteractionsFromUrl = (
           }
         })
         .then(cx => {
-
           const newNet = processCx(cx)
-          console.log('text TIME = ', performance.now() - t0)
 
           // const niceCX = utils.rawCXtoNiceCX(cx)
 
@@ -255,7 +270,7 @@ export const fetchInteractionsFromUrl = (
           //   elements,
           //   data: convertNetworkAttr(networkSummary['elements'])
           // }
-          console.log('To JSON total TIME2 = ', performance.now() - t0)
+          console.log('To JSON total TIME = ', performance.now() - t0)
           // dispatch(setOriginalEdgeCount(network.elements.edges.length))
           dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
           return newNet
@@ -266,10 +281,7 @@ export const fetchInteractionsFromUrl = (
         .then(netAndFilter => createGroups(netAndFilter))
         .then(netAndFilter => {
           const t3 = performance.now()
-          console.log(
-            '* Total raw interaction update time = ',
-            t3 - t0
-          )
+          console.log('* Total raw interaction update time = ', t3 - t0)
 
           return dispatch(
             receiveNetwork(
@@ -292,9 +304,14 @@ export const fetchInteractionsFromUrl = (
 const convertNetworkAttr = attr => {
   let idx = attr.length
 
+  // Store types and convert to correct data type
+  // This map should have k-v pair for edge data types
+  const typeMap = new Map()
+
   const data = {}
   while (idx--) {
     const el = attr[idx]
+
     const name = el['n']
     const value = el['v']
     data[name] = value
@@ -420,7 +437,6 @@ const createFilter = (network, maxEdgeCount) => {
         max = range[1]
 
         const pw = network.data['Parent weight']
-        console.log('PARENT---------', pw, min, max)
         if (pw) {
           th = Number(pw)
         }

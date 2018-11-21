@@ -7,6 +7,7 @@ import { Set } from 'immutable'
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
 class RawInteractionPanel extends Component {
+
   componentWillReceiveProps(nextProps) {
     const runAnalysys = nextProps.uiState.get('runEnrichment')
 
@@ -102,21 +103,21 @@ class RawInteractionPanel extends Component {
         eventHandlers={this.getCustomEventHandlers()}
         rendererOptions={{
           layout: this.checkPresetLayout(this.props.subnet),
-          defaultFilter: {
-            command: 'filter',
-            parameters: {
-              options: {
-                type: 'numeric',
-                isPrimary: true,
-                range:
-                  '[' +
-                  primaryFilter.attributeName +
-                  ' < ' +
-                  primaryFilter.threshold +
-                  ']'
-              }
-            }
-          }
+          // defaultFilter: {
+          //   command: 'filter',
+          //   parameters: {
+          //     options: {
+          //       type: 'numeric',
+          //       isPrimary: true,
+          //       range:
+          //         '[' +
+          //         primaryFilter.attributeName +
+          //         ' < ' +
+          //         primaryFilter.threshold +
+          //         ']'
+          //     }
+          //   }
+          // }
         }}
         command={this.props.commands}
       />

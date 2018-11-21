@@ -68,9 +68,9 @@ const receiveNetwork = (url, json, error) => {
 
 let t0 = 0
 let t1 = 0
-export const fetchNetworkFromUrl = url => {
+export const fetchNetworkFromUrl = url2 => {
 
-  // const url = 'http://localhost:3000/hiview.cyjs'
+  const url = 'http://localhost:3000/hiview.cyjs'
   // const url = 'https://gist.github.com/9dc786195948150a592b7d5a30474c06'
   console.log('Main network loading: start', url)
   
