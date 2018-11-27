@@ -12,7 +12,6 @@ const branches = new Map()
  * @returns {*}
  */
 const cyjs2tree = cyjs => {
-  const t0 = performance.now()
   if (!cyjs) {
     return null
   }
@@ -38,23 +37,6 @@ const cyjs2tree = cyjs => {
 
   // Add it to copies
   addBranches(tree)
-
-  // const url =
-  //   'http://ec2-35-167-36-71.us-west-2.compute.amazonaws.com/2814c6d7-e54e-11e8-9c46-0660b7976219.json'
-  // const headers = new Headers()
-  // headers.set('Accept-Encoding', 'br')
-  // const setting = {
-  //   method: 'GET',
-  //   mode: 'no-cors',
-  //   headers: headers
-  // }
-  // fetch(url, setting)
-  //   .then(response => response.json())
-  //   .then(t => {
-  //     console.log('* re-wired tree generated in ', performance.now() - t0)
-  //     return t
-  //   })
-
   return tree
 }
 

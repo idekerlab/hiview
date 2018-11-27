@@ -43,8 +43,7 @@ const fetchNetwork = url => {
 
 export const RECEIVE_NETWORK = 'RECEIVE_NETWORK'
 const receiveNetwork = (url, json, error) => {
-
-  if(error !== null) {
+  if (error !== null) {
     return {
       type: RECEIVE_NETWORK,
       url,
@@ -65,15 +64,19 @@ const receiveNetwork = (url, json, error) => {
   }
 }
 
-
 let t0 = 0
 let t1 = 0
 export const fetchNetworkFromUrl = url2 => {
+  // const url = 'http://localhost:3000/hiview.cyjs'
+  const url = 'http://ec2-35-167-36-71.us-west-2.compute.amazonaws.com:3000/cache/getcyjs/hiview'
+  // const url = 'http://localhost:3000/d3tree.json'
+  // New format (tree)
+  // const url ='http://ec2-35-167-36-71.us-west-2.compute.amazonaws.com:3000/cache/getd3/c3179d6e-ca96-11e8-98d5-0660b7976219'
 
-  const url = 'http://localhost:3000/hiview.cyjs'
+  // const url = 'http://ec2-35-167-36-71.us-west-2.compute.amazonaws.com/2814c6d7-e54e-11e8-9c46-0660b7976219.json'
   // const url = 'https://gist.github.com/9dc786195948150a592b7d5a30474c06'
   console.log('Main network loading: start', url)
-  
+
   t0 = performance.now()
   return dispatch => {
     dispatch(fetchNetwork(url))
@@ -85,10 +88,11 @@ export const fetchNetworkFromUrl = url2 => {
       mode: 'cors',
       headers: headers
     }
+
     return fetch(url, setting)
       .then(response => {
         t1 = performance.now()
-        console.log('Main network response TIME = ', t1-t0)
+        console.log('Main network response TIME2 = ', t1 - t0)
 
         if (!response.ok) {
           throw Error(response.statusText)
@@ -100,21 +104,19 @@ export const fetchNetworkFromUrl = url2 => {
       .then(network => addOriginalToAlias(network))
       .then(network => dispatch(receiveNetwork(url, network, null)))
       .catch(err => {
-        console.log("Fetch Error: ", err)
+        console.log('Fetch Error: ', err)
         return dispatch(receiveNetwork(url, null, err))
       })
   }
 }
 
-
 let primaryName2prop = new Map()
 
 const createLabel2IdMap = network => {
-
+  const t2 = performance.now()
+  console.log('To JSON TIME = ', t2 - t1)
   const nodes = network.elements.nodes
 
-  const t2 = performance.now()
-  console.log('To JSON TIME = ', t2-t1)
   const label2id = {}
   const id2prop = {}
   // primaryId2prop = new Map()
@@ -131,7 +133,7 @@ const createLabel2IdMap = network => {
     }
 
     const hidden = nodeData.Hidden
-    if(!hidden && nodeData.NodeType === 'Term') {
+    if (!hidden && nodeData.NodeType === 'Term') {
       primaryName2prop.set(nodeData.name, nodeData)
     }
 
@@ -152,7 +154,6 @@ const createLabel2IdMap = network => {
  * @returns {*}
  */
 const addOriginalToAlias = network => {
-
   const nodes = network.elements.nodes
   let i = nodes.length
   while (i--) {
@@ -163,7 +164,7 @@ const addOriginalToAlias = network => {
     if (hidden && nodeType === 'Term') {
       const originalData = primaryName2prop.get(nodeData.Original_Name)
 
-      if(originalData) {
+      if (originalData) {
         nodeData['originalId'] = originalData.id
         nodeData['alias'] = true
       } else {
@@ -356,13 +357,13 @@ const applyLayout = (layoutMap, network) => {
 }
 
 const project = (x, y) => {
-  const angle = (x - 90) / 180 * Math.PI
+  const angle = ((x - 90) / 180) * Math.PI
   const radius = y
   return [radius * Math.cos(angle), radius * Math.sin(angle), angle]
 }
 
 const project2 = (x, y) => {
-  const angle = (x - 90) / 180 * Math.PI
+  const angle = ((x - 90) / 180) * Math.PI
   const radius = y
   return [radius * Math.cos(angle * 2), radius * Math.sin(angle * 2), angle]
 }

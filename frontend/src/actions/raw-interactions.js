@@ -226,28 +226,20 @@ export const fetchInteractionsFromUrl = (
         //
         //   function readChunk({ done, value }) {
         //     if (done) {
-        //       // 読み込みが終わっていれば最終的なテキストを表示する。
-        //       const cx = buffer.split('\n')
-        //
-        //       // const res1 = JSON.parse(cx[2])
-        //       console.log('Done reading in ', performance.now() - t0)
-        //       return
+        //       console.log(buffer, 'Done reading in ', performance.now() - t0)
+        //       return buffer
         //     }
         //
         //     const text = decoder.decode(value)
-        //     // console.log('# VAL = ', text)
         //     buffer += text
-        //
-        //     // 次の値を読みにいく。
         //     reader.read().then(readChunk)
         //   }
         //
-        //   // 最初の値を読み込む。
         //   reader.read().then(readChunk)
         // })
         .then(response => {
           let t1 = performance.now()
-          console.log(url, ' :Data fetch  TIME = ', t1 - t0)
+          console.log('Data fetch  TIME = ', t1 - t0)
 
           if (!response.ok) {
             throw Error(response)
@@ -256,6 +248,7 @@ export const fetchInteractionsFromUrl = (
           }
         })
         .then(cx => {
+          console.log('To JSON total TIME w/o cx  = ', performance.now() - t0)
           const newNet = processCx(cx)
 
           // const niceCX = utils.rawCXtoNiceCX(cx)
