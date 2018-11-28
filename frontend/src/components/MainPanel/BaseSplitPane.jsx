@@ -5,8 +5,7 @@ import LeftPanel from './LeftPanel'
 import PropertyPanel from '../PropertyPanel'
 import BlankPanel from './BlankPanel'
 
-const MIN_WIDTH = 300
-
+const DEFAULT_MAIN_PANEL_WIDTH_RATIO = 0.67
 const DEF_MAIN_PANEL_WIDTH = 800
 const DEF_NETWORK_PANEL_HEIGHT = 600
 
@@ -24,7 +23,7 @@ export default class BaseSplitPane extends Component {
     const width = window.innerWidth
     const height = window.innerHeight
 
-    const leftPanelWidth = width / 2
+    const leftPanelWidth = width * DEFAULT_MAIN_PANEL_WIDTH_RATIO
     const topPanelHeight = height * 0.5
 
     this.setState({
