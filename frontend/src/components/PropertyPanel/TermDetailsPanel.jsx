@@ -41,11 +41,16 @@ const controlPanelStyle = {
   background: '#FFFFFF'
 }
 
+const layoutPanelStyle = {
+  background: '#EEEEEE'
+}
+
 const controllerStyle = {
   display: 'flex',
   alignItems: 'center',
   width: '100%',
-  height: '8em'
+  height: '6em',
+  background: '#EEEEEE'
 }
 
 class TermDetailsPanel extends Component {
@@ -261,6 +266,10 @@ class TermDetailsPanel extends Component {
                   <div />
                 ) : (
                   <div style={controlPanelStyle}>
+                    <LayoutSelector
+                      style={layoutPanelStyle}
+                      commandActions={this.props.interactionsCommandActions}
+                    />
                     <CrossFilter
                       panelWidth={this.props.width}
                       networkData={networkProps}
@@ -273,21 +282,18 @@ class TermDetailsPanel extends Component {
                       filtersActions={this.props.filtersActions}
                     />
 
-                    <LayoutSelector
-                      commandActions={this.props.interactionsCommandActions}
-                    />
 
                     <div style={controllerStyle}>
-                      <MaxEdgePanel
-                        maxEdgeCount={this.props.maxEdgeCount}
-                        uiState={this.props.uiState}
-                        uiStateActions={this.props.uiStateActions}
+                      <AutoLoadThresholdPanel
+                        autoLoadThreshold={this.props.autoLoadThreshold}
                         rawInteractionsActions={
                           this.props.rawInteractionsActions
                         }
                       />
-                      <AutoLoadThresholdPanel
-                        autoLoadThreshold={this.props.autoLoadThreshold}
+                      <MaxEdgePanel
+                        maxEdgeCount={this.props.maxEdgeCount}
+                        uiState={this.props.uiState}
+                        uiStateActions={this.props.uiStateActions}
                         rawInteractionsActions={
                           this.props.rawInteractionsActions
                         }

@@ -206,35 +206,31 @@ class CrossFilter extends Component {
         style={containerStyle}
         ref={divElement => (this.divElement = divElement)}
       >
-        <div style={titleStyle}>
-          <Typography
-            variant="display1"
-            style={{ color: '#444444', fontSize: '1.2em',paddingTop: '0.5em' }}
-          >
-            Integrated Similarity Score Distribution
-          </Typography>
-        </div>
         <XYPlot
           xType="ordinal"
           width={w}
           height={200}
           colorType="literal"
           style={{ margin: 0, padding: 0 }}
-          margin={{ left: 40, right: 20, top: 4, bottom: 8 }}
+          margin={{ left: 40, right: 20, top: 8, bottom: 8 }}
         >
-          <YAxis
-            tickTotal={tickTotal}
-            // tickFormat={v => {
-            //   if (!v) {
-            //     return '0'
-            //   }
-            //   return `${v.toFixed(5)}`
-            // }}
-          />
           <VerticalBarSeries
-            className="vertical-bar-series-example"
+            className="vertical-bar-series"
             data={subEdgeDist}
           />
+
+          <YAxis
+            title={'Gene Pairs (log10)'}
+            position={'middle'}
+            style={{
+              line: {stroke: '#666666', strokeWidth: '2px'},
+              ticks: {stroke: '#666666'},
+              text: {stroke: 'none', fill: '#333333'},
+              title: {stroke: '#222222', fontWeight: 300 }
+            }}
+            tickTotal={tickTotal}
+          />
+          <XAxis />
         </XYPlot>
 
         <PrimaryFilter
@@ -244,6 +240,15 @@ class CrossFilter extends Component {
           filtersActions={this.props.filtersActions}
           marks={marks}
         />
+
+        <div style={titleStyle}>
+          <Typography
+            variant="display1"
+            style={{ color: '#444444', fontSize: '1.2em',paddingTop: '0.5em' }}
+          >
+            Similarity Score
+          </Typography>
+        </div>
       </div>
     )
   }

@@ -16,6 +16,7 @@ import FitSelected from 'material-ui-icons/CenterFocusStrong'
 const styles = theme => ({
   root: {
     color: '#333333',
+    background: '#EEEEEE',
     width: '100%',
     display: 'flex',
     alignItems: 'center',
@@ -23,7 +24,8 @@ const styles = theme => ({
   },
   formControl: {
     padding: '1em',
-    minWidth: '20em'
+    minWidth: '17em',
+    width: '100%'
   },
   button: {
     margin: theme.spacing.unit,

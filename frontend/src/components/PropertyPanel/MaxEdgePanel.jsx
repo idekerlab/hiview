@@ -32,7 +32,7 @@ export default class MaxEdgePanel extends Component {
           <TextField
             fullWidth
             id="maxEdgeCount"
-            label="Maximum number of interactions (edges):"
+            label="Max edges to render:"
             value={this.state.maxEdge}
             onChange={this.handleChange}
             onKeyPress={this.handleKey}
