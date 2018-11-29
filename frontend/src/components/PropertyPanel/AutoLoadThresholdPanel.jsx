@@ -33,7 +33,7 @@ export default class AutoLoadThresholdPanel extends PureComponent {
           <TextField
             fullWidth
             id="edgeTh"
-            label="Auto Loading Threshold:"
+            label="Max edges to download:"
             value={this.state.edgeTh}
             onChange={this.handleChange}
             onKeyPress={this.handleKey}
