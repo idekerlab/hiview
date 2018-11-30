@@ -201,7 +201,7 @@ class NetworkPanel extends Component {
     const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
     this.setState({ networkUrl: url })
 
-    this.props.networkActions.fetchNetworkFromUrl(url)
+    this.props.networkActions.fetchNetworkFromUrl(url, uuid)
   }
 
   componentWillReceiveProps(nextProps) {

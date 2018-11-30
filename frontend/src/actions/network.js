@@ -4,6 +4,7 @@ import cytoscape from 'cytoscape'
 import { createAction } from 'redux-actions'
 
 import Fuse from 'fuse.js'
+import Dexie from 'dexie'
 
 export const SET_UUID = 'SET_UUID'
 export const SET_SERVER = 'SET_SERVER'
@@ -11,6 +12,27 @@ export const setUuid = createAction(SET_UUID)
 export const setServer = createAction(SET_SERVER)
 
 export const FETCH_NETWORK = 'FETCH_NETWORK'
+
+// For local cache
+
+const DB_NAME = 'HiView'
+const DB_VERSION = 2
+const DB_STORE = 'hierarchy'
+const DB_PRIMARY_KEY = 'uuid'
+
+const hvDb = new Dexie(DB_NAME)
+
+const initDB = () => {
+  hvDb.version(DB_VERSION).stores({
+    [DB_STORE]: DB_PRIMARY_KEY
+  })
+
+  hvDb.open().catch(e => {
+    console.error(DB_NAME + ': Open failed: ' + e)
+  })
+}
+
+initDB()
 
 const generateIndex = networkJson => {
   if (!networkJson) {
@@ -66,9 +88,10 @@ const receiveNetwork = (url, json, error) => {
 
 let t0 = 0
 let t1 = 0
-export const fetchNetworkFromUrl = url2 => {
+export const fetchNetworkFromUrl = (url2, uuid) => {
   // const url = 'http://localhost:3000/hiview.cyjs'
-  const url = 'http://ec2-35-167-36-71.us-west-2.compute.amazonaws.com:3000/cache/getcyjs/hiview'
+  const url =
+    'http://ec2-35-167-36-71.us-west-2.compute.amazonaws.com:3000/cache/getcyjs/hiview'
   // const url = 'http://localhost:3000/d3tree.json'
   // New format (tree)
   // const url ='http://ec2-35-167-36-71.us-west-2.compute.amazonaws.com:3000/cache/getd3/c3179d6e-ca96-11e8-98d5-0660b7976219'
@@ -80,41 +103,69 @@ export const fetchNetworkFromUrl = url2 => {
   t0 = performance.now()
   return dispatch => {
     dispatch(fetchNetwork(url))
-
-    const headers = new Headers()
-    headers.set('Accept-Encoding', 'br')
-    const setting = {
-      method: 'GET',
-      mode: 'cors',
-      headers: headers
-    }
-
-    return fetch(url, setting)
-      .then(response => {
-        t1 = performance.now()
-        console.log('Main network response TIME2 = ', t1 - t0)
-
-        if (!response.ok) {
-          throw Error(response.statusText)
-        } else {
-          return response.json()
-        }
-      })
-      .then(json => createLabel2IdMap(json))
-      .then(network => addOriginalToAlias(network))
-      .then(network => dispatch(receiveNetwork(url, network, null)))
-      .catch(err => {
-        console.log('Fetch Error: ', err)
-        return dispatch(receiveNetwork(url, null, err))
-      })
+    return getNetworkData(url, uuid, dispatch)
   }
+}
+
+const getNetworkData = (url, uuid, dispatch) => {
+  hvDb.hierarchy.get(uuid).then(network => {
+    if (network === undefined) {
+      console.log('Does not exist:', uuid)
+      return fetchDataFromRemote(url, uuid, dispatch)
+    } else {
+      return fetchFromLocal(url, uuid, dispatch, network)
+    }
+  })
+  return false
+}
+
+const fetchFromLocal = (url, uuid, dispatch, netObj) => {
+  console.log('Hit:', uuid, performance.now() - t0)
+
+  const network = createLabel2IdMap(netObj)
+  addOriginalToAlias(network)
+  return dispatch(receiveNetwork(url, network, null))
+}
+
+const fetchDataFromRemote = (url, uuid, dispatch) => {
+  const headers = new Headers()
+  headers.set('Accept-Encoding', 'br')
+  const setting = {
+    method: 'GET',
+    mode: 'cors',
+    headers: headers
+  }
+
+  return fetch(url, setting)
+    .then(response => {
+      if (!response.ok) {
+        throw Error(response.statusText)
+      } else {
+        return response.json()
+      }
+    })
+    .then(json => {
+      t1 = performance.now()
+      console.log('Remote fetch time = ', t1 - t0)
+      json['uuid'] = uuid
+      hvDb.hierarchy.put(json)
+      return json
+    })
+    .then(json => createLabel2IdMap(json))
+    .then(network => addOriginalToAlias(network))
+    .then(network => dispatch(receiveNetwork(url, network, null)))
+    .catch(err => {
+      console.log('Fetch Error: ', err)
+      return dispatch(receiveNetwork(url, null, err))
+    })
 }
 
 let primaryName2prop = new Map()
 
 const createLabel2IdMap = network => {
-  const t2 = performance.now()
-  console.log('To JSON TIME = ', t2 - t1)
+  // const t2 = performance.now()
+  // console.log('To JSON TIME = ', t2 - t1, network)
+
   const nodes = network.elements.nodes
 
   const label2id = {}
