@@ -139,6 +139,26 @@ const processCx = cx => {
     }
   }
 
+  // Process node attributes
+  let nodeAttrIdx = nodeAttributes.length
+
+  while (nodeAttrIdx--) {
+    const nAttr = nodeAttributes[nodeAttrIdx]
+    const id = nAttr.po
+    const name = nAttr['n']
+    const dataType = nAttr['d']
+    const strVal = nAttr['v']
+
+    const typedVal = typeConverter(dataType, strVal)
+    const nameSafe = name.replace(/ /g, '_')
+
+    const node = nMap.get(id)
+    if (node !== undefined) {
+      node.data[nameSafe] = typedVal
+    }
+  }
+
+  console.log(nMap)
   return {
     data,
     elements: {
@@ -219,24 +239,6 @@ export const fetchInteractionsFromUrl = (
 
     return (
       fetchNet(url, settings)
-        // .then(response => response.body.getReader())
-        // .then(reader => {
-        //   let buffer = ''
-        //   const decoder = new TextDecoder()
-        //
-        //   function readChunk({ done, value }) {
-        //     if (done) {
-        //       console.log(buffer, 'Done reading in ', performance.now() - t0)
-        //       return buffer
-        //     }
-        //
-        //     const text = decoder.decode(value)
-        //     buffer += text
-        //     reader.read().then(readChunk)
-        //   }
-        //
-        //   reader.read().then(readChunk)
-        // })
         .then(response => {
           let t1 = performance.now()
           console.log('Data fetch  TIME = ', t1 - t0)
@@ -317,6 +319,8 @@ const createGroups = netAndFilter => {
   const network = netAndFilter[0]
   const networkData = network.data
   const group = networkData.Group
+
+
   if (group === undefined) {
     netAndFilter.push(null)
   } else {
@@ -339,11 +343,14 @@ const createGroups = netAndFilter => {
 
       nodePropNames.forEach(nodePropName => {
         if (nodePropName.startsWith('Group')) {
-          const tagParts = nodePropName.split('_')
-          let tag = tagParts[1] + ':' + tagParts[2]
+          let tagParts = nodePropName.split('_')
 
-          // TODO: This should be fixed in v2
-          if (tagParts.length >= 3) {
+          let tag = tagParts[1] + ':' + tagParts[2]
+          if(tagParts[1] === undefined || tagParts[2] === undefined) {
+            tagParts = nodePropName.split(':')
+            const tLen = tagParts.length
+            tag = tagParts[tLen-2] + ':' + tagParts[tLen-1]
+          } else if (tagParts.length >= 3) {
             let idx = 3
             while (idx < tagParts.length) {
               tag = tag + '-' + tagParts[idx]
@@ -374,6 +381,9 @@ const createGroups = netAndFilter => {
         groupMap[nodeData.name] = [nodeData.id]
       }
     })
+
+    console.log('groupMap =', groupMap)
+
     netAndFilter.push(groupMap)
   }
 

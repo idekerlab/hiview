@@ -145,7 +145,6 @@ export const createStyle = originalNetwork => {
     return '-'
   }
 
-  console.log('-------------VS----------------', edgeStyle)
   return {
     style: [
       BASE_STYLE.node,
