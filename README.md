@@ -37,9 +37,10 @@ There are two visualization components:
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-nl.png)
 
 ### Screenshot of Control Panel
-
+#### Options for Circle Packing
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-control1.png)
 
+#### Options for Node-Link diagram
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-control2.png)
 
 To open the Control Panel, double-click on the button at the top-left of the screen (i.e., the icon with three horizontal lines). The Control Panel allows for switching between circle-packing and node-link diagrams. It also allows you to configure node size, label size, and edge thickness.
@@ -59,7 +60,7 @@ This side panel contains many visualization subcomponents:
 ### Options
 All optional menu items are available in the Control Panel.  To open it, just ckick the **huburger menu** icon on the top-left top open the Control Panel.
 
-#### Node-Link diagram
+#### Switching the viewer
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-nodelink.png)
 
 By default, the hierarchy is displayed using Circle Packing layout.  There is another viewer using Node-Link diagram.  To switch the view, use the viewer selector in the Control Panel.
