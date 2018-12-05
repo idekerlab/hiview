@@ -22,7 +22,24 @@ Reference implementation is available here:
 http://hiview.ucsd.edu/
 
 ## Quick start guide for users
-To try this viewer, click the **EXAMPLES** button to select a pre-computed hierarchy and press **START**.  Double-click the subsystems to expand internal substructures. 
+
+![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-step1.png)
+
+To try this viewer, click the **EXAMPLES** button to select a pre-computed hierarchy and press **START**.  Some of the examples are relatively large, and it may take a while to load.
+
+![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-step2.png)
+
+Once the hierarchy is loaded, double-click any one of the subsystems (any ciecles in the view) to expand internal substructures. It automatically load original raw interaction data stored in [NDEx](http://test.ndexbio.org).
+
+### Options
+
+#### Automatic gene set enrichment analysys by Enrichr
+
+![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-enrichment.png)
+
+You can automatically send the member genes in the subsystem to [Enrichr](http://amp.pharm.mssm.edu/Enrichr/) to perform gene set enrichment analysis.  By default, this option is turned off.  To enable this, just ckick the **huburger menu** icon on the top-left top open the Control Panel.  And then turn on the **Automatically run gene set analysis with Enricher** option.  Once you click any of the subsystems, the list of genes will be sent to the server and the analysys result will be displayed on the bottom panel.
+
+----
 
 ## Quick Start for developers
 
