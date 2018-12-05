@@ -1,12 +1,10 @@
 # HiView (a universal viewer for hierarchical data)
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-top-v15-1.png)
 
-![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-top-v15-2.png)
-
 ## What is HiView?
 _HiView_ (http://hiview.ucsd.edu/) is a web application for visualizing hierarchical structure and the data that supports this structure. Hierarchical structure is stored and represented by a data structure called an ontology. 
 
-Users can upload their own ontologies using the ddot Python package ([Source code](https://github.com/michaelkyu/ddot) and [Tutorial](https://github.com/michaelkyu/ddot/blob/master/examples/Tutorial.ipynb)) and then view them on HiView. 
+Users can upload their own ontologies using the ddot Python package ([source code](https://github.com/michaelkyu/ddot) and [tutorial](https://github.com/michaelkyu/ddot/blob/master/examples/Tutorial.ipynb)) and then view them on HiView. 
 
 ## Updates
 * 12/4/2018 - v1.5 release
@@ -21,55 +19,57 @@ Go to http://hiview.ucsd.edu, and click the **EXAMPLES** button to select a pre-
 
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-step1.png)
 
-There are two visualization components:
+HiView's visualization is separated into two panels (see screenshots below):
 
-1. A main panel showing the ontology's hierarchical structure. This panel shows either a "circle-packing" diagram (the default) or a node-link diagram (see screenshots below). The type of diagram can be chosen by clicking the "Control Panel" button at the top-left.
+1. The Main Panel shows the ontology's hierarchical structure. This panel shows either a "circle-packing" diagram (the default) or a node-link diagram. The diagram that is shown can be switched in the Control Panel (see below).
    
-1. A side panel showing the data that supports the hierarchical structure. To activate this panel, double-click on any subsystem node in the main panel.
+1. The Side Panel shows the data that supports the hierarchical structure. To activate this panel, double-click on any subsystem node in the Main Panel.
 
-### Screenshot of main panel: Circle-packing diagram 
+### Main panel: Circle-packing diagram
+
+In a circle-packing diagram, hierarchical relations are intuitively represented by drawing small circles nested within larger ones (like physical compartments of the cell).
 
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-cp.png)
 
+### Main panel: Node-link diagram
 
-### Screenshot of main panel: Node-link diagram
+In a node-link diagram, hierarchical relations are represented by directed edges and drawn compactly with a 2D layout algorithm.
 
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-nl.png)
 
-### Screenshot of Control Panel
-#### Options for Circle Packing
-![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-control1.png)
+### Side Panel: Interaction network diagram
 
-#### Options for Node-Link diagram
-![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-control2.png)
+The Side Panel allows you to visualize how data (in the form of gene-gene interaction networks) support the existence of each subsystem and their hierarchical organization. The Side Panel contains several visual components:
 
-To open the Control Panel, double-click on the button at the top-left of the screen (i.e., the icon with three horizontal lines). The Control Panel allows for switching between circle-packing and node-link diagrams. It also allows you to configure node size, label size, and edge thickness.
-
-### Screenshot of side panel: Interaction network diagram
+1. A gene-gene functional similarity network, consisting of genes in the selected subsytem
+1. A histogram of the gene similarities
+1. Checkboxes to toggle the visualization of other gene interaction types
+1. A list of other attributes about the selected subsystem.
 
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-networkpanel.png)
 
-This side panel contains many visualization subcomponents:
+### Control Panel
 
-1. A gene-gene functional similarity network, consisting of pairs of genes in the selected subsytem
-2. A histogram of the similarities
-3. Checkboxes to toggle the visualization of different gene-gene interaction types
-4. A list of other attributes about the selected subsystem.
+To open the Control Panel, double-click on the **"hamburger"** button at the top-left of the screen (i.e., the icon with three horizontal lines). The Control Panel allows the following configurations:
 
+1. Switching between the circle-packing (the default diagram) and the node-link diagram.
+1. Configuring the color of circles in the circle-packing diagram.
+1. Configuring node size, label size, and edge thickness in the node-link diagram.
+1. Enabling gene set enrichment analysis.
 
-### Options
-All optional menu items are available in the Control Panel.  To open it, just ckick the **huburger menu** icon on the top-left top open the Control Panel.
+#### Options for Circle-Packing diagram
 
-#### Switching the viewer
-![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-nodelink.png)
+![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-control1.png)
 
-By default, the hierarchy is displayed using Circle Packing layout.  There is another viewer using Node-Link diagram.  To switch the view, use the viewer selector in the Control Panel.
+#### Options for Node-Link diagram
+
+![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-control2.png)
 
 #### Automatic gene set enrichment analysys by Enrichr
 
-![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-enrichment.png)
+When a user selects a subsystem, HiView can automatically perform gene set enrichment analysis using the [Enrichr](http://amp.pharm.mssm.edu/Enrichr/) web service.  By default, this option is turned off.  To enable this option, turn on the **Automatically run gene set analysis with Enricher** function in the Control Panel. Enrichment results are displayed on a separate bottom panel.
 
-You can automatically send the member genes in the subsystem to [Enrichr](http://amp.pharm.mssm.edu/Enrichr/) to perform gene set enrichment analysis.  By default, this option is turned off.  To enable this option, turn on the **Automatically run gene set analysis with Enricher** function in the Control Panel.  Once you click any of the subsystems, the list of genes will be sent to the server and the analysys result will be displayed on the bottom panel.
+![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-enrichment.png)
 
 ----
 
@@ -86,7 +86,6 @@ HiView is implemented using [React](https://reactjs.org/)
 
 ## Developer Documentation
 
-(TBD)
 * UX Design
 * Architecture Design
 
@@ -116,3 +115,4 @@ HiView is implemented using [React](https://reactjs.org/)
 HiView Application is designed and implemented by Keiichiro Ono (kono ucsd edu).  
 
 [Data-Driven Ontology Toolkit (DDOT)](https://github.com/michaelkyu/ddot) is developed by Mike Yu 
+
