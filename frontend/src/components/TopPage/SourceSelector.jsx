@@ -30,17 +30,10 @@ const startStyle = {
   marginTop: '2em'
 }
 
-const DEFAULT_EXAMPLE = 'Small Example 1'
+const DEFAULT_EXAMPLE = 'Fanconi Anemia Gene Ontology'
 
 const EXAMPLE_UUIDS = {
-  [DEFAULT_EXAMPLE]: '49bca313-ab2c-11e8-9a23-0660b7976219',
-  'New format sample': '7929fc61-b871-11e8-98d5-0660b7976219',
-  'DNA Repair': 'ab704ae4-0719-11e8-b03c-0660b7976219',
-  'Edge filters example': '6e6e3a1a-cda7-11e8-a74b-0660b7976219',
-  'Goal v2': 'c3179d6e-ca96-11e8-98d5-0660b7976219',
-  '8.3K Subsystems': 'abafcdc5-c067-11e8-98d5-0660b7976219',
-  'CDK (latest)': '340d21d9-d0d4-11e8-a74b-0660b7976219',
-  'CDK (Smaller)': '59594682-d103-11e8-a74b-0660b7976219'
+  [DEFAULT_EXAMPLE]: '0fb9fec3-f772-11e8-aaa6-0ac135e8bacf'
 }
 
 class SourceSelector extends Component {
@@ -49,8 +42,8 @@ class SourceSelector extends Component {
 
     this.state = {
       uuid: '',
-      serverUrl: 'http://test.ndexbio.org',
-      serverType: 'test',
+      serverUrl: 'http://public.ndexbio.org',
+      serverType: 'public',
       example: EXAMPLE_UUIDS[DEFAULT_EXAMPLE],
       openError: false,
       openWarning: false,
@@ -246,7 +239,7 @@ class SourceSelector extends Component {
         <div style={{ width: '450px' }}>
           <TextField
             style={textFieldStyle}
-            placeholder="e.g. http://test.ndexbio.org"
+            placeholder="e.g. http://public.ndexbio.org"
             label="NDEx Server URL"
             margin="normal"
             value={this.state.serverUrl}

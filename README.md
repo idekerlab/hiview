@@ -30,6 +30,8 @@ To open the Control Panel, double-click on the button at the top-left of the scr
 
 (TODO: Insert screenshot of just the control panel, and nothing else)
 
+=======
+
 ### Screenshot of side panel: Interaction network diagram
 
 This side panel contains many visualization subcomponents:
@@ -45,6 +47,39 @@ This side panel contains many visualization subcomponents:
 * 12/4/2018 - v1.5 release
 * 6/11/2018 - v1 in beta
 * 9/20/2017 - Updated for new version
+=======
+## Publication
+(TBD)
+
+## Quick start guide for users
+
+![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-step1.png)
+
+To try this viewer, click the **EXAMPLES** button to select a pre-computed hierarchy and press **START**.
+
+![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-step2.png)
+
+Once the hierarchy is loaded, double-click any one of the subsystems (any ciecles in the view) to expand internal substructures. It automatically load original raw interaction data stored in [NDEx](http://test.ndexbio.org).
+
+![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-step3.png)
+
+Note that some of the subsystems has many interactions and it may take a while to load the data.  
+
+### Options
+All optional menu items are available in the Control Panel.  To open it, just ckick the **huburger menu** icon on the top-left top open the Control Panel.
+
+#### Node-Link diagram
+![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-nodelink.png)
+
+By default, the hierarchy is displayed using Circle Packing layout.  There is another viewer using Node-Link diagram.  To switch the view, use the viewer selector in the Control Panel.
+
+#### Automatic gene set enrichment analysys by Enrichr
+
+![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-enrichment.png)
+
+You can automatically send the member genes in the subsystem to [Enrichr](http://amp.pharm.mssm.edu/Enrichr/) to perform gene set enrichment analysis.  By default, this option is turned off.  To enable this option, turn on the **Automatically run gene set analysis with Enricher** function in the Control Panel.  Once you click any of the subsystems, the list of genes will be sent to the server and the analysys result will be displayed on the bottom panel.
+
+----
 
 ## Quick Start for developers
 
@@ -57,7 +92,8 @@ HiView is implemented using [React](https://reactjs.org/)
 1. In the frontend directory, run ```yarn link cy-viewer```
 1. ```yarn start```
 
-## Documentation
+## Developer Documentation
+
 (TBD)
 * UX Design
 * Architecture Design
