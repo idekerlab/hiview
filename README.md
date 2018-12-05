@@ -37,12 +37,18 @@ Once the hierarchy is loaded, double-click any one of the subsystems (any ciecle
 Note that some of the subsystems has many interactions and it may take a while to load the data.  
 
 ### Options
+All optional menu items are available in the Control Panel.  To open it, just ckick the **huburger menu** icon on the top-left top open the Control Panel.
+
+#### Node-Link diagram
+![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-nodelink.png)
+
+By default, the hierarchy is displayed using Circle Packing layout.  There is another viewer using Node-Link diagram.  To switch the view, use the viewer selector in the Control Panel.
 
 #### Automatic gene set enrichment analysys by Enrichr
 
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-enrichment.png)
 
-You can automatically send the member genes in the subsystem to [Enrichr](http://amp.pharm.mssm.edu/Enrichr/) to perform gene set enrichment analysis.  By default, this option is turned off.  To enable this, just ckick the **huburger menu** icon on the top-left top open the Control Panel.  And then turn on the **Automatically run gene set analysis with Enricher** option.  Once you click any of the subsystems, the list of genes will be sent to the server and the analysys result will be displayed on the bottom panel.
+You can automatically send the member genes in the subsystem to [Enrichr](http://amp.pharm.mssm.edu/Enrichr/) to perform gene set enrichment analysis.  By default, this option is turned off.  To enable this option, turn on the **Automatically run gene set analysis with Enricher** function in the Control Panel.  Once you click any of the subsystems, the list of genes will be sent to the server and the analysys result will be displayed on the bottom panel.
 
 ----
 
@@ -56,7 +62,7 @@ You can automatically send the member genes in the subsystem to [Enrichr](http:/
 1. ```yarn start```
 
 
-## Documentation
+## Developer Documentation
 (TBD)
 * UX Design
 * Architecture Design
