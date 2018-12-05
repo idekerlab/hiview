@@ -19,15 +19,22 @@ _HiView_ is a [React](https://reactjs.org/)-based web application for visualizin
 
 http://hiview.ucsd.edu/
 
+## Publication
+(TBD)
+
 ## Quick start guide for users
 
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-step1.png)
 
-To try this viewer, click the **EXAMPLES** button to select a pre-computed hierarchy and press **START**.  Some of the examples are relatively large, and it may take a while to load.
+To try this viewer, click the **EXAMPLES** button to select a pre-computed hierarchy and press **START**.
 
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-step2.png)
 
 Once the hierarchy is loaded, double-click any one of the subsystems (any ciecles in the view) to expand internal substructures. It automatically load original raw interaction data stored in [NDEx](http://test.ndexbio.org).
+
+![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-step3.png)
+
+Note that some of the subsystems has many interactions and it may take a while to load the data.  
 
 ### Options
 
