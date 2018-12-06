@@ -19,6 +19,13 @@ const containerStyle = {
   paddingBottom: '1.5em'
 }
 
+const blankStyle = {
+  background: '#FFFFFF',
+  margin: 0,
+  padding: 0
+
+}
+
 const titleStyle = {
   display: 'flex',
   width: '100%',
@@ -53,7 +60,6 @@ class CrossFilter extends Component {
     }
   }
 
-
   render() {
 
     const data = this.props.networkData
@@ -66,9 +72,19 @@ class CrossFilter extends Component {
       )
     }
 
+
     const allEdgeDist = data.allEdgeScoreDist
     const maxFrequency = data.maxFrequency
     const subEdgeDist = data.subEdgeScoreDist
+
+    if(data.maxFrequency === 0) {
+      return (
+        <div
+          style={blankStyle}
+          ref={divElement => (this.divElement = divElement)}
+        />
+      )
+    }
 
     let showAllEdgeDist = false
     if (this.props.maxEdgeCount < this.props.originalEdgeCount) {
