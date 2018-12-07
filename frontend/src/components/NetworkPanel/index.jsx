@@ -166,13 +166,30 @@ class NetworkPanel extends Component {
   }
 
   hoverOnNode = (nodeId, nodeProps) => {
-    this.props.selectionActions.enterNode(nodeProps)
-    this.setState({ hoverNode: nodeProps })
+    const groups = this.props.rawInteractions.get('groups')
+    if (!groups) {
+      return
+    }
+
+    // Set selected state
+    let name = nodeProps.Original_Name
+    if (name === undefined) {
+      name = nodeProps.name
+    }
+
+    const geneIds = groups[name]
+    if (geneIds) {
+      this.props.rawInteractionsActions.setSelected(geneIds)
+    }
   }
 
   hoverOutNode = (nodeId, nodeProps) => {
-    this.props.selectionActions.leaveNode()
-    this.setState({ hoverNode: null })
+    const groups = this.props.rawInteractions.get('groups')
+    if (!groups) {
+      return
+    }
+
+    this.props.rawInteractionsActions.setSelected([])
   }
 
   // Then use it as a custom handler
