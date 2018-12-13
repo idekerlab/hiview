@@ -1,6 +1,7 @@
 import * as d3Hierarchy from 'd3-hierarchy'
 import cytoscape from 'cytoscape'
 
+import 'babel-polyfill'
 import { createAction } from 'redux-actions'
 
 import Fuse from 'fuse.js'
@@ -8,8 +9,10 @@ import Dexie from 'dexie'
 
 export const SET_UUID = 'SET_UUID'
 export const SET_SERVER = 'SET_SERVER'
+export const SET_SUMMARY = 'SET_SUMMARY'
 export const setUuid = createAction(SET_UUID)
 export const setServer = createAction(SET_SERVER)
+export const setSummary = createAction(SET_SUMMARY)
 
 export const FETCH_NETWORK = 'FETCH_NETWORK'
 

@@ -3,7 +3,8 @@ import {
   RECEIVE_NETWORK,
   DELETE_NETWORK,
   SET_SERVER,
-  SET_UUID
+  SET_UUID,
+  SET_SUMMARY
 } from '../actions/network'
 import { Map } from 'immutable'
 
@@ -15,7 +16,8 @@ const defState = Map({
   uuid: null,
   server: null,
   networkUrl: null,
-  cyjs: null
+  cyjs: null,
+  summary: null
 })
 
 export default function networkState(state = defState, action) {
@@ -39,6 +41,8 @@ export default function networkState(state = defState, action) {
     case SET_SERVER:
       const networkUrl = action.payload + '/v2/network/' + state.get('uuid')
       return state.set('server', action.payload).set('networkUrl', networkUrl)
+    case SET_SUMMARY:
+      return state.set('summary', action.payload)
     default:
       return state
   }

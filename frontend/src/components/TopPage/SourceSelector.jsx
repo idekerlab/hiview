@@ -141,6 +141,8 @@ class SourceSelector extends Component {
   }
 
   checkNetworkSummary = summary => {
+    console.log('# Summary', summary)
+    this.props.networkActions.setSummary(summary)
     const edgeCount = summary.edgeCount
     const nodeCount = summary.nodeCount
 
@@ -167,7 +169,6 @@ class SourceSelector extends Component {
     let serverType = this.state.serverType
     const uuid = this.state.uuid
 
-    console.log('########## setting', uuid, url)
     this.props.networkActions.setUuid(uuid)
     this.props.networkActions.setServer(url)
 
