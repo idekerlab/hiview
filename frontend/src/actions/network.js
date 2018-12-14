@@ -91,10 +91,10 @@ const receiveNetwork = (url, json, error) => {
 
 let t0 = 0
 let t1 = 0
-export const fetchNetworkFromUrl = (url2, uuid) => {
+export const fetchNetworkFromUrl = (url, uuid) => {
   // const url = 'http://localhost:3000/hiview.cyjs'
-  const url =
-    'http://ec2-35-167-36-71.us-west-2.compute.amazonaws.com:3000/cache/getcyjs/hiview'
+  // const url =
+  //   'http://ec2-35-167-36-71.us-west-2.compute.amazonaws.com:3000/cache/getcyjs/hiview'
   console.log('Main network loading: start', url)
 
   t0 = performance.now()

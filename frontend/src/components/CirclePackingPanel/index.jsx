@@ -155,20 +155,13 @@ class CirclePackingPanel extends Component {
         return
       }
 
-      console.log('Selection 0 ', performance.now() -t1)
       // Set selected state
       this.props.selectionActions.enterNode(data)
-      console.log('Selection 1 ', performance.now() -t1)
-
       const currentSelection = this.props.selection.get('main').nodeId
-
-
       if (id === currentSelection) {
         this.props.rawInteractionsActions.setSelected([])
         return
       }
-
-      console.log('Selection 2 ', performance.now() -t1)
       let name = data.props.Original_Name
       if (name === undefined) {
         name = data.props.name
@@ -180,7 +173,6 @@ class CirclePackingPanel extends Component {
       } else {
         this.props.rawInteractionsActions.setSelected(geneIds)
       }
-      console.log('Selection in ', performance.now() -t1)
     }
 
     return {
