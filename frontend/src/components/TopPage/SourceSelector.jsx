@@ -34,13 +34,11 @@ const DEFAULT_EXAMPLE = 'Small Example 1'
 
 const EXAMPLE_UUIDS = {
   [DEFAULT_EXAMPLE]: '49bca313-ab2c-11e8-9a23-0660b7976219',
-  'New format sample': '7929fc61-b871-11e8-98d5-0660b7976219',
   'DNA Repair': 'ab704ae4-0719-11e8-b03c-0660b7976219',
   'Edge filters example': '6e6e3a1a-cda7-11e8-a74b-0660b7976219',
   'Goal v2': 'c3179d6e-ca96-11e8-98d5-0660b7976219',
-  '8.3K Subsystems': 'abafcdc5-c067-11e8-98d5-0660b7976219',
-  'CDK (latest)': '340d21d9-d0d4-11e8-a74b-0660b7976219',
-  'CDK (Smaller)': '59594682-d103-11e8-a74b-0660b7976219'
+  'V2 Goal New': '2900c930-fad7-11e8-ad43-0660b7976219',
+  'Y data:': 'cde420ff-da62-11e8-a260-0660b7976219'
 }
 
 class SourceSelector extends Component {
