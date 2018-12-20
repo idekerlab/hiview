@@ -42,7 +42,9 @@ class AliasList extends Component {
       <List disablePadding style={{ paddingLeft: '1.5em' }}>
         {keys.map((key, i) => (
           <div key={'alias-' + i}>
-            <ListItem>
+            <ListItem
+              onMouseOver={e => this.handleMouseOver(key)}
+            >
               <ListItemAvatar>
                 <Avatar>
                   <PlaceIcon color={aliases[key].Original_Name ? 'inherit': 'primary'}/>
@@ -103,7 +105,12 @@ class AliasList extends Component {
   }
 
   handleClick = nodeId => {
+        console.log('Click: ', nodeId)
     this.props.commandActions.findPath([nodeId, this.props.rootId])
+  }
+
+  handleMouseOver = nodeId => {
+    console.log('Mouse Over: ', nodeId)
   }
 }
 
