@@ -104,6 +104,7 @@ class SearchResult extends Component {
                 rootId={this.props.rootId}
                 aliases={nestedList[parent].children}
                 commandActions={this.props.commandActions}
+                selectionActions={this.props.selectionActions}
                 currentPath={this.props.currentPath}
                 uiState={this.props.uiState}
               />

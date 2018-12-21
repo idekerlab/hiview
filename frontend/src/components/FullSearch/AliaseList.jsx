@@ -15,8 +15,13 @@ import NavigationIcon from 'material-ui-icons/Navigation'
 
 import PathList from './PathList'
 
+const itemStyle = {
+  background: 'red'
+}
+
 class AliasList extends Component {
-  state = {}
+  state = {
+  }
 
   componentWillReceiveProps(nextProps) {
     const newPath = nextProps.currentPath
@@ -44,6 +49,8 @@ class AliasList extends Component {
           <div key={'alias-' + i}>
             <ListItem
               onMouseOver={e => this.handleMouseOver(key)}
+              onMouseOut={e => this.handleMouseOut(key)}
+              style={{backgroundColor: this.state['hoverBgColor' + key]}}
             >
               <ListItemAvatar>
                 <Avatar>
@@ -110,7 +117,15 @@ class AliasList extends Component {
   }
 
   handleMouseOver = nodeId => {
-    console.log('Mouse Over: ', nodeId)
+    this.props.selectionActions.highlightNode(nodeId)
+    const colorId = 'hoverBgColor' + nodeId
+    this.setState({[colorId] :'rgba(200, 0, 0, 0.3)'})
+      }
+
+  handleMouseOut = nodeId => {
+    this.props.selectionActions.removeHighlightNode()
+    const colorId = 'hoverBgColor' + nodeId
+    this.setState({[colorId]: '#FFFFFF'})
   }
 }
 

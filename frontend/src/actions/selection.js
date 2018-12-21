@@ -1,5 +1,8 @@
 import { createAction } from 'redux-actions'
 
+export const HIGHLIGHT_NODE = 'HIGHLIGHT_NODE'
+export const REMOVE_HIGHLIGHT_NODE = 'REMOVE_HIGHLIGHT_NODE'
+
 export const SELECT_NODE = 'SELECT_NODE'
 export const DESELECT_NODE = 'DESELECT_NODE'
 
@@ -11,6 +14,9 @@ export const SELECT_SUB_NODE = 'SELECT_SUB_NODE'
 export const DESELECT_SUB_NODE = 'DESELECT_SUB_NODE'
 export const DESELECT_ALL_SUB_NODES = 'DESELECT_ALL_SUB_NODES'
 
+
+export const highlightNode = createAction(HIGHLIGHT_NODE)
+export const removeHighlightNode = createAction(REMOVE_HIGHLIGHT_NODE)
 export const selectNode = createAction(SELECT_NODE)
 export const deselectNode = createAction(DESELECT_NODE)
 

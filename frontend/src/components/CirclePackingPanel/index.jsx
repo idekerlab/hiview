@@ -196,6 +196,7 @@ class CirclePackingPanel extends Component {
           <TreeViewer
             command={this.props.command}
             selected={this.props.search.result}
+            highlight={this.props.selection.get('highlight')}
             tree={this.state.tree}
             eventHandlers={this.getEventHandlers()}
             width={this.props.style.width}

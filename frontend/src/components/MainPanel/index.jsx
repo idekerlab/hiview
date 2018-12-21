@@ -26,6 +26,7 @@ const MainPanel = props => {
     searchActions,
     network,
     selection,
+    selectionActions,
     currentPath,
     renderingOptions,
     renderingOptionsActions,
@@ -68,6 +69,7 @@ const MainPanel = props => {
         network={network.toJS()}
         commandActions={commandActions}
         searchActions={searchActions}
+        selectionActions={selectionActions}
         search={search}
         currentPath={currentPath}
         uiState={uiState}

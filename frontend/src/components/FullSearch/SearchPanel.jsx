@@ -145,6 +145,7 @@ class SearchPanel extends Component {
                   <SearchResult
                     search={this.props.search}
                     commandActions={this.props.commandActions}
+                    selectionActions={this.props.selectionActions}
                     id2prop={id2prop}
                     rootId={rootId}
                     currentPath={this.props.currentPath}
