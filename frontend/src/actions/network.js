@@ -1,7 +1,5 @@
 import * as d3Hierarchy from 'd3-hierarchy'
 import cytoscape from 'cytoscape'
-
-import 'babel-polyfill'
 import { createAction } from 'redux-actions'
 
 import Fuse from 'fuse.js'

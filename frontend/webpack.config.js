@@ -4,7 +4,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 
-export default () => ({
+module.exports = {
 
   // devtool: 'inline-source-map',
   devtool: "source-map",
@@ -103,6 +103,6 @@ export default () => ({
     hot: true,
     port: 3000
   }
-});
+};
 
 
