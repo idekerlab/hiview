@@ -65,8 +65,11 @@ class BottomPanel extends Component {
       >
         <div style={panelStyle}>
           <div style={titleStyle}>
-            <IconButton style={buttonStyle}>
-              <CloseIcon onClick={e => this.handleClose()} />
+            <IconButton
+              style={buttonStyle}
+              onClick={e => this.handleClose()}
+            >
+              <CloseIcon />
             </IconButton>
             <div style={titleText}>
               Gene set enrichment by Enrichr for subsystem{' '}

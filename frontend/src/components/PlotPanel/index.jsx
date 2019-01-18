@@ -54,7 +54,7 @@ class PlotPanel extends React.Component {
 
       return (
         <div style={containerStyle}>
-          <Tabs value={idx} scrollable={true} onChange={this.handleChange}>
+          <Tabs value={idx} variant="scrollable" onChange={this.handleChange}>
             {titles.map((title, i) => {
               return <Tab key={i} label={title} />
             })}

@@ -40,8 +40,11 @@ const TitleBar = props => {
           </Typography>
         </div>
 
-        <IconButton className={classes.menuButton}>
-          <CloseIcon onClick={e => handleClose(props)} />
+        <IconButton
+          className={classes.menuButton}
+          onClick={e => handleClose(props)}
+        >
+          <CloseIcon />
         </IconButton>
       </Toolbar>
     </AppBar>

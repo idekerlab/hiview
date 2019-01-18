@@ -63,7 +63,7 @@ class AnalysisPanel extends Component {
       <div style={containerStyle}>
         <Tabs
           value={idx}
-          scrollable={true}
+          variant="scrollable"
           onChange={this.handleChange}
           ref={this.tabRef}
         >
