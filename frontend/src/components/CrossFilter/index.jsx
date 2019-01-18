@@ -10,7 +10,7 @@ import {
   LabelSeries
 } from 'react-vis'
 
-import Typography from 'material-ui/Typography'
+import Typography from '@material-ui/core/Typography'
 import AllEdgeDistribution from './AllEdgeDistribution'
 
 const containerStyle = {

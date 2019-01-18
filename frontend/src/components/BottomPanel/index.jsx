@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import Drawer from 'material-ui/Drawer'
+import Drawer from '@material-ui/core/Drawer'
 
-import CloseIcon from 'material-ui-icons/KeyboardArrowDown'
+import CloseIcon from '@material-ui/icons/KeyboardArrowDown'
 
-import IconButton from 'material-ui/IconButton'
+import IconButton from '@material-ui/core/IconButton'
 import PlotPanel from '../PlotPanel'
 
 const panelStyle = {

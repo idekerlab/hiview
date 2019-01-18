@@ -1,6 +1,6 @@
 import React from 'react'
-import Typography from 'material-ui/Typography'
-import WarningIcon from 'material-ui-icons/ErrorOutline'
+import Typography from '@material-ui/core/Typography'
+import WarningIcon from '@material-ui/icons/ErrorOutline'
 
 const iconStyle = {
   color: 'red',

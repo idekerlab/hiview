@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import Dialog from 'material-ui/Dialog'
-import TextField from 'material-ui/TextField'
-import FlatButton from 'material-ui/FlatButton'
+import Dialog from '@material-ui/core/Dialog';
+import TextField from '@material-ui/core/TextField'
+import FlatButton from '@material-ui/core/FlatButton'
 
 export default class StartDialog extends Component {
 

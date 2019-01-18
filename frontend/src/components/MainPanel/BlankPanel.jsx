@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { blueGrey } from 'material-ui/colors'
-import Typography from 'material-ui/Typography'
-import ArrowIcon from 'material-ui-icons/ArrowBack'
+import { blueGrey } from '@material-ui/core/colors'
+import Typography from '@material-ui/core/Typography'
+import ArrowIcon from '@material-ui/icons/ArrowBack'
 
 const style = {
   background: blueGrey[100],

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
-import Tabs, { Tab } from 'material-ui/Tabs'
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 import RawInteractionPanel from './RawInteractionPanel'
 import SubsystemPanel from './SubsystemPanel'

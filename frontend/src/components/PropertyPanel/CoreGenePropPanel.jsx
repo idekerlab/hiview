@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 
-import OpenIcon from 'material-ui-icons/OpenInNew'
-import ViewListIcon from 'material-ui-icons/ViewList'
-import KeyIcon from 'material-ui-icons/VpnKey'
+import OpenIcon from '@material-ui/icons/OpenInNew'
+import ViewListIcon from '@material-ui/icons/ViewList'
+import KeyIcon from '@material-ui/icons/VpnKey'
 
-import ExpandLess from 'material-ui-icons/ExpandLess'
-import ExpandMore from 'material-ui-icons/ExpandMore'
-import Collapse from 'material-ui/transitions/Collapse'
+import ExpandLess from '@material-ui/icons/ExpandLess'
+import ExpandMore from '@material-ui/icons/ExpandMore'
+import Collapse from '@material-ui/core/Collapse';
 
 import GoPanel from './GoPanel'
 

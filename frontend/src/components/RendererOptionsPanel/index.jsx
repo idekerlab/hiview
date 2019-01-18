@@ -1,27 +1,26 @@
 import React, { Component } from 'react'
 
-import List, {
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  ListItemAvatar
-} from 'material-ui/List'
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 
-import Divider from 'material-ui/Divider'
-import Switch from 'material-ui/Switch'
-import TuneIcon from 'material-ui-icons/Tune'
+import Divider from '@material-ui/core/Divider'
+import Switch from '@material-ui/core/Switch'
+import TuneIcon from '@material-ui/icons/Tune'
 
-import { deepOrange, blueGrey } from 'material-ui/colors'
+import { deepOrange, blueGrey } from '@material-ui/core/colors'
 
-import Avatar from 'material-ui/Avatar'
+import Avatar from '@material-ui/core/Avatar'
 import Slider from 'rc-slider'
-import Select from 'material-ui/Select'
-import { MenuItem } from 'material-ui/Menu'
+import Select from '@material-ui/core/Select'
+import MenuItem from '@material-ui/core/MenuItem';
 import 'rc-slider/assets/index.css'
-import { teal } from 'material-ui/colors/index'
+import { teal } from '@material-ui/core/colors/index'
 
 import { ChromePicker } from 'react-color'
-import Button from 'material-ui/Button'
+import Button from '@material-ui/core/Button'
 
 const CIRCLE_PACKING = 'Circle Packing'
 const NODE_LINK = 'Node-Link Diagram'
@@ -194,7 +193,7 @@ class RendererOptionsPanel extends Component {
 
             <ListItemText primary="Root Node Color" />
             <Button
-              variant="raised"
+              variant="contained"
               color="default"
               onClick={this.handleColorPickerOpenRoot}
             >
@@ -219,7 +218,7 @@ class RendererOptionsPanel extends Component {
             <ListItemText primary="Leaf Node Color" />
             <Button
               onClick={this.handleColorPickerOpenLeaf}
-              variant="raised" color="default">
+              variant="contained" color="default">
               Change
             </Button>
             {this.state.displayColorPickerLeaf ? (

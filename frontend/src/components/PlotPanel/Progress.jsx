@@ -1,6 +1,6 @@
 import React from 'react'
-import { LinearProgress } from 'material-ui/Progress'
-import Typography from 'material-ui/Typography'
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Typography from '@material-ui/core/Typography'
 
 const Progress = props => (
   <div style={props.style}>

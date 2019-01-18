@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 import TermDetailsPanel from './TermDetailsPanel'
 import GenePropertyPanel from './GenePropertyPanel'
 
-import AppBar from 'material-ui/AppBar'
-import Toolbar from 'material-ui/Toolbar'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
 import MessageBar from './MessageBar'
 
 const PANEL_TYPES = {

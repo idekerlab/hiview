@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
-import * as colors from 'material-ui/styles/colors';
+import * as colors from '@material-ui/core/styles/colors';
 
-import FloatingActionButton from 'material-ui/FloatingActionButton';
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
+import FloatingActionButton from '@material-ui/core/FloatingActionButton';
+import CloseIcon from '@material-ui/core/icons/navigation/close';
 import CyViewer from 'cy-viewer'
 
 

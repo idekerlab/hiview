@@ -1,6 +1,6 @@
 import React from 'react'
-import OpenIcon from 'material-ui-icons/OpenInNew'
-import Typography from 'material-ui/Typography'
+import OpenIcon from '@material-ui/icons/OpenInNew'
+import Typography from '@material-ui/core/Typography'
 
 import style from './style.css'
 

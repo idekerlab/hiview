@@ -3,16 +3,16 @@ import 'typeface-roboto'
 
 import SourceSelector from './SourceSelector'
 
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 
-import { grey } from 'material-ui/colors'
-import Typography from 'material-ui/Typography'
-import AppBar from 'material-ui/AppBar'
-import Toolbar from 'material-ui/Toolbar'
+import { grey } from '@material-ui/core/colors'
+import Typography from '@material-ui/core/Typography'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
 
-import HelpIcon from 'material-ui-icons/HelpOutline'
+import HelpIcon from '@material-ui/icons/HelpOutline'
 
-import IconButton from 'material-ui/IconButton'
+import IconButton from '@material-ui/core/IconButton'
 import GitHubIcon from '../../assets/images/github-white.svg'
 
 const styles = theme => ({

@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import TextField from 'material-ui/TextField';
-import Button from 'material-ui/Button'
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button'
 
 const SEARCH_URL = 'http://test.ndexbio.org/v2/search/network/'
 
@@ -71,7 +71,7 @@ class SearchBox extends Component {
         />
 
         <Button
-          variant="raised"
+          variant="contained"
           color="primary"
           onClick={this.handleStart}
         >

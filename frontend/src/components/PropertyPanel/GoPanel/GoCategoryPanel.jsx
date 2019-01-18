@@ -1,9 +1,10 @@
 import React from 'react'
-import { ListItem, ListItemText } from 'material-ui/List'
-import OpenIcon from 'material-ui-icons/OpenInNew'
-import Typography from 'material-ui/Typography'
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import OpenIcon from '@material-ui/icons/OpenInNew'
+import Typography from '@material-ui/core/Typography'
 
-import Divider from 'material-ui/Divider'
+import Divider from '@material-ui/core/Divider'
 import style from '../style.css'
 
 const GO_URL = 'http://amigo.geneontology.org/amigo/term/'

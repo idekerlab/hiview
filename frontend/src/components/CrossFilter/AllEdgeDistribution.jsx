@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import Highlight from './highlight'
 
-import Typography from 'material-ui/Typography'
+import Typography from '@material-ui/core/Typography'
 import {
   XYPlot,
   XAxis,
