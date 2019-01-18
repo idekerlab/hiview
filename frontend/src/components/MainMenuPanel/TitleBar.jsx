@@ -35,7 +35,7 @@ const TitleBar = props => {
         <div className={classes.title}>
           <SettingsIcon className={classes.titleButton} />
 
-          <Typography variant="headline" color="inherit">
+          <Typography variant="h5" color="inherit">
             Control Panel
           </Typography>
         </div>

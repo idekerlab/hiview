@@ -33,14 +33,14 @@ const LargeNetworkWarningPanel = props => {
       <WarningIcon style={iconStyle} />
 
       <Typography
-        variant="display4"
+        variant="h1"
         style={{ color: 'red', fontSize: '2.5em' }}
       >
         This subsystem contains {props.summary.edgeCount} edges
       </Typography>
 
       <Typography
-        variant="display1"
+        variant="h4"
         style={{
           width: '80%',
           color: '#555555',

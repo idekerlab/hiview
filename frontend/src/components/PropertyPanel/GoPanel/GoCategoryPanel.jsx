@@ -24,7 +24,7 @@ const GoCategory = props => {
   return (
     <div>
       <ListItem key={categoryName}>
-        <Typography type={'headline'}>{categoryName}</Typography>
+        <Typography type={'h5'}>{categoryName}</Typography>
       </ListItem>
 
       <Divider />

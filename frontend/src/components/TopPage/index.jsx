@@ -47,12 +47,12 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  display4: {
+  h1: {
     color: '#222222',
     fontWeight: 400,
     fontSize: '17em'
   },
-  display2: {
+  h3: {
     color: '#777777',
     fontWeight: 300,
     fontSize: '2em',
@@ -91,7 +91,7 @@ const TopPage = props => {
     <div className={classes.container}>
       <AppBar position="fixed" className={classes.bar}>
         <Toolbar className={classes.toolBar}>
-          <Typography variant="display1" color="inherit">
+          <Typography variant="h4" color="inherit">
             HiView {version}
           </Typography>
 
@@ -110,10 +110,10 @@ const TopPage = props => {
 
       <div className={classes.root}>
         <div>
-          <Typography variant="display4" className={classes.display4}>
+          <Typography variant="h1" className={classes.h1}>
             HiView
           </Typography>
-          <Typography variant="display2" className={classes.display2}>
+          <Typography variant="h3" className={classes.h3}>
             Universal browser for hierarchical data
           </Typography>
         </div>

@@ -19,14 +19,14 @@ const TitleBar = props => (
       onClick={handleClick(props.geneSymbol)}
     />
     <Typography
-      variant="display1"
+      variant="h4"
       align="center"
       style={{ color: '#333333', fontSize: '2.5em', marginRight: '0.7em' }}
     >
       {props.geneSymbol}:
     </Typography>
     <Typography
-      variant="display2"
+      variant="h3"
       style={{ color: '#666666', fontSize: '1.3em' }}
     >
       {props.title}

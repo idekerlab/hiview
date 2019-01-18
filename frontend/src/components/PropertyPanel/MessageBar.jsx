@@ -24,7 +24,7 @@ const getWarning = (originalCount, maxCount) => {
         <WarningIcon style={iconStyle} />
 
         <Typography
-          variant="display1"
+          variant="h4"
           style={{ color: '#FFFFFF', fontSize: '1.5em' }}
         >
           Showing top {maxCount} interactions out of {originalCount}
@@ -60,7 +60,7 @@ const MessageBar = props => {
       <div style={panelStyle}>Data Viewer</div>
       <div style={containerStyle}>
         <Typography
-          variant="display4"
+          variant="h1"
           style={{ color: props.titleColor, fontSize: '2em' }}
         >
           {props.title}

@@ -66,7 +66,7 @@ class AllEdgeDistribution extends Component {
 
         <div style={this.props.titleStyle}>
           <Typography
-            variant="display1"
+            variant="h4"
             style={{ color: '#666666', fontSize: '1em' }}
           >
             Integrated Similarity Score Distribution (for all edges)

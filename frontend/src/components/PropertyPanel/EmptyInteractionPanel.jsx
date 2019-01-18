@@ -17,7 +17,7 @@ const EmptyInteractionPanel = props => {
   return (
     <div style={containerStyle}>
       <Typography
-        variant="display1"
+        variant="h4"
         align="center"
         style={{ fontSize: '1.6em' }}
       >

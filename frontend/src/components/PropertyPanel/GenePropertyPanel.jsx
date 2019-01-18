@@ -66,7 +66,7 @@ class GenePropertyPanel extends Component {
           >
             Summary:
           </Typography>
-          <Typography type="subheading" style={{ fontSize: '1.2em' }}>
+          <Typography type="subtitle1" style={{ fontSize: '1.2em' }}>
             {entry.summary}
           </Typography>
         </div>

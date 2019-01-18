@@ -7,7 +7,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select'
 
 import Button from '@material-ui/core/Button'
-import IconButton from '@material-ui/core/IconButton'
 
 import ApplyIcon from '@material-ui/icons/Refresh'
 import FitContent from '@material-ui/icons/ZoomOutMap'
@@ -30,7 +29,6 @@ const styles = theme => ({
   },
   button: {
     margin: theme.spacing.unit,
-    height: '1em'
   },
   icon: {
     fontSize: '2em'
