@@ -120,7 +120,8 @@ class EdgeFilter extends Component {
       }
     }
 
-    if (!filters || filters.length === 0) {
+    if (!filters || filters.length === 0 || !Array.isArray(filters)) {
+      console.warn('Invalid filters: ', filters)
       return <div />
     }
 
