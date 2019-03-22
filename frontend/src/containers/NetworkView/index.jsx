@@ -16,7 +16,7 @@ import * as searchActions from '../../actions/search'
 
 import * as networkActions from '../../actions/network'
 
-import { grey50 } from 'material-ui/styles'
+import { grey50 } from '@material-ui/core/styles'
 
 import * as queryGenesActions from '../../actions/query-genes'
 import * as messageActions from '../../actions/message'
@@ -31,7 +31,7 @@ import * as interactionsCommandsActions from '../../actions/commands-interaction
 import * as enrichmentActions from '../../actions/enrichment'
 import * as groupsActions from '../../actions/groups'
 
-import { MuiThemeProvider } from 'material-ui/styles'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 
 import { theme } from '../theme'
 import 'typeface-roboto'

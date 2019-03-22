@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
 import 'typeface-roboto'
-import { MuiThemeProvider } from 'material-ui/styles'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 
 import TopPage from '../../components/TopPage/index'
 import * as networkActions from '../../actions/network'

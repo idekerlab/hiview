@@ -1,9 +1,9 @@
 import React from 'react'
-import IconButton from 'material-ui/IconButton'
-import MenuIcon from 'material-ui-icons/Menu'
-import SearchIcon from 'material-ui-icons/Search'
-import RefreshIcon from 'material-ui-icons/Refresh'
-import Input from 'material-ui/Input'
+import IconButton from '@material-ui/core/IconButton'
+import MenuIcon from '@material-ui/icons/Menu'
+import SearchIcon from '@material-ui/icons/Search'
+import RefreshIcon from '@material-ui/icons/Refresh'
+import Input from '@material-ui/core/Input';
 
 const SEARCH_URL = 'http://test.ndexbio.org/v2/search/network/'
 

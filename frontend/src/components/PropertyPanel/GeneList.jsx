@@ -1,7 +1,10 @@
 import React from 'react'
 
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
-import OpenIcon from 'material-ui-icons/OpenInNew'
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import OpenIcon from '@material-ui/icons/OpenInNew'
 
 const GENECARDS_URL = 'http://www.genecards.org/cgi-bin/carddisp.pl?gene='
 

@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import List, { ListItem, ListItemIcon } from 'material-ui/List'
-import NetworkIcon from 'material-ui-icons/NetworkCell'
-import TextField from 'material-ui/TextField'
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import NetworkIcon from '@material-ui/icons/NetworkCell'
+import TextField from '@material-ui/core/TextField'
 
 export default class MaxEdgePanel extends Component {
   state = {

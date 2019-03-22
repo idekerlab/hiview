@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import CyNetworkViewer from 'cy-network-viewer'
 import { SigmaRenderer } from 'cytoscapejs-renderer'
-import { CircularProgress } from 'material-ui/Progress'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // For context menu
 import CirclePackingPanel from '../CirclePackingPanel'

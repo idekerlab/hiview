@@ -10,7 +10,7 @@ import {
   LabelSeries
 } from 'react-vis'
 
-import Typography from 'material-ui/Typography'
+import Typography from '@material-ui/core/Typography'
 import AllEdgeDistribution from './AllEdgeDistribution'
 
 const containerStyle = {
@@ -264,7 +264,7 @@ class CrossFilter extends Component {
 
         <div style={titleStyle}>
           <Typography
-            variant="display1"
+            variant="h4"
             style={{ color: '#444444', fontSize: '1.2em',paddingTop: '0.5em' }}
           >
             Similarity Score

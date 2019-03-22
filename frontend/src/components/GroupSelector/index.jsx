@@ -1,13 +1,12 @@
 import React, { Component } from "react";
-import { withStyles } from "material-ui/styles";
-import Checkbox from "material-ui/Checkbox";
-import List, {
-  ListItem,
-  ListItemText
-} from "material-ui/List";
-import Avatar from "material-ui/Avatar";
+import { withStyles } from "@material-ui/core/styles";
+import Checkbox from "@material-ui/core/Checkbox";
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from "@material-ui/core/Avatar";
 
-import Typography from "material-ui/Typography";
+import Typography from "@material-ui/core/Typography";
 import * as d3Scale from "d3-scale";
 
 const PANEL_TITLE = 'Subsystems'

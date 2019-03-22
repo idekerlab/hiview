@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import SettingsPanel from './SettingsPanel'
-import Tabs, { Tab } from 'material-ui/Tabs'
-import { withStyles } from 'material-ui/styles'
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import { withStyles } from '@material-ui/core/styles'
 
 import PlotPanel from '../PlotPanel'
 
@@ -62,7 +63,7 @@ class AnalysisPanel extends Component {
       <div style={containerStyle}>
         <Tabs
           value={idx}
-          scrollable={true}
+          variant="scrollable"
           onChange={this.handleChange}
           ref={this.tabRef}
         >

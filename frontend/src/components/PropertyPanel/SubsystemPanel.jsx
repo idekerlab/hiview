@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
-import OpenIcon from 'material-ui-icons/OpenInNew'
-import InfoIcon from 'material-ui-icons/InfoOutline'
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import OpenIcon from '@material-ui/icons/OpenInNew'
+import InfoIcon from '@material-ui/icons/InfoOutlined'
 
 const descriptionStyle = {
   color: '#555555',
@@ -58,7 +61,7 @@ class SubsystemPanel extends Component {
           })}
         </List>
       </div>
-    )
+    );
   }
 
   handleClick = value => () => {

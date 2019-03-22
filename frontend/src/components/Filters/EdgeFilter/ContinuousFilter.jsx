@@ -3,8 +3,8 @@ import React from "react";
 import Slider, { createSliderWithTooltip } from "rc-slider";
 import "rc-slider/assets/index.css";
 
-import Checkbox from "material-ui/Checkbox";
-import { FormControlLabel } from "material-ui/Form";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 import BaseFilter from "./BaseFilter";
 

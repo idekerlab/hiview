@@ -1,6 +1,6 @@
 import React from 'react'
-import OpenIcon from 'material-ui-icons/OpenInNew'
-import Typography from 'material-ui/Typography'
+import OpenIcon from '@material-ui/icons/OpenInNew'
+import Typography from '@material-ui/core/Typography'
 
 import style from './style.css'
 
@@ -19,14 +19,14 @@ const TitleBar = props => (
       onClick={handleClick(props.geneSymbol)}
     />
     <Typography
-      variant="display1"
+      variant="h4"
       align="center"
       style={{ color: '#333333', fontSize: '2.5em', marginRight: '0.7em' }}
     >
       {props.geneSymbol}:
     </Typography>
     <Typography
-      variant="display2"
+      variant="h3"
       style={{ color: '#666666', fontSize: '1.3em' }}
     >
       {props.title}

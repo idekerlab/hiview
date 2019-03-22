@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
 
 // Icons
-import FitContentIcon from 'material-ui-icons/ZoomOutMap'
-import ZoomInIcon from 'material-ui-icons/ZoomIn'
-import ZoomOutIcon from 'material-ui-icons/ZoomOut'
-import LocateIcon from 'material-ui-icons/MyLocation'
-import CloseIcon from 'material-ui-icons/ChevronLeft'
-import OpenIcon from 'material-ui-icons/ChevronRight'
-import PlotIcon from 'material-ui-icons/Sort'
+import FitContentIcon from '@material-ui/icons/ZoomOutMap'
+import ZoomInIcon from '@material-ui/icons/ZoomIn'
+import ZoomOutIcon from '@material-ui/icons/ZoomOut'
+import LocateIcon from '@material-ui/icons/MyLocation'
+import CloseIcon from '@material-ui/icons/ChevronLeft'
+import OpenIcon from '@material-ui/icons/ChevronRight'
+import PlotIcon from '@material-ui/icons/Sort'
 
-import Card from 'material-ui/Card'
-import IconButton from 'material-ui/IconButton'
+import Card from '@material-ui/core/Card';
+import IconButton from '@material-ui/core/IconButton'
 
 import styles from './style.css'
 

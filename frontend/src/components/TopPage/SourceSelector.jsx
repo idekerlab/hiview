@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 
-import TextField from 'material-ui/TextField'
-import Button from 'material-ui/Button'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 
-import Menu, { MenuItem } from 'material-ui/Menu'
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 import { browserHistory } from 'react-router'
 
@@ -272,7 +273,7 @@ class SourceSelector extends Component {
             <Button
               aria-owns={anchorEl ? 'examples' : null}
               aria-haspopup="true"
-              variant="raised"
+              variant="contained"
               onClick={this.handleExample}
             >
               Examples
@@ -299,7 +300,7 @@ class SourceSelector extends Component {
           <Button
             color="primary"
             style={startStyle}
-            variant="raised"
+            variant="contained"
             onClick={this.handleStart}
             disabled={this.state.invalidUuid}
           >

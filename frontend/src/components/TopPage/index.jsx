@@ -3,16 +3,16 @@ import 'typeface-roboto'
 
 import SourceSelector from './SourceSelector'
 
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 
-import { grey } from 'material-ui/colors'
-import Typography from 'material-ui/Typography'
-import AppBar from 'material-ui/AppBar'
-import Toolbar from 'material-ui/Toolbar'
+import { grey } from '@material-ui/core/colors'
+import Typography from '@material-ui/core/Typography'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
 
-import HelpIcon from 'material-ui-icons/HelpOutline'
+import HelpIcon from '@material-ui/icons/HelpOutline'
 
-import IconButton from 'material-ui/IconButton'
+import IconButton from '@material-ui/core/IconButton'
 import GitHubIcon from '../../assets/images/github-white.svg'
 
 const styles = theme => ({
@@ -47,12 +47,12 @@ const styles = theme => ({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  display4: {
+  h1: {
     color: '#222222',
     fontWeight: 400,
     fontSize: '17em'
   },
-  display2: {
+  h3: {
     color: '#777777',
     fontWeight: 300,
     fontSize: '2em',
@@ -91,7 +91,7 @@ const TopPage = props => {
     <div className={classes.container}>
       <AppBar position="fixed" className={classes.bar}>
         <Toolbar className={classes.toolBar}>
-          <Typography variant="display1" color="inherit">
+          <Typography variant="h4" color="inherit">
             HiView {version}
           </Typography>
 
@@ -110,10 +110,10 @@ const TopPage = props => {
 
       <div className={classes.root}>
         <div>
-          <Typography variant="display4" className={classes.display4}>
+          <Typography variant="h1" className={classes.h1}>
             HiView
           </Typography>
-          <Typography variant="display2" className={classes.display2}>
+          <Typography variant="h3" className={classes.h3}>
             Universal browser for hierarchical data
           </Typography>
         </div>
