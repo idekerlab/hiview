@@ -1,11 +1,12 @@
 import * as d3Scale from 'd3-scale'
+import * as d3ScaleChromatic from 'd3-scale-chromatic'
 export const MAIN_EDGE_TAG = 'Main Feature'
 export const PATTERN = /[ -]/g
 
 const PARENT_WT_TAG = 'Parent weight'
 const CHILDREN_WT_TAG = 'Children weight'
 
-const category10 = d3Scale.schemeCategory10
+// const category10 = d3Scale.schemeCategory10
 
 const DEF_COLOR = '#777777'
 
@@ -107,7 +108,7 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
 
   const slots = weightRange.length
   const colorScale = d3Scale
-    .scaleSequential(d3Scale.interpolateInferno)
+    .scaleSequential(d3ScaleChromatic.interpolateInferno)
     .domain([parentScore, maxVal])
 
   let len = slots
@@ -326,7 +327,7 @@ export const filterEdge = (network, maxEdgeCount) => {
   const nodeSet = new Set()
 
   const colorGenerator = d3Scale
-    .scaleSequential(d3Scale.interpolateInferno)
+    .scaleSequential(d3ScaleChromatic.interpolateInferno)
     .domain([subMin, maxScore])
 
   for (let i = 0; i < subsetLen; i++) {
@@ -373,7 +374,7 @@ const createBuckets = (
   colorMap
 ) => {
   const colorScale = d3Scale
-    .scaleSequential(d3Scale.interpolateInferno)
+    .scaleSequential(d3ScaleChromatic.interpolateInferno)
     .domain([min, max])
 
   const range = max - min

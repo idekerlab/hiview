@@ -1,5 +1,4 @@
 import { createAction } from 'redux-actions'
-import axios from 'axios'
 
 const ENRICHR_URL = 'http://amp.pharm.mssm.edu/Enrichr/addList'
 
