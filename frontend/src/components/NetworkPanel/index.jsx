@@ -80,12 +80,20 @@ class NetworkPanel extends Component {
 
     // From NDEx to CYJS converter
     const linkEntry = props[NDEX_LINK_TAG]
+
+
+
     if (!linkEntry) {
       // Link is not available = no raw interaction available
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
       this.props.propertyActions.setProperty(props.id, props, 'term')
       return
     }
+
+
+
+
+
 
     const linkParts = linkEntry.split(']')
     if (linkParts.length !== 2) {

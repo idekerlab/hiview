@@ -23,6 +23,7 @@ import SplitPane from 'react-split-pane'
 import LoadingPanel from './LoadingPanel'
 import AutoLoadThresholdPanel from './AutoLoadThresholdPanel'
 import LargeNetworkWarningPanel from './LargeNetworkWarningPanel'
+import InteractionNetworkSelector from '../InteractionNetworkSelector'
 
 const controlWrapperStyle = {
   width: '100%'
@@ -208,6 +209,7 @@ class TermDetailsPanel extends Component {
 
     // Calculate
     const topHeight = this.state.networkPanelHeight
+    const allProps = this.props
 
     return (
       <div>
@@ -267,6 +269,7 @@ class TermDetailsPanel extends Component {
                   <div />
                 ) : (
                   <div style={controlPanelStyle}>
+                    <InteractionNetworkSelector {...allProps} />
                     <LayoutSelector
                       style={layoutPanelStyle}
                       commandActions={this.props.interactionsCommandActions}

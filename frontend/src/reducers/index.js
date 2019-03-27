@@ -26,6 +26,7 @@ import rendering_options from './rendering-options'
 
 import enrichment from './enrichment'
 import groups from './groups'
+import externalNetworks from './external-networks'
 
 
 // Application states
@@ -56,5 +57,6 @@ export default combineReducers({
   interaction_style,
   rendering_options,
   enrichment,
-  groups
+  groups,
+  externalNetworks
 })

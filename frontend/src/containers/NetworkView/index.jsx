@@ -37,6 +37,7 @@ import { theme } from '../theme'
 import 'typeface-roboto'
 
 import * as renderingOptionsActions from '../../actions/rendering-options'
+import * as externalNetworksActions from '../../actions/external-networks'
 
 const baseStyle = {
   position: 'fixed',
@@ -92,7 +93,8 @@ function mapStateToProps(state) {
 
     renderingOptions: state.rendering_options,
     enrichment: state.enrichment,
-    groups: state.groups
+    groups: state.groups,
+    externalNetworks: state.externalNetworks
   }
 }
 
@@ -142,7 +144,8 @@ function mapDispatchToProps(dispatch) {
       dispatch
     ),
     enrichmentActions: bindActionCreators(enrichmentActions, dispatch),
-    groupsActions: bindActionCreators(groupsActions, dispatch)
+    groupsActions: bindActionCreators(groupsActions, dispatch),
+    externalNetworksActions: bindActionCreators(externalNetworksActions, dispatch)
   }
 }
 

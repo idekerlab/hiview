@@ -116,6 +116,8 @@ export default class BaseSplitPane extends Component {
               originalEdgeCount={this.props.rawInteractions.get(
                 'originalEdgeCount'
               )}
+              externalNetworks={this.props.externalNetworks}
+              externalNetworksActions={this.props.externalNetworksActions}
             />
           )}
         </SplitPane>
