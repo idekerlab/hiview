@@ -1,16 +1,26 @@
+import Cytoscape from 'cytoscape';
+import COSEBilkent from 'cytoscape-cose-bilkent';
+
 import React, { useEffect, useState } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
 
+Cytoscape.use(COSEBilkent);
+
+
+
+import DEFAULT_STYLE from './visualstyle'
 import './style.css'
 import Warning from './Warning'
+import LoadingPanel from '../PropertyPanel/LoadingPanel'
 let cyInstance = null
 
-const BASE_STYLE = { width: '100%', height: '100%', background: '#222233' }
+const BASE_STYLE = { width: '100%', height: '100%', background: '#222230' }
 
 const PRESET_LAYOUT = {
   name: 'preset',
   padding: 6
 }
+
 
 const COCENTRIC_LAYOUT = {
   name: 'concentric',
@@ -19,18 +29,11 @@ const COCENTRIC_LAYOUT = {
 }
 
 const COSE_SETTING = {
-  name: 'cose',
-  padding: 6,
-  nodeRepulsion: function(node) {
-    return 10080000
-  },
-  nodeOverlap: 400000,
-  idealEdgeLength: function(edge) {
-    return 10
-  }
+  name: 'cose-bilkent'
 }
 
 const CytoscapeViewer = props => {
+  console.log('* Viewer', props)
 
   useEffect(() => {
     if (cyInstance === undefined || cyInstance === null) {
@@ -80,41 +83,35 @@ const CytoscapeViewer = props => {
     }
   }, [])
 
-  const numObjects = props.network.nodeCount + props.network.edgeCount
-  if (numObjects > 5000) {
-    return <Warning />
+  // const numObjects = props.network.nodeCount + props.network.edgeCount
+  // if (numObjects > 5000) {
+  //   return <Warning />
+  // }
+
+  const isLoading = props.externalNetworks.loading
+  if (isLoading) {
+    return <LoadingPanel {...props} />
   }
 
-  const cyjs = props.network.network
-  const selectedGenes = props.search.selectedGenes
+  const selectedNetwork = props.externalNetworks.selectedNetwork
 
-  if (cyjs === null || cyjs === undefined) {
+  if (selectedNetwork === null || selectedNetwork === undefined) {
     return null
   }
 
-  const isLayoutAvailable = cyjs.isLayout
-
-  let layout = PRESET_LAYOUT
-  if (!isLayoutAvailable && cyjs.elements.length < 500) {
-    layout = COSE_SETTING
-  } else if (!isLayoutAvailable) {
-    layout = COCENTRIC_LAYOUT
-  }
-
-  const { resized } = props
-
-  console.log('%%%%%%%%%%resize:', resized)
-
+  let layout = COSE_SETTING
   if (cyInstance !== null) {
     cyInstance.resize()
   }
 
+  const cyjs = selectedNetwork.network
+
   return (
     <CytoscapeComponent
-      elements={cyjs.elements}
+      elements={CytoscapeComponent.normalizeElements(cyjs.elements)}
       layout={layout}
       style={BASE_STYLE}
-      stylesheet={cyjs.style}
+      stylesheet={DEFAULT_STYLE}
       cy={cy => (cyInstance = cy)}
     />
   )

@@ -24,6 +24,7 @@ import LoadingPanel from './LoadingPanel'
 import AutoLoadThresholdPanel from './AutoLoadThresholdPanel'
 import LargeNetworkWarningPanel from './LargeNetworkWarningPanel'
 import InteractionNetworkSelector from '../InteractionNetworkSelector'
+import CytoscapeViewer from '../CytoscapeViewer'
 
 const controlWrapperStyle = {
   width: '100%'
@@ -211,12 +212,8 @@ class TermDetailsPanel extends Component {
     const topHeight = this.state.networkPanelHeight
     const allProps = this.props
 
-    const selectedExternalNetwork = this.props.externalNetworks.selectedNetworkName
-    console.log(
-      '---------------- Selected:',
-      this.props,
-      selectedExternalNetwork
-    )
+    const selectedExternalNetwork = this.props.externalNetworks
+      .selectedNetworkUuid
 
     return (
       <div>
@@ -263,42 +260,17 @@ class TermDetailsPanel extends Component {
                 ) : (
                   <div style={controlPanelStyle}>
                     <InteractionNetworkSelector {...allProps} />
-                    <LayoutSelector
-                      style={layoutPanelStyle}
-                      commandActions={this.props.interactionsCommandActions}
-                    />
-                    <CrossFilter
-                      panelWidth={this.props.width}
-                      networkData={networkProps}
-                      originalEdgeCount={this.props.originalEdgeCount}
-                      maxEdgeCount={this.props.maxEdgeCount}
-                      networkProps={networkProps}
-                      filters={raw.filters}
-                      commandActions={this.props.interactionsCommandActions}
-                      commands={this.props.interactionsCommands}
-                      filtersActions={this.props.filtersActions}
-                    />
-
-                    <div style={controllerStyle}>
-                      <AutoLoadThresholdPanel
-                        autoLoadThreshold={this.props.autoLoadThreshold}
-                        rawInteractionsActions={
-                          this.props.rawInteractionsActions
-                        }
-                      />
-                      <MaxEdgePanel
-                        maxEdgeCount={this.props.maxEdgeCount}
-                        uiState={this.props.uiState}
-                        uiStateActions={this.props.uiStateActions}
-                        rawInteractionsActions={
-                          this.props.rawInteractionsActions
-                        }
-                      />
-                    </div>
+                    {this.getControllers(
+                      selectedExternalNetwork,
+                      layoutPanelStyle,
+                      networkProps,
+                      controllerStyle,
+                      raw
+                    )}
                   </div>
                 )}
 
-                {hidden ? (
+                {(hidden || selectedExternalNetwork) ? (
                   <div />
                 ) : (
                   <div style={filterPanelStyle}>
@@ -348,6 +320,51 @@ class TermDetailsPanel extends Component {
     )
   }
 
+  getControllers = (
+    externalNetwork,
+    layoutPanelStyle,
+    networkProps,
+    controllerStyle,
+    raw
+  ) => {
+    if (externalNetwork !== null) {
+      return null
+    }
+
+    return (
+      <React.Fragment>
+        <LayoutSelector
+          style={layoutPanelStyle}
+          commandActions={this.props.interactionsCommandActions}
+        />
+        <CrossFilter
+          panelWidth={this.props.width}
+          networkData={networkProps}
+          originalEdgeCount={this.props.originalEdgeCount}
+          maxEdgeCount={this.props.maxEdgeCount}
+          networkProps={networkProps}
+          filters={raw.filters}
+          commandActions={this.props.interactionsCommandActions}
+          commands={this.props.interactionsCommands}
+          filtersActions={this.props.filtersActions}
+        />
+
+        <div style={controllerStyle}>
+          <AutoLoadThresholdPanel
+            autoLoadThreshold={this.props.autoLoadThreshold}
+            rawInteractionsActions={this.props.rawInteractionsActions}
+          />
+          <MaxEdgePanel
+            maxEdgeCount={this.props.maxEdgeCount}
+            uiState={this.props.uiState}
+            uiStateActions={this.props.uiStateActions}
+            rawInteractionsActions={this.props.rawInteractionsActions}
+          />
+        </div>
+      </React.Fragment>
+    )
+  }
+
   getNetworkPanel = (
     hidden,
     topHeight,
@@ -363,7 +380,6 @@ class TermDetailsPanel extends Component {
     }
 
     if (externalNetwork === null || externalNetwork === undefined) {
-      console.log('EST++++++++++++++++++++++++++++++', externalNetwork)
       return (
         <RawInteractionPanel
           subnet={interactions}
@@ -387,7 +403,8 @@ class TermDetailsPanel extends Component {
         />
       )
     } else {
-      return <div />
+      const allProps = this.props
+      return <CytoscapeViewer {...allProps} />
     }
   }
 

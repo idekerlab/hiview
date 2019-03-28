@@ -5,10 +5,12 @@ const utils = new CyNetworkUtils()
 const cx2js = new CxToJs(utils)
 
 export const SET_EXTERNAL_NETWORK = 'SET_EXTERNAL_NETWORK'
+export const CLEAR_EXTERNAL_NETWORK = 'CLEAR_EXTERNAL_NETWORK'
 export const FETCH_EXTERNAL_NETWORK = 'FETCH_EXTERNAL_NETWORK'
 export const RECEIVE_EXTERNAL_NETWORK = 'RECEIVE_EXTERNAL_NETWORK'
 
 export const setExternalNetwork = createAction(SET_EXTERNAL_NETWORK)
+export const clearExternalNetwork = createAction(CLEAR_EXTERNAL_NETWORK)
 export const fetchExternalNetwork = createAction(FETCH_EXTERNAL_NETWORK)
 export const receiveExternalNetwork = createAction(RECEIVE_EXTERNAL_NETWORK)
 
@@ -65,7 +67,6 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
         searchString: nodes.join(' '),
         searchDepth: 1
       }
-      console.log(nodes, query)
 
       const searchUrl =
         'http://public.ndexbio.org/v2/search/network/' +
@@ -75,7 +76,6 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
 
       fetch(searchUrl, postSetting)
         .then(response2 => {
-          console.log('DirectNet start =- ' + searchUrl)
           if (!response2.ok) {
             throw Error(response2.statusText)
           } else {
@@ -83,7 +83,6 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
           }
         })
         .then(directNetwork => {
-          console.log('DirectNet =- ', directNetwork)
           const cyjs = convertCx2cyjs(directNetwork)
           return dispatch(
             receiveExternalNetwork({ url, network: cyjs, error: null })
@@ -100,8 +99,6 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
 
 const extractNodes = cx => {
   const filtered = cx.filter(entry => entry.nodes)
-  console.log('Original CX = ', cx, filtered)
-
   const nodes = filtered[0].nodes
   return nodes.map(node => node.n)
 }

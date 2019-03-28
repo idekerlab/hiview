@@ -35,15 +35,17 @@ const styles = theme => ({
 
 const InteractionNetworkSelector = props => {
   const { classes, externalNetworks } = props
-  const networkList = externalNetworks.externalNetworks
 
-  const [selected, setSelected] = useState(networkList[0].name)
+  const selected = externalNetworks.selectedNetworkName
+  const selectedUuid = externalNetworks.selectedNetworkUuid
+
+  const networkList = externalNetworks.externalNetworks
 
   const handleChange = name => event => {
     const newNetName = event.target.value
+    props.externalNetworksActions.setExternalNetwork({name: newNetName, uuid: getUuid(newNetName)})
 
-    setSelected(newNetName)
-    props.externalNetworksActions.setExternalNetwork(getUuid(newNetName))
+    fetchNet()
   }
 
   const getUuid = selectedItem => {
@@ -59,14 +61,12 @@ const InteractionNetworkSelector = props => {
     return null
   }
 
-  const handleClick = event => {
+  const fetchNet = () => {
     const subsystem = props.currentProperty.data
     const linkEntry = subsystem['ndex_internalLink']
 
     const pattern = /[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/
     const matches = linkEntry.match(pattern)
-
-    console.log('************ MATCH:', matches[0])
 
     const uuid = matches[0]
     const locationParams = props.location
@@ -81,6 +81,11 @@ const InteractionNetworkSelector = props => {
       uuid,
       getUuid(selected)
     )
+
+  }
+
+  const handleClick = event => {
+    fetchNet()
   }
 
   return (
