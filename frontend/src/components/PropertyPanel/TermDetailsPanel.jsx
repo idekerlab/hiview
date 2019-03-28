@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
 
 import RawInteractionPanel from './RawInteractionPanel'
 import SubsystemPanel from './SubsystemPanel'
@@ -211,17 +211,24 @@ class TermDetailsPanel extends Component {
     const topHeight = this.state.networkPanelHeight
     const allProps = this.props
 
+    const selectedExternalNetwork = this.props.externalNetworks.selectedNetworkName
+    console.log(
+      '---------------- Selected:',
+      this.props,
+      selectedExternalNetwork
+    )
+
     return (
       <div>
-
         <SplitPane
           split="horizontal"
           minSize={50}
           size={this.state.networkPanelHeight}
           onDragFinished={topHeight => this.handleHorizontalResize(topHeight)}
         >
-          <div style={{ width: '100%', display: 'flex', flexDirection: 'column'}}>
-
+          <div
+            style={{ width: '100%', display: 'flex', flexDirection: 'column' }}
+          >
             <MessageBar
               height={50}
               title={this.props.title}
@@ -230,29 +237,15 @@ class TermDetailsPanel extends Component {
               maxEdgeCount={this.props.maxEdgeCount}
             />
 
-            {hidden ? (
-              <EmptyInteractionPanel height={topHeight} />
-            ) : (
-              <RawInteractionPanel
-                subnet={interactions}
-                subnetSelected={selected}
-                subnetSelectedPerm={selectedPerm}
-                selectedTerm={this.props.currentProperty.id}
-                handleClose={this.props.handleClose}
-                commandActions={this.props.interactionsCommandActions}
-                commands={this.props.interactionsCommands}
-                loading={raw.loading}
-                selection={this.props.selection}
-                selectionActions={this.props.selectionActions}
-                filters={raw.filters}
-                interactionStyleActions={this.props.interactionStyleActions}
-                networkStyle={visualStyle}
-                panelWidth={this.props.width}
-                expanded={this.props.expanded}
-                enrichment={this.props.enrichment}
-                enrichmentActions={this.props.enrichmentActions}
-                uiState={this.props.uiState}
-              />
+            {this.getNetworkPanel(
+              hidden,
+              topHeight,
+              selectedExternalNetwork,
+              interactions,
+              selected,
+              selectedPerm,
+              visualStyle,
+              raw
             )}
           </div>
 
@@ -285,7 +278,6 @@ class TermDetailsPanel extends Component {
                       commands={this.props.interactionsCommands}
                       filtersActions={this.props.filtersActions}
                     />
-
 
                     <div style={controllerStyle}>
                       <AutoLoadThresholdPanel
@@ -354,6 +346,49 @@ class TermDetailsPanel extends Component {
         </SplitPane>
       </div>
     )
+  }
+
+  getNetworkPanel = (
+    hidden,
+    topHeight,
+    externalNetwork,
+    interactions,
+    selected,
+    selectedPerm,
+    visualStyle,
+    raw
+  ) => {
+    if (hidden) {
+      return <EmptyInteractionPanel height={topHeight} />
+    }
+
+    if (externalNetwork === null || externalNetwork === undefined) {
+      console.log('EST++++++++++++++++++++++++++++++', externalNetwork)
+      return (
+        <RawInteractionPanel
+          subnet={interactions}
+          subnetSelected={selected}
+          subnetSelectedPerm={selectedPerm}
+          selectedTerm={this.props.currentProperty.id}
+          handleClose={this.props.handleClose}
+          commandActions={this.props.interactionsCommandActions}
+          commands={this.props.interactionsCommands}
+          loading={raw.loading}
+          selection={this.props.selection}
+          selectionActions={this.props.selectionActions}
+          filters={raw.filters}
+          interactionStyleActions={this.props.interactionStyleActions}
+          networkStyle={visualStyle}
+          panelWidth={this.props.width}
+          expanded={this.props.expanded}
+          enrichment={this.props.enrichment}
+          enrichmentActions={this.props.enrichmentActions}
+          uiState={this.props.uiState}
+        />
+      )
+    } else {
+      return <div />
+    }
   }
 
   handleChange = (event, value) => {

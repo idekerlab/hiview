@@ -43,6 +43,7 @@ const InteractionNetworkSelector = props => {
     const newNetName = event.target.value
 
     setSelected(newNetName)
+    props.externalNetworksActions.setExternalNetwork(getUuid(newNetName))
   }
 
   const getUuid = selectedItem => {
@@ -96,14 +97,6 @@ const InteractionNetworkSelector = props => {
           })}
         </Select>
         <FormHelperText>External Networks</FormHelperText>
-      </FormControl>
-
-      <FormControl className={classes.formControl}>
-        <Select fullWidth value={'Direct only'}>
-          <MenuItem value={'Direct only'}>Direct Connections</MenuItem>
-          <MenuItem value={'Interconnection'}>Interconnections</MenuItem>
-        </Select>
-        <FormHelperText>Search Mode</FormHelperText>
       </FormControl>
 
       <Button

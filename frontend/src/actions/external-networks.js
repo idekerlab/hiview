@@ -20,21 +20,28 @@ export const fetchExternalNetworkFromUrl = (url, uuid, interactomeUuid) => {
   t0 = performance.now()
   return dispatch => {
     dispatch(fetchExternalNetwork(url))
-    return getNetworkData(url, uuid, dispatch)
+    return getNetworkData(url, uuid, dispatch, interactomeUuid)
   }
 }
 
-const getNetworkData = (url, uuid, dispatch) => {
-  return fetchDataFromRemote(url, uuid, dispatch)
+const getNetworkData = (url, uuid, dispatch, interactomeUuid) => {
+  return fetchDataFromRemote(url, uuid, dispatch, interactomeUuid)
 }
 
-const fetchDataFromRemote = (url, uuid, dispatch) => {
+const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
   const headers = new Headers()
   headers.set('Accept-Encoding', 'br')
   const setting = {
     method: 'GET',
     mode: 'cors',
     headers: headers
+  }
+
+  const postSetting = {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: ''
   }
 
   return fetch(url, setting)
@@ -53,12 +60,35 @@ const fetchDataFromRemote = (url, uuid, dispatch) => {
     })
     .then(network => {
       const nodes = extractNodes(network)
-      console.log(nodes)
 
-      const cyjs = convertCx2cyjs(network)
-      return dispatch(
-        receiveExternalNetwork({ url, network: cyjs, error: null })
-      )
+      const query = {
+        searchString: nodes.join(' '),
+        searchDepth: 1
+      }
+      console.log(nodes, query)
+
+      const searchUrl =
+        'http://public.ndexbio.org/v2/search/network/' +
+        interactomeUuid +
+        '/interconnectquery'
+      postSetting.body = JSON.stringify(query)
+
+      fetch(searchUrl, postSetting)
+        .then(response2 => {
+          console.log('DirectNet start =- ' + searchUrl)
+          if (!response2.ok) {
+            throw Error(response2.statusText)
+          } else {
+            return response2.json()
+          }
+        })
+        .then(directNetwork => {
+          console.log('DirectNet =- ', directNetwork)
+          const cyjs = convertCx2cyjs(directNetwork)
+          return dispatch(
+            receiveExternalNetwork({ url, network: cyjs, error: null })
+          )
+        })
     })
     .catch(err => {
       console.log('Fetch Error: ', err)

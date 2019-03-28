@@ -65,6 +65,7 @@
         "react": "^16.8.5",
         "react-color": "^2.14.1",
         "react-contextmenu": "2.9.2",
+        "react-cytoscapejs": "^1.1.0",
         "react-dom": "^16.8.5",
         "react-event-listener": "0.5.5",
         "react-mosaic-component": "^1.0.3",
