@@ -306,7 +306,7 @@ class TermDetailsPanel extends Component {
                 )}
                 {this.state.selectedTab === 1 && (
                   <TabContainer>
-                    <GeneList genes={geneList} />
+                    <GeneList genes={geneList} {...allProps} />
                   </TabContainer>
                 )}
                 {this.state.selectedTab === 2 && (

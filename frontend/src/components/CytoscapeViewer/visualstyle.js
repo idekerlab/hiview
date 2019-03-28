@@ -5,7 +5,7 @@ const DEFAULT_STYLE = [
       'background-opacity': 1,
       'background-color': 'teal',
       shape: 'roundrectangle',
-      width: 45,
+      width: 40,
       height: 18,
       label: 'data(name)',
       color: '#FFFFFF',

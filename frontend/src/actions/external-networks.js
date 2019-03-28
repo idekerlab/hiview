@@ -9,10 +9,16 @@ export const CLEAR_EXTERNAL_NETWORK = 'CLEAR_EXTERNAL_NETWORK'
 export const FETCH_EXTERNAL_NETWORK = 'FETCH_EXTERNAL_NETWORK'
 export const RECEIVE_EXTERNAL_NETWORK = 'RECEIVE_EXTERNAL_NETWORK'
 
+export const SET_SELECTED_NODES = 'SET_SELECTED_NODES'
+export const CLEAR_SELECTED_NODES = 'CLEAR_SELECTED_NODES'
+
 export const setExternalNetwork = createAction(SET_EXTERNAL_NETWORK)
 export const clearExternalNetwork = createAction(CLEAR_EXTERNAL_NETWORK)
 export const fetchExternalNetwork = createAction(FETCH_EXTERNAL_NETWORK)
 export const receiveExternalNetwork = createAction(RECEIVE_EXTERNAL_NETWORK)
+
+export const setSelectedNodes = createAction(SET_SELECTED_NODES)
+export const clearSelectedNodes = createAction(CLEAR_SELECTED_NODES)
 
 let t0 = 0
 let t1 = 0
@@ -72,6 +78,9 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
         'http://public.ndexbio.org/v2/search/network/' +
         interactomeUuid +
         '/interconnectquery'
+
+      console.log('((((((((((((((((Search URL:', interactomeUuid, searchUrl)
+
       postSetting.body = JSON.stringify(query)
 
       fetch(searchUrl, postSetting)

@@ -29,13 +29,21 @@ const COCENTRIC_LAYOUT = {
 }
 
 const COSE_SETTING = {
-  name: 'cose-bilkent'
+  name: 'cose-bilkent',
+  nodeRepulsion: 180,
+  idealEdgeLength: 130,
+  gravity: 1.25
+
 }
 
 const CytoscapeViewer = props => {
-  console.log('* Viewer', props)
+
+  const selectedGenes = props.rawInteractions.get('selected')
+  console.log('GList -= ', selectedGenes)
 
   useEffect(() => {
+    console.log('* Viewer effect:', props)
+
     if (cyInstance === undefined || cyInstance === null) {
       return
     }
@@ -81,7 +89,7 @@ const CytoscapeViewer = props => {
     return () => {
       console.log('unmount')
     }
-  }, [])
+  }, [props.externalNetworks])
 
   // const numObjects = props.network.nodeCount + props.network.edgeCount
   // if (numObjects > 5000) {

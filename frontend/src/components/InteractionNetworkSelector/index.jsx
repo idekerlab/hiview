@@ -37,15 +37,17 @@ const InteractionNetworkSelector = props => {
   const { classes, externalNetworks } = props
 
   const selected = externalNetworks.selectedNetworkName
-  const selectedUuid = externalNetworks.selectedNetworkUuid
-
   const networkList = externalNetworks.externalNetworks
 
   const handleChange = name => event => {
     const newNetName = event.target.value
-    props.externalNetworksActions.setExternalNetwork({name: newNetName, uuid: getUuid(newNetName)})
+    const interactomeUUID = getUuid(newNetName)
+    props.externalNetworksActions.setExternalNetwork({
+      name: newNetName,
+      uuid: interactomeUUID
+    })
 
-    fetchNet()
+    fetchNet(interactomeUUID)
   }
 
   const getUuid = selectedItem => {
@@ -61,7 +63,7 @@ const InteractionNetworkSelector = props => {
     return null
   }
 
-  const fetchNet = () => {
+  const fetchNet = interactomeUUID => {
     const subsystem = props.currentProperty.data
     const linkEntry = subsystem['ndex_internalLink']
 
@@ -76,12 +78,12 @@ const InteractionNetworkSelector = props => {
     const NDEX_API = '.ndexbio.org/v2/network/'
     const url = 'http://' + serverType + NDEX_API + uuid
 
+    console.log('((((((((((((((((passing INT:', interactomeUUID)
     props.externalNetworksActions.fetchExternalNetworkFromUrl(
       url,
       uuid,
-      getUuid(selected)
+      interactomeUUID
     )
-
   }
 
   const handleClick = event => {
