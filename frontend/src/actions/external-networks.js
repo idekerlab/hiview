@@ -79,8 +79,6 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
         interactomeUuid +
         '/interconnectquery'
 
-      console.log('((((((((((((((((Search URL:', interactomeUuid, searchUrl)
-
       postSetting.body = JSON.stringify(query)
 
       fetch(searchUrl, postSetting)
@@ -93,6 +91,9 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
         })
         .then(directNetwork => {
           const cyjs = convertCx2cyjs(directNetwork)
+          const edges = filterEdges(cyjs.elements.edges)
+          cyjs.elements.edges = edges
+
           return dispatch(
             receiveExternalNetwork({ url, network: cyjs, error: null })
           )
@@ -110,6 +111,10 @@ const extractNodes = cx => {
   const filtered = cx.filter(entry => entry.nodes)
   const nodes = filtered[0].nodes
   return nodes.map(node => node.n)
+}
+
+const filterEdges = edges => {
+  return edges.filter(edge => edge.data.source !== edge.data.target)
 }
 
 const convertCx2cyjs = cx => {

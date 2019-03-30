@@ -1,12 +1,10 @@
-import Cytoscape from 'cytoscape';
-import COSEBilkent from 'cytoscape-cose-bilkent';
+import Cytoscape from 'cytoscape'
+import COSEBilkent from 'cytoscape-cose-bilkent'
 
 import React, { useEffect, useState } from 'react'
 import CytoscapeComponent from 'react-cytoscapejs'
 
-Cytoscape.use(COSEBilkent);
-
-
+Cytoscape.use(COSEBilkent)
 
 import DEFAULT_STYLE from './visualstyle'
 import './style.css'
@@ -21,7 +19,6 @@ const PRESET_LAYOUT = {
   padding: 6
 }
 
-
 const COCENTRIC_LAYOUT = {
   name: 'concentric',
   padding: 6,
@@ -33,58 +30,78 @@ const COSE_SETTING = {
   nodeRepulsion: 180,
   idealEdgeLength: 130,
   gravity: 1.25
-
 }
 
 const CytoscapeViewer = props => {
-
   const selectedGenes = props.rawInteractions.get('selected')
   console.log('GList -= ', selectedGenes)
+  const [initialized, initialize] = useState(false)
 
   useEffect(() => {
-    console.log('* Viewer effect:', props)
 
     if (cyInstance === undefined || cyInstance === null) {
       return
     }
-    console.log('This should run only once:  CyViewer Mounted:', cyInstance)
 
-    cyInstance.on('tap', function(event) {
-      try {
-        cyInstance.nodes().removeClass('connected')
-        const target = event.target
-        if (target === cyInstance) {
-          props.networkActions.deselectAll()
-          console.log('UNSELECT')
+    const { selectedNodes } = props.externalNetworks
+
+    console.log('Selected nodes:', selectedNodes)
+
+    if (selectedNodes.length !== 0) {
+      cyInstance.nodes().unselect()
+
+      const modified = selectedNodes.map(node => '[name="' + node + '"]')
+
+      const queryStr = modified.join(',')
+
+      console.log('Selected nodes:', queryStr, selectedNodes)
+      cyInstance
+        .nodes()
+        .filter(queryStr)
+        .select()
+    }
+
+    if (!initialized) {
+      console.log('INIT++++++++++++++++++++++++++++++++++++++', props)
+      cyInstance.on('tap', function(event) {
+        try {
+          cyInstance.nodes().removeClass('connected')
+          const target = event.target
+          if (target === cyInstance) {
+            props.networkActions.deselectAll()
+            console.log('UNSELECT')
+          }
+        } catch (e) {
+          console.warn(e)
         }
-      } catch (e) {
-        console.warn(e)
-      }
-    })
+      })
 
-    cyInstance.on('tap', 'node', function() {
-      try {
-        cyInstance.nodes().removeClass('connected')
-        const selected = this.data()
-        props.networkActions.selectNode(selected)
-      } catch (e) {
-        console.warn(e)
-      }
-    })
+      cyInstance.on('tap', 'node', function() {
+        try {
+          cyInstance.nodes().removeClass('connected')
+          const selected = this.data()
+          props.networkActions.selectNode(selected)
+        } catch (e) {
+          console.warn(e)
+        }
+      })
 
-    cyInstance.on('tap', 'edge', function() {
-      try {
-        cyInstance.nodes().removeClass('connected')
-        const selected = this.data()
-        const { source, target } = selected
+      cyInstance.on('tap', 'edge', function() {
+        try {
+          cyInstance.nodes().removeClass('connected')
+          const selected = this.data()
+          const { source, target } = selected
 
-        cyInstance.$('#' + source + ', #' + target).addClass('connected')
+          cyInstance.$('#' + source + ', #' + target).addClass('connected')
 
-        props.networkActions.selectEdge(selected)
-      } catch (e) {
-        console.warn(e)
-      }
-    })
+          props.networkActions.selectEdge(selected)
+        } catch (e) {
+          console.warn(e)
+        }
+      })
+
+      initialize(true)
+    }
 
     return () => {
       console.log('unmount')
