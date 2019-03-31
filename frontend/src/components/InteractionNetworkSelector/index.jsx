@@ -10,6 +10,8 @@ import Button from '@material-ui/core/Button'
 import ApplyIcon from '@material-ui/icons/Refresh'
 import MenuItem from '@material-ui/core/MenuItem'
 
+import OpenInCytoscapeButton from '../OpenInCytoscapeButton'
+
 // Base style
 const styles = theme => ({
   root: {
@@ -34,7 +36,7 @@ const styles = theme => ({
 })
 
 const InteractionNetworkSelector = props => {
-  const { classes, externalNetworks } = props
+  const { classes, externalNetworks, ...others } = props
 
   const selected = externalNetworks.selectedNetworkName
   const networkList = externalNetworks.externalNetworks
@@ -106,15 +108,17 @@ const InteractionNetworkSelector = props => {
         <FormHelperText>External Networks</FormHelperText>
       </FormControl>
 
-      <Button
-        className={classes.button}
-        variant="contained"
-        color="primary"
-        onClick={handleClick}
-        size="small"
-      >
-        <ApplyIcon className={classes.icon} />
-      </Button>
+      <OpenInCytoscapeButton externalNetworks={externalNetworks} />
+
+      {/*<Button*/}
+      {/*  className={classes.button}*/}
+      {/*  variant="contained"*/}
+      {/*  color="primary"*/}
+      {/*  onClick={handleClick}*/}
+      {/*  size="small"*/}
+      {/*>*/}
+      {/*  <ApplyIcon className={classes.icon} />*/}
+      {/*</Button>*/}
     </div>
   )
 }

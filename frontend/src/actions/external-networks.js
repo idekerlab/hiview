@@ -89,13 +89,16 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
             return response2.json()
           }
         })
-        .then(directNetwork => {
+        .then(cx => {
+          const directNetwork = removeLoops(cx)
           const cyjs = convertCx2cyjs(directNetwork)
-          const edges = filterEdges(cyjs.elements.edges)
-          cyjs.elements.edges = edges
-
           return dispatch(
-            receiveExternalNetwork({ url, network: cyjs, error: null })
+            receiveExternalNetwork({
+              url,
+              network: cyjs,
+              cx: directNetwork,
+              error: null
+            })
           )
         })
     })
@@ -111,6 +114,21 @@ const extractNodes = cx => {
   const filtered = cx.filter(entry => entry.nodes)
   const nodes = filtered[0].nodes
   return nodes.map(node => node.n)
+}
+
+const removeLoops = cx => {
+  const filtered = cx.filter(entry => entry.edges)
+  const edges = filtered[0].edges
+  const newEdges = edges.filter(edge => edge.s !== edge.t)
+  let len = cx.length
+  while (len--) {
+    const entry = cx[len]
+    if (entry.edges) {
+      cx[len] = { edges: newEdges }
+      break
+    }
+  }
+  return cx
 }
 
 const filterEdges = edges => {

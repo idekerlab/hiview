@@ -30,7 +30,7 @@ const GeneList = props => {
     <div style={{ overflow: 'auto' }}>
       <List>
         {sorted.map((gene, i) => (
-          <ListItem key={i} onClick={handleSelect(gene)}>
+          <ListItem button key={i} onClick={handleSelect(gene)}>
             <IconButton onClick={handleClick(gene)}>
               <OpenIcon />
             </IconButton>
