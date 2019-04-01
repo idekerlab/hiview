@@ -113,6 +113,8 @@ class LeftPanel extends Component {
             renderingOptions={renderingOptions}
             rawInteractions={this.props.rawInteractions}
             interactionsCommandActions={this.props.interactionsCommandActions}
+            externalNetworks={this.props.externalNetworks}
+            externalNetworksActions={this.props.externalNetworksActions}
           />
 
           <AnalysisPanel

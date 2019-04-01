@@ -29,8 +29,6 @@ export const setCommand = createAction(SET_COMMAND)
 let t0 = 0
 let t1 = 0
 export const fetchExternalNetworkFromUrl = (url, uuid, interactomeUuid) => {
-  console.log('External network loading: start', url, interactomeUuid)
-
   t0 = performance.now()
   return dispatch => {
     dispatch(fetchExternalNetwork(url))
@@ -79,8 +77,6 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
 
       const converted = convertCx2cyjs(network)
       const name2pos = getPositions(converted.elements.nodes)
-      console.log('ND2pos', name2pos)
-
       const query = {
         searchString: nodes.join(' '),
         searchDepth: 1
@@ -134,21 +130,20 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
     })
 }
 
-const getPositions = (nodes) => {
-  console.log('NDS  CCCCCCCCCCCCCCX', nodes)
+const getPositions = nodes => {
   const name2pos = {}
   let len = nodes.length
-  while(len--) {
+  while (len--) {
     const node = nodes[len]
     name2pos[node.data.name] = node.position
   }
 
   return name2pos
-
 }
 
 const adjustNodeSet = (originalNodes, returnedNodes, edges, positions) => {
   const newNodes = []
+  const newSet = new Set()
   const removed = []
 
   let len = returnedNodes.length
@@ -158,6 +153,7 @@ const adjustNodeSet = (originalNodes, returnedNodes, edges, positions) => {
       n1.data['found'] = true
       n1['position'] = positions[n1.data.name]
       newNodes.push(n1)
+      newSet.add(n1.data.name)
     } else {
       removed.push(n1.data.id)
     }
@@ -174,6 +170,23 @@ const adjustNodeSet = (originalNodes, returnedNodes, edges, positions) => {
     if (removedSet.has(s) || removedSet.has(t)) {
     } else {
       newEdges.push(e)
+    }
+  }
+
+  len = originalNodes.size
+
+  const vals = [...originalNodes]
+  while (len--) {
+    const n = vals[len]
+    if (!newSet.has(n)) {
+      const node = {
+        data: {
+          id: n,
+          name: n
+        },
+        position: positions[n]
+      }
+      newNodes.push(node)
     }
   }
 

@@ -32,12 +32,9 @@ const COSE_SETTING = {
   gravity: 0.01,
   tile: true,
   nodeDimensionsIncludeLabels: true
-
 }
 
 const CytoscapeViewer = props => {
-  const selectedGenes = props.rawInteractions.get('selected')
-  console.log('GList -= ', selectedGenes)
   const [initialized, initialize] = useState(false)
   const { selectedNodes, layoutName } = props.externalNetworks
 
@@ -46,10 +43,6 @@ const CytoscapeViewer = props => {
       return
     }
 
-    console.log('EFFECT++++++++++++++++++++++++++++++++++++++', props)
-
-    console.log('Selected nodes:', selectedNodes)
-
     if (selectedNodes.length !== 0) {
       cyInstance.nodes().unselect()
 
@@ -57,7 +50,6 @@ const CytoscapeViewer = props => {
 
       const queryStr = modified.join(',')
 
-      console.log('Selected nodes:', queryStr, selectedNodes)
       cyInstance
         .nodes()
         .filter(queryStr)
@@ -117,15 +109,8 @@ const CytoscapeViewer = props => {
       initialize(true)
     }
 
-    return () => {
-      console.log('unmount')
-    }
+    return () => {}
   }, [props.externalNetworks])
-
-  // const numObjects = props.network.nodeCount + props.network.edgeCount
-  // if (numObjects > 5000) {
-  //   return <Warning />
-  // }
 
   const isLoading = props.externalNetworks.loading
   if (isLoading) {

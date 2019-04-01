@@ -24,7 +24,6 @@ const GeneList = props => {
   }
 
   const sorted = genes.sort()
-  console.log('Gene props: ', props)
 
   return (
     <div style={{ overflow: 'auto' }}>

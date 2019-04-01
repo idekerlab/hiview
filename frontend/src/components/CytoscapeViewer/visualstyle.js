@@ -18,18 +18,30 @@ const DEFAULT_STYLE = [
   {
     selector: 'edge',
     style: {
-      'line-color': 'green',
-      width: 2,
-      opacity: 0.7
+      'line-color': '#EEEEEE',
+      width: 1,
+      opacity: 0.4
+    }
+  },
+  {
+    selector: 'node[found]',
+    style: {
+      'background-opacity': 1,
+      'background-color': '#33a02c',
+      color: '#FFFFFF'
     }
   },
   {
     selector: 'node:selected',
     style: {
-      'font-size': 24,
-      color: '#FF0000'
+      'border-width': 0,
+      'font-size': 20,
+      'background-color': '#FF0000',
+      width: 80,
+      height: 28,
+      color: '#FFFFFF'
     }
-  }
+  },
 ]
 
 export default DEFAULT_STYLE

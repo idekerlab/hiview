@@ -5,9 +5,6 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 
-import Button from '@material-ui/core/Button'
-
-import ApplyIcon from '@material-ui/icons/Refresh'
 import MenuItem from '@material-ui/core/MenuItem'
 
 import OpenInCytoscapeButton from '../OpenInCytoscapeButton'
@@ -80,16 +77,11 @@ const InteractionNetworkSelector = props => {
     const NDEX_API = '.ndexbio.org/v2/network/'
     const url = 'http://' + serverType + NDEX_API + uuid
 
-    console.log('((((((((((((((((passing INT:', interactomeUUID)
     props.externalNetworksActions.fetchExternalNetworkFromUrl(
       url,
       uuid,
       interactomeUUID
     )
-  }
-
-  const handleClick = event => {
-    fetchNet()
   }
 
   return (
@@ -109,16 +101,6 @@ const InteractionNetworkSelector = props => {
       </FormControl>
 
       <OpenInCytoscapeButton externalNetworks={externalNetworks} />
-
-      {/*<Button*/}
-      {/*  className={classes.button}*/}
-      {/*  variant="contained"*/}
-      {/*  color="primary"*/}
-      {/*  onClick={handleClick}*/}
-      {/*  size="small"*/}
-      {/*>*/}
-      {/*  <ApplyIcon className={classes.icon} />*/}
-      {/*</Button>*/}
     </div>
   )
 }

@@ -5,7 +5,6 @@ import logo from '../../assets/images/cytoscape-logo.svg'
 import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 
-
 import * as cyrestApi from '../../api/cyrest'
 
 const styles = theme => ({
@@ -17,10 +16,7 @@ const styles = theme => ({
 const OpenInCytoscapeButton = props => {
   const { classes, externalNetworks } = props
 
-  console.log('--------------=====================Button', props)
-
   const handleImportNetwork = () => {
-    console.log('Started: OpenInButton props', props)
     cyrestApi.postNetwork(1234, externalNetworks.selectedNetwork.cx)
   }
 

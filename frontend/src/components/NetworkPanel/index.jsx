@@ -8,6 +8,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import CirclePackingPanel from '../CirclePackingPanel'
 
 import { Map } from 'immutable'
+import {clearExternalNetwork} from "../../actions/external-networks";
 
 const MYGENE_URL = 'http://mygene.info/v3'
 const NDEX_LINK_TAG = 'ndex_internalLink'
@@ -82,18 +83,12 @@ class NetworkPanel extends Component {
     const linkEntry = props[NDEX_LINK_TAG]
 
 
-
     if (!linkEntry) {
       // Link is not available = no raw interaction available
       this.props.eventActions.selected(nodeProps[nodeIds[0]])
       this.props.propertyActions.setProperty(props.id, props, 'term')
       return
     }
-
-
-
-
-
 
     const linkParts = linkEntry.split(']')
     if (linkParts.length !== 2) {
@@ -115,6 +110,10 @@ class NetworkPanel extends Component {
     this.props.rawInteractionsActions.setLoading(
       'Checking summary of the interaction network...'
     )
+
+    // Clear selected
+    this.props.externalNetworksActions.clearExternalNetwork()
+
     fetch(summaryUrl)
       .then(response => {
         if (!response.ok) {

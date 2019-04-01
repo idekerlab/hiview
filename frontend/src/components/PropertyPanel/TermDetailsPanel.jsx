@@ -270,7 +270,7 @@ class TermDetailsPanel extends Component {
                   </div>
                 )}
 
-                {(hidden || selectedExternalNetwork) ? (
+                {hidden || selectedExternalNetwork ? (
                   <div />
                 ) : (
                   <div style={filterPanelStyle}>
@@ -328,7 +328,6 @@ class TermDetailsPanel extends Component {
     raw
   ) => {
     if (externalNetwork !== null) {
-
       const others = this.props
       return (
         <LayoutSelector

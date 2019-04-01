@@ -158,7 +158,6 @@ const processCx = cx => {
     }
   }
 
-  console.log(nMap)
   return {
     data,
     elements: {
@@ -216,8 +215,6 @@ export const fetchInteractionsFromUrl = (
     }
   }
 
-  console.log('--------Raw fetch start: FILTER = ', mainFeature, th)
-
   return dispatch => {
     dispatch(fetchNetwork(url))
 
@@ -250,7 +247,6 @@ export const fetchInteractionsFromUrl = (
           }
         })
         .then(cx => {
-          console.log('To JSON total TIME w/o cx  = ', performance.now() - t0)
           const newNet = processCx(cx)
 
           // const niceCX = utils.rawCXtoNiceCX(cx)
@@ -265,7 +261,6 @@ export const fetchInteractionsFromUrl = (
           //   elements,
           //   data: convertNetworkAttr(networkSummary['elements'])
           // }
-          console.log('To JSON total TIME = ', performance.now() - t0)
           // dispatch(setOriginalEdgeCount(network.elements.edges.length))
           dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
           return newNet
@@ -381,8 +376,6 @@ const createGroups = netAndFilter => {
         groupMap[nodeData.name] = [nodeData.id]
       }
     })
-
-    console.log('groupMap =', groupMap)
 
     netAndFilter.push(groupMap)
   }
