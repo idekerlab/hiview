@@ -328,7 +328,15 @@ class TermDetailsPanel extends Component {
     raw
   ) => {
     if (externalNetwork !== null) {
-      return null
+
+      const others = this.props
+      return (
+        <LayoutSelector
+          style={layoutPanelStyle}
+          commandActions={this.props.interactionsCommandActions}
+          {...others}
+        />
+      )
     }
 
     return (

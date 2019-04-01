@@ -58,6 +58,12 @@ class LayoutSelector extends Component {
 
   handleClick = event => {
     const layoutName = this.state.layout
+
+    const extAction = this.props.externalNetworksActions
+    if(extAction !== undefined && extAction !== null) {
+      extAction.setLayout(layoutName)
+    }
+
     this.props.commandActions.applyLayout({
       name: layoutName,
       options: {}
@@ -66,6 +72,12 @@ class LayoutSelector extends Component {
 
   handleFit = event => {
     this.props.commandActions.fit()
+
+    // This is for other networks' view
+    const extAction = this.props.externalNetworksActions
+    if(extAction !== undefined && extAction !== null) {
+      extAction.setCommand('fit')
+    }
   }
 
   handleFitSelected = event => {

@@ -12,6 +12,9 @@ export const RECEIVE_EXTERNAL_NETWORK = 'RECEIVE_EXTERNAL_NETWORK'
 export const SET_SELECTED_NODES = 'SET_SELECTED_NODES'
 export const CLEAR_SELECTED_NODES = 'CLEAR_SELECTED_NODES'
 
+export const SET_LAYOUT = 'SET_LAYOUT'
+export const SET_COMMAND = 'SET_COMMAND'
+
 export const setExternalNetwork = createAction(SET_EXTERNAL_NETWORK)
 export const clearExternalNetwork = createAction(CLEAR_EXTERNAL_NETWORK)
 export const fetchExternalNetwork = createAction(FETCH_EXTERNAL_NETWORK)
@@ -19,6 +22,9 @@ export const receiveExternalNetwork = createAction(RECEIVE_EXTERNAL_NETWORK)
 
 export const setSelectedNodes = createAction(SET_SELECTED_NODES)
 export const clearSelectedNodes = createAction(CLEAR_SELECTED_NODES)
+
+export const setLayout = createAction(SET_LAYOUT)
+export const setCommand = createAction(SET_COMMAND)
 
 let t0 = 0
 let t1 = 0
@@ -67,7 +73,13 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
       return json
     })
     .then(network => {
+      // This contains all nodes in the network.
       const nodes = extractNodes(network)
+      const nodeSet = new Set(nodes)
+
+      const converted = convertCx2cyjs(network)
+      const name2pos = getPositions(converted.elements.nodes)
+      console.log('ND2pos', name2pos)
 
       const query = {
         searchString: nodes.join(' '),
@@ -92,6 +104,18 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
         .then(cx => {
           const directNetwork = removeLoops(cx)
           const cyjs = convertCx2cyjs(directNetwork)
+
+          // Need to add more
+          const returnedNodes = cyjs.elements.nodes
+          const { newNodes, newEdges } = adjustNodeSet(
+            nodeSet,
+            returnedNodes,
+            cyjs.elements.edges,
+            name2pos
+          )
+          cyjs.elements.nodes = newNodes
+          cyjs.elements.edges = newEdges
+
           return dispatch(
             receiveExternalNetwork({
               url,
@@ -110,9 +134,56 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
     })
 }
 
+const getPositions = (nodes) => {
+  console.log('NDS  CCCCCCCCCCCCCCX', nodes)
+  const name2pos = {}
+  let len = nodes.length
+  while(len--) {
+    const node = nodes[len]
+    name2pos[node.data.name] = node.position
+  }
+
+  return name2pos
+
+}
+
+const adjustNodeSet = (originalNodes, returnedNodes, edges, positions) => {
+  const newNodes = []
+  const removed = []
+
+  let len = returnedNodes.length
+  while (len--) {
+    const n1 = returnedNodes[len]
+    if (originalNodes.has(n1.data.name)) {
+      n1.data['found'] = true
+      n1['position'] = positions[n1.data.name]
+      newNodes.push(n1)
+    } else {
+      removed.push(n1.data.id)
+    }
+  }
+
+  const removedSet = new Set(removed)
+  len = edges.length
+  const newEdges = []
+  while (len--) {
+    const e = edges[len]
+    const s = e.data.source
+    const t = e.data.target
+
+    if (removedSet.has(s) || removedSet.has(t)) {
+    } else {
+      newEdges.push(e)
+    }
+  }
+
+  return { newNodes, newEdges }
+}
+
 const extractNodes = cx => {
   const filtered = cx.filter(entry => entry.nodes)
   const nodes = filtered[0].nodes
+
   return nodes.map(node => node.n)
 }
 

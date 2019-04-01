@@ -5,7 +5,7 @@ import {
   fetchExternalNetwork,
   receiveExternalNetwork,
   setSelectedNodes,
-  clearSelectedNodes
+  clearSelectedNodes, setLayout, setCommand
 } from '../actions/external-networks'
 
 const ORIGINAL_NETWORK_NAME = 'Source Interactome'
@@ -24,7 +24,9 @@ const defaultState = {
   selectedNetworkName: ORIGINAL_NETWORK_NAME,
   selectedNetwork: null,
   selectedNetworkUuid: null,
-  selectedNodes: []
+  selectedNodes: [],
+  layoutName: null,
+  command: null
 }
 
 export default handleActions(
@@ -62,6 +64,19 @@ export default handleActions(
       return {
         ...state,
         selectedNodes: []
+      }
+    },
+    [setLayout]: (state, action) => {
+      return {
+        ...state,
+        layoutName: action.payload
+      }
+    },
+    [setCommand]: (state, action) => {
+      console.log('Set COM++++++++++', action.payload)
+      return {
+        ...state,
+        command: action.payload
       }
     },
     [fetchExternalNetwork]: (state, action) => ({
