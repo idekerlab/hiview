@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 
 import { browserHistory } from 'react-router'
 
@@ -39,7 +39,10 @@ const EXAMPLE_UUIDS = {
   'Edge filters example': '6e6e3a1a-cda7-11e8-a74b-0660b7976219',
   'Goal v2': 'c3179d6e-ca96-11e8-98d5-0660b7976219',
   'V2 Goal New': '2900c930-fad7-11e8-ad43-0660b7976219',
-  'Y data:': 'cde420ff-da62-11e8-a260-0660b7976219'
+  'Y data:': 'cde420ff-da62-11e8-a260-0660b7976219',
+  'Gene Ontology: CC': '9da477fd-a351-11e8-9a23-0660b7976219',
+  'Gene Ontology: BP': '82528eca-a35b-11e8-9a23-0660b7976219',
+  'Gene Ontology: MF': '5d162837-a359-11e8-9a23-0660b7976219'
 }
 
 class SourceSelector extends Component {
