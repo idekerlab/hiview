@@ -8,10 +8,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import CirclePackingPanel from '../CirclePackingPanel'
 
 import { Map } from 'immutable'
-import {clearExternalNetwork} from "../../actions/external-networks";
 
 const MYGENE_URL = 'http://mygene.info/v3'
 const NDEX_LINK_TAG = 'ndex_internalLink'
+
+const GO_NAMESPACE = 'GO:'
 
 const Viewer = CyNetworkViewer(SigmaRenderer)
 
@@ -84,10 +85,20 @@ class NetworkPanel extends Component {
 
 
     if (!linkEntry) {
-      // Link is not available = no raw interaction available
-      this.props.eventActions.selected(nodeProps[nodeIds[0]])
-      this.props.propertyActions.setProperty(props.id, props, 'term')
-      return
+      // Link is not available = no raw interaction available OR this is a human-curated ontology
+      const selectedNode = nodeProps[nodeIds[0]]
+      const subsystemName = props.name
+      console.log('Selected node: ++', selectedNode, props, subsystemName)
+
+      if(subsystemName.startsWith(GO_NAMESPACE)) {
+
+        console.log('This is GO+++++++++++++++++', subsystemName)
+
+      } else {
+        this.props.eventActions.selected(selectedNode)
+        this.props.propertyActions.setProperty(props.id, props, 'term')
+        return
+      }
     }
 
     const linkParts = linkEntry.split(']')
