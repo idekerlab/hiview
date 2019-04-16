@@ -38,6 +38,8 @@ import 'typeface-roboto'
 
 import * as renderingOptionsActions from '../../actions/rendering-options'
 import * as externalNetworksActions from '../../actions/external-networks'
+import * as goActions from '../../actions/go'
+
 
 const baseStyle = {
   position: 'fixed',
@@ -94,7 +96,8 @@ function mapStateToProps(state) {
     renderingOptions: state.rendering_options,
     enrichment: state.enrichment,
     groups: state.groups,
-    externalNetworks: state.externalNetworks
+    externalNetworks: state.externalNetworks,
+    go: state.go
   }
 }
 
@@ -145,7 +148,8 @@ function mapDispatchToProps(dispatch) {
     ),
     enrichmentActions: bindActionCreators(enrichmentActions, dispatch),
     groupsActions: bindActionCreators(groupsActions, dispatch),
-    externalNetworksActions: bindActionCreators(externalNetworksActions, dispatch)
+    externalNetworksActions: bindActionCreators(externalNetworksActions, dispatch),
+    goActions: bindActionCreators(goActions, dispatch),
   }
 }
 

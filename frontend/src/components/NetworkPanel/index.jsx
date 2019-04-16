@@ -92,7 +92,12 @@ class NetworkPanel extends Component {
 
       if(subsystemName.startsWith(GO_NAMESPACE)) {
 
-        console.log('This is GO+++++++++++++++++', subsystemName)
+        console.log('This is GO+++++++++++++++++', subsystemName, this.props)
+        this.props.goActions.findGenesStarted({ goId: subsystemName })
+
+        this.props.eventActions.selected(selectedNode)
+        this.props.propertyActions.setProperty(props.id, props, 'term')
+        return
 
       } else {
         this.props.eventActions.selected(selectedNode)
