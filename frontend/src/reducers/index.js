@@ -28,6 +28,7 @@ import enrichment from './enrichment'
 import groups from './groups'
 import externalNetworks from './external-networks'
 import go from './go'
+import localSearch from './local-search'
 
 
 // Application states
@@ -60,5 +61,6 @@ export default combineReducers({
   enrichment,
   groups,
   externalNetworks,
-  go
+  go,
+  localSearch
 })

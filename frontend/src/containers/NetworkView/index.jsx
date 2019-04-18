@@ -39,7 +39,7 @@ import 'typeface-roboto'
 import * as renderingOptionsActions from '../../actions/rendering-options'
 import * as externalNetworksActions from '../../actions/external-networks'
 import * as goActions from '../../actions/go'
-
+import * as localSearchActions from '../../actions/local-search'
 
 const baseStyle = {
   position: 'fixed',
@@ -97,7 +97,8 @@ function mapStateToProps(state) {
     enrichment: state.enrichment,
     groups: state.groups,
     externalNetworks: state.externalNetworks,
-    go: state.go
+    go: state.go,
+    localSearch: state.localSearch
   }
 }
 
@@ -148,9 +149,16 @@ function mapDispatchToProps(dispatch) {
     ),
     enrichmentActions: bindActionCreators(enrichmentActions, dispatch),
     groupsActions: bindActionCreators(groupsActions, dispatch),
-    externalNetworksActions: bindActionCreators(externalNetworksActions, dispatch),
+    externalNetworksActions: bindActionCreators(
+      externalNetworksActions,
+      dispatch
+    ),
     goActions: bindActionCreators(goActions, dispatch),
+    localSearchActions: bindActionCreators(localSearchActions, dispatch)
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NetworkView)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NetworkView)

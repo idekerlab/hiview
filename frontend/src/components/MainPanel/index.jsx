@@ -32,6 +32,8 @@ const MainPanel = props => {
     renderingOptionsActions,
     routeParams,
     location,
+    localSearchActions,
+    localSearch
   } = props
 
   return (
@@ -56,7 +58,6 @@ const MainPanel = props => {
         renderingOptionsActions={renderingOptionsActions}
       />
 
-
       <BaseSplitPane cxtoolUrl={CXTOOL_URL} {...props} />
 
       <Commands
@@ -76,6 +77,8 @@ const MainPanel = props => {
         uiStateActions={uiStateActions}
         routeParams={routeParams}
         location={location}
+        localSearch={localSearch}
+        localSearchActions={localSearchActions}
       />
     </div>
   )

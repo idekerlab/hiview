@@ -5,6 +5,7 @@ import createSagaMiddleware from 'redux-saga'
 import { logger } from '../middleware'
 import rootReducer from '../reducers'
 import goSaga from '../sagas/goSaga'
+import localSearchSaga from '../sagas/localSearchSaga'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -21,6 +22,7 @@ export default function configure(initialState) {
 
   const store = createStoreWithMiddleware(rootReducer, initialState)
   sagaMiddleware.run(goSaga)
+  sagaMiddleware.run(localSearchSaga)
 
   if (module.hot) {
     module.hot.accept('../reducers', () => {

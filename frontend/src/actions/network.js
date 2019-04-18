@@ -1,5 +1,3 @@
-import * as d3Hierarchy from 'd3-hierarchy'
-import cytoscape from 'cytoscape'
 import { createAction } from 'redux-actions'
 
 import Fuse from 'fuse.js'
@@ -51,8 +49,8 @@ const generateIndex = networkJson => {
     matchAllTokens: true,
     distance: 100,
     maxPatternLength: 32,
-    minMatchCharLength: 1,
-    keys: ['name', 'Label', 'GO_term_aligned']
+    minMatchCharLength: 2,
+    keys: ['Label', 'GO_term_aligned']
   }
   return new Fuse(nodeData, options)
 }

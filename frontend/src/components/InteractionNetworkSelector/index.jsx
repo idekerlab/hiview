@@ -8,19 +8,26 @@ import Select from '@material-ui/core/Select'
 import MenuItem from '@material-ui/core/MenuItem'
 
 import OpenInCytoscapeButton from '../OpenInCytoscapeButton'
+import TextField from '@material-ui/core/TextField'
 
 // Base style
 const styles = theme => ({
   root: {
+    padding: '1em',
     color: '#333333',
     background: '#FFFFFF',
     width: '100%',
     display: 'flex',
     alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column'
+  },
+  column: {
+    display: 'flex',
+    alignItems: 'center',
     justifyContent: 'flex-end'
   },
   formControl: {
-    padding: '1em',
     minWidth: '17em',
     width: '100%'
   },
@@ -86,21 +93,31 @@ const InteractionNetworkSelector = props => {
 
   return (
     <div className={classes.root}>
-      <FormControl className={classes.formControl}>
-        <Select fullWidth value={selected} onChange={handleChange()}>
-          {networkList.map(net => {
-            const name = net.name
-            return (
-              <MenuItem key={net.uuid} value={name}>
-                {name}
-              </MenuItem>
-            )
-          })}
-        </Select>
-        <FormHelperText>External Networks</FormHelperText>
-      </FormControl>
+      <div className={classes.column}>
+        <FormControl className={classes.formControl}>
+          <Select fullWidth value={selected} onChange={handleChange()}>
+            {networkList.map(net => {
+              const name = net.name
+              return (
+                <MenuItem key={net.uuid} value={name}>
+                  {name}
+                </MenuItem>
+              )
+            })}
+          </Select>
+          <FormHelperText>External Networks</FormHelperText>
+        </FormControl>
 
-      <OpenInCytoscapeButton externalNetworks={externalNetworks} />
+        <OpenInCytoscapeButton externalNetworks={externalNetworks} />
+      </div>
+      <TextField
+        id="user-external-network"
+        label="UUID of external network"
+        value="test1"
+        margin="normal"
+        variant="outlined"
+        fullWidth={true}
+      />
     </div>
   )
 }

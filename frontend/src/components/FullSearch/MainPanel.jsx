@@ -3,7 +3,7 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
 import RefreshIcon from '@material-ui/icons/Refresh'
-import Input from '@material-ui/core/Input';
+import Input from '@material-ui/core/Input'
 
 const SEARCH_URL = 'http://test.ndexbio.org/v2/search/network/'
 
@@ -39,7 +39,8 @@ class MainPanel extends React.Component {
   handleStart = event => {
     const query = this.state.query
     if (query !== '') {
-
+      const index = this.props.network.index
+      this.props.localSearchActions.localSearchStarted({ index, query })
       this.search(query)
     }
   }
