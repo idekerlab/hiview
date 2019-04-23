@@ -2,10 +2,10 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles'
 import classnames from 'classnames'
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Collapse from '@material-ui/core/Collapse';
+import Card from '@material-ui/core/Card'
+import CardContent from '@material-ui/core/CardContent'
+import CardActions from '@material-ui/core/CardActions'
+import Collapse from '@material-ui/core/Collapse'
 import IconButton from '@material-ui/core/IconButton'
 import Typography from '@material-ui/core/Typography'
 import red from '@material-ui/core/colors/red'
@@ -93,69 +93,63 @@ class SearchPanel extends Component {
   render() {
     const { classes } = this.props
 
-    let id2prop = {}
     let rootId = null
-    if (
-      this.props.network !== undefined
-    ) {
+    if (this.props.network !== undefined) {
       const net = this.props.network['cyjs']
-      if(!net) {
-        return (<div />)
+      if (!net) {
+        return <div />
       }
       // const net = this.props.network[this.state.currentNetworkUrl]
-      id2prop = net.id2prop
       rootId = net.rootId
     }
 
     const results = this.props.search.result
     let hideResult = false
-    if (results === undefined || results === null) {
-      hideResult = true
-    }
+    // if (results === undefined || results === null) {
+    //   hideResult = true
+    // }
 
     return (
-      <div>
-        <Card className={classes.card}>
-          <MainPanel {...this.props} />
+      <Card className={classes.card}>
+        <MainPanel {...this.props} />
 
-          {hideResult ? (
-            <div />
-          ) : (
-            <div>
-              <Divider />
+        {hideResult ? (
+          <div />
+        ) : (
+          <div>
+            <Divider />
 
-              <CardActions>
-                <Typography variant="title">Search Result</Typography>
+            <CardActions>
+              <Typography variant="title">Search Result</Typography>
 
-                <div className={classes.flexGrow} />
-                <IconButton
-                  className={classnames(classes.expand, {
-                    [classes.expandOpen]: this.state.expanded
-                  })}
-                  onClick={this.handleExpandClick}
-                  aria-expanded={this.state.expanded}
-                  aria-label="Show more"
-                >
-                  <ExpandMoreIcon />
-                </IconButton>
-              </CardActions>
-              <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-                <CardContent style={{ padding: 0 }}>
-                  <SearchResult
-                    search={this.props.search}
-                    commandActions={this.props.commandActions}
-                    selectionActions={this.props.selectionActions}
-                    id2prop={id2prop}
-                    rootId={rootId}
-                    currentPath={this.props.currentPath}
-                    uiState={this.props.uiState}
-                  />
-                </CardContent>
-              </Collapse>
-            </div>
-          )}
-        </Card>
-      </div>
+              <div className={classes.flexGrow} />
+              <IconButton
+                className={classnames(classes.expand, {
+                  [classes.expandOpen]: this.state.expanded
+                })}
+                onClick={this.handleExpandClick}
+                aria-expanded={this.state.expanded}
+                aria-label="Show more"
+              >
+                <ExpandMoreIcon />
+              </IconButton>
+            </CardActions>
+            <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+              <CardContent style={{ padding: 0 }}>
+                <SearchResult
+                  localSearch={this.props.localSearch}
+                  search={this.props.search}
+                  commandActions={this.props.commandActions}
+                  selectionActions={this.props.selectionActions}
+                  rootId={rootId}
+                  currentPath={this.props.currentPath}
+                  uiState={this.props.uiState}
+                />
+              </CardContent>
+            </Collapse>
+          </div>
+        )}
+      </Card>
     )
   }
 }

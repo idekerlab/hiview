@@ -28,7 +28,7 @@ function* watchSearch(action) {
       resArray = [...resArray, ...results]
     }
 
-    const resultJson = { results: resArray }
+    const resultJson = resArray
     console.log(
       'Got search results::::::::::::::::',
       action,

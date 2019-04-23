@@ -7,7 +7,7 @@ import {
 
 const defaultState = {
   isSearching: false,
-  results: {},
+  results: [],
   error: null
 }
 
@@ -18,7 +18,7 @@ const localSearch = handleActions(
         ...state,
         isSearching: true,
         error: null,
-        results: {}
+        results: []
       }
     },
     [localSearchSucceeded]: (state, payload) => {
@@ -36,7 +36,7 @@ const localSearch = handleActions(
         ...state,
         isSearching: false,
         error: payload.payload.error,
-        results: {}
+        results: []
       }
     }
   },

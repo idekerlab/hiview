@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import Collapse from '@material-ui/core/Collapse';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import ListItem from '@material-ui/core/ListItem';
-import List from '@material-ui/core/List';
+import Collapse from '@material-ui/core/Collapse'
+import ListItemText from '@material-ui/core/ListItemText'
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
+import ListItem from '@material-ui/core/ListItem'
+import List from '@material-ui/core/List'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 
@@ -14,13 +13,8 @@ import NavigationIcon from '@material-ui/icons/Navigation'
 
 import PathList from './PathList'
 
-const itemStyle = {
-  background: 'red'
-}
-
 class AliasList extends Component {
-  state = {
-  }
+  state = {}
 
   componentWillReceiveProps(nextProps) {
     const newPath = nextProps.currentPath
@@ -49,18 +43,17 @@ class AliasList extends Component {
             <ListItem
               onMouseOver={e => this.handleMouseOver(key)}
               onMouseOut={e => this.handleMouseOut(key)}
-              style={{backgroundColor: this.state['hoverBgColor' + key]}}
+              style={{ backgroundColor: this.state['hoverBgColor' + key] }}
             >
               <ListItemAvatar>
                 <Avatar>
-                  <PlaceIcon color={aliases[key].Original_Name ? 'inherit': 'primary'}/>
+                  <PlaceIcon />
                 </Avatar>
               </ListItemAvatar>
 
               {this.getItemText(i, key, aliases[key].Original_Name)}
               {this.getPathButton(key)}
             </ListItem>
-
 
             <Collapse component="li" in={true} timeout="auto" unmountOnExit>
               <PathList
@@ -76,13 +69,11 @@ class AliasList extends Component {
 
   getItemText = (i, key, originalName) => {
     if (!this.props.uiState.get('changeViewer')) {
-
-      let primary = '(primary instance)'
-      if(originalName !== undefined) {
-        primary = ''
-      }
       return (
-        <ListItemText primary={'Instance ' + (i + 1) + ' ' + primary } secondary={'Node ID: ' + key} />
+        <ListItemText
+          primary={'Instance ' + (i + 1)}
+          secondary={'Node ID: ' + key}
+        />
       )
     }
 
@@ -91,7 +82,7 @@ class AliasList extends Component {
     )
   }
 
-  getPathButton = (key) => {
+  getPathButton = key => {
     if (!this.props.uiState.get('changeViewer')) {
       return <div />
     }
@@ -111,20 +102,20 @@ class AliasList extends Component {
   }
 
   handleClick = nodeId => {
-        console.log('Click: ', nodeId)
+    console.log('Click: ', nodeId)
     this.props.commandActions.findPath([nodeId, this.props.rootId])
   }
 
   handleMouseOver = nodeId => {
     this.props.selectionActions.highlightNode(nodeId)
     const colorId = 'hoverBgColor' + nodeId
-    this.setState({[colorId] :'rgba(200, 0, 0, 0.3)'})
-      }
+    this.setState({ [colorId]: 'rgba(200, 0, 0, 0.3)' })
+  }
 
   handleMouseOut = nodeId => {
     this.props.selectionActions.removeHighlightNode()
     const colorId = 'hoverBgColor' + nodeId
-    this.setState({[colorId]: '#FFFFFF'})
+    this.setState({ [colorId]: '#FFFFFF' })
   }
 }
 

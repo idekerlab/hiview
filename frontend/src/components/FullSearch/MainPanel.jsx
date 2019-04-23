@@ -32,6 +32,8 @@ class MainPanel extends React.Component {
     const query = this.state.query
 
     if (event.key === 'Enter' && query !== '') {
+      const index = this.props.network.index
+      this.props.localSearchActions.localSearchStarted({ index, query })
       this.search(query)
     }
   }
@@ -55,19 +57,18 @@ class MainPanel extends React.Component {
     this.props.searchActions.clear()
     this.props.commandActions.reset()
 
-    const index = this.props.network.index
 
-    const results = index.search(query)
-    const ids = results.map(result => result.id)
+    // const results = index.search(query)
+    // const ids = results.map(result => result.id)
 
-    const uuid = this.props.routeParams.uuid
-    const options = {
-      baseUrl: SEARCH_URL,
-      uuid: uuid
-    }
+    // const uuid = this.props.routeParams.uuid
+    // const options = {
+    //   baseUrl: SEARCH_URL,
+    //   uuid: uuid
+    // }
 
     // this.props.searchActions.searchNdex(query, options)
-    this.props.searchActions.setSearchResult(query, options, ids)
+    // this.props.searchActions.setSearchResult(query, options, ids)
 
     this.setState({
       expand: true
