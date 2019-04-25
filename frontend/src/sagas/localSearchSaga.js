@@ -14,7 +14,19 @@ function* watchSearch(action) {
   let index = action.payload.index
   let query = action.payload.query
 
-  const queryArray = query.split(' ')
+  const matches = query.match(/"[^']*"/g)
+
+  const removed = query.replace(/"[^']*"/g, '')
+  let queryArray = removed.split(/ +/)
+
+  let phrases = []
+
+  if (matches !== null && matches.length !== 0) {
+    phrases = matches.map(entry => entry.replace(/"/g, ''))
+  }
+
+  queryArray = [...queryArray, ...phrases]
+  console.log('**************q array = ', queryArray, removed)
 
   let resArray = []
 
@@ -23,7 +35,7 @@ function* watchSearch(action) {
     while (len--) {
       const geneSymbol = queryArray[len]
       const results = index.search(geneSymbol)
-      console.log('**************G = ', geneSymbol, results)
+      // console.log('**************G = ', geneSymbol)
 
       resArray = [...resArray, ...results]
     }
@@ -34,7 +46,7 @@ function* watchSearch(action) {
       action,
       resultJson,
       query,
-      resArray.map(entry => (entry.Label))
+      resArray.map(entry => entry.Label)
     )
     yield put({
       type: LOCAL_SEARCH_SUCCEEDED,

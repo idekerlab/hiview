@@ -2,12 +2,14 @@ import { handleActions } from 'redux-actions'
 import {
   localSearchFailed,
   localSearchStarted,
-  localSearchSucceeded
+  localSearchSucceeded,
+  clearSearchResults
 } from '../actions/local-search'
 
 const defaultState = {
   isSearching: false,
   results: [],
+  ids: [],
   error: null
 }
 
@@ -18,15 +20,18 @@ const localSearch = handleActions(
         ...state,
         isSearching: true,
         error: null,
-        results: []
+        results: [],
+        ids: []
       }
     },
     [localSearchSucceeded]: (state, payload) => {
       console.log('Success Local Index:::::::::', payload)
+      const ids = payload.payload.results.map(entry => (entry.id))
       return {
         ...state,
         results: payload.payload.results,
         isSearching: false,
+        ids,
         error: null
       }
     },
@@ -36,9 +41,18 @@ const localSearch = handleActions(
         ...state,
         isSearching: false,
         error: payload.payload.error,
-        results: []
+        results: [],
+        ids: []
       }
-    }
+    },
+    [clearSearchResults]: (state, payload) => {
+      console.log('Local search results cleared', payload)
+      return {
+        ...state,
+        results: [],
+        ids: []
+      }
+    },
   },
   defaultState
 )

@@ -5,8 +5,6 @@ import SearchIcon from '@material-ui/icons/Search'
 import RefreshIcon from '@material-ui/icons/Refresh'
 import Input from '@material-ui/core/Input'
 
-const SEARCH_URL = 'http://test.ndexbio.org/v2/search/network/'
-
 const baseStyle = {
   width: '100%',
   display: 'flex',
@@ -48,22 +46,25 @@ class MainPanel extends React.Component {
   }
 
   handleReset = event => {
-    this.props.searchActions.clear()
+    // this.props.searchActions.clear()
     this.props.commandActions.reset()
+    this.props.localSearchActions.clearSearchResults()
+    this.setState({
+      query: ''
+    })
     // this.props.commandActions.fit()
   }
 
-  search = query => {
-    this.props.searchActions.clear()
+  search = (query, ids) => {
+    // this.props.searchActions.clear()
     this.props.commandActions.reset()
-
 
     // const results = index.search(query)
     // const ids = results.map(result => result.id)
 
     // const uuid = this.props.routeParams.uuid
     // const options = {
-    //   baseUrl: SEARCH_URL,
+    //   baseUrl: '',
     //   uuid: uuid
     // }
 
@@ -81,8 +82,6 @@ class MainPanel extends React.Component {
   }
 
   render() {
-    const { classes } = this.props
-
     return (
       <div style={baseStyle}>
         <IconButton aria-label="Open main menu" onClick={this.handleOpen}>
@@ -97,6 +96,7 @@ class MainPanel extends React.Component {
           }}
           onChange={this.handleChange}
           onKeyPress={this.handleKey}
+          value={this.state.query}
         />
 
         <IconButton aria-label="Search nodes" onClick={this.handleStart}>

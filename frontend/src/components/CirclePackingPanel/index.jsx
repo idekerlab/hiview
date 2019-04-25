@@ -185,6 +185,9 @@ class CirclePackingPanel extends Component {
   }
 
   render() {
+    // Search result is the selected ones.
+
+    const selected = this.props.localSearch.ids
     return (
       <div
         ref={containerElement => (this.containerElement = containerElement)}
@@ -195,7 +198,7 @@ class CirclePackingPanel extends Component {
         ) : (
           <TreeViewer
             command={this.props.command}
-            selected={this.props.search.result}
+            selected={selected}
             highlight={this.props.selection.get('highlight')}
             tree={this.state.tree}
             eventHandlers={this.getEventHandlers()}

@@ -14,7 +14,6 @@ class SearchResult extends Component {
   state = {}
 
   buildNestedList = resultArray => {
-    console.log('################### local res array:', resultArray)
     const nestedList = {}
 
     // Creates basic structure only with original nodes
@@ -56,7 +55,6 @@ class SearchResult extends Component {
 
   render() {
     const { localSearch } = this.props
-    console.log('################### local search:', localSearch)
     const results = localSearch.results
 
     const windowHeight = window.innerHeight * 0.75
@@ -66,9 +64,8 @@ class SearchResult extends Component {
       overflow: 'auto'
     }
 
-    // let results = this.props.search.result
 
-    if (results === undefined || results === null || results === {}) {
+    if (!results || results === []) {
       return (
         <List style={resultStyle}>
           <ListItem>

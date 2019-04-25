@@ -33,7 +33,7 @@ class AliasList extends Component {
   }
 
   render() {
-    const aliases = this.props.aliases
+    const { aliases, commandActions } = this.props
     const keys = Object.keys(aliases)
 
     return (
@@ -58,7 +58,7 @@ class AliasList extends Component {
             <Collapse component="li" in={true} timeout="auto" unmountOnExit>
               <PathList
                 path={this.state[key]}
-                commandActions={this.props.commandActions}
+                commandActions={commandActions}
               />
             </Collapse>
           </div>

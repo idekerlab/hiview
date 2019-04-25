@@ -91,23 +91,24 @@ class SearchPanel extends Component {
   }
 
   render() {
-    const { classes } = this.props
+    const { classes, localSearch } = this.props
 
     let rootId = null
     if (this.props.network !== undefined) {
       const net = this.props.network['cyjs']
       if (!net) {
+        // No network found
         return <div />
       }
       // const net = this.props.network[this.state.currentNetworkUrl]
       rootId = net.rootId
     }
 
-    const results = this.props.search.result
+    const results = localSearch.results
     let hideResult = false
-    // if (results === undefined || results === null) {
-    //   hideResult = true
-    // }
+    if (!results || results.length === 0) {
+      hideResult = true
+    }
 
     return (
       <Card className={classes.card}>
