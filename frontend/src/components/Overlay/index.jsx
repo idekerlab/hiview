@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 const style = {
   position: 'fixed',
@@ -27,27 +27,18 @@ const textStyle = {
 
 const DEF_TITLE = '(No hierarchy data yet)'
 
-
 const Overlay = props => {
   const isCirclePacking = props.uiState.get('changeViewer')
 
   let title = DEF_TITLE
   let link = null
 
-  const location = props.location
+  const { network } = props
 
-  if (location !== undefined && props.network !== undefined) {
-
-    const locationParams = props.location
-    const uuid = props.routeParams.uuid
-    let serverType = locationParams.query.type
-
-    const url = props.cxUrl + uuid + '?server=' + serverType
-    const networkProp = props.network
-    const networkData = networkProp.get(url)
-
-    if (networkData !== undefined) {
-      title = networkData.data.name
+  if (network !== undefined && network !== null) {
+    const cyjsData = network.get('cyjs')
+    if (cyjsData !== null && cyjsData !== undefined) {
+      title = cyjsData.data.name
     }
   }
 
