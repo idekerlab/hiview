@@ -42,13 +42,13 @@ import * as goActions from '../../actions/go'
 import * as localSearchActions from '../../actions/local-search'
 
 const baseStyle = {
-  position: 'fixed',
-  left: 0,
-  top: 0,
+  boxSizing: 'border-box',
   zIndex: 0,
   background: grey50,
   height: '100%',
-  width: '100%'
+  width: '100%',
+  margin: 0,
+  padding: 0
 }
 
 /**

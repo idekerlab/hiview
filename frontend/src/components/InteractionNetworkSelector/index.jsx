@@ -16,7 +16,9 @@ const styles = theme => ({
     padding: '1em',
     color: '#333333',
     background: '#FFFFFF',
+    boxSizing: 'border-box',
     width: '100%',
+    border: '5px solid red',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
@@ -25,11 +27,11 @@ const styles = theme => ({
   column: {
     display: 'flex',
     alignItems: 'center',
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-start',
+    width: '100%'
   },
   formControl: {
     minWidth: '17em',
-    width: '100%'
   },
   button: {
     margin: theme.spacing.unit
@@ -95,7 +97,7 @@ const InteractionNetworkSelector = props => {
     <div className={classes.root}>
       <div className={classes.column}>
         <FormControl className={classes.formControl}>
-          <Select fullWidth value={selected} onChange={handleChange()}>
+          <Select fullWidth={true} value={selected} onChange={handleChange()}>
             {networkList.map(net => {
               const name = net.name
               return (

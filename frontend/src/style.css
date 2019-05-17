@@ -1,16 +1,14 @@
 @import "../node_modules/react-vis/dist/styles";
 
 html, body, #root {
+    padding: 0;
+    margin: 0;
     width: 100%;
     height: 100%;
-    margin: 0;
-    padding: 0;
+    box-sizing: border-box;
     font: 12px Roboto, 'Helvetica Neue', Helvetica, sans-serif;
     line-height: 1.2em;
-    /*font-weight: 300;*/
 }
-
-
 
 .react-contextmenu {
     min-width: 160px;

@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography'
 import ArrowIcon from '@material-ui/icons/ArrowBack'
 
 const style = {
+  boxSizing: 'border-box',
   background: blueGrey[100],
   height: '100%',
   width: '100%',

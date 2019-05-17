@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
 import OpenIcon from '@material-ui/icons/OpenInNew'
 import InfoIcon from '@material-ui/icons/InfoOutlined'
+
+import BrowserTargets from '../../assets/browser-targets'
 
 const descriptionStyle = {
   color: '#555555',
@@ -17,24 +19,24 @@ class SubsystemPanel extends Component {
   render() {
     let displayOrder = null
     const networkData = this.props.networkData
-    if(networkData) {
+    if (networkData) {
       const displayOrderStr = networkData.Display
-      if(displayOrderStr) {
+      if (displayOrderStr) {
         displayOrder = displayOrderStr.split('|')
-        displayOrder = displayOrder.map(key => ('Display_' + key).replace(/ /g, '_'))
+        displayOrder = displayOrder.map(key =>
+          ('Display_' + key).replace(/ /g, '_')
+        )
       }
     }
 
     const termData = this.props.selectedTerm.data
     const keys = Object.keys(termData)
 
-
     let filteredKeys = keys.filter(key => key.startsWith('Display'))
 
-    if(displayOrder) {
+    if (displayOrder) {
       filteredKeys = displayOrder
     }
-
 
     return (
       <div style={descriptionStyle}>
@@ -42,7 +44,7 @@ class SubsystemPanel extends Component {
           {filteredKeys.map((key, i) => {
             const label = key.replace('Display_', '').replace(/_/g, ' ')
             const value = termData[key]
-            if(!value) {
+            if (!value) {
               return
             }
 
@@ -61,12 +63,12 @@ class SubsystemPanel extends Component {
           })}
         </List>
       </div>
-    );
+    )
   }
 
   handleClick = value => () => {
     if (value.toString().startsWith('GO')) {
-      window.open(GO_LINK + value.toString())
+      window.open(GO_LINK + value.toString(), BrowserTargets.GeneOntology)
     }
   }
 }

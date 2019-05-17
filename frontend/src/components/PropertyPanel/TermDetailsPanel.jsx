@@ -26,22 +26,17 @@ import LargeNetworkWarningPanel from './LargeNetworkWarningPanel'
 import InteractionNetworkSelector from '../InteractionNetworkSelector'
 import CytoscapeViewer from '../CytoscapeViewer'
 
-const controlWrapperStyle = {
-  width: '100%'
-}
 
 const filterPanelStyle = {
   display: 'inline-flex',
+  boxSizing: 'border-box',
   width: '100%',
   padding: '0.6em',
   background: '#FFFFFF'
 }
 
 const controlPanelStyle = {
-  padding: 0,
-  margin: 0,
-  width: '100%',
-  background: '#FFFFFF'
+  boxSizing: 'border-box'
 }
 
 const layoutPanelStyle = {
@@ -199,13 +194,13 @@ class TermDetailsPanel extends Component {
       networkData = network.data
     }
 
-    const propPanelStyle = {
-      width: this.props.width,
+    const bottomStyle = {
+      boxSizing: 'border-box',
+      width: '100%',
       height: window.innerHeight - this.state.networkPanelHeight,
       display: 'flex',
       flexDirection: 'column',
-      overflowY: 'auto',
-      overflowX: 'hidden'
+      overflowY: 'auto'
     }
 
     // Calculate
@@ -216,107 +211,98 @@ class TermDetailsPanel extends Component {
       .selectedNetworkUuid
 
     return (
-      <div>
-        <SplitPane
-          split="horizontal"
-          minSize={50}
-          size={this.state.networkPanelHeight}
-          onDragFinished={topHeight => this.handleHorizontalResize(topHeight)}
+      <SplitPane
+        split="horizontal"
+        minSize={50}
+        size={this.state.networkPanelHeight}
+        onDragFinished={topHeight => this.handleHorizontalResize(topHeight)}
+      >
+        <div
+          style={{
+            boxSizing: 'border-box',
+            height: '100%',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column'
+          }}
         >
-          <div
-            style={{ width: '100%', display: 'flex', flexDirection: 'column' }}
-          >
-            <MessageBar
-              height={50}
-              title={this.props.title}
-              titleColor={this.props.color}
-              originalEdgeCount={this.props.originalEdgeCount}
-              maxEdgeCount={this.props.maxEdgeCount}
-            />
+          <MessageBar
+            height={50}
+            title={this.props.title}
+            titleColor={this.props.color}
+            originalEdgeCount={this.props.originalEdgeCount}
+            maxEdgeCount={this.props.maxEdgeCount}
+          />
 
-            {this.getNetworkPanel(
-              hidden,
-              topHeight,
-              selectedExternalNetwork,
-              interactions,
-              selected,
-              selectedPerm,
-              visualStyle,
-              raw
-            )}
-          </div>
+          {this.getNetworkPanel(
+            hidden,
+            topHeight,
+            selectedExternalNetwork,
+            interactions,
+            selected,
+            selectedPerm,
+            visualStyle,
+            raw
+          )}
+        </div>
 
-          <div style={propPanelStyle}>
-            <div style={{ zIndex: 1000 }}>
-              <div style={controlWrapperStyle}>
-                {this.props.expanded ? (
-                  <div style={{ height: '5.2em' }} />
-                ) : (
-                  <div />
-                )}
+        <div style={bottomStyle}>
+          {this.props.expanded ? <div style={{ height: '5.2em' }} /> : <div />}
 
-                {hidden ? (
-                  <div />
-                ) : (
-                  <div style={controlPanelStyle}>
-                    <InteractionNetworkSelector {...allProps} />
-                    {this.getControllers(
-                      selectedExternalNetwork,
-                      layoutPanelStyle,
-                      networkProps,
-                      controllerStyle,
-                      raw
-                    )}
-                  </div>
-                )}
-
-                {hidden || selectedExternalNetwork ? (
-                  <div />
-                ) : (
-                  <div style={filterPanelStyle}>
-                    <EdgeFilter
-                      filters={raw.filters}
-                      commandActions={this.props.interactionsCommandActions}
-                      commands={this.props.interactionsCommands}
-                      filtersActions={this.props.filtersActions}
-                      networkData={networkProps}
-                    />
-                  </div>
-                )}
-
-                <div>
-                  <Tabs
-                    value={this.state.selectedTab}
-                    onChange={this.handleChange}
-                  >
-                    <Tab label="Subsystem Details" />
-                    <Tab label="Assigned Genes" />
-                  </Tabs>
-                </div>
-
-                {this.state.selectedTab === 0 && (
-                  <TabContainer>
-                    <SubsystemPanel
-                      selectedTerm={this.props.currentProperty}
-                      networkData={networkData}
-                      title={title}
-                      description={'N/A'}
-                    />
-                  </TabContainer>
-                )}
-                {this.state.selectedTab === 1 && (
-                  <TabContainer>
-                    <GeneList genes={geneList} {...allProps} />
-                  </TabContainer>
-                )}
-                {this.state.selectedTab === 2 && (
-                  <TabContainer>N/A</TabContainer>
-                )}
-              </div>
+          {hidden ? (
+            <div />
+          ) : (
+            <div style={controlPanelStyle}>
+              <InteractionNetworkSelector {...allProps} />
+              {this.getControllers(
+                selectedExternalNetwork,
+                layoutPanelStyle,
+                networkProps,
+                controllerStyle,
+                raw
+              )}
             </div>
+          )}
+
+          {hidden || selectedExternalNetwork ? (
+            <div />
+          ) : (
+            <div style={filterPanelStyle}>
+              <EdgeFilter
+                filters={raw.filters}
+                commandActions={this.props.interactionsCommandActions}
+                commands={this.props.interactionsCommands}
+                filtersActions={this.props.filtersActions}
+                networkData={networkProps}
+              />
+            </div>
+          )}
+
+          <div>
+            <Tabs value={this.state.selectedTab} onChange={this.handleChange}>
+              <Tab label="Subsystem Details" />
+              <Tab label="Assigned Genes" />
+            </Tabs>
           </div>
-        </SplitPane>
-      </div>
+
+          {this.state.selectedTab === 0 && (
+            <TabContainer>
+              <SubsystemPanel
+                selectedTerm={this.props.currentProperty}
+                networkData={networkData}
+                title={title}
+                description={'N/A'}
+              />
+            </TabContainer>
+          )}
+          {this.state.selectedTab === 1 && (
+            <TabContainer>
+              <GeneList genes={geneList} {...allProps} />
+            </TabContainer>
+          )}
+          {this.state.selectedTab === 2 && <TabContainer>N/A</TabContainer>}
+        </div>
+      </SplitPane>
     )
   }
 
