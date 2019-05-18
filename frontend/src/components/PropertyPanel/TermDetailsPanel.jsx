@@ -253,7 +253,7 @@ class TermDetailsPanel extends Component {
             <div />
           ) : (
             <div style={controlPanelStyle}>
-              <InteractionNetworkSelector {...allProps} />
+              <InteractionNetworkSelector genes={geneList} {...allProps} />
               {this.getControllers(
                 selectedExternalNetwork,
                 layoutPanelStyle,

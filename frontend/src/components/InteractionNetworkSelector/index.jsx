@@ -9,6 +9,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 
 import OpenInCytoscapeButton from '../OpenInCytoscapeButton'
 import TextField from '@material-ui/core/TextField'
+import OpenInPortalButton from '../OpenInPortalButton'
 
 // Base style
 const styles = theme => ({
@@ -18,9 +19,8 @@ const styles = theme => ({
     background: '#FFFFFF',
     boxSizing: 'border-box',
     width: '100%',
-    border: '5px solid red',
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
     flexDirection: 'column'
   },
@@ -31,7 +31,7 @@ const styles = theme => ({
     width: '100%'
   },
   formControl: {
-    minWidth: '17em',
+    minWidth: '17em'
   },
   button: {
     margin: theme.spacing.unit
@@ -111,6 +111,7 @@ const InteractionNetworkSelector = props => {
         </FormControl>
 
         <OpenInCytoscapeButton externalNetworks={externalNetworks} />
+        <OpenInPortalButton genes={props.genes} />
       </div>
       <TextField
         id="user-external-network"
