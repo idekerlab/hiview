@@ -1,14 +1,18 @@
 import React from 'react'
 
 import Button from '@material-ui/core/Button'
-import logo from '../../assets/images/cytoscape-logo.svg'
+import SearchIcon from '@material-ui/icons/Search'
+
 import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 
 const styles = theme => ({
-  buttonIcon: {
-    height: '2.5em',
-    marginLeft: '1em'
+  button: {
+    marginLeft: '1em',
+    width: '3em'
+  },
+  icon: {
+    height: '2.5em'
   }
 })
 
@@ -26,14 +30,14 @@ const OpenInPortalButton = props => {
   }
 
   return (
-    <Tooltip title="Open in Portal" placement="bottom">
+    <Tooltip title="Search genes in the Portal" placement="bottom">
       <Button
-        className={classes.buttonIcon}
         variant="contained"
         color="primary"
         onClick={handleOpen}
+        className={classes.button}
       >
-        <img alt="Cytoscape logo" src={logo} className={classes.buttonIcon} />
+        <SearchIcon alt="Search" />
       </Button>
     </Tooltip>
   )

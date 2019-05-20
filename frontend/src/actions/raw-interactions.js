@@ -30,14 +30,15 @@ const fetchNetwork = url => {
 }
 
 export const RECEIVE_INTERACTIONS = 'RECEIVE_INTERACTIONS'
-const receiveNetwork = (url, network, filters, groups, extraEdges) => {
+const receiveNetwork = (url, network, filters, groups, extraEdges, originalCX) => {
   return {
     type: RECEIVE_INTERACTIONS,
     url,
     network,
     filters,
     groups,
-    extraEdges
+    extraEdges,
+    originalCX
   }
 }
 
@@ -234,6 +235,8 @@ export const fetchInteractionsFromUrl = (
       headers
     }
 
+    let originalCX = null
+
     return (
       fetchNet(url, settings)
         .then(response => {
@@ -247,21 +250,8 @@ export const fetchInteractionsFromUrl = (
           }
         })
         .then(cx => {
+          originalCX = cx
           const newNet = processCx(cx)
-
-          // const niceCX = utils.rawCXtoNiceCX(cx)
-
-          // const attributeNameMap = {}
-          // const elements = cx2JsConverter.cyElementsFromNiceCX(
-          //   niceCX,
-          //   attributeNameMap
-          // )
-
-          // const newNet = {
-          //   elements,
-          //   data: convertNetworkAttr(networkSummary['elements'])
-          // }
-          // dispatch(setOriginalEdgeCount(network.elements.edges.length))
           dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
           return newNet
         })
@@ -279,7 +269,8 @@ export const fetchInteractionsFromUrl = (
               netAndFilter[0],
               netAndFilter[1],
               netAndFilter[2],
-              netAndFilter[3]
+              netAndFilter[3],
+              originalCX
             )
           )
         })

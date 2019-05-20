@@ -8,27 +8,42 @@ import Tooltip from '@material-ui/core/Tooltip'
 import * as cyrestApi from '../../api/cyrest'
 
 const styles = theme => ({
-  buttonIcon: {
+  button: {
+    marginLeft: '1em',
+    width: '3em'
+  },
+  icon: {
     height: '2.5em'
   }
 })
 
 const OpenInCytoscapeButton = props => {
-  const { classes, externalNetworks } = props
+
+  const { classes, externalNetworks, rawInteractions } = props
 
   const handleImportNetwork = () => {
-    cyrestApi.postNetwork(1234, externalNetworks.selectedNetwork.cx)
+
+    console.log('EXT:', externalNetworks, props)
+
+    const selectedNetwork = externalNetworks.selectedNetwork
+    if(selectedNetwork === null) {
+
+      // TODO: add filter call here.
+      cyrestApi.postNetwork(1234, rawInteractions.originalCX)
+    } else {
+      cyrestApi.postNetwork(1234, externalNetworks.selectedNetwork.cx)
+    }
   }
 
   return (
     <Tooltip title="Open in Cytoscape" placement="bottom">
       <Button
+        className={classes.button}
         variant="contained"
         color="default"
-        // disabled={!uiState.isCytoscapeRunning}
         onClick={handleImportNetwork}
       >
-        <img alt="Cytoscape logo" src={logo} className={classes.buttonIcon} />
+        <img alt="Cytoscape logo" src={logo} className={classes.icon} />
       </Button>
     </Tooltip>
   )

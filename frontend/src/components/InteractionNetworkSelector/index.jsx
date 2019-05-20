@@ -10,6 +10,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import OpenInCytoscapeButton from '../OpenInCytoscapeButton'
 import TextField from '@material-ui/core/TextField'
 import OpenInPortalButton from '../OpenInPortalButton'
+import OpenInNdexButton from '../OpenInNdexButton'
+import Input from '@material-ui/core/Input'
 
 // Base style
 const styles = theme => ({
@@ -44,6 +46,8 @@ const styles = theme => ({
 const InteractionNetworkSelector = props => {
   const { classes, externalNetworks, ...others } = props
 
+  const [query, setQuery] = useState('')
+
   const selected = externalNetworks.selectedNetworkName
   const networkList = externalNetworks.externalNetworks
 
@@ -56,6 +60,24 @@ const InteractionNetworkSelector = props => {
     })
 
     fetchNet(interactomeUUID)
+  }
+
+  const handleQueryChange = event => {
+    setQuery(event.target.value)
+  }
+
+  const handleKey = event => {
+    if (event.key === 'Enter' && query !== '') {
+      console.log('new UUID set:', query)
+
+      // Need validation
+      props.externalNetworksActions.setExternalNetwork({
+        name: query,
+        uuid: query
+      })
+
+      fetchNet(query)
+    }
   }
 
   const getUuid = selectedItem => {
@@ -110,16 +132,25 @@ const InteractionNetworkSelector = props => {
           <FormHelperText>External Networks</FormHelperText>
         </FormControl>
 
-        <OpenInCytoscapeButton externalNetworks={externalNetworks} />
+        <OpenInCytoscapeButton
+          externalNetworks={externalNetworks}
+          rawInteractions={props.rawInteractions.toJS()}
+        />
+        <OpenInNdexButton
+          location={props.location}
+          rawInteractions={props.rawInteractions.toJS()}
+        />
         <OpenInPortalButton genes={props.genes} />
       </div>
       <TextField
         id="user-external-network"
         label="UUID of external network"
-        value="test1"
         margin="normal"
         variant="outlined"
         fullWidth={true}
+        value={query}
+        onChange={handleQueryChange}
+        onKeyPress={handleKey}
       />
     </div>
   )

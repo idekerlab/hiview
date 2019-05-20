@@ -21,6 +21,7 @@ const DEF_MAX_EDGE_COUNT = 1000
 const LOADING_NETWORK_MESSAGE ='Downloading all interactions from NDEx...'
 
 const defState = Map({
+  originalCX: null,
   loading: false,
   message: LOADING_NETWORK_MESSAGE,
   interactions: null,
@@ -49,11 +50,13 @@ export default function networkState(state = defState, action) {
         .set('loading', true)
         .set('message', LOADING_NETWORK_MESSAGE)
         .set('interactions', null)
+        .set('originalCX', null)
         .set('originalEdgeCount', 0)
     case RECEIVE_INTERACTIONS:
       return state
         .set('loading', false)
         .set('interactions', action.network)
+        .set('originalCX', action.originalCX)
         .set('filters', action.filters)
         .set('groups', action.groups)
         .set('extraEdges', action.extraEdges)
