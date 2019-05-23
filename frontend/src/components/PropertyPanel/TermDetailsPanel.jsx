@@ -210,9 +210,6 @@ class TermDetailsPanel extends Component {
     const selectedExternalNetwork = this.props.externalNetworks
       .selectedNetworkUuid
 
-
-    console.log('NDEx props:', this.props.rawInteractions.toJS())
-
     return (
       <SplitPane
         split="horizontal"

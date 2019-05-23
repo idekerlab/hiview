@@ -10,8 +10,6 @@ import MenuItem from '@material-ui/core/MenuItem'
 import OpenInCytoscapeButton from '../OpenInCytoscapeButton'
 import TextField from '@material-ui/core/TextField'
 import OpenInPortalButton from '../OpenInPortalButton'
-import OpenInNdexButton from '../OpenInNdexButton'
-import Input from '@material-ui/core/Input'
 
 // Base style
 const styles = theme => ({
@@ -33,7 +31,8 @@ const styles = theme => ({
     width: '100%'
   },
   formControl: {
-    minWidth: '17em'
+    minWidth: '20em',
+    width: '100%m'
   },
   button: {
     margin: theme.spacing.unit
@@ -134,10 +133,6 @@ const InteractionNetworkSelector = props => {
 
         <OpenInCytoscapeButton
           externalNetworks={externalNetworks}
-          rawInteractions={props.rawInteractions.toJS()}
-        />
-        <OpenInNdexButton
-          location={props.location}
           rawInteractions={props.rawInteractions.toJS()}
         />
         <OpenInPortalButton genes={props.genes} />

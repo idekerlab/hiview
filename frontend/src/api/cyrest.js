@@ -13,7 +13,6 @@ const checkStatus = cyRESTPort => {
 const postNetwork = (cyRESTPort, payload) => {
   const importNetworkUrl =
     CYREST_BASE_URL + ':' + cyRESTPort + '/cyndex2/v1/networks/cx'
-  console.log('Calling CyREST POST:', importNetworkUrl)
 
   return fetch(importNetworkUrl, {
     method: METHOD_POST,

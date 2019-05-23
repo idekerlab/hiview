@@ -31,17 +31,15 @@ const startStyle = {
   marginTop: '2em'
 }
 
-const DEFAULT_EXAMPLE = 'Small Example 1'
+const DEFAULT_EXAMPLE = 'Toy Example'
 
 const EXAMPLE_UUIDS = {
   [DEFAULT_EXAMPLE]: '49bca313-ab2c-11e8-9a23-0660b7976219',
   'DNA Repair': 'ab704ae4-0719-11e8-b03c-0660b7976219',
-  'Edge filters example': '6e6e3a1a-cda7-11e8-a74b-0660b7976219',
-  'Goal v2': 'c3179d6e-ca96-11e8-98d5-0660b7976219',
-  'V2 Goal New': '2900c930-fad7-11e8-ad43-0660b7976219',
-  'Y data:': 'cde420ff-da62-11e8-a260-0660b7976219',
-  'Gene Ontology: CC': '9da477fd-a351-11e8-9a23-0660b7976219',
+  'Human data-driven hierarchy - draft v0.1':
+    '2900c930-fad7-11e8-ad43-0660b7976219',
   'Gene Ontology: BP': '82528eca-a35b-11e8-9a23-0660b7976219',
+  'Gene Ontology: CC': '9da477fd-a351-11e8-9a23-0660b7976219',
   'Gene Ontology: MF': '5d162837-a359-11e8-9a23-0660b7976219'
 }
 

@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Button from '@material-ui/core/Button'
-import logo from '../../assets/images/cytoscape-logo.svg'
+import logo from '../../assets/images/cytoscape-logo-white.svg'
 import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 
@@ -18,21 +18,24 @@ const styles = theme => ({
 })
 
 const OpenInCytoscapeButton = props => {
-
   const { classes, externalNetworks, rawInteractions } = props
 
   const handleImportNetwork = () => {
-
     console.log('EXT:', externalNetworks, props)
 
     const selectedNetwork = externalNetworks.selectedNetwork
-    if(selectedNetwork === null) {
 
+    let cx = null
+    if (selectedNetwork === null) {
       // TODO: add filter call here.
-      cyrestApi.postNetwork(1234, rawInteractions.originalCX)
+      cx = rawInteractions.originalCX
     } else {
-      cyrestApi.postNetwork(1234, externalNetworks.selectedNetwork.cx)
+      cx = externalNetworks.selectedNetwork.cx
     }
+
+    console.log("POSTINGL", cx)
+
+    cyrestApi.postNetwork(1234, cx)
   }
 
   return (
@@ -40,7 +43,7 @@ const OpenInCytoscapeButton = props => {
       <Button
         className={classes.button}
         variant="contained"
-        color="default"
+        color="primary"
         onClick={handleImportNetwork}
       >
         <img alt="Cytoscape logo" src={logo} className={classes.icon} />

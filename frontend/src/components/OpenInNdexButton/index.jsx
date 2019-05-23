@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Button from '@material-ui/core/Button'
-import logo from '../../assets/images/ndex-logo.svg'
+import logo from '../../assets/images/ndex-logo-white.svg'
 
 import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
@@ -29,11 +29,11 @@ const OpenInNdexButton = props => {
   }
 
   return (
-    <Tooltip title="Open in Portal" placement="bottom">
+    <Tooltip title="Open in NDEx" placement="bottom">
       <Button
         className={classes.button}
         variant="contained"
-        color="default"
+        color="primary"
         onClick={handleOpen}
       >
         <img alt="Ndex logo" src={logo} className={classes.icon} />
