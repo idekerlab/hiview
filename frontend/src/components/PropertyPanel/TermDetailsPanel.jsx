@@ -125,6 +125,7 @@ class TermDetailsPanel extends Component {
       const rawUuid = summary.externalId
       const rawUrl = this.props.cxtoolUrl + rawUuid + '?server=' + serverType
 
+      console.log('Large network warning::::')
       return (
         <LargeNetworkWarningPanel
           summary={summary}

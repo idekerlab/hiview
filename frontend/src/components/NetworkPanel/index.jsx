@@ -93,7 +93,7 @@ class NetworkPanel extends Component {
       if(subsystemName.startsWith(GO_NAMESPACE)) {
 
         console.log('This is GO+++++++++++++++++', subsystemName, this.props)
-        this.props.goActions.findGenesStarted({ goId: subsystemName })
+        // this.props.goActions.findGenesStarted({ goId: subsystemName })
 
         this.props.eventActions.selected(selectedNode)
         this.props.propertyActions.setProperty(props.id, props, 'term')
@@ -140,7 +140,9 @@ class NetworkPanel extends Component {
       })
       .then(summary => {
         const edgeCount = summary.edgeCount
-        this.props.rawInteractionsActions.setSummary(summary)
+
+        console.log('SET called-----------', summary)
+        this.props.rawInteractionsActions.setRawSummary(summary)
 
         if (edgeCount < this.props.autoLoadThreshold) {
           // Directly set prop from node attributes
@@ -241,7 +243,7 @@ class NetworkPanel extends Component {
     const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
     this.setState({ networkUrl: url })
 
-    this.props.networkActions.fetchNetworkFromUrl(url, uuid)
+    this.props.networkActions.fetchNetworkFromUrl(url, uuid, serverType)
   }
 
   componentWillReceiveProps(nextProps) {

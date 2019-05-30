@@ -1,7 +1,11 @@
 import { createAction } from 'redux-actions'
+import { CxToJs, CyNetworkUtils } from 'cytoscape-cx2js'
 
 import Fuse from 'fuse.js'
 import Dexie from 'dexie'
+
+const utils = new CyNetworkUtils()
+const cx2js = new CxToJs(utils)
 
 export const SET_UUID = 'SET_UUID'
 export const SET_SERVER = 'SET_SERVER'
@@ -97,24 +101,19 @@ const receiveNetwork = (url, json, error) => {
 
 let t0 = 0
 let t1 = 0
-export const fetchNetworkFromUrl = (url, uuid) => {
-  // const url = 'http://localhost:3000/hiview.cyjs'
-  // const url =
-  //   'http://ec2-35-167-36-71.us-west-2.compute.amazonaws.com:3000/cache/getcyjs/hiview'
-  console.log('Main network loading: start', url)
-
+export const fetchNetworkFromUrl = (url, uuid, serverType) => {
   t0 = performance.now()
   return dispatch => {
     dispatch(fetchNetwork(url))
-    return getNetworkData(url, uuid, dispatch)
+    return getNetworkData(url, uuid, dispatch, serverType)
   }
 }
 
-const getNetworkData = (url, uuid, dispatch) => {
+const getNetworkData = (url, uuid, dispatch, serverType) => {
   hvDb.hierarchy.get(uuid).then(network => {
     if (network === undefined) {
       console.log('Does not exist:', uuid)
-      return fetchDataFromRemote(url, uuid, dispatch)
+      return fetchDataFromRemote(url, uuid, dispatch, serverType)
     } else {
       return fetchFromLocal(url, uuid, dispatch, network)
     }
@@ -123,14 +122,93 @@ const getNetworkData = (url, uuid, dispatch) => {
 }
 
 const fetchFromLocal = (url, uuid, dispatch, netObj) => {
-  console.log('Hit:', uuid, performance.now() - t0)
+  console.log('Local Hit:', uuid, performance.now() - t0)
 
   const network = createLabel2IdMap(netObj)
   addOriginalToAlias(network)
   return dispatch(receiveNetwork(url, network, null))
 }
+const modifyNetwork = (cyjs, attrMap) => {
+  const pattern = /_u\d+$/g
+  // Flip
+  const newMap = {}
 
-const fetchDataFromRemote = (url, uuid, dispatch) => {
+  const keys = Object.keys(attrMap)
+  keys.forEach(key => (newMap[attrMap[key]] = key))
+
+  console.log('NMM', newMap)
+
+  const nodes = cyjs.elements.nodes
+  let len = nodes.length
+  while (len--) {
+    const node = nodes[len]
+
+    const data = node.data
+    const newData = {}
+    const originalKeys = Object.keys(data)
+
+    originalKeys.forEach(key => {
+      const newKey = key.replace(pattern, '')
+      let value = data[key]
+      if (value === 'false') {
+        value = false
+      } else if (value === 'true') {
+        value = true
+      } else if (key === 'id') {
+        value = value.toString()
+      }
+
+      newData[newKey] = value
+    })
+    node.data = newData
+  }
+
+  const edges = cyjs.elements.edges
+  len = edges.length
+
+  while (len--) {
+    const e = edges[len]
+    const data = e.data
+    const newData = {}
+    const originalKeys = Object.keys(data)
+
+    originalKeys.forEach(key => {
+      const newKey = key.replace(pattern, '')
+      let value = data[key]
+      if (value === 'false') {
+        value = false
+      } else if (value === 'true') {
+        value = true
+      } else if (key === 'id') {
+        value = value.toString()
+      }
+
+      newData[newKey] = value
+    })
+    newData.source = data.source.toString()
+    newData.target = data.target.toString()
+    e.data = newData
+  }
+
+  return cyjs
+}
+
+const getNetworkAttributes = cx => {
+  const networkAttr = cx.filter(
+    entry => entry['networkAttributes'] !== undefined
+  )
+
+  const attr = networkAttr[0].networkAttributes
+
+  const cyjsData = {}
+  attr.forEach(entry => {
+    cyjsData[entry.n] = entry.v
+  })
+
+  return cyjsData
+}
+
+const fetchDataFromRemote = (url2, uuid, dispatch, serverType) => {
   const headers = new Headers()
   headers.set('Accept-Encoding', 'br')
   const setting = {
@@ -138,6 +216,8 @@ const fetchDataFromRemote = (url, uuid, dispatch) => {
     mode: 'cors',
     headers: headers
   }
+
+  const url = 'http://' + serverType + '.ndexbio.org/v2/network/' + uuid
 
   return fetch(url, setting)
     .then(response => {
@@ -150,9 +230,32 @@ const fetchDataFromRemote = (url, uuid, dispatch) => {
     .then(json => {
       t1 = performance.now()
       console.log('Remote fetch time = ', t1 - t0)
+      const netAttr = getNetworkAttributes(json)
+      let niceCX = utils.rawCXtoNiceCX(json)
+      const attributeNameMap = {}
+      const elementsObj = cx2js.cyElementsFromNiceCX(niceCX, attributeNameMap)
+
+      // Release it
+      niceCX = null
+
+      const cyjs = {
+        data: netAttr,
+        uuid: uuid,
+        elements: elementsObj
+      }
+
       json['uuid'] = uuid
-      hvDb.hierarchy.put(json)
-      return json
+
+      const filtered = modifyNetwork(cyjs, attributeNameMap)
+
+      hvDb.hierarchy.put(filtered)
+      // hvDb.hierarchy.put(json)
+      json = null
+
+      console.log('RES::', json, cyjs, filtered, attributeNameMap)
+
+      return filtered
+      // return json
     })
     .then(json => createLabel2IdMap(json))
     .then(network => addOriginalToAlias(network))
@@ -230,7 +333,6 @@ const addOriginalToAlias = network => {
   }
   return network
 }
-
 
 const walk = (node, layoutMap) => {
   layoutMap[node.id] = [node.x, node.y, node.depth]

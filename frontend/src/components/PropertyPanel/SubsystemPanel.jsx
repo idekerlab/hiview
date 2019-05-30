@@ -34,6 +34,9 @@ class SubsystemPanel extends Component {
 
     let filteredKeys = keys.filter(key => key.startsWith('Display'))
 
+    // Force to add special key: name
+    filteredKeys.push('name')
+
     if (displayOrder) {
       filteredKeys = displayOrder
     }

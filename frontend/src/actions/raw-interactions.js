@@ -516,8 +516,8 @@ export const clearSelectedPerm = createAction(CLEAR_SELECTED_PERM)
 export const SET_AUTO_LOAD_THRESHOLD = 'SET_AUTO_LOAD_THRESHOLD'
 export const setAutoLoadThreshold = createAction(SET_AUTO_LOAD_THRESHOLD)
 
-export const SET_SUMMARY = 'SET_SUMMARY'
-export const setSummary = createAction(SET_SUMMARY)
+export const SET_RAW_SUMMARY = 'SET_RAW_SUMMARY'
+export const setRawSummary = createAction(SET_RAW_SUMMARY)
 
 export const SET_LOADING = 'SET_LOADING'
 export const setLoading = createAction(SET_LOADING)

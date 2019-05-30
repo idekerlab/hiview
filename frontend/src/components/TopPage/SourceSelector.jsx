@@ -33,14 +33,16 @@ const startStyle = {
 
 const DEFAULT_EXAMPLE = 'Toy Example'
 
+const GO_PREFIX = 'Gene Ontology:'
+
 const EXAMPLE_UUIDS = {
   [DEFAULT_EXAMPLE]: '49bca313-ab2c-11e8-9a23-0660b7976219',
   'DNA Repair': 'ab704ae4-0719-11e8-b03c-0660b7976219',
   'Human data-driven hierarchy - draft v0.1':
     '2900c930-fad7-11e8-ad43-0660b7976219',
-  'Gene Ontology: BP': '82528eca-a35b-11e8-9a23-0660b7976219',
-  'Gene Ontology: CC': '9da477fd-a351-11e8-9a23-0660b7976219',
-  'Gene Ontology: MF': '5d162837-a359-11e8-9a23-0660b7976219'
+  'Gene Ontology: BP': '9166bc71-7bef-11e9-848d-0ac135e8bacf',
+  'Gene Ontology: CC': '0a393b91-7be9-11e9-848d-0ac135e8bacf',
+  'Gene Ontology: MF': '21892e2b-7beb-11e9-848d-0ac135e8bacf'
 }
 
 class SourceSelector extends Component {
@@ -113,6 +115,15 @@ class SourceSelector extends Component {
 
   handleExampleChange = (event, idx) => {
     const uuid = Object.values(EXAMPLE_UUIDS)[idx]
+    const name = Object.keys(EXAMPLE_UUIDS)[idx]
+
+    if(name.startsWith(GO_PREFIX)) {
+      this.setState({
+        serverUrl: 'http://public.ndexbio.org',
+        serverType: 'public'
+      })
+
+    }
     this.setState({ anchorEl: null })
 
     this.setState({

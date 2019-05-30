@@ -16,6 +16,7 @@ const cyjs2tree = cyjs => {
     return null
   }
 
+  console.log('Converting to D3 obj----------------')
   //Find root of the tree
   const nodes = cyjs.elements.nodes
   const nodeMap = {}
@@ -137,20 +138,55 @@ const addBranches = node => {
   const originalId = node.data.props.originalId
   const alias = node.data.props.alias
 
+  const nodeChildren = node.children
+  if(nodeChildren !== undefined) {
+    let len = nodeChildren.length
+    let termFound = false
+    while(len--) {
+      const child = nodeChildren[len]
+      if(child.data.NodeType !== 'Gene') {
+        termFound = true
+        break
+      }
+    }
+    if(!termFound) {
+      delete node.children
+      return
+    }
+  }
+
+  // Remove children of gene-only term
+
   if (alias) {
     const branch = branches.get(originalId)
+
+    // Add this branch only if it has terms inside.
+    const children = branch.children
+    if(children !== undefined) {
+      let numChildren = children.length
+      let withTerm = false
+      while(numChildren--) {
+        const child = children[numChildren]
+        if(child.data.NodeType !== 'Gene') {
+          withTerm = true
+          break
+        }
+      }
+      if(!withTerm) {
+        return
+      }
+    }
     node.depth = branch.depth
     node.height = branch.height
-    node['children'] = branch.children
+    node['children'] = children
     node['data'] = branch.data
     node['id'] = branch.id
   }
 
-  const children = node.children
-  if (children) {
-    let childCount = children.length
+  if (nodeChildren) {
+    let childCount = nodeChildren.length
     while (childCount--) {
-      const child = children[childCount]
+      const child = nodeChildren[childCount]
       addBranches(child)
     }
   }

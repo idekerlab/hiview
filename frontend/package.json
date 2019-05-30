@@ -49,7 +49,7 @@
         "cy-tree-viewer": "0.3.0",
         "cytoscape": "^3.5.0",
         "cytoscape-cose-bilkent": "^4.0.0",
-        "cytoscape-cx2js": "^0.5.2",
+        "cytoscape-cx2js": "^0.5.5",
         "cytoscapejs-renderer": "0.2.0",
         "d3-array": "^2.0.3",
         "d3-color": "^1.2.3",

@@ -11,7 +11,7 @@ import {
   SET_PRIMARY_EDGE_SCORE_RANGE,
   SET_MESSAGE,
   RECEIVE_SUMMARY,
-  SET_SUMMARY,
+  SET_RAW_SUMMARY,
   SET_AUTO_LOAD_THRESHOLD,
   SET_LOADING
 } from '../actions/raw-interactions'
@@ -113,7 +113,8 @@ export default function networkState(state = defState, action) {
     case SET_LOADING:
       return state.set('loading', true).set('message', action.payload)
 
-    case SET_SUMMARY:
+    case SET_RAW_SUMMARY:
+      console.log('---------------GOT summary for raw:::', action)
       return state
         .set('loading', false)
         .set('interactions', null)
