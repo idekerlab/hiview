@@ -11,7 +11,7 @@ const branches = new Map()
  * @param cyjs
  * @returns {*}
  */
-const cyjs2tree = cyjs => {
+const cyjs2tree = (cyjs, networkActions) => {
   if (!cyjs) {
     return null
   }
@@ -19,13 +19,13 @@ const cyjs2tree = cyjs => {
   console.log('Converting to D3 obj----------------')
   //Find root of the tree
   const nodes = cyjs.elements.nodes
-  const nodeMap = {}
+  let nodeMap = {}
   const root = preprocessNodes(nodes, nodeMap)
   const rootId = root.data.id
   const edges = cyjs.elements.edges
 
   // Create table first to use D3 function
-  const table = transform(rootId, edges, nodeMap)
+  let table = transform(rootId, edges, nodeMap)
 
   // Run stratification function
   const tree = d3Hierarchy
@@ -33,12 +33,62 @@ const cyjs2tree = cyjs => {
     .id(d => d.id)
     .parentId(d => d.parent)(table)
 
+  table = null
+  nodeMap = null
+
+
+  const geneMap = new Map()
+  createGeneMap(tree, geneMap)
+
+  console.log('GENEMAP ==== ', geneMap)
+  networkActions.setGeneMap(geneMap)
+
   // Re-wire tree to use reference for copy nodes
   getOriginalBranches(tree)
 
   // Add it to copies
   addBranches(tree)
   return tree
+}
+
+const createGeneMap = (treeNode, geneMap) => {
+  const current = treeNode
+
+  const children = current.children
+
+  if (children === undefined) {
+    // This is a leaf node
+
+    if(treeNode.data.NodeType === 'Gene') {
+      addSelfToAllParents(treeNode.parent, geneMap, treeNode.data.Label)
+    }
+    return
+  }
+
+  let numChildren = children.length
+
+  while (numChildren--) {
+    const childNode = children[numChildren]
+    createGeneMap(childNode, geneMap)
+  }
+}
+
+const addSelfToAllParents = (treeNode, geneMap, geneName) => {
+  const id = treeNode.id.toString()
+  let idList = geneMap.get(id)
+  if(!idList) {
+    idList = new Set()
+    geneMap.set(id, idList)
+  }
+
+  idList.add(geneName)
+
+  const parent = treeNode.parent
+  if (parent === null || parent === undefined || treeNode.parent === '') {
+    return
+  }
+
+  addSelfToAllParents(parent, geneMap, geneName)
 }
 
 const preprocessNodes = (nodes, nodeMap) => {
@@ -139,17 +189,17 @@ const addBranches = node => {
   const alias = node.data.props.alias
 
   const nodeChildren = node.children
-  if(nodeChildren !== undefined) {
+  if (nodeChildren !== undefined) {
     let len = nodeChildren.length
     let termFound = false
-    while(len--) {
+    while (len--) {
       const child = nodeChildren[len]
-      if(child.data.NodeType !== 'Gene') {
+      if (child.data.NodeType !== 'Gene') {
         termFound = true
         break
       }
     }
-    if(!termFound) {
+    if (!termFound) {
       delete node.children
       return
     }
@@ -162,17 +212,17 @@ const addBranches = node => {
 
     // Add this branch only if it has terms inside.
     const children = branch.children
-    if(children !== undefined) {
+    if (children !== undefined) {
       let numChildren = children.length
       let withTerm = false
-      while(numChildren--) {
+      while (numChildren--) {
         const child = children[numChildren]
-        if(child.data.NodeType !== 'Gene') {
+        if (child.data.NodeType !== 'Gene') {
           withTerm = true
           break
         }
       }
-      if(!withTerm) {
+      if (!withTerm) {
         return
       }
     }

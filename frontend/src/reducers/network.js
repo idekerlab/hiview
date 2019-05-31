@@ -4,7 +4,8 @@ import {
   DELETE_NETWORK,
   SET_SERVER,
   SET_UUID,
-  SET_SUMMARY
+  SET_SUMMARY,
+  SET_GENE_MAP
 } from '../actions/network'
 import { Map } from 'immutable'
 
@@ -17,13 +18,16 @@ const defState = Map({
   server: null,
   networkUrl: null,
   cyjs: null,
-  summary: null
+  summary: null,
+  geneMap: null
 })
 
 export default function networkState(state = defState, action) {
   switch (action.type) {
     case FETCH_NETWORK:
       return state.set('loading', true)
+    case SET_GENE_MAP:
+      return state.set('geneMap', action.payload)
 
     case RECEIVE_NETWORK:
 

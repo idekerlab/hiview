@@ -363,3 +363,6 @@ const deleteNetwork = url => {
     url
   }
 }
+
+export const SET_GENE_MAP = 'SET_GENE_MAP'
+export const setGeneMap = createAction(SET_GENE_MAP)

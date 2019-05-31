@@ -95,6 +95,12 @@ class NetworkPanel extends Component {
         console.log('This is GO+++++++++++++++++', subsystemName, this.props)
         // this.props.goActions.findGenesStarted({ goId: subsystemName })
 
+        const selectedNodeId = selectedNode.props.id
+        console.log('Selected NODE = ', selectedNodeId)
+        const geneMap = this.props.network.get('geneMap')
+        const geneSet = geneMap.get(selectedNodeId)
+
+        console.log('ssigned = ', geneSet)
         this.props.eventActions.selected(selectedNode)
         this.props.propertyActions.setProperty(props.id, props, 'term')
         return

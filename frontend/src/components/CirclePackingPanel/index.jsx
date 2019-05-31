@@ -15,7 +15,7 @@ class CirclePackingPanel extends Component {
   }
 
   componentDidMount() {
-    const tree = cyjs2tree(this.props.network)
+    const tree = cyjs2tree(this.props.network, this.props.networkActions)
     this.setState({
       tree
     })
