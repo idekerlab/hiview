@@ -38,9 +38,16 @@ const cyjs2tree = (cyjs, networkActions) => {
 
 
   const geneMap = new Map()
-  createGeneMap(tree, geneMap)
+  const duplicates = new Set()
 
-  console.log('GENEMAP ==== ', geneMap)
+  createGeneMap(tree, geneMap, duplicates)
+
+  // At this point, duplicate nodes does not have children.
+  console.log('GENEMAP & dup ==== ', geneMap, duplicates)
+
+
+
+
   networkActions.setGeneMap(geneMap)
 
   // Re-wire tree to use reference for copy nodes
@@ -51,7 +58,7 @@ const cyjs2tree = (cyjs, networkActions) => {
   return tree
 }
 
-const createGeneMap = (treeNode, geneMap) => {
+const createGeneMap = (treeNode, geneMap, duplicates) => {
   const current = treeNode
 
   const children = current.children
@@ -61,6 +68,10 @@ const createGeneMap = (treeNode, geneMap) => {
 
     if(treeNode.data.NodeType === 'Gene') {
       addSelfToAllParents(treeNode.parent, geneMap, treeNode.data.Label)
+    } else {
+      // This is a link node
+      // duplicates.add(treeNode.data.Label)
+      // geneMap.set(treeNode.id.toString(), new Set())
     }
     return
   }
@@ -69,12 +80,12 @@ const createGeneMap = (treeNode, geneMap) => {
 
   while (numChildren--) {
     const childNode = children[numChildren]
-    createGeneMap(childNode, geneMap)
+    createGeneMap(childNode, geneMap, duplicates)
   }
 }
 
 const addSelfToAllParents = (treeNode, geneMap, geneName) => {
-  const id = treeNode.id.toString()
+  const id = treeNode.data.Label
   let idList = geneMap.get(id)
   if(!idList) {
     idList = new Set()

@@ -128,6 +128,9 @@ const fetchFromLocal = (url, uuid, dispatch, netObj) => {
   addOriginalToAlias(network)
   return dispatch(receiveNetwork(url, network, null))
 }
+
+
+
 const modifyNetwork = (cyjs, attrMap) => {
   const pattern = /_u\d+$/g
   // Flip
