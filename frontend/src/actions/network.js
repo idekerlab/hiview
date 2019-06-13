@@ -45,25 +45,15 @@ const generateIndex = networkJson => {
   const nodes = networkJson.elements.nodes
   const nodeData = nodes.map(node => node.data)
 
-  // const options = {
-  //   shouldSort: true,
-  //   threshold: 0.0,
-  //   tokenize: false,
-  //   location: 0,
-  //   distance: 100,
-  //   maxPatternLength: 320,
-  //   minMatchCharLength: 2,
-  //   keys: ['Label', 'GO_term_aligned']
-  // }
 
   const options = {
     shouldSort: true,
-    threshold: 0.3,
+    threshold: 0.2,
     tokenize: false,
     location: 0,
     distance: 100,
-    maxPatternLength: 10,
-    minMatchCharLength: 2,
+    maxPatternLength: 12,
+    minMatchCharLength: 3,
     keys: ['Label', 'GO_term_ID']
   }
   return new Fuse(nodeData, options)

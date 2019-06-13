@@ -28,19 +28,24 @@ export const setCommand = createAction(SET_COMMAND)
 
 let t0 = 0
 let t1 = 0
-export const fetchExternalNetworkFromUrl = (url, uuid, interactomeUuid) => {
+export const fetchExternalNetworkFromUrl = (
+  url,
+  uuid,
+  interactomeUuid,
+  genes = null
+) => {
   t0 = performance.now()
   return dispatch => {
     dispatch(fetchExternalNetwork(url))
-    return getNetworkData(url, uuid, dispatch, interactomeUuid)
+    return getNetworkData(url, uuid, dispatch, interactomeUuid, genes)
   }
 }
 
-const getNetworkData = (url, uuid, dispatch, interactomeUuid) => {
-  return fetchDataFromRemote(url, uuid, dispatch, interactomeUuid)
+const getNetworkData = (url, uuid, dispatch, interactomeUuid, genes) => {
+  return fetchDataFromRemote(url, uuid, dispatch, interactomeUuid, genes)
 }
 
-const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
+const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid, genes) => {
   const headers = new Headers()
   headers.set('Accept-Encoding', 'br')
   const setting = {
@@ -54,6 +59,10 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
     mode: 'cors',
     headers: { 'Content-Type': 'application/json' },
     body: ''
+  }
+
+  if(genes !== null) {
+    return sendGeneList(genes, interactomeUuid, dispatch)
   }
 
   return fetch(url, setting)
@@ -130,6 +139,61 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid) => {
     })
 }
 
+const sendGeneList = (genes, interactomeUuid, dispatch) => {
+  const postSetting = {
+    method: 'POST',
+    mode: 'cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: ''
+  }
+
+  const query = {
+    searchString: genes.join(' '),
+    searchDepth: 1
+  }
+
+  // const nodeSet = new Set(nodes)
+
+  const searchUrl =
+    'http://public.ndexbio.org/v2/search/network/' +
+    interactomeUuid +
+    '/interconnectquery'
+
+  postSetting.body = JSON.stringify(query)
+
+  fetch(searchUrl, postSetting)
+    .then(response2 => {
+      if (!response2.ok) {
+        throw Error(response2.statusText)
+      } else {
+        return response2.json()
+      }
+    })
+    .then(cx => {
+      const directNetwork = removeLoops(cx)
+      const cyjs = convertCx2cyjs(directNetwork)
+
+      // Need to add more
+      // const returnedNodes = cyjs.elements.nodes
+      // const { newNodes, newEdges } = adjustNodeSet(
+      //   nodeSet,
+      //   returnedNodes,
+      //   cyjs.elements.edges
+      // )
+      // cyjs.elements.nodes = newNodes
+      // cyjs.elements.edges = newEdges
+
+      return dispatch(
+        receiveExternalNetwork({
+          url: null,
+          network: cyjs,
+          cx: directNetwork,
+          error: null
+        })
+      )
+    })
+}
+
 const getPositions = nodes => {
   const name2pos = {}
   let len = nodes.length
@@ -141,7 +205,12 @@ const getPositions = nodes => {
   return name2pos
 }
 
-const adjustNodeSet = (originalNodes, returnedNodes, edges, positions) => {
+const adjustNodeSet = (
+  originalNodes,
+  returnedNodes,
+  edges,
+  positions = null
+) => {
   const newNodes = []
   const newSet = new Set()
   const removed = []
@@ -151,7 +220,10 @@ const adjustNodeSet = (originalNodes, returnedNodes, edges, positions) => {
     const n1 = returnedNodes[len]
     if (originalNodes.has(n1.data.name)) {
       n1.data['found'] = true
-      n1['position'] = positions[n1.data.name]
+
+      if (positions !== null) {
+        n1['position'] = positions[n1.data.name]
+      }
       newNodes.push(n1)
       newSet.add(n1.data.name)
     } else {
@@ -183,8 +255,11 @@ const adjustNodeSet = (originalNodes, returnedNodes, edges, positions) => {
         data: {
           id: n,
           name: n
-        },
-        position: positions[n]
+        }
+      }
+
+      if (positions !== null) {
+        node['position'] = positions[n]
       }
       newNodes.push(node)
     }

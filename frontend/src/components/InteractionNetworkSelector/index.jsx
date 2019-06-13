@@ -96,6 +96,24 @@ const InteractionNetworkSelector = props => {
     const subsystem = props.currentProperty.data
     const linkEntry = subsystem['ndex_internalLink']
 
+
+    // This is for data without raw interactions.
+    if(linkEntry === undefined || linkEntry === null) {
+
+      const geneMap = props.network.get('geneMap')
+      const geneSet = geneMap.get(subsystem.Label)
+      const genes = [...geneSet]
+      console.log('Selected ====>', subsystem, genes, )
+
+      props.externalNetworksActions.fetchExternalNetworkFromUrl(
+        null,
+        null,
+        interactomeUUID,
+        genes
+      )
+      return
+    }
+
     const pattern = /[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}/
     const matches = linkEntry.match(pattern)
 
