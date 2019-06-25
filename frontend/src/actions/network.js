@@ -45,7 +45,6 @@ const generateIndex = networkJson => {
   const nodes = networkJson.elements.nodes
   const nodeData = nodes.map(node => node.data)
 
-
   const options = {
     shouldSort: true,
     threshold: 0.2,
@@ -119,8 +118,6 @@ const fetchFromLocal = (url, uuid, dispatch, netObj) => {
   return dispatch(receiveNetwork(url, network, null))
 }
 
-
-
 const modifyNetwork = (cyjs, attrMap) => {
   const pattern = /_u\d+$/g
   // Flip
@@ -191,6 +188,16 @@ const getNetworkAttributes = cx => {
     entry => entry['networkAttributes'] !== undefined
   )
 
+  // Check net attr actually exists
+  if (
+    networkAttr === undefined ||
+    networkAttr === null ||
+    networkAttr.length === 0
+  ) {
+    return {
+      name: '(No Name)'
+    }
+  }
   const attr = networkAttr[0].networkAttributes
 
   const cyjsData = {}
@@ -222,7 +229,7 @@ const fetchDataFromRemote = (url2, uuid, dispatch, serverType) => {
     })
     .then(json => {
       t1 = performance.now()
-      console.log('Remote fetch time = ', t1 - t0)
+      console.log('Remote fetch time = ', t1 - t0, json)
       const netAttr = getNetworkAttributes(json)
       let niceCX = utils.rawCXtoNiceCX(json)
       const attributeNameMap = {}
