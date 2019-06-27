@@ -16,7 +16,6 @@ const cyjs2tree = (cyjs, networkActions) => {
     return null
   }
 
-  console.log('Converting to D3 obj----------------')
   //Find root of the tree
   const nodes = cyjs.elements.nodes
   let nodeMap = {}
@@ -43,10 +42,6 @@ const cyjs2tree = (cyjs, networkActions) => {
   createGeneMap(tree, geneMap, duplicates)
 
   // At this point, duplicate nodes does not have children.
-  console.log('GENEMAP & dup ==== ', geneMap, duplicates)
-
-
-
 
   networkActions.setGeneMap(geneMap)
 
@@ -200,21 +195,21 @@ const addBranches = node => {
   const alias = node.data.props.alias
 
   const nodeChildren = node.children
-  if (nodeChildren !== undefined) {
-    let len = nodeChildren.length
-    let termFound = false
-    while (len--) {
-      const child = nodeChildren[len]
-      if (child.data.NodeType !== 'Gene') {
-        termFound = true
-        break
-      }
-    }
-    if (!termFound) {
-      delete node.children
-      return
-    }
-  }
+  // if (nodeChildren !== undefined) {
+  //   let len = nodeChildren.length
+  //   let termFound = false
+  //   while (len--) {
+  //     const child = nodeChildren[len]
+  //     if (child.data.NodeType !== 'Gene') {
+  //       termFound = true
+  //       break
+  //     }
+  //   }
+  //   if (!termFound) {
+  //     delete node.children
+  //     return
+  //   }
+  // }
 
   // Remove children of gene-only term
 
@@ -223,20 +218,20 @@ const addBranches = node => {
 
     // Add this branch only if it has terms inside.
     const children = branch.children
-    if (children !== undefined) {
-      let numChildren = children.length
-      let withTerm = false
-      while (numChildren--) {
-        const child = children[numChildren]
-        if (child.data.NodeType !== 'Gene') {
-          withTerm = true
-          break
-        }
-      }
-      if (!withTerm) {
-        return
-      }
-    }
+    // if (children !== undefined) {
+    //   let numChildren = children.length
+    //   let withTerm = false
+    //   while (numChildren--) {
+    //     const child = children[numChildren]
+    //     if (child.data.NodeType !== 'Gene') {
+    //       withTerm = true
+    //       break
+    //     }
+    //   }
+    //   if (!withTerm) {
+    //     return
+    //   }
+    // }
     node.depth = branch.depth
     node.height = branch.height
     node['children'] = children
