@@ -12,7 +12,8 @@ const DEFAULT_STYLE = [
       color: '#FFFFFF',
       'text-halign': 'center',
       'text-valign': 'center',
-      'font-size': 10
+      'font-size': 18,
+      'font-weight': 400
     }
   },
   {

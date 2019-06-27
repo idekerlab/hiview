@@ -23,7 +23,6 @@ const compareBy = fieldName => (a, b) => {
   }
 
   if(scoreA === 0) {
-    console.log('000000000000000000000000000000A')
   }
   // console.log('A, B = ', scoreA, scoreB)
 

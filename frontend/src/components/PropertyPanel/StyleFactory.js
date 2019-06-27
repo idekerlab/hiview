@@ -20,17 +20,18 @@ const BASE_STYLE = {
       'background-opacity': 0,
       'background-color': '#222222',
       'border-width': 0,
-      'font-size': 10,
+      'font-size': 22,
       label: 'data(name)'
     }
   },
   nodeSelected: {
     selector: 'node:selected',
     css: {
-      shape: 'ellipse',
-      width: 40,
-      height: 40,
-      'font-size': 11,
+      // shape: 'ellipse',
+      width: 120,
+      height: 35,
+      'font-size': 28,
+      'font-weight': 400,
       color: '#FFFFFF',
       'background-opacity': 1,
       'background-color': '#FF0000'
