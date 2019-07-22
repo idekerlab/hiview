@@ -10,6 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem'
 import OpenInCytoscapeButton from '../OpenInCytoscapeButton'
 import TextField from '@material-ui/core/TextField'
 import OpenInPortalButton from '../OpenInPortalButton'
+import OpenInNetAntButton from '../OpenInNetAntButton'
 
 // Base style
 const styles = theme => ({
@@ -154,6 +155,7 @@ const InteractionNetworkSelector = props => {
           rawInteractions={props.rawInteractions.toJS()}
         />
         <OpenInPortalButton genes={props.genes} />
+        <OpenInNetAntButton genes={props.genes} />
       </div>
       <TextField
         id="user-external-network"

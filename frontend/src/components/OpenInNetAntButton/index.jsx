@@ -18,30 +18,30 @@ const styles = theme => ({
 
 const BASE_URL = 'http://search.ndexbio.org/?genes='
 
-const OpenInPortalButton = props => {
+const OpenInNetAntButton = props => {
   const { classes, externalNetworks } = props
 
-  const handleOpen = () => {
-    // Simply open the data with the Portal
+  const handleSearch = () => {
     const queryGeneString = props.genes.join(',')
-    const queryUrl = BASE_URL + queryGeneString
-
-    window.open(queryUrl, 'portal')
+    // const queryUrl = BASE_URL + queryGeneString
+    //
+    // window.open(queryUrl, 'portal')
   }
 
   return (
-    <Tooltip title="Search genes in the Portal" placement="bottom">
+    <Tooltip title="Analyze genes in NetAnt" placement="bottom">
       <Button
         variant="contained"
         color="primary"
-        onClick={handleOpen}
+        disabled={true}
+        onClick={handleSearch}
         className={classes.button}
       >
-        Portal
-        <OpenIcon className={classes.icon} alt="Open in Search Portal" />
+        NetAnt
+        <OpenIcon className={classes.icon} alt="Open in NetAnt" />
       </Button>
     </Tooltip>
   )
 }
 
-export default withStyles(styles)(OpenInPortalButton)
+export default withStyles(styles)(OpenInNetAntButton)
