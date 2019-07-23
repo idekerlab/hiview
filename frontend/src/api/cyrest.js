@@ -14,13 +14,12 @@ const postNetwork = (cyRESTPort, payload) => {
   const importNetworkUrl =
     CYREST_BASE_URL + ':' + cyRESTPort + '/cyndex2/v1/networks/cx'
 
-  return fetch(importNetworkUrl, {
+  return fetch(url, {
     method: METHOD_POST,
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
+    }
   })
 }
 

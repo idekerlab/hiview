@@ -8,11 +8,17 @@ import Tooltip from '@material-ui/core/Tooltip'
 
 const styles = theme => ({
   button: {
-    marginLeft: '1em',
-    minWidth: '5.5em'
+    marginLeft: '0.5em',
+    width: '8em',
+    minWidth: '8em',
+    maxWidth: '8em',
+    minHeight: '4em',
+    maxHeight: '4em',
+    padding: 0,
+    height: '4em'
   },
   icon: {
-    paddingLeft: '0.3em'
+    marginLeft: '0.3em'
   }
 })
 

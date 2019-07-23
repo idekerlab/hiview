@@ -117,6 +117,7 @@ export default class BaseSplitPane extends Component {
             )}
             externalNetworks={this.props.externalNetworks}
             externalNetworksActions={this.props.externalNetworksActions}
+            {...this.props}
           />
         )}
       </SplitPane>

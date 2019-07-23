@@ -116,6 +116,7 @@ class LeftPanel extends Component {
           externalNetworksActions={this.props.externalNetworksActions}
           goActions={this.props.goActions}
           localSearch={this.props.localSearch}
+          {...this.props}
         />
 
         <AnalysisPanel

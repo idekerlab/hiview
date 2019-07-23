@@ -63,6 +63,9 @@ class NetworkPanel extends Component {
       nodeProps: props
     }
 
+    console.log('----------------------clear--------------')
+    this.props.netantActions.clearAll()
+
     this.props.selectionActions.selectNode(newSelectionState)
 
     const nodeTypeTag = 'NodeType'
@@ -105,13 +108,13 @@ class NetworkPanel extends Component {
         console.log('Gene Set = ', geneSet)
         this.props.eventActions.selected(selectedNode)
         this.props.propertyActions.setProperty(props.id, props, 'term')
-        return
 
       } else {
         this.props.eventActions.selected(selectedNode)
         this.props.propertyActions.setProperty(props.id, props, 'term')
-        return
       }
+
+      return
     }
 
     const linkParts = linkEntry.split(']')

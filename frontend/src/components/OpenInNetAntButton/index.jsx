@@ -5,27 +5,29 @@ import OpenIcon from '@material-ui/icons/OpenInBrowser'
 
 import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 const styles = theme => ({
   button: {
-    marginLeft: '1em',
-    minWidth: '5.5em'
+    marginLeft: '0.5em',
+    minWidth: '8em',
+    maxWidth: '8em',
+    minHeight: '4em',
+    maxHeight: '4em',
+    padding: 0,
+    height: '4em'
   },
   icon: {
-    paddingLeft: '0.3em'
+    marginLeft: '0.4em'
   }
 })
 
-const BASE_URL = 'http://search.ndexbio.org/?genes='
-
 const OpenInNetAntButton = props => {
-  const { classes, externalNetworks } = props
+  const { classes } = props
 
   const handleSearch = () => {
     const queryGeneString = props.genes.join(',')
-    // const queryUrl = BASE_URL + queryGeneString
-    //
-    // window.open(queryUrl, 'portal')
+    props.netantActions.netantSearchStarted(queryGeneString)
   }
 
   return (
@@ -33,12 +35,16 @@ const OpenInNetAntButton = props => {
       <Button
         variant="contained"
         color="primary"
-        disabled={true}
         onClick={handleSearch}
         className={classes.button}
+        disabled={props.netant.isNetAntRunning}
       >
         NetAnt
-        <OpenIcon className={classes.icon} alt="Open in NetAnt" />
+        {props.netant.isNetAntRunning ? (
+          <CircularProgress className={classes.icon}  thickness={5} size={25} color={'secondary'} />
+        ) : (
+          <OpenIcon className={classes.icon} alt="Open in NetAnt" />
+        )}
       </Button>
     </Tooltip>
   )

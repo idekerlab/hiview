@@ -6,6 +6,7 @@ import { logger } from '../middleware'
 import rootReducer from '../reducers'
 import goSaga from '../sagas/goSaga'
 import localSearchSaga from '../sagas/localSearchSaga'
+import netantSaga from '../sagas/netantSaga'
 
 const sagaMiddleware = createSagaMiddleware()
 
@@ -23,6 +24,7 @@ export default function configure(initialState) {
   const store = createStoreWithMiddleware(rootReducer, initialState)
   sagaMiddleware.run(goSaga)
   sagaMiddleware.run(localSearchSaga)
+  sagaMiddleware.run(netantSaga)
 
   if (module.hot) {
     module.hot.accept('../reducers', () => {

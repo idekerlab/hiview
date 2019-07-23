@@ -40,6 +40,7 @@ import * as renderingOptionsActions from '../../actions/rendering-options'
 import * as externalNetworksActions from '../../actions/external-networks'
 import * as goActions from '../../actions/go'
 import * as localSearchActions from '../../actions/local-search'
+import * as netantActions from '../../actions/netant'
 
 const baseStyle = {
   boxSizing: 'border-box',
@@ -98,7 +99,8 @@ function mapStateToProps(state) {
     groups: state.groups,
     externalNetworks: state.externalNetworks,
     go: state.go,
-    localSearch: state.localSearch
+    localSearch: state.localSearch,
+    netant: state.netant
   }
 }
 
@@ -154,7 +156,8 @@ function mapDispatchToProps(dispatch) {
       dispatch
     ),
     goActions: bindActionCreators(goActions, dispatch),
-    localSearchActions: bindActionCreators(localSearchActions, dispatch)
+    localSearchActions: bindActionCreators(localSearchActions, dispatch),
+    netantActions: bindActionCreators(netantActions, dispatch)
   }
 }
 

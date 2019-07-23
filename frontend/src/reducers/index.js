@@ -30,6 +30,8 @@ import externalNetworks from './external-networks'
 import go from './go'
 import localSearch from './local-search'
 
+import netant from './netant'
+
 
 // Application states
 const app_manager = combineReducers({
@@ -44,7 +46,7 @@ const app_manager = combineReducers({
   message,
   selection,
   interactions_commands,
-  current_path,
+  current_path
 })
 
 
@@ -62,5 +64,6 @@ export default combineReducers({
   groups,
   externalNetworks,
   go,
-  localSearch
+  localSearch,
+  netant
 })

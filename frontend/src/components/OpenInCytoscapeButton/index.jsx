@@ -9,8 +9,14 @@ import * as cyrestApi from '../../api/cyrest'
 
 const styles = theme => ({
   button: {
-    marginLeft: '1em',
-    width: '3em'
+    marginLeft: '0.5em',
+    width: '5em',
+    minWidth: '5em',
+    maxWidth: '5em',
+    minHeight: '4em',
+    maxHeight: '4em',
+    padding: 0,
+    height: '4em'
   },
   icon: {
     height: '2.5em'

@@ -97,14 +97,12 @@ const InteractionNetworkSelector = props => {
     const subsystem = props.currentProperty.data
     const linkEntry = subsystem['ndex_internalLink']
 
-
     // This is for data without raw interactions.
-    if(linkEntry === undefined || linkEntry === null) {
-
+    if (linkEntry === undefined || linkEntry === null) {
       const geneMap = props.network.get('geneMap')
       const geneSet = geneMap.get(subsystem.Label)
       const genes = [...geneSet]
-      console.log('Selected ====>', subsystem, genes, )
+      console.log('Selected ====>', subsystem, genes)
 
       props.externalNetworksActions.fetchExternalNetworkFromUrl(
         null,
@@ -155,7 +153,7 @@ const InteractionNetworkSelector = props => {
           rawInteractions={props.rawInteractions.toJS()}
         />
         <OpenInPortalButton genes={props.genes} />
-        <OpenInNetAntButton genes={props.genes} />
+        <OpenInNetAntButton genes={props.genes} {...others} />
       </div>
       <TextField
         id="user-external-network"
