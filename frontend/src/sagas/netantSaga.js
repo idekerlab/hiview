@@ -12,11 +12,15 @@ export default function* netantSaga() {
   yield takeLatest(NETANT_SEARCH_STARTED, watchSearch)
 }
 
+// 10 second interval
 const API_CALL_INTERVAL = 10000
+const NUM_REPEAT = 60
+
+
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 function* watchSearch(action) {
-  let genes = action.payload
+  let genes = action.payload.genes
   try {
     const res = yield call(netAntApi.postGenes, genes)
     const jobIdJson = yield call([res, 'json'])
@@ -31,7 +35,7 @@ function* watchSearch(action) {
 
     let counter = 0
 
-    while (counter < 5) {
+    while (counter < NUM_REPEAT) {
       const resStatus = yield call(netAntApi.checkStatus, jobId)
       const statusJson = yield call([resStatus, 'json'])
 

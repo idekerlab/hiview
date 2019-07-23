@@ -20,7 +20,6 @@ const LoadingPanel = props => {
 
   return (
     <div style={loadingStyle}>
-      <div style={loadingMessageStyle}>{props.message}</div>
       <CircularProgress size={300} thickness={1} />
     </div>
   )

@@ -27,7 +27,7 @@ const OpenInNetAntButton = props => {
 
   const handleSearch = () => {
     const queryGeneString = props.genes.join(',')
-    props.netantActions.netantSearchStarted(queryGeneString)
+    props.netantActions.netantSearchStarted({ genes: queryGeneString })
   }
 
   return (
@@ -41,7 +41,12 @@ const OpenInNetAntButton = props => {
       >
         NetAnt
         {props.netant.isNetAntRunning ? (
-          <CircularProgress className={classes.icon}  thickness={5} size={25} color={'secondary'} />
+          <CircularProgress
+            className={classes.icon}
+            thickness={5}
+            size={25}
+            color={'secondary'}
+          />
         ) : (
           <OpenIcon className={classes.icon} alt="Open in NetAnt" />
         )}
