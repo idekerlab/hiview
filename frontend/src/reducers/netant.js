@@ -26,26 +26,27 @@ const source = handleActions(
       }
     },
     [netantSearchSucceeded]: (state, payload) => {
+      console.log('Success!!!---------', payload)
       return {
         ...state,
-        result: payload.result,
+        result: payload.payload.result,
         isNetAntRunning: false,
         error: null
       }
     },
     [netantSearchFailed]: (state, payload) => {
-      console.warn('Error:', payload.error)
+      console.warn('Error:', payload)
       return {
         ...state,
         isNetAntRunning: false,
-        error: payload.error,
+        error: payload.payload.error,
         result: null
       }
     },
     [setJobId]: (state, payload) => {
       return {
         ...state,
-        jobId: payload.jobId
+        jobId: payload.payload.jobId
       }
     },
     [clearAll]: (state, payload) => {

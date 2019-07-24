@@ -8,7 +8,7 @@ const postGenes = payload => {
   console.log('GENE LIST STR = ', payload)
   const url = new URL(NETANT_BASE_URL)
   const params = {
-    disease: 'cancer',
+    disease: 'inflamm',
     gene: payload,
     ndexname: 'NetAnt Result from HiView'
   }
@@ -18,15 +18,11 @@ const postGenes = payload => {
   headers.append('Content-Type','application/x-www-form-urlencoded')
   headers.append('accept', 'application/json')
 
-  const data = new FormData()
-  data.append('disease', 'cancer')
-  data.append('gene', 'tp53,brca1')
-
   return fetch(url, {
     method: METHOD_POST,
     mode: 'cors',
     headers: headers,
-    body: 'disease=cancer&gene=tp53&ndexname=test'
+    body: 'disease=cancer&gene=tp53&ndexname=NetAnt result from HiView'
   })
 }
 

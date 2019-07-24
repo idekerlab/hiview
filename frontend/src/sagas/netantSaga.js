@@ -8,6 +8,10 @@ import {
   SET_JOB_ID
 } from '../actions/netant'
 
+const SERVICE_STATES = {
+  SUBMITTED: 'submitted', PROCESSING: 'processing', DONE: 'done'
+}
+
 export default function* netantSaga() {
   yield takeLatest(NETANT_SEARCH_STARTED, watchSearch)
 }
@@ -15,7 +19,6 @@ export default function* netantSaga() {
 // 10 second interval
 const API_CALL_INTERVAL = 10000
 const NUM_REPEAT = 60
-
 
 const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
@@ -39,19 +42,25 @@ function* watchSearch(action) {
       const resStatus = yield call(netAntApi.checkStatus, jobId)
       const statusJson = yield call([resStatus, 'json'])
 
-      console.log('Waiting for result:', statusJson, statusJson.status)
+      const { status } = statusJson
+
+      console.log('# status ===>', status)
+
+      if(status === 'done') {
+        console.log('-------------------------------Finished!!!!!', jobId, statusJson)
+        yield put({
+          type: NETANT_SEARCH_SUCCEEDED,
+          payload: {
+            result: statusJson
+          }
+        })
+        return
+      }
+      console.log('Waiting for result:', statusJson, status)
       yield call(sleep, API_CALL_INTERVAL)
 
       counter++
 
-      // yield put({
-      //   type: NETANT_SEARCH_SUCCEEDED,
-      //   payload: {
-      //     result: {
-      //       val: 'OK'
-      //     }
-      //   }
-      // })
     }
 
     console.log('TIMEOUT:', jobId)

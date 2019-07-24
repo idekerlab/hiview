@@ -23,11 +23,19 @@ const styles = theme => ({
 })
 
 const OpenInNetAntButton = props => {
-  const { classes } = props
+  const { classes, netant } = props
 
   const handleSearch = () => {
     const queryGeneString = props.genes.join(',')
     props.netantActions.netantSearchStarted({ genes: queryGeneString })
+  }
+
+  const result = netant.result
+  if (result === null || result === undefined) {
+  } else {
+    const link = result.result
+    console.log('LINK+++++++++++', link.ndexurl)
+    window.open(link.ndexurl, 'netant')
   }
 
   return (
