@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
 
-import {List, ListItem} from 'material-ui/List';
-import Divider from 'material-ui/Divider';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Divider from '@material-ui/core/Divider';
 import TitleBar from './TitleBar'
 import GeneList from './GeneList'
 
 import Loading from '../Loading'
-import OpenIcon from 'material-ui/svg-icons/action/open-in-new'
+import OpenIcon from '@material-ui/core/icons/action/open-in-new'
 
 const descriptionStyle = {
   background: '#BEBEB4',

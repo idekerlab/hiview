@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import CyNetworkViewer from 'cy-network-viewer'
 import { SigmaRenderer } from 'cytoscapejs-renderer'
-import { CircularProgress } from 'material-ui/Progress'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // For context menu
 import CirclePackingPanel from '../CirclePackingPanel'
@@ -11,6 +11,8 @@ import { Map } from 'immutable'
 
 const MYGENE_URL = 'http://mygene.info/v3'
 const NDEX_LINK_TAG = 'ndex_internalLink'
+
+const GO_NAMESPACE = 'GO:'
 
 const Viewer = CyNetworkViewer(SigmaRenderer)
 
@@ -61,6 +63,9 @@ class NetworkPanel extends Component {
       nodeProps: props
     }
 
+    console.log('----------------------clear--------------')
+    this.props.netantActions.clearAll()
+
     this.props.selectionActions.selectNode(newSelectionState)
 
     const nodeTypeTag = 'NodeType'
@@ -80,10 +85,35 @@ class NetworkPanel extends Component {
 
     // From NDEx to CYJS converter
     const linkEntry = props[NDEX_LINK_TAG]
+
+
     if (!linkEntry) {
-      // Link is not available = no raw interaction available
-      this.props.eventActions.selected(nodeProps[nodeIds[0]])
-      this.props.propertyActions.setProperty(props.id, props, 'term')
+      // Link is not available = no raw interaction available OR this is a human-curated ontology
+      const selectedNode = nodeProps[nodeIds[0]]
+      const subsystemName = props.name
+      console.log('Selected node: ++', selectedNode, props, subsystemName)
+
+      if(subsystemName.startsWith(GO_NAMESPACE)) {
+
+        console.log('This is GO+++++++++++++++++',selectedNode, subsystemName, this.props)
+        // this.props.goActions.findGenesStarted({ goId: subsystemName })
+
+        const selectedNodeId = selectedNode.props.id
+        const selectedNodeLabel = selectedNode.props.Label
+
+        console.log('Selected NODE = ', selectedNodeId, selectedNodeLabel)
+        const geneMap = this.props.network.get('geneMap')
+        const geneSet = geneMap.get(selectedNodeLabel)
+
+        console.log('Gene Set = ', geneSet)
+        this.props.eventActions.selected(selectedNode)
+        this.props.propertyActions.setProperty(props.id, props, 'term')
+
+      } else {
+        this.props.eventActions.selected(selectedNode)
+        this.props.propertyActions.setProperty(props.id, props, 'term')
+      }
+
       return
     }
 
@@ -107,6 +137,10 @@ class NetworkPanel extends Component {
     this.props.rawInteractionsActions.setLoading(
       'Checking summary of the interaction network...'
     )
+
+    // Clear selected
+    this.props.externalNetworksActions.clearExternalNetwork()
+
     fetch(summaryUrl)
       .then(response => {
         if (!response.ok) {
@@ -117,7 +151,9 @@ class NetworkPanel extends Component {
       })
       .then(summary => {
         const edgeCount = summary.edgeCount
-        this.props.rawInteractionsActions.setSummary(summary)
+
+        console.log('SET called-----------', summary)
+        this.props.rawInteractionsActions.setRawSummary(summary)
 
         if (edgeCount < this.props.autoLoadThreshold) {
           // Directly set prop from node attributes
@@ -125,7 +161,8 @@ class NetworkPanel extends Component {
             linkId,
             serverType,
             link,
-            this.props.maxEdgeCount
+            this.props.maxEdgeCount,
+            summary
           )
         }
       })
@@ -217,7 +254,7 @@ class NetworkPanel extends Component {
     const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
     this.setState({ networkUrl: url })
 
-    this.props.networkActions.fetchNetworkFromUrl(url)
+    this.props.networkActions.fetchNetworkFromUrl(url, uuid, serverType)
   }
 
   componentWillReceiveProps(nextProps) {
@@ -304,9 +341,9 @@ class NetworkPanel extends Component {
   }
 
   render() {
-    const loading = this.props.network.get('loading')
     const networkProp = this.props.network
-    const networkData = networkProp.get(this.state.networkUrl)
+    const loading = networkProp.get('loading')
+    const networkData = networkProp.get('cyjs')
 
     if (loading) {
       let message = 'Loading hierarchy.  Please wait...'

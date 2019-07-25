@@ -3,7 +3,8 @@ import {SEARCH, RECEIVE_SEARCH_RESULT, CLEAR_SEARCH_RESULT, SET_SEARCH_RESULT} f
 const defaultState = {
   query: null,
   result: null,
-  loading: false
+  loading: false,
+  highlight: null
 }
 
 

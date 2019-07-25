@@ -26,11 +26,14 @@ const MainPanel = props => {
     searchActions,
     network,
     selection,
+    selectionActions,
     currentPath,
     renderingOptions,
     renderingOptionsActions,
     routeParams,
     location,
+    localSearchActions,
+    localSearch
   } = props
 
   return (
@@ -55,7 +58,6 @@ const MainPanel = props => {
         renderingOptionsActions={renderingOptionsActions}
       />
 
-
       <BaseSplitPane cxtoolUrl={CXTOOL_URL} {...props} />
 
       <Commands
@@ -68,12 +70,15 @@ const MainPanel = props => {
         network={network.toJS()}
         commandActions={commandActions}
         searchActions={searchActions}
+        selectionActions={selectionActions}
         search={search}
         currentPath={currentPath}
         uiState={uiState}
         uiStateActions={uiStateActions}
         routeParams={routeParams}
         location={location}
+        localSearch={localSearch}
+        localSearchActions={localSearchActions}
       />
     </div>
   )

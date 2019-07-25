@@ -15,7 +15,7 @@ class CirclePackingPanel extends Component {
   }
 
   componentDidMount() {
-    const tree = cyjs2tree(this.props.network)
+    const tree = cyjs2tree(this.props.network, this.props.networkActions)
     this.setState({
       tree
     })
@@ -42,13 +42,6 @@ class CirclePackingPanel extends Component {
     })
 
     geneIds.forEach(gene => this.state.selectedGenes.add(gene))
-
-    // window.setTimeout(() => {
-    //   actions.selectNodes({
-    //     idList: [...this.state.selectedGenes],
-    //     selectedColor: 'green'
-    //   })
-    // }, 0)
   }
 
   getEventHandlers = () => {
@@ -86,7 +79,7 @@ class CirclePackingPanel extends Component {
         return
       }
 
-      if(!data.name) {
+      if (!data.name) {
         return
       }
 
@@ -124,7 +117,7 @@ class CirclePackingPanel extends Component {
         return
       }
 
-      if(!data.name) {
+      if (!data.name) {
         return
       }
 
@@ -137,7 +130,6 @@ class CirclePackingPanel extends Component {
       if (name === undefined) {
         name = data.name
       }
-
 
       const geneIds = groups[name]
       this.props.rawInteractionsActions.setSelectedPerm(geneIds)
@@ -165,13 +157,11 @@ class CirclePackingPanel extends Component {
 
       // Set selected state
       this.props.selectionActions.enterNode(data)
-
       const currentSelection = this.props.selection.get('main').nodeId
       if (id === currentSelection) {
         this.props.rawInteractionsActions.setSelected([])
         return
       }
-
       let name = data.props.Original_Name
       if (name === undefined) {
         name = data.props.name
@@ -195,6 +185,9 @@ class CirclePackingPanel extends Component {
   }
 
   render() {
+    // Search result is the selected ones.
+
+    const selected = this.props.localSearch.ids
     return (
       <div
         ref={containerElement => (this.containerElement = containerElement)}
@@ -205,7 +198,8 @@ class CirclePackingPanel extends Component {
         ) : (
           <TreeViewer
             command={this.props.command}
-            selected={this.props.search.result}
+            selected={selected}
+            highlight={this.props.selection.get('highlight')}
             tree={this.state.tree}
             eventHandlers={this.getEventHandlers()}
             width={this.props.style.width}
@@ -216,10 +210,6 @@ class CirclePackingPanel extends Component {
       </div>
     )
   }
-}
-
-const handleClick = (nodeId, props) => {
-  props.commandActions.zoomToNode(nodeId)
 }
 
 export default CirclePackingPanel

@@ -5,16 +5,12 @@ const baseStyle = {
   position: 'fixed',
   top: '0.5em',
   left: '0.5em',
-  zIndex: 900,
-
+  zIndex: 900
 }
-
 
 const FullSearch = props => (
   <div style={baseStyle}>
-    <SearchPanel
-      {...props}
-    />
+    <SearchPanel {...props} />
   </div>
 )
 

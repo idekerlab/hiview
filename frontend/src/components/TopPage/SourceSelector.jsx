@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 
-import TextField from 'material-ui/TextField'
-import Button from 'material-ui/Button'
+import TextField from '@material-ui/core/TextField'
+import Button from '@material-ui/core/Button'
 
-import Menu, { MenuItem } from 'material-ui/Menu'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
 
 import { browserHistory } from 'react-router'
 
@@ -30,10 +31,18 @@ const startStyle = {
   marginTop: '2em'
 }
 
-const DEFAULT_EXAMPLE = 'Fanconi Anemia Gene Ontology'
+const DEFAULT_EXAMPLE = 'Toy Example'
+
+const GO_PREFIX = 'Gene Ontology:'
 
 const EXAMPLE_UUIDS = {
-  [DEFAULT_EXAMPLE]: '0fb9fec3-f772-11e8-aaa6-0ac135e8bacf'
+  [DEFAULT_EXAMPLE]: '49bca313-ab2c-11e8-9a23-0660b7976219',
+  'DNA Repair': 'ab704ae4-0719-11e8-b03c-0660b7976219',
+  'Human data-driven hierarchy - draft v0.1':
+    '2900c930-fad7-11e8-ad43-0660b7976219',
+  'Gene Ontology: BP': '9166bc71-7bef-11e9-848d-0ac135e8bacf',
+  'Gene Ontology: CC': '0a393b91-7be9-11e9-848d-0ac135e8bacf',
+  'Gene Ontology: MF': '21892e2b-7beb-11e9-848d-0ac135e8bacf'
 }
 
 class SourceSelector extends Component {
@@ -42,8 +51,8 @@ class SourceSelector extends Component {
 
     this.state = {
       uuid: '',
-      serverUrl: 'http://public.ndexbio.org',
-      serverType: 'public',
+      serverUrl: 'http://test.ndexbio.org',
+      serverType: 'test',
       example: EXAMPLE_UUIDS[DEFAULT_EXAMPLE],
       openError: false,
       openWarning: false,
@@ -106,6 +115,15 @@ class SourceSelector extends Component {
 
   handleExampleChange = (event, idx) => {
     const uuid = Object.values(EXAMPLE_UUIDS)[idx]
+    const name = Object.keys(EXAMPLE_UUIDS)[idx]
+
+    if(name.startsWith(GO_PREFIX)) {
+      this.setState({
+        serverUrl: 'http://public.ndexbio.org',
+        serverType: 'public'
+      })
+
+    }
     this.setState({ anchorEl: null })
 
     this.setState({
@@ -134,6 +152,8 @@ class SourceSelector extends Component {
   }
 
   checkNetworkSummary = summary => {
+    console.log('# Summary', summary)
+    this.props.networkActions.setSummary(summary)
     const edgeCount = summary.edgeCount
     const nodeCount = summary.nodeCount
 
@@ -159,6 +179,9 @@ class SourceSelector extends Component {
     let url = this.state.serverUrl
     let serverType = this.state.serverType
     const uuid = this.state.uuid
+
+    this.props.networkActions.setUuid(uuid)
+    this.props.networkActions.setServer(url)
 
     // this.props.dataSourceActions.addDataSource(this.state)
 
@@ -239,7 +262,7 @@ class SourceSelector extends Component {
         <div style={{ width: '450px' }}>
           <TextField
             style={textFieldStyle}
-            placeholder="e.g. http://public.ndexbio.org"
+            placeholder="e.g. http://test.ndexbio.org"
             label="NDEx Server URL"
             margin="normal"
             value={this.state.serverUrl}
@@ -262,7 +285,7 @@ class SourceSelector extends Component {
             <Button
               aria-owns={anchorEl ? 'examples' : null}
               aria-haspopup="true"
-              variant="raised"
+              variant="contained"
               onClick={this.handleExample}
             >
               Examples
@@ -289,7 +312,7 @@ class SourceSelector extends Component {
           <Button
             color="primary"
             style={startStyle}
-            variant="raised"
+            variant="contained"
             onClick={this.handleStart}
             disabled={this.state.invalidUuid}
           >

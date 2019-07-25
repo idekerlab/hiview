@@ -26,6 +26,11 @@ import rendering_options from './rendering-options'
 
 import enrichment from './enrichment'
 import groups from './groups'
+import externalNetworks from './external-networks'
+import go from './go'
+import localSearch from './local-search'
+
+import netant from './netant'
 
 
 // Application states
@@ -41,7 +46,7 @@ const app_manager = combineReducers({
   message,
   selection,
   interactions_commands,
-  current_path,
+  current_path
 })
 
 
@@ -56,5 +61,9 @@ export default combineReducers({
   interaction_style,
   rendering_options,
   enrichment,
-  groups
+  groups,
+  externalNetworks,
+  go,
+  localSearch,
+  netant
 })

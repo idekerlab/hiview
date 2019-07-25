@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import TitleBar from './TitleBar'
 import CoreGenePropPanel from './CoreGenePropPanel'
-import Typography from 'material-ui/Typography'
+import Typography from '@material-ui/core/Typography'
 
-import { CircularProgress } from 'material-ui/Progress'
-import { blueGrey } from 'material-ui/colors'
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { blueGrey } from '@material-ui/core/colors'
 
 
 const descriptionStyle = {
@@ -66,7 +66,7 @@ class GenePropertyPanel extends Component {
           >
             Summary:
           </Typography>
-          <Typography type="subheading" style={{ fontSize: '1.2em' }}>
+          <Typography type="subtitle1" style={{ fontSize: '1.2em' }}>
             {entry.summary}
           </Typography>
         </div>

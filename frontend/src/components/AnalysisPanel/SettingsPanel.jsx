@@ -1,6 +1,6 @@
 import React from 'react'
-import SettingsIcon from 'material-ui-icons/Settings'
-import IconButton from 'material-ui/IconButton'
+import SettingsIcon from '@material-ui/icons/Settings'
+import IconButton from '@material-ui/core/IconButton'
 
 
 const SettingsPanel = props => (

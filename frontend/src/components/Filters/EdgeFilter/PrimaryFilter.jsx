@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import Slider, { createSliderWithTooltip } from 'rc-slider'
 import 'rc-slider/assets/index.css'
 
-import { teal } from 'material-ui/colors'
+import { teal } from '@material-ui/core/colors'
 
 const SliderWithTooltip = createSliderWithTooltip(Slider)
 

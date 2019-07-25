@@ -1,5 +1,6 @@
 import React from 'react'
-import Tabs, { Tab } from 'material-ui/Tabs'
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import BarPlot from './BarPlot'
 import Progress from './Progress'
 import EmptyPanel from "./EmptyPanel";
@@ -53,7 +54,7 @@ class PlotPanel extends React.Component {
 
       return (
         <div style={containerStyle}>
-          <Tabs value={idx} scrollable={true} onChange={this.handleChange}>
+          <Tabs value={idx} variant="scrollable" onChange={this.handleChange}>
             {titles.map((title, i) => {
               return <Tab key={i} label={title} />
             })}

@@ -72,54 +72,55 @@ export default class BaseSplitPane extends Component {
     const rightPanelWidth = window.innerWidth - this.state.mainPanelWidth
 
     return (
-      <div>
-        <SplitPane
-          split="vertical"
-          minSize={50}
-          size={this.state.mainPanelWidth}
-          onDragFinished={leftWidth => this.handleVerticalResize(leftWidth)}
-        >
-          <LeftPanel {...this.props} />
+      <SplitPane
+        split="vertical"
+        minSize={50}
+        size={this.state.mainPanelWidth}
+        onDragFinished={leftWidth => this.handleVerticalResize(leftWidth)}
+      >
+        <LeftPanel {...this.props} />
 
-          {currentProperty.id === null ? (
-            <BlankPanel />
-          ) : (
-            <PropertyPanel
-              routeParams={this.props.routeParams}
-              location={this.props.location}
-              interactionsCommands={this.props.interactionsCommands}
-              interactionsCommandActions={this.props.interactionsCommandActions}
-              events={events}
-              currentProperty={currentProperty}
-              rawInteractions={this.props.rawInteractions}
-              rawInteractionsActions={this.props.rawInteractionsActions}
-              selection={selection}
-              selectionActions={selectionActions}
-              filters={filters}
-              filtersActions={filtersActions}
-              interactionStyle={interactionStyle}
-              interactionStyleActions={interactionStyleActions}
-              datasource={this.props.datasource}
-              network={network}
-              cxtoolUrl={cxtoolUrl}
-              enrichment={this.props.enrichment}
-              enrichmentActions={this.props.enrichmentActions}
-              groups={this.props.groups}
-              groupsActions={this.props.groupsActions}
-              uiState={uiState}
-              uiStateActions={uiStateActions}
-              width={rightPanelWidth}
-              maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
-              autoLoadThreshold={this.props.rawInteractions.get(
-                'autoLoadThreshold'
-              )}
-              originalEdgeCount={this.props.rawInteractions.get(
-                'originalEdgeCount'
-              )}
-            />
-          )}
-        </SplitPane>
-      </div>
+        {currentProperty.id === null ? (
+          <BlankPanel />
+        ) : (
+          <PropertyPanel
+            routeParams={this.props.routeParams}
+            location={this.props.location}
+            interactionsCommands={this.props.interactionsCommands}
+            interactionsCommandActions={this.props.interactionsCommandActions}
+            events={events}
+            currentProperty={currentProperty}
+            rawInteractions={this.props.rawInteractions}
+            rawInteractionsActions={this.props.rawInteractionsActions}
+            selection={selection}
+            selectionActions={selectionActions}
+            filters={filters}
+            filtersActions={filtersActions}
+            interactionStyle={interactionStyle}
+            interactionStyleActions={interactionStyleActions}
+            datasource={this.props.datasource}
+            network={network}
+            cxtoolUrl={cxtoolUrl}
+            enrichment={this.props.enrichment}
+            enrichmentActions={this.props.enrichmentActions}
+            groups={this.props.groups}
+            groupsActions={this.props.groupsActions}
+            uiState={uiState}
+            uiStateActions={uiStateActions}
+            width={rightPanelWidth}
+            maxEdgeCount={this.props.rawInteractions.get('maxEdgeCount')}
+            autoLoadThreshold={this.props.rawInteractions.get(
+              'autoLoadThreshold'
+            )}
+            originalEdgeCount={this.props.rawInteractions.get(
+              'originalEdgeCount'
+            )}
+            externalNetworks={this.props.externalNetworks}
+            externalNetworksActions={this.props.externalNetworksActions}
+            {...this.props}
+          />
+        )}
+      </SplitPane>
     )
   }
 }

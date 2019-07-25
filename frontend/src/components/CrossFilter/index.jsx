@@ -10,7 +10,7 @@ import {
   LabelSeries
 } from 'react-vis'
 
-import Typography from 'material-ui/Typography'
+import Typography from '@material-ui/core/Typography'
 import AllEdgeDistribution from './AllEdgeDistribution'
 
 const containerStyle = {
@@ -61,6 +61,7 @@ class CrossFilter extends Component {
   }
 
   render() {
+
     const data = this.props.networkData
     if (!data || Object.keys(data).length === 0) {
       return (
@@ -94,7 +95,10 @@ class CrossFilter extends Component {
 
     const tickTotal = this.getTickCount(maxFrequency)
 
-    const range = this.props.networkData.edgeScoreRange
+    let range = this.props.networkData.edgeScoreRange
+
+    range = range.map(r => parseFloat(r))
+
     const subsystems = this.props.networkData.Group
 
     const groupNames = subsystems.split('|')
@@ -217,6 +221,7 @@ class CrossFilter extends Component {
         label: range[1].toFixed(3)
       }
     }
+
     return (
       <div
         style={containerStyle}
@@ -259,7 +264,7 @@ class CrossFilter extends Component {
 
         <div style={titleStyle}>
           <Typography
-            variant="display1"
+            variant="h4"
             style={{ color: '#444444', fontSize: '1.2em',paddingTop: '0.5em' }}
           >
             Similarity Score

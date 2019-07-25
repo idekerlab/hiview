@@ -1,9 +1,41 @@
-import * as d3Hierarchy from 'd3-hierarchy'
-import cytoscape from 'cytoscape'
+import { createAction } from 'redux-actions'
+import { CxToJs, CyNetworkUtils } from 'cytoscape-cx2js'
 
 import Fuse from 'fuse.js'
+import Dexie from 'dexie'
+
+const utils = new CyNetworkUtils()
+const cx2js = new CxToJs(utils)
+
+export const SET_UUID = 'SET_UUID'
+export const SET_SERVER = 'SET_SERVER'
+export const SET_SUMMARY = 'SET_SUMMARY'
+export const setUuid = createAction(SET_UUID)
+export const setServer = createAction(SET_SERVER)
+export const setSummary = createAction(SET_SUMMARY)
 
 export const FETCH_NETWORK = 'FETCH_NETWORK'
+
+// For local cache
+
+const DB_NAME = 'HiView'
+const DB_VERSION = 2
+const DB_STORE = 'hierarchy'
+const DB_PRIMARY_KEY = 'uuid'
+
+const hvDb = new Dexie(DB_NAME)
+
+const initDB = () => {
+  hvDb.version(DB_VERSION).stores({
+    [DB_STORE]: DB_PRIMARY_KEY
+  })
+
+  hvDb.open().catch(e => {
+    console.error(DB_NAME + ': Open failed: ' + e)
+  })
+}
+
+initDB()
 
 const generateIndex = networkJson => {
   if (!networkJson) {
@@ -15,16 +47,14 @@ const generateIndex = networkJson => {
 
   const options = {
     shouldSort: true,
-    threshold: 0.0,
-    tokenize: true,
+    threshold: 0.2,
+    tokenize: false,
     location: 0,
-    matchAllTokens: true,
     distance: 100,
-    maxPatternLength: 32,
-    minMatchCharLength: 1,
-    keys: ['name', 'Label', 'GO_term_aligned']
+    maxPatternLength: 12,
+    minMatchCharLength: 3,
+    keys: ['Label', 'GO_term_ID']
   }
-
   return new Fuse(nodeData, options)
 }
 
@@ -37,8 +67,7 @@ const fetchNetwork = url => {
 
 export const RECEIVE_NETWORK = 'RECEIVE_NETWORK'
 const receiveNetwork = (url, json, error) => {
-
-  if(error !== null) {
+  if (error !== null) {
     return {
       type: RECEIVE_NETWORK,
       url,
@@ -59,70 +88,190 @@ const receiveNetwork = (url, json, error) => {
   }
 }
 
-const fetchNet = url => {
-  return fetch(url)
-}
-
-/**
- * remove unnecessary edges for visualization
- */
-const filterEdges = network => {
-  const edges = []
-  network.elements.edges.forEach(edge => {
-    if (edge.data.Is_Tree_Edge === 'Tree') {
-      edges.push(edge)
-    }
-  })
-
-  network.elements.edges = edges
-  return network
-}
-
-const filterNodes = network => {
-  const nodes = []
-  network.elements.nodes.forEach(node => {
-    if (node.data.Gene_or_Term === 'Term') {
-      nodes.push(node)
-    }
-  })
-
-  network.elements.nodes = nodes
-  return network
-}
-
-export const fetchNetworkFromUrl = url => {
-
-  console.log('Main network loading: start', url)
-  
-  const t0 = performance.now()
+let t0 = 0
+let t1 = 0
+export const fetchNetworkFromUrl = (url, uuid, serverType) => {
+  t0 = performance.now()
   return dispatch => {
     dispatch(fetchNetwork(url))
-
-    return fetch(url)
-      .then(response => {
-        const t1 = performance.now()
-        console.log('Main network fetch TIME = ', t1-t0)
-
-        if (!response.ok) {
-          throw Error(response.statusText)
-        } else {
-          return response.json()
-        }
-      })
-      .then(json => createLabel2IdMap(json))
-      .then(network => addOriginalToAlias(network))
-      .then(network => dispatch(receiveNetwork(url, network, null)))
-      .catch(err => {
-        console.log("Fetch Error: ", err)
-        return dispatch(receiveNetwork(url, null, err))
-      })
+    return getNetworkData(url, uuid, dispatch, serverType)
   }
 }
 
+const getNetworkData = (url, uuid, dispatch, serverType) => {
+  hvDb.hierarchy.get(uuid).then(network => {
+    if (network === undefined) {
+      console.log('Does not exist:', uuid)
+      return fetchDataFromRemote(url, uuid, dispatch, serverType)
+    } else {
+      return fetchFromLocal(url, uuid, dispatch, network)
+    }
+  })
+  return false
+}
+
+const fetchFromLocal = (url, uuid, dispatch, netObj) => {
+  console.log('Local Hit:', uuid, performance.now() - t0)
+
+  const network = createLabel2IdMap(netObj)
+  addOriginalToAlias(network)
+  return dispatch(receiveNetwork(url, network, null))
+}
+
+const modifyNetwork = (cyjs, attrMap) => {
+  const pattern = /_u\d+$/g
+  // Flip
+  const newMap = {}
+
+  const keys = Object.keys(attrMap)
+  keys.forEach(key => (newMap[attrMap[key]] = key))
+
+  console.log('NMM', newMap)
+
+  const nodes = cyjs.elements.nodes
+  let len = nodes.length
+  while (len--) {
+    const node = nodes[len]
+
+    const data = node.data
+    const newData = {}
+    const originalKeys = Object.keys(data)
+
+    originalKeys.forEach(key => {
+      const newKey = key.replace(pattern, '')
+      let value = data[key]
+      if (value === 'false') {
+        value = false
+      } else if (value === 'true') {
+        value = true
+      } else if (key === 'id') {
+        value = value.toString()
+      }
+
+      newData[newKey] = value
+    })
+    node.data = newData
+  }
+
+  const edges = cyjs.elements.edges
+  len = edges.length
+
+  while (len--) {
+    const e = edges[len]
+    const data = e.data
+    const newData = {}
+    const originalKeys = Object.keys(data)
+
+    originalKeys.forEach(key => {
+      const newKey = key.replace(pattern, '')
+      let value = data[key]
+      if (value === 'false') {
+        value = false
+      } else if (value === 'true') {
+        value = true
+      } else if (key === 'id') {
+        value = value.toString()
+      }
+
+      newData[newKey] = value
+    })
+    newData.source = data.source.toString()
+    newData.target = data.target.toString()
+    e.data = newData
+  }
+
+  return cyjs
+}
+
+const getNetworkAttributes = cx => {
+  const networkAttr = cx.filter(
+    entry => entry['networkAttributes'] !== undefined
+  )
+
+  // Check net attr actually exists
+  if (
+    networkAttr === undefined ||
+    networkAttr === null ||
+    networkAttr.length === 0
+  ) {
+    return {
+      name: '(No Name)'
+    }
+  }
+  const attr = networkAttr[0].networkAttributes
+
+  const cyjsData = {}
+  attr.forEach(entry => {
+    cyjsData[entry.n] = entry.v
+  })
+
+  return cyjsData
+}
+
+const fetchDataFromRemote = (url2, uuid, dispatch, serverType) => {
+  const headers = new Headers()
+  headers.set('Accept-Encoding', 'br')
+  const setting = {
+    method: 'GET',
+    mode: 'cors',
+    headers: headers
+  }
+
+  const url = 'http://' + serverType + '.ndexbio.org/v2/network/' + uuid
+
+  return fetch(url, setting)
+    .then(response => {
+      if (!response.ok) {
+        throw Error(response.statusText)
+      } else {
+        return response.json()
+      }
+    })
+    .then(json => {
+      t1 = performance.now()
+      console.log('Remote fetch time = ', t1 - t0, json)
+      const netAttr = getNetworkAttributes(json)
+      let niceCX = utils.rawCXtoNiceCX(json)
+      const attributeNameMap = {}
+      const elementsObj = cx2js.cyElementsFromNiceCX(niceCX, attributeNameMap)
+
+      // Release it
+      niceCX = null
+
+      const cyjs = {
+        data: netAttr,
+        uuid: uuid,
+        elements: elementsObj
+      }
+
+      json['uuid'] = uuid
+
+      const filtered = modifyNetwork(cyjs, attributeNameMap)
+
+      hvDb.hierarchy.put(filtered)
+      // hvDb.hierarchy.put(json)
+      json = null
+
+      console.log('RES::', json, cyjs, filtered, attributeNameMap)
+
+      return filtered
+      // return json
+    })
+    .then(json => createLabel2IdMap(json))
+    .then(network => addOriginalToAlias(network))
+    .then(network => dispatch(receiveNetwork(url, network, null)))
+    .catch(err => {
+      console.log('Fetch Error: ', err)
+      return dispatch(receiveNetwork(url, null, err))
+    })
+}
 
 let primaryName2prop = new Map()
 
 const createLabel2IdMap = network => {
+  // const t2 = performance.now()
+  // console.log('To JSON TIME = ', t2 - t1, network)
+
   const nodes = network.elements.nodes
 
   const label2id = {}
@@ -141,7 +290,7 @@ const createLabel2IdMap = network => {
     }
 
     const hidden = nodeData.Hidden
-    if(!hidden && nodeData.NodeType === 'Term') {
+    if (!hidden && nodeData.NodeType === 'Term') {
       primaryName2prop.set(nodeData.name, nodeData)
     }
 
@@ -162,7 +311,6 @@ const createLabel2IdMap = network => {
  * @returns {*}
  */
 const addOriginalToAlias = network => {
-
   const nodes = network.elements.nodes
   let i = nodes.length
   while (i--) {
@@ -173,7 +321,7 @@ const addOriginalToAlias = network => {
     if (hidden && nodeType === 'Term') {
       const originalData = primaryName2prop.get(nodeData.Original_Name)
 
-      if(originalData) {
+      if (originalData) {
         nodeData['originalId'] = originalData.id
         nodeData['alias'] = true
       } else {
@@ -184,197 +332,6 @@ const addOriginalToAlias = network => {
     }
   }
   return network
-}
-
-const filterLeafs = network => {
-  const cy = cytoscape({
-    elements: network.elements
-  })
-
-  const toBeRemovedNodes = cy.filter((element, i) => {
-    if (element.isNode() && element.degree() === 1) {
-      return true
-    }
-    return false
-  })
-
-  const toBeRemovedEdges = cy.nodes().edgesWith(toBeRemovedNodes)
-  cy.remove(toBeRemovedEdges)
-  cy.remove(toBeRemovedNodes)
-
-  network.elements.nodes = cy.nodes().jsons()
-  network.elements.edges = cy.edges().jsons()
-
-  return network
-}
-
-const findRoot = network => {
-  const nodes = network.elements.nodes
-
-  let minSize = null
-  let maxSize = null
-
-  let rootId = null
-
-  for (let i = 0; i < nodes.length; i++) {
-    const node = nodes[i]
-    const isRoot = node.data.isRoot
-    const name = node.data.name
-
-    if (isRoot === 'True') {
-      rootId = node.data.id
-    }
-
-    const size = node.data.Size
-    if (size !== undefined) {
-      node.data.Size = parseInt(size)
-
-      if (minSize === null) {
-        minSize = size
-      }
-      if (maxSize === null) {
-        maxSize = size
-      }
-      if (size <= minSize) {
-        minSize = size
-      }
-
-      if (size >= maxSize) {
-        maxSize = size
-      }
-    }
-  }
-
-  network.data.minSize = minSize
-  network.data.maxSize = maxSize
-
-  return rootId
-}
-
-const layout = network => {
-  const rootNodeId = findRoot(network)
-  if (rootNodeId === null) {
-    // Return network as-is
-    return network
-  }
-
-  console.log('Root Node found: ' + rootNodeId)
-
-  network.data.rootId = rootNodeId
-
-  const layoutMap = getTree(rootNodeId, network)
-  return applyLayout(layoutMap, network)
-}
-
-const getTree = (rootId, tree) => {
-  const csv = []
-  csv.push({
-    name: rootId,
-    parent: ''
-  })
-
-  const edges = tree.elements.edges
-  edges.forEach(edge => {
-    const source = edge.data.source
-    const target = edge.data.target
-
-    csv.push({
-      name: source,
-      parent: target
-    })
-  })
-
-  console.log('********** ROOT: ' + rootId)
-
-  const d3tree = d3Hierarchy
-    .stratify()
-    .id(function(d) {
-      return d.name
-    })
-    .parentId(function(d) {
-      return d.parent
-    })(csv)
-
-  console.log(d3tree)
-
-  var layout = d3Hierarchy
-    .cluster()
-    .size([360, 1600])
-    .separation((a, b) => {
-      return (a.parent === b.parent ? 1 : 2) / a.depth
-    })
-
-  layout(d3tree)
-  console.log('---------- Done! -------------')
-  console.log(d3tree)
-
-  const layoutMap = {}
-  walk(d3tree, layoutMap)
-
-  console.log(layoutMap)
-  return layoutMap
-}
-
-const applyLayout = (layoutMap, network) => {
-  const nodes = network.elements.nodes
-  nodes.forEach(node => {
-    const position = layoutMap[node.data.id]
-    if (position !== undefined) {
-      let depth = position[2]
-
-      if (depth === undefined) {
-        depth = 0
-      }
-
-      const newPos = project(position[0], position[1])
-      node.position.x = newPos[0]
-      node.position.y = newPos[1]
-      // node.position.x = position[0]* 10
-      // node.position.y = position[1]* 10
-      // console.log(newPos[2]*180/Math.PI)
-      if (node.data.Size === 1 || depth > 1) {
-        let angle = newPos[2]
-        // let angle = newPos[2]*180/Math.PI
-        if (angle <= Math.PI * 1.5 && angle >= Math.PI / 2.0) {
-          angle = angle + Math.PI
-          // if(node.data.Size === 1) {
-          //   node.position.x = -1205
-          //   node.position.y = newPos[1] * 12
-          // }
-        } else {
-          // if(node.data.Size === 1) {
-          //   node.position.x = 1205
-          //   node.position.y = newPos[1] * 12
-          // }
-        }
-        node.data.angle = angle
-      } else {
-        node.data.angle = 0
-      }
-
-      // Leaf nodes
-      // if(node.data.Size === 1) {
-      //   node.position.x = newPos[0]*3
-      //   node.position.y = newPos[1]*3
-      // }
-    } else {
-      // console.log('ERRRRRRRRRRRR: ' + node.data.id)
-    }
-  })
-
-  return network
-}
-
-const project = (x, y) => {
-  const angle = (x - 90) / 180 * Math.PI
-  const radius = y
-  return [radius * Math.cos(angle), radius * Math.sin(angle), angle]
-}
-
-const project2 = (x, y) => {
-  const angle = (x - 90) / 180 * Math.PI
-  const radius = y
-  return [radius * Math.cos(angle * 2), radius * Math.sin(angle * 2), angle]
 }
 
 const walk = (node, layoutMap) => {
@@ -406,3 +363,6 @@ const deleteNetwork = url => {
     url
   }
 }
+
+export const SET_GENE_MAP = 'SET_GENE_MAP'
+export const setGeneMap = createAction(SET_GENE_MAP)

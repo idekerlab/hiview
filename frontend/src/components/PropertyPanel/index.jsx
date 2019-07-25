@@ -1,11 +1,7 @@
 import React, { Component } from 'react'
-
 import TermDetailsPanel from './TermDetailsPanel'
 import GenePropertyPanel from './GenePropertyPanel'
 
-import AppBar from 'material-ui/AppBar'
-import Toolbar from 'material-ui/Toolbar'
-import MessageBar from './MessageBar'
 
 const PANEL_TYPES = {
   GENE: 'gene',
@@ -50,11 +46,11 @@ class PropertyPanel extends Component {
 
     const drawerContentsStyle = {
       overflowX: 'auto',
-      height: window.innerHeight,
+      boxSizing: 'border-box',
+      height: '100%',
+      width: '100%',
       margin: 0,
       padding: 0,
-      display: 'flex',
-      flexDirection: 'column',
       background: '#FFFFFF'
     }
 

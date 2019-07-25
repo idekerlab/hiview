@@ -1,10 +1,11 @@
 import React from 'react'
 
-import { blueGrey } from 'material-ui/colors'
-import Typography from 'material-ui/Typography'
-import ArrowIcon from 'material-ui-icons/ArrowBack'
+import { blueGrey } from '@material-ui/core/colors'
+import Typography from '@material-ui/core/Typography'
+import ArrowIcon from '@material-ui/icons/ArrowBack'
 
 const style = {
+  boxSizing: 'border-box',
   background: blueGrey[100],
   height: '100%',
   width: '100%',
@@ -17,7 +18,7 @@ const BlankPanel = props => (
   <div style={style}>
     <ArrowIcon style={{width: '5em', height: '3em', color: '#444444'}}/>
     <Typography
-      variant={'display2'}
+      variant={'h3'}
       style={{ color: '#555555', fontWeight: 300 }}
     >
       Double-Click a Subsystem to Start

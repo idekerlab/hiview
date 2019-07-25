@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 
-import Tabs, { Tab } from 'material-ui/Tabs'
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
 
 import RawInteractionPanel from './RawInteractionPanel'
 import SubsystemPanel from './SubsystemPanel'
@@ -22,23 +23,20 @@ import SplitPane from 'react-split-pane'
 import LoadingPanel from './LoadingPanel'
 import AutoLoadThresholdPanel from './AutoLoadThresholdPanel'
 import LargeNetworkWarningPanel from './LargeNetworkWarningPanel'
+import InteractionNetworkSelector from '../InteractionNetworkSelector'
+import CytoscapeViewer from '../CytoscapeViewer'
 
-const controlWrapperStyle = {
-  width: '100%'
-}
 
 const filterPanelStyle = {
   display: 'inline-flex',
+  boxSizing: 'border-box',
   width: '100%',
   padding: '0.6em',
   background: '#FFFFFF'
 }
 
 const controlPanelStyle = {
-  padding: 0,
-  margin: 0,
-  width: '100%',
-  background: '#FFFFFF'
+  boxSizing: 'border-box'
 }
 
 const layoutPanelStyle = {
@@ -127,6 +125,7 @@ class TermDetailsPanel extends Component {
       const rawUuid = summary.externalId
       const rawUrl = this.props.cxtoolUrl + rawUuid + '?server=' + serverType
 
+      console.log('Large network warning::::')
       return (
         <LargeNetworkWarningPanel
           summary={summary}
@@ -196,160 +195,211 @@ class TermDetailsPanel extends Component {
       networkData = network.data
     }
 
-    const propPanelStyle = {
-      width: this.props.width,
+    const bottomStyle = {
+      boxSizing: 'border-box',
+      width: '100%',
       height: window.innerHeight - this.state.networkPanelHeight,
       display: 'flex',
       flexDirection: 'column',
-      overflowY: 'auto',
-      overflowX: 'hidden'
+      overflowY: 'auto'
     }
 
     // Calculate
     const topHeight = this.state.networkPanelHeight
+    const allProps = this.props
+
+    const selectedExternalNetwork = this.props.externalNetworks
+      .selectedNetworkUuid
 
     return (
-      <div>
-
-        <SplitPane
-          split="horizontal"
-          minSize={50}
-          size={this.state.networkPanelHeight}
-          onDragFinished={topHeight => this.handleHorizontalResize(topHeight)}
+      <SplitPane
+        split="horizontal"
+        minSize={50}
+        size={this.state.networkPanelHeight}
+        onDragFinished={topHeight => this.handleHorizontalResize(topHeight)}
+      >
+        <div
+          style={{
+            boxSizing: 'border-box',
+            height: '100%',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column'
+          }}
         >
-          <div style={{ width: '100%', display: 'flex', flexDirection: 'column'}}>
+          <MessageBar
+            height={50}
+            title={this.props.title}
+            titleColor={this.props.color}
+            originalEdgeCount={this.props.originalEdgeCount}
+            maxEdgeCount={this.props.maxEdgeCount}
+          />
 
-            <MessageBar
-              height={50}
-              title={this.props.title}
-              titleColor={this.props.color}
-              originalEdgeCount={this.props.originalEdgeCount}
-              maxEdgeCount={this.props.maxEdgeCount}
-            />
+          {this.getNetworkPanel(
+            hidden,
+            topHeight,
+            selectedExternalNetwork,
+            interactions,
+            selected,
+            selectedPerm,
+            visualStyle,
+            raw
+          )}
+        </div>
 
-            {hidden ? (
-              <EmptyInteractionPanel height={topHeight} />
-            ) : (
-              <RawInteractionPanel
-                subnet={interactions}
-                subnetSelected={selected}
-                subnetSelectedPerm={selectedPerm}
-                selectedTerm={this.props.currentProperty.id}
-                handleClose={this.props.handleClose}
+        <div style={bottomStyle}>
+          {this.props.expanded ? <div style={{ height: '5.2em' }} /> : <div />}
+
+          {hidden ? (
+            <div />
+          ) : (
+            <div style={controlPanelStyle}>
+              <InteractionNetworkSelector genes={geneList} {...allProps} />
+              {this.getControllers(
+                selectedExternalNetwork,
+                layoutPanelStyle,
+                networkProps,
+                controllerStyle,
+                raw
+              )}
+            </div>
+          )}
+
+          {hidden || selectedExternalNetwork ? (
+            <div />
+          ) : (
+            <div style={filterPanelStyle}>
+              <EdgeFilter
+                filters={raw.filters}
                 commandActions={this.props.interactionsCommandActions}
                 commands={this.props.interactionsCommands}
-                loading={raw.loading}
-                selection={this.props.selection}
-                selectionActions={this.props.selectionActions}
-                filters={raw.filters}
-                interactionStyleActions={this.props.interactionStyleActions}
-                networkStyle={visualStyle}
-                panelWidth={this.props.width}
-                expanded={this.props.expanded}
-                enrichment={this.props.enrichment}
-                enrichmentActions={this.props.enrichmentActions}
-                uiState={this.props.uiState}
+                filtersActions={this.props.filtersActions}
+                networkData={networkProps}
               />
-            )}
-          </div>
-
-          <div style={propPanelStyle}>
-            <div style={{ zIndex: 1000 }}>
-              <div style={controlWrapperStyle}>
-                {this.props.expanded ? (
-                  <div style={{ height: '5.2em' }} />
-                ) : (
-                  <div />
-                )}
-
-                {hidden ? (
-                  <div />
-                ) : (
-                  <div style={controlPanelStyle}>
-                    <LayoutSelector
-                      style={layoutPanelStyle}
-                      commandActions={this.props.interactionsCommandActions}
-                    />
-                    <CrossFilter
-                      panelWidth={this.props.width}
-                      networkData={networkProps}
-                      originalEdgeCount={this.props.originalEdgeCount}
-                      maxEdgeCount={this.props.maxEdgeCount}
-                      networkProps={networkProps}
-                      filters={raw.filters}
-                      commandActions={this.props.interactionsCommandActions}
-                      commands={this.props.interactionsCommands}
-                      filtersActions={this.props.filtersActions}
-                    />
-
-
-                    <div style={controllerStyle}>
-                      <AutoLoadThresholdPanel
-                        autoLoadThreshold={this.props.autoLoadThreshold}
-                        rawInteractionsActions={
-                          this.props.rawInteractionsActions
-                        }
-                      />
-                      <MaxEdgePanel
-                        maxEdgeCount={this.props.maxEdgeCount}
-                        uiState={this.props.uiState}
-                        uiStateActions={this.props.uiStateActions}
-                        rawInteractionsActions={
-                          this.props.rawInteractionsActions
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {hidden ? (
-                  <div />
-                ) : (
-                  <div style={filterPanelStyle}>
-                    <EdgeFilter
-                      filters={raw.filters}
-                      commandActions={this.props.interactionsCommandActions}
-                      commands={this.props.interactionsCommands}
-                      filtersActions={this.props.filtersActions}
-                      networkData={networkProps}
-                    />
-                  </div>
-                )}
-
-                <div>
-                  <Tabs
-                    value={this.state.selectedTab}
-                    onChange={this.handleChange}
-                  >
-                    <Tab label="Subsystem Details" />
-                    <Tab label="Assigned Genes" />
-                  </Tabs>
-                </div>
-
-                {this.state.selectedTab === 0 && (
-                  <TabContainer>
-                    <SubsystemPanel
-                      selectedTerm={this.props.currentProperty}
-                      networkData={networkData}
-                      title={title}
-                      description={'N/A'}
-                    />
-                  </TabContainer>
-                )}
-                {this.state.selectedTab === 1 && (
-                  <TabContainer>
-                    <GeneList genes={geneList} />
-                  </TabContainer>
-                )}
-                {this.state.selectedTab === 2 && (
-                  <TabContainer>N/A</TabContainer>
-                )}
-              </div>
             </div>
+          )}
+
+          <div>
+            <Tabs value={this.state.selectedTab} onChange={this.handleChange}>
+              <Tab label="Subsystem Details" />
+              <Tab label="Assigned Genes" />
+            </Tabs>
           </div>
-        </SplitPane>
-      </div>
+
+          {this.state.selectedTab === 0 && (
+            <TabContainer>
+              <SubsystemPanel
+                selectedTerm={this.props.currentProperty}
+                networkData={networkData}
+                title={title}
+                description={'N/A'}
+              />
+            </TabContainer>
+          )}
+          {this.state.selectedTab === 1 && (
+            <TabContainer>
+              <GeneList genes={geneList} {...allProps} />
+            </TabContainer>
+          )}
+          {this.state.selectedTab === 2 && <TabContainer>N/A</TabContainer>}
+        </div>
+      </SplitPane>
     )
+  }
+
+  getControllers = (
+    externalNetwork,
+    layoutPanelStyle,
+    networkProps,
+    controllerStyle,
+    raw
+  ) => {
+    if (externalNetwork !== null) {
+      const others = this.props
+      return (
+        <LayoutSelector
+          style={layoutPanelStyle}
+          commandActions={this.props.interactionsCommandActions}
+          {...others}
+        />
+      )
+    }
+
+    return (
+      <React.Fragment>
+        <LayoutSelector
+          style={layoutPanelStyle}
+          commandActions={this.props.interactionsCommandActions}
+        />
+        <CrossFilter
+          panelWidth={this.props.width}
+          networkData={networkProps}
+          originalEdgeCount={this.props.originalEdgeCount}
+          maxEdgeCount={this.props.maxEdgeCount}
+          networkProps={networkProps}
+          filters={raw.filters}
+          commandActions={this.props.interactionsCommandActions}
+          commands={this.props.interactionsCommands}
+          filtersActions={this.props.filtersActions}
+        />
+
+        <div style={controllerStyle}>
+          <AutoLoadThresholdPanel
+            autoLoadThreshold={this.props.autoLoadThreshold}
+            rawInteractionsActions={this.props.rawInteractionsActions}
+          />
+          <MaxEdgePanel
+            maxEdgeCount={this.props.maxEdgeCount}
+            uiState={this.props.uiState}
+            uiStateActions={this.props.uiStateActions}
+            rawInteractionsActions={this.props.rawInteractionsActions}
+          />
+        </div>
+      </React.Fragment>
+    )
+  }
+
+  getNetworkPanel = (
+    hidden,
+    topHeight,
+    externalNetwork,
+    interactions,
+    selected,
+    selectedPerm,
+    visualStyle,
+    raw
+  ) => {
+    if (hidden) {
+      return <EmptyInteractionPanel height={topHeight} />
+    }
+
+    if (externalNetwork === null || externalNetwork === undefined) {
+      return (
+        <RawInteractionPanel
+          subnet={interactions}
+          subnetSelected={selected}
+          subnetSelectedPerm={selectedPerm}
+          selectedTerm={this.props.currentProperty.id}
+          handleClose={this.props.handleClose}
+          commandActions={this.props.interactionsCommandActions}
+          commands={this.props.interactionsCommands}
+          loading={raw.loading}
+          selection={this.props.selection}
+          selectionActions={this.props.selectionActions}
+          filters={raw.filters}
+          interactionStyleActions={this.props.interactionStyleActions}
+          networkStyle={visualStyle}
+          panelWidth={this.props.width}
+          expanded={this.props.expanded}
+          enrichment={this.props.enrichment}
+          enrichmentActions={this.props.enrichmentActions}
+          uiState={this.props.uiState}
+        />
+      )
+    } else {
+      const allProps = this.props
+      return <CytoscapeViewer {...allProps} />
+    }
   }
 
   handleChange = (event, value) => {

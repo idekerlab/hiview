@@ -1,8 +1,8 @@
 import React from 'react'
 
-import ErrorIcon from 'material-ui/svg-icons/alert/error-outline'
-import BackIcon from 'material-ui/svg-icons/navigation/arrow-back'
-import FlatButton from 'material-ui/FlatButton'
+import ErrorIcon from '@material-ui/core/icons/alert/error-outline'
+import BackIcon from '@material-ui/core/icons/navigation/arrow-back'
+import FlatButton from '@material-ui/core/FlatButton'
 
 const BASE_STYLE = {
   width: '40%',

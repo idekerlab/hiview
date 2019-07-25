@@ -7,12 +7,15 @@ import {
   DESELECT_NODE,
   DESELECT_ALL_SUB_NODES,
   SELECT_SUB_NODE,
-  DESELECT_SUB_NODE
+  DESELECT_SUB_NODE,
+  HIGHLIGHT_NODE,
+  REMOVE_HIGHLIGHT_NODE
 } from '../actions/selection'
 
 const defaultState = Map({
   enter: undefined,
-  subSelection: Map()
+  subSelection: Map(),
+  highlight: null
 })
 
 export default handleActions(
@@ -37,6 +40,12 @@ export default handleActions(
 
     [LEAVE_NODE]: (state, action) => {
       return state.set('enter', undefined)
+    },
+    [HIGHLIGHT_NODE]: (state, action) => {
+      return state.set('highlight', action.payload)
+    },
+    [REMOVE_HIGHLIGHT_NODE]: (state, action) => {
+      return state.set('highlight', null)
     },
 
     [SELECT_SUB_NODE]: (state, action) => {

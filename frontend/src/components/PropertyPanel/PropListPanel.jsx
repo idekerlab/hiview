@@ -1,6 +1,7 @@
 import React, {Component, PropTypes} from 'react'
 
-import {List, ListItem} from 'material-ui/List';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
 
 class PropListPanel extends Component {
 

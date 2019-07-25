@@ -16,7 +16,7 @@ import * as searchActions from '../../actions/search'
 
 import * as networkActions from '../../actions/network'
 
-import { grey50 } from 'material-ui/styles'
+import { grey50 } from '@material-ui/core/styles'
 
 import * as queryGenesActions from '../../actions/query-genes'
 import * as messageActions from '../../actions/message'
@@ -31,21 +31,25 @@ import * as interactionsCommandsActions from '../../actions/commands-interaction
 import * as enrichmentActions from '../../actions/enrichment'
 import * as groupsActions from '../../actions/groups'
 
-import { MuiThemeProvider } from 'material-ui/styles'
+import { MuiThemeProvider } from '@material-ui/core/styles'
 
 import { theme } from '../theme'
 import 'typeface-roboto'
 
 import * as renderingOptionsActions from '../../actions/rendering-options'
+import * as externalNetworksActions from '../../actions/external-networks'
+import * as goActions from '../../actions/go'
+import * as localSearchActions from '../../actions/local-search'
+import * as netantActions from '../../actions/netant'
 
 const baseStyle = {
-  position: 'fixed',
-  left: 0,
-  top: 0,
+  boxSizing: 'border-box',
   zIndex: 0,
   background: grey50,
   height: '100%',
-  width: '100%'
+  width: '100%',
+  margin: 0,
+  padding: 0
 }
 
 /**
@@ -53,10 +57,9 @@ const baseStyle = {
  */
 class NetworkView extends Component {
   render() {
-    const networkId = this.props.params.uri
     return (
       <MuiThemeProvider theme={theme}>
-        <MainPanel {...this.props} networkId={networkId} style={baseStyle} />
+        <MainPanel {...this.props} style={baseStyle} />
       </MuiThemeProvider>
     )
   }
@@ -93,7 +96,11 @@ function mapStateToProps(state) {
 
     renderingOptions: state.rendering_options,
     enrichment: state.enrichment,
-    groups: state.groups
+    groups: state.groups,
+    externalNetworks: state.externalNetworks,
+    go: state.go,
+    localSearch: state.localSearch,
+    netant: state.netant
   }
 }
 
@@ -143,8 +150,18 @@ function mapDispatchToProps(dispatch) {
       dispatch
     ),
     enrichmentActions: bindActionCreators(enrichmentActions, dispatch),
-    groupsActions: bindActionCreators(groupsActions, dispatch)
+    groupsActions: bindActionCreators(groupsActions, dispatch),
+    externalNetworksActions: bindActionCreators(
+      externalNetworksActions,
+      dispatch
+    ),
+    goActions: bindActionCreators(goActions, dispatch),
+    localSearchActions: bindActionCreators(localSearchActions, dispatch),
+    netantActions: bindActionCreators(netantActions, dispatch)
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(NetworkView)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NetworkView)

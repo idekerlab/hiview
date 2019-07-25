@@ -1,40 +1,39 @@
 import React, { Component } from 'react'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
-import OpenIcon from 'material-ui-icons/OpenInNew'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
 
-import Collapse from 'material-ui/transitions/Collapse'
+import Collapse from '@material-ui/core/Collapse'
 
-import ExpandLess from 'material-ui-icons/ExpandLess'
-import ExpandMore from 'material-ui-icons/ExpandMore'
+import ExpandLess from '@material-ui/icons/ExpandLess'
+import ExpandMore from '@material-ui/icons/ExpandMore'
 
 import AliasList from './AliaseList'
 
 class SearchResult extends Component {
   state = {}
 
-  buildNestedList = (idList, id2prop) => {
+  buildNestedList = resultArray => {
     const nestedList = {}
 
     // Creates basic structure only with original nodes
-    idList.forEach(id => {
-      const props = id2prop[id]
-      if (!props.Hidden) {
-        nestedList[props.Label] = {
-          props: props,
+    resultArray.forEach(entry => {
+      if (!entry.Hidden) {
+        nestedList[entry.Label] = {
+          props: entry,
           children: {
-            [id]: props
+            [entry.id]: entry
           }
         }
       }
     })
 
-    idList.forEach(id => {
-      const props = id2prop[id]
-      if (props.Hidden) {
-        const label = props.Label
+    resultArray.forEach(entry => {
+      if (entry.Hidden) {
+        const label = entry.Label
         const parent = nestedList[label]
         if (parent !== undefined) {
-          parent.children[id] = props
+          parent.children[entry.id] = entry
         }
       }
     })
@@ -55,6 +54,9 @@ class SearchResult extends Component {
   }
 
   render() {
+    const { localSearch } = this.props
+    const results = localSearch.results
+
     const windowHeight = window.innerHeight * 0.75
 
     const resultStyle = {
@@ -62,9 +64,8 @@ class SearchResult extends Component {
       overflow: 'auto'
     }
 
-    let results = this.props.search.result
 
-    if (results === undefined || results === null) {
+    if (!results || results === []) {
       return (
         <List style={resultStyle}>
           <ListItem>
@@ -74,8 +75,7 @@ class SearchResult extends Component {
       )
     }
 
-    const id2prop = this.props.id2prop
-    const nestedList = this.buildNestedList(results, id2prop)
+    const nestedList = this.buildNestedList(results)
     const parents = Object.keys(nestedList)
 
     return (
@@ -104,6 +104,7 @@ class SearchResult extends Component {
                 rootId={this.props.rootId}
                 aliases={nestedList[parent].children}
                 commandActions={this.props.commandActions}
+                selectionActions={this.props.selectionActions}
                 currentPath={this.props.currentPath}
                 uiState={this.props.uiState}
               />

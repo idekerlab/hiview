@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
-import SelectField from 'material-ui/SelectField'
-import MenuItem from 'material-ui/MenuItem'
+import SelectField from '@material-ui/core/SelectField'
+import MenuItem from '@material-ui/core/MenuItem';
 
 /**
   A React component for selecting a network data source.

@@ -1,5 +1,4 @@
 import { createAction } from 'redux-actions'
-import axios from 'axios'
 
 const ENRICHR_URL = 'http://amp.pharm.mssm.edu/Enrichr/addList'
 
@@ -40,25 +39,24 @@ const send = (url, genes) => {
   const geneString = genes.reduce((gene1, gene2) => gene1 + '\n' + gene2)
   const data = new FormData()
   data.append('list', geneString)
-  data.append('description', 'test2')
+  data.append('description', 'HiView gene list')
 
+  const settings = {
+    method: 'POST',
+    body: data
+  }
   // Return promise
-  return axios({
-    method: 'post',
-    url: ENRICHR_URL,
-    data,
-    headers: { 'Content-Type': 'multipart/form-data' }
-  })
+  return fetch(ENRICHR_URL, settings)
 }
 
 const parallelCall = (url, jobId) => {
   const tasks = backgrounds.map(bg =>
-    axios.get(
+    fetch(
       'http://amp.pharm.mssm.edu/Enrichr/enrich?userListId=' +
         jobId +
         '&backgroundType=' +
         bg
-    )
+    ).then(response => response.json())
   )
 
   return tasks
@@ -71,17 +69,17 @@ export const runEnrichment = (url = ENRICHR_URL, genes, subsystemId) => {
 
     return send(url, genes)
       .then(response => {
-        return response.data.userListId
+        return response.json()
       })
-      .then(jobId => {
+      .then(json => {
+        const jobId = json.userListId
         const tasks = parallelCall(url, jobId)
         Promise.all(tasks)
           .then(allResult => {
             const resultMap = {}
             allResult.forEach(entry => {
-              const result = entry.data
-              const key = Object.keys(result)[0]
-              const value = result[key]
+              const key = Object.keys(entry)[0]
+              const value = entry[key]
               resultMap[key] = value
             })
             return resultMap

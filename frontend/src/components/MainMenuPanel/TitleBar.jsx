@@ -1,14 +1,14 @@
 import React from 'react'
 
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 
-import AppBar from 'material-ui/AppBar'
-import Toolbar from 'material-ui/Toolbar'
-import Typography from 'material-ui/Typography'
-import IconButton from 'material-ui/IconButton'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Typography from '@material-ui/core/Typography'
+import IconButton from '@material-ui/core/IconButton'
 
-import CloseIcon from 'material-ui-icons/KeyboardArrowLeft'
-import SettingsIcon from 'material-ui-icons/Settings'
+import CloseIcon from '@material-ui/icons/KeyboardArrowLeft'
+import SettingsIcon from '@material-ui/icons/Settings'
 
 const styles = {
   menuButton: {
@@ -35,13 +35,16 @@ const TitleBar = props => {
         <div className={classes.title}>
           <SettingsIcon className={classes.titleButton} />
 
-          <Typography variant="headline" color="inherit">
+          <Typography variant="h5" color="inherit">
             Control Panel
           </Typography>
         </div>
 
-        <IconButton className={classes.menuButton}>
-          <CloseIcon onClick={e => handleClose(props)} />
+        <IconButton
+          className={classes.menuButton}
+          onClick={e => handleClose(props)}
+        >
+          <CloseIcon />
         </IconButton>
       </Toolbar>
     </AppBar>

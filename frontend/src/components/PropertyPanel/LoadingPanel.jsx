@@ -1,5 +1,5 @@
 import React from 'react'
-import { CircularProgress } from 'material-ui/Progress'
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const LoadingPanel = props => {
   const loadingStyle = {
@@ -20,7 +20,6 @@ const LoadingPanel = props => {
 
   return (
     <div style={loadingStyle}>
-      <div style={loadingMessageStyle}>{props.message}</div>
       <CircularProgress size={300} thickness={1} />
     </div>
   )

@@ -1,38 +1,101 @@
 import * as d3Hierarchy from 'd3-hierarchy'
 
-const cyjs2tree = cyjs => {
-  if (cyjs === undefined || cyjs === null) {
-    // Return empty
+let originals = new Set()
+let aliases = new Set()
+const branches = new Map()
 
+/**
+ * Takes hierarchy in Cytoscape.js format and generates new D3 tree
+ * object
+ *
+ * @param cyjs
+ * @returns {*}
+ */
+const cyjs2tree = (cyjs, networkActions) => {
+  if (!cyjs) {
     return null
   }
 
-  //Find root
-  // console.log('CyJS data: ', cyjs)
+  //Find root of the tree
   const nodes = cyjs.elements.nodes
-  const nodeMap = {}
-  const root = preprocessNodes(nodes, nodeMap )
-
+  let nodeMap = {}
+  const root = preprocessNodes(nodes, nodeMap)
   const rootId = root.data.id
   const edges = cyjs.elements.edges
 
-  const table = transform(rootId, edges, nodeMap)
+  // Create table first to use D3 function
+  let table = transform(rootId, edges, nodeMap)
 
+  // Run stratification function
   const tree = d3Hierarchy
     .stratify()
     .id(d => d.id)
     .parentId(d => d.parent)(table)
 
+  table = null
+  nodeMap = null
 
+
+  const geneMap = new Map()
+  const duplicates = new Set()
+
+  createGeneMap(tree, geneMap, duplicates)
+
+  // At this point, duplicate nodes does not have children.
+
+  networkActions.setGeneMap(geneMap)
+
+  // Re-wire tree to use reference for copy nodes
   getOriginalBranches(tree)
-  addBranches(tree)
 
+  // Add it to copies
+  addBranches(tree)
   return tree
 }
 
+const createGeneMap = (treeNode, geneMap, duplicates) => {
+  const current = treeNode
 
-let originals = new Set()
-let aliases = new Set()
+  const children = current.children
+
+  if (children === undefined) {
+    // This is a leaf node
+
+    if(treeNode.data.NodeType === 'Gene') {
+      addSelfToAllParents(treeNode.parent, geneMap, treeNode.data.Label)
+    } else {
+      // This is a link node
+      // duplicates.add(treeNode.data.Label)
+      // geneMap.set(treeNode.id.toString(), new Set())
+    }
+    return
+  }
+
+  let numChildren = children.length
+
+  while (numChildren--) {
+    const childNode = children[numChildren]
+    createGeneMap(childNode, geneMap, duplicates)
+  }
+}
+
+const addSelfToAllParents = (treeNode, geneMap, geneName) => {
+  const id = treeNode.data.Label
+  let idList = geneMap.get(id)
+  if(!idList) {
+    idList = new Set()
+    geneMap.set(id, idList)
+  }
+
+  idList.add(geneName)
+
+  const parent = treeNode.parent
+  if (parent === null || parent === undefined || treeNode.parent === '') {
+    return
+  }
+
+  addSelfToAllParents(parent, geneMap, geneName)
+}
 
 const preprocessNodes = (nodes, nodeMap) => {
   let idx = nodes.length
@@ -53,7 +116,7 @@ const preprocessNodes = (nodes, nodeMap) => {
       }
 
       const isAlias = data.alias
-      if(isAlias) {
+      if (isAlias) {
         originals.add(data.originalId)
         aliases.add(data.id)
       }
@@ -66,7 +129,7 @@ const preprocessNodes = (nodes, nodeMap) => {
 }
 
 /**
- * Convert CYJS to table
+ * Convert CYJS JSON to table
  * @param rootId
  * @param edges
  * @param nodeMap
@@ -93,7 +156,6 @@ const transform = (rootId, edges, nodeMap) => {
       nodeMap[source.id] !== undefined &&
       nodeMap[target.id] !== undefined
     ) {
-
       const node = {
         id: source.id,
         Label: source.Label,
@@ -104,7 +166,7 @@ const transform = (rootId, edges, nodeMap) => {
         alias: source.alias
       }
 
-      if(source.originalId) {
+      if (source.originalId) {
         node['originalId'] = source.originalId
       }
       table.push(node)
@@ -114,61 +176,76 @@ const transform = (rootId, edges, nodeMap) => {
   return table
 }
 
-let counter = 0
-
-const branches = new Map()
-
-const getOriginalBranches = (node) => {
-
-  const children = node.children
-
-  if(originals.has(node.id)) {
-    // console.log('Orignal=======> Orignal', node.data)
+const getOriginalBranches = node => {
+  if (originals.has(node.id)) {
     branches.set(node.id, node)
   }
 
-  if(children) {
+  const children = node.children
+  if (children) {
     let childCount = children.length
-    while(childCount--) {
-      const child = children[childCount]
-      getOriginalBranches(child)
+    while (childCount--) {
+      getOriginalBranches(children[childCount])
     }
-  } else {
-    return
   }
-
 }
 
-const addBranches = (node) => {
-
-  const children = node.children
+const addBranches = node => {
   const originalId = node.data.props.originalId
   const alias = node.data.props.alias
 
+  const nodeChildren = node.children
+  // if (nodeChildren !== undefined) {
+  //   let len = nodeChildren.length
+  //   let termFound = false
+  //   while (len--) {
+  //     const child = nodeChildren[len]
+  //     if (child.data.NodeType !== 'Gene') {
+  //       termFound = true
+  //       break
+  //     }
+  //   }
+  //   if (!termFound) {
+  //     delete node.children
+  //     return
+  //   }
+  // }
 
-  if(alias) {
+  // Remove children of gene-only term
+
+  if (alias) {
     const branch = branches.get(originalId)
-    // console.log('!!!!!!!!!!!!!!!!!!!BR======> ', branch)
-    // console.log('!!!!!!!!!!!!!!!!!!!ND======> ', node)
+
+    // Add this branch only if it has terms inside.
+    const children = branch.children
+    // if (children !== undefined) {
+    //   let numChildren = children.length
+    //   let withTerm = false
+    //   while (numChildren--) {
+    //     const child = children[numChildren]
+    //     if (child.data.NodeType !== 'Gene') {
+    //       withTerm = true
+    //       break
+    //     }
+    //   }
+    //   if (!withTerm) {
+    //     return
+    //   }
+    // }
     node.depth = branch.depth
     node.height = branch.height
-    node['children'] = branch.children
+    node['children'] = children
     node['data'] = branch.data
     node['id'] = branch.id
-    // console.log('!!!!!!!!!!!!!!!!!!!MOD======> ', node)
   }
 
-  if(children) {
-    let childCount = children.length
-    while(childCount--) {
-      const child = children[childCount]
+  if (nodeChildren) {
+    let childCount = nodeChildren.length
+    while (childCount--) {
+      const child = nodeChildren[childCount]
       addBranches(child)
     }
-  } else {
-    return
   }
-
 }
-
 
 export default cyjs2tree

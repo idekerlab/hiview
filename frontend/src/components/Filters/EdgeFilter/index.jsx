@@ -1,15 +1,18 @@
 import React, { Component } from 'react'
-import List, { ListItem, ListItemIcon, ListItemText } from 'material-ui/List'
-import Collapse from 'material-ui/transitions/Collapse'
-import ExpandLess from 'material-ui-icons/ExpandLess'
-import ExpandMore from 'material-ui-icons/ExpandMore'
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Collapse from '@material-ui/core/Collapse';
+import ExpandLess from '@material-ui/icons/ExpandLess'
+import ExpandMore from '@material-ui/icons/ExpandMore'
 
 import ContinuousFilter from './ContinuousFilter'
 import BooleanFilter from './BooleanFilter'
 
-import { withStyles } from 'material-ui/styles'
-import Typography from 'material-ui/Typography'
-import ViewListIcon from 'material-ui-icons/ViewList'
+import { withStyles } from '@material-ui/core/styles'
+import Typography from '@material-ui/core/Typography'
+import ViewListIcon from '@material-ui/icons/ViewList'
 
 // Color map for 5 categorical data
 const COLORS = ['#7570b3', '#0571b0', '#aaaaaa', '#66c2a5', '#018571']
@@ -120,7 +123,8 @@ class EdgeFilter extends Component {
       }
     }
 
-    if (!filters || filters.length === 0) {
+    if (!filters || filters.length === 0 || !Array.isArray(filters)) {
+      console.warn('Invalid filters: ', filters)
       return <div />
     }
 
@@ -224,7 +228,7 @@ class EdgeFilter extends Component {
           </div>
         ))}
       </List>
-    )
+    );
   }
 
   getExistingFilters = (allFilterNames, cat2filter, filter2cat, filterMap) => {

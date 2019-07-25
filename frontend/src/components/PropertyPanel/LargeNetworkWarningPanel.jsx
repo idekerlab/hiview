@@ -1,7 +1,7 @@
 import React from 'react'
-import Typography from 'material-ui/Typography'
-import Button from 'material-ui/Button'
-import WarningIcon from 'material-ui-icons/ErrorOutline'
+import Typography from '@material-ui/core/Typography'
+import Button from '@material-ui/core/Button'
+import WarningIcon from '@material-ui/icons/ErrorOutline'
 
 const containerStyle = {
   display: 'flex',
@@ -33,14 +33,14 @@ const LargeNetworkWarningPanel = props => {
       <WarningIcon style={iconStyle} />
 
       <Typography
-        variant="display4"
+        variant="h1"
         style={{ color: 'red', fontSize: '2.5em' }}
       >
         This subsystem contains {props.summary.edgeCount} edges
       </Typography>
 
       <Typography
-        variant="display1"
+        variant="h4"
         style={{
           width: '80%',
           color: '#555555',
@@ -56,7 +56,7 @@ const LargeNetworkWarningPanel = props => {
       </Typography>
 
       <Button
-        variant="raised"
+        variant="contained"
         color="primary"
         onClick={() => handleImport(props)}
       >
@@ -71,7 +71,8 @@ const handleImport = props => {
     props.uuid,
     props.server,
     props.url,
-    props.maxEdgeCount
+    props.maxEdgeCount,
+    props.summary
   )
 }
 

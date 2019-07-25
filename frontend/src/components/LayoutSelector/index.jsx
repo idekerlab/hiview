@@ -1,16 +1,16 @@
 import React, { Component } from 'react'
-import { withStyles } from 'material-ui/styles'
+import { withStyles } from '@material-ui/core/styles'
 
-import { MenuItem } from 'material-ui/Menu'
-import { FormControl, FormHelperText } from 'material-ui/Form'
-import Select from 'material-ui/Select'
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select'
 
-import Button from 'material-ui/Button'
-import IconButton from 'material-ui/IconButton'
+import Button from '@material-ui/core/Button'
 
-import ApplyIcon from 'material-ui-icons/Refresh'
-import FitContent from 'material-ui-icons/ZoomOutMap'
-import FitSelected from 'material-ui-icons/CenterFocusStrong'
+import ApplyIcon from '@material-ui/icons/Refresh'
+import FitContent from '@material-ui/icons/ZoomOutMap'
+import FitSelected from '@material-ui/icons/CenterFocusStrong'
 
 // Base style
 const styles = theme => ({
@@ -29,7 +29,6 @@ const styles = theme => ({
   },
   button: {
     margin: theme.spacing.unit,
-    height: '1em'
   },
   icon: {
     fontSize: '2em'
@@ -59,6 +58,12 @@ class LayoutSelector extends Component {
 
   handleClick = event => {
     const layoutName = this.state.layout
+
+    const extAction = this.props.externalNetworksActions
+    if(extAction !== undefined && extAction !== null) {
+      extAction.setLayout(layoutName)
+    }
+
     this.props.commandActions.applyLayout({
       name: layoutName,
       options: {}
@@ -67,6 +72,12 @@ class LayoutSelector extends Component {
 
   handleFit = event => {
     this.props.commandActions.fit()
+
+    // This is for other networks' view
+    const extAction = this.props.externalNetworksActions
+    if(extAction !== undefined && extAction !== null) {
+      extAction.setCommand('fit')
+    }
   }
 
   handleFitSelected = event => {
@@ -96,7 +107,7 @@ class LayoutSelector extends Component {
 
         <Button
           className={classes.button}
-          variant="raised"
+          variant="contained"
           color="primary"
           onClick={this.handleClick}
           size="small"
@@ -106,7 +117,7 @@ class LayoutSelector extends Component {
 
         <Button
           className={classes.button}
-          variant="raised"
+          variant="contained"
           color="default"
           onClick={this.handleFit}
           size="small"
@@ -116,7 +127,7 @@ class LayoutSelector extends Component {
 
         <Button
           className={classes.button}
-          variant="raised"
+          variant="contained"
           color="default"
           onClick={this.handleFitSelected}
           size="small"

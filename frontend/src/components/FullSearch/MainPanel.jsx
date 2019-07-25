@@ -1,11 +1,9 @@
 import React from 'react'
-import IconButton from 'material-ui/IconButton'
-import MenuIcon from 'material-ui-icons/Menu'
-import SearchIcon from 'material-ui-icons/Search'
-import RefreshIcon from 'material-ui-icons/Refresh'
-import Input from 'material-ui/Input'
-
-const SEARCH_URL = 'http://test.ndexbio.org/v2/search/network/'
+import IconButton from '@material-ui/core/IconButton'
+import MenuIcon from '@material-ui/icons/Menu'
+import SearchIcon from '@material-ui/icons/Search'
+import RefreshIcon from '@material-ui/icons/Refresh'
+import Input from '@material-ui/core/Input'
 
 const baseStyle = {
   width: '100%',
@@ -32,6 +30,8 @@ class MainPanel extends React.Component {
     const query = this.state.query
 
     if (event.key === 'Enter' && query !== '') {
+      const index = this.props.network.index
+      this.props.localSearchActions.localSearchStarted({ index, query })
       this.search(query)
     }
   }
@@ -39,34 +39,37 @@ class MainPanel extends React.Component {
   handleStart = event => {
     const query = this.state.query
     if (query !== '') {
-
+      const index = this.props.network.index
+      this.props.localSearchActions.localSearchStarted({ index, query })
       this.search(query)
     }
   }
 
   handleReset = event => {
-    this.props.searchActions.clear()
+    // this.props.searchActions.clear()
     this.props.commandActions.reset()
+    this.props.localSearchActions.clearSearchResults()
+    this.setState({
+      query: ''
+    })
     // this.props.commandActions.fit()
   }
 
-  search = query => {
-    this.props.searchActions.clear()
+  search = (query, ids) => {
+    // this.props.searchActions.clear()
     this.props.commandActions.reset()
 
-    const index = this.props.network.index
+    // const results = index.search(query)
+    // const ids = results.map(result => result.id)
 
-    const results = index.search(query)
-    const ids = results.map(result => result.id)
-
-    const uuid = this.props.routeParams.uuid
-    const options = {
-      baseUrl: SEARCH_URL,
-      uuid: uuid
-    }
+    // const uuid = this.props.routeParams.uuid
+    // const options = {
+    //   baseUrl: '',
+    //   uuid: uuid
+    // }
 
     // this.props.searchActions.searchNdex(query, options)
-    this.props.searchActions.setSearchResult(query, options, ids)
+    // this.props.searchActions.setSearchResult(query, options, ids)
 
     this.setState({
       expand: true
@@ -79,8 +82,6 @@ class MainPanel extends React.Component {
   }
 
   render() {
-    const { classes } = this.props
-
     return (
       <div style={baseStyle}>
         <IconButton aria-label="Open main menu" onClick={this.handleOpen}>
@@ -95,6 +96,7 @@ class MainPanel extends React.Component {
           }}
           onChange={this.handleChange}
           onKeyPress={this.handleKey}
+          value={this.state.query}
         />
 
         <IconButton aria-label="Search nodes" onClick={this.handleStart}>

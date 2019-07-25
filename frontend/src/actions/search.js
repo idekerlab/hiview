@@ -1,5 +1,3 @@
-import { createAction } from 'redux-actions'
-
 export const SEARCH = 'SEARCH'
 
 const search = (query, options) => {

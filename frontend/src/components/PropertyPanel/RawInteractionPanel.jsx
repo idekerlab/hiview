@@ -7,6 +7,7 @@ import { Set } from 'immutable'
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
 class RawInteractionPanel extends Component {
+
   componentWillReceiveProps(nextProps) {
     const runAnalysys = nextProps.uiState.get('runEnrichment')
 
@@ -51,6 +52,7 @@ class RawInteractionPanel extends Component {
       height: '100%',
       background: '#555555'
     }
+    // return (<div/>)
 
     return this.getMainContents(networkAreaStyle)
   }
@@ -101,21 +103,21 @@ class RawInteractionPanel extends Component {
         eventHandlers={this.getCustomEventHandlers()}
         rendererOptions={{
           layout: this.checkPresetLayout(this.props.subnet),
-          defaultFilter: {
-            command: 'filter',
-            parameters: {
-              options: {
-                type: 'numeric',
-                isPrimary: true,
-                range:
-                  '[' +
-                  primaryFilter.attributeName +
-                  ' < ' +
-                  primaryFilter.threshold +
-                  ']'
-              }
-            }
-          }
+          // defaultFilter: {
+          //   command: 'filter',
+          //   parameters: {
+          //     options: {
+          //       type: 'numeric',
+          //       isPrimary: true,
+          //       range:
+          //         '[' +
+          //         primaryFilter.attributeName +
+          //         ' < ' +
+          //         primaryFilter.threshold +
+          //         ']'
+          //     }
+          //   }
+          // }
         }}
         command={this.props.commands}
       />
@@ -125,12 +127,13 @@ class RawInteractionPanel extends Component {
   checkPresetLayout = network => {
     const nodes = network.elements.nodes
     const sampleNode = nodes[0]
+
     if (!sampleNode) {
       return 'cose-bilkent'
     }
 
     const position = sampleNode.position
-    if (position.x === 0 && position.y === 0) {
+    if (!position || (position.x === 0 && position.y === 0)) {
       return 'cose-bilkent'
     } else {
       return 'preset'

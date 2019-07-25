@@ -450,3 +450,5 @@ ENV/
 # Rope project settings
 .ropeproject
 
+*.cyjs
+*.sif
