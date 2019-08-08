@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { CirclePackingRenderer, CyTreeViewer } from 'cy-tree-viewer'
+import { CirclePackingRenderer, CyTreeViewer } from '@cytoscape/cy-tree-viewer'
 import cyjs2tree from './cyjs2tree'
 import { Set } from 'immutable'
 

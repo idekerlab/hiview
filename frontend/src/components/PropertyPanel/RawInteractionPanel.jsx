@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import CyNetworkViewer from 'cy-network-viewer'
-import { CytoscapeJsRenderer, SigmaRenderer } from 'cytoscapejs-renderer'
+import CyNetworkViewer from '@cytoscape/cy-network-viewer'
+import { CytoscapeJsRenderer, SigmaRenderer } from '@cytoscape/cytoscapejs-renderer'
 
 import { Set } from 'immutable'
 

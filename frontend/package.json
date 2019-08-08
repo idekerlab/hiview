@@ -11,8 +11,8 @@
     },
     "license": "MIT",
     "devDependencies": {
-        "@babel/cli": "^7.2.3",
-        "@babel/core": "^7.4.0",
+        "@babel/cli": "^7.5.5",
+        "@babel/core": "^7.5.5",
         "@babel/plugin-proposal-class-properties": "^7.4.0",
         "@babel/plugin-proposal-export-default-from": "^7.2.0",
         "@babel/plugin-transform-runtime": "^7.4.3",
@@ -45,12 +45,9 @@
     "dependencies": {
         "@material-ui/core": "^3.9.2",
         "@material-ui/icons": "^3.0.2",
-        "cy-network-viewer": "1.1.0",
-        "cy-tree-viewer": "0.3.0",
         "cytoscape": "^3.5.0",
         "cytoscape-cose-bilkent": "^4.0.0",
         "cytoscape-cx2js": "^0.5.5",
-        "cytoscapejs-renderer": "0.2.0",
         "d3-array": "^2.0.3",
         "d3-color": "^1.2.3",
         "d3-hierarchy": "^1.1.8",
