@@ -47,7 +47,7 @@ const generateIndex = networkJson => {
 
   const options = {
     shouldSort: true,
-    threshold: 0.2,
+    threshold: 0.0,
     tokenize: false,
     location: 0,
     distance: 100,
