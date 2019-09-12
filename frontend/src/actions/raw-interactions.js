@@ -192,20 +192,26 @@ export const fetchInteractionsFromUrl = (
   maxEdgeCount = 500,
   summary = {}
 ) => {
-  // const url =
-  //   'http://test.ndexbio.org/v2/network/4933e3ac-cda7-11e8-a74b-0660b7976219'
 
-  const url =
+  const EDGE_COUNT_TH = 10000
+
+  // Get only top 10000 edges.
+  const urlFiltered =
     'http://dev2.ndexbio.org/edgefilter/v1/network/' +
     uuid +
     '/edgefilter?limit=10000'
 
+  const urlOriginal = 'http://' + server + '.ndexbio.org/v2/network/' + uuid
+
   const t0 = performance.now()
   const networkAttr = summary.properties
+  const edgeCount = summary.edgeCount
+
   let idx = networkAttr.length
 
   let th = 0
   let mainFeature = ''
+
   while (idx--) {
     const attr = networkAttr[idx]
     const name = attr['predicateString']
@@ -214,6 +220,13 @@ export const fetchInteractionsFromUrl = (
     } else if (name === 'Main Feature') {
       mainFeature = attr['value']
     }
+  }
+
+  let originalCX = null
+
+  let url = urlOriginal
+  if(edgeCount > 100) {
+    url = urlFiltered
   }
 
   return dispatch => {
@@ -229,13 +242,20 @@ export const fetchInteractionsFromUrl = (
 
     const headers = new Headers()
     headers.set('Content-Type', 'application/json')
-    const settings = {
-      method: 'POST',
-      body: JSON.stringify(query),
-      headers
+
+   let settings = {
+     method: 'GET',
+     headers
+   }
+    if(edgeCount > 100) {
+      settings = {
+        method: 'POST',
+        body: JSON.stringify(query),
+        headers
+      }
+
     }
 
-    let originalCX = null
 
     return (
       fetchNet(url, settings)
