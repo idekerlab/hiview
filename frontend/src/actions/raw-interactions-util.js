@@ -213,6 +213,12 @@ const getColorForRange = (colorMap, val) => {
 }
 
 export const filterEdge = (network, maxEdgeCount) => {
+  if(network.elements.edges === undefined || network.elements.edges === null ||
+  network.elements.edges.length === 0) {
+    network.data['allEdgeScoreRange'] = [0,0]
+    return network
+  }
+
   let mainEdgeType = network.data[MAIN_EDGE_TAG]
   if (mainEdgeType !== undefined) {
     mainEdgeType = mainEdgeType.replace(/ /g, '_')
@@ -238,9 +244,12 @@ export const filterEdge = (network, maxEdgeCount) => {
   originalEdges.sort(compareBy(mainEdgeType))
 
   // This is always the global maximum
+  let maxScore = 0
   const maxEdge = originalEdges[0]
-  const maxData = maxEdge.data
-  let maxScore = maxData[mainEdgeType]
+  if(maxEdge !== undefined) {
+    const maxData = maxEdge.data
+    maxScore = maxData[mainEdgeType]
+  }
 
   if(maxScore === undefined ) {
     maxScore = 0.0

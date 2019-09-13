@@ -44,18 +44,18 @@ const BASE_STYLE = {
       'text-rotation': 'autorotate',
       'line-color': '#555555',
       'text-opacity': 0,
-      'font-size': 25,
-      color: '#FFFFFF',
+      'font-size': 65,
+      color: '#FF0000',
       opacity: 1,
       'curve-style': 'bezier',
       'control-point-step-size': 45
-      // 'haystack-radius': '0.8'
     }
   },
   edgeSelected: {
     selector: 'edge:selected',
     css: {
-      opacity: 1
+      opacity: 1,
+      'z-index': 1000
     }
   },
   hidden: {
@@ -121,10 +121,10 @@ export const createStyle = originalNetwork => {
   if(similarityMin !== similarityMax) {
     edgeStyle.css[
       'opacity'
-      ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 1)`
+      ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.6, 1)`
     edgeStyle.css[
       'width'
-      ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 15)`
+      ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 2, 15)`
   }
 
   // Define edge selection style

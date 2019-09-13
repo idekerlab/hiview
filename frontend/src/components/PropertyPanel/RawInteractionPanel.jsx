@@ -1,13 +1,15 @@
 import React, { Component } from 'react'
 import CyNetworkViewer from '@cytoscape/cy-network-viewer'
-import { CytoscapeJsRenderer, SigmaRenderer } from '@cytoscape/cytoscapejs-renderer'
+import {
+  CytoscapeJsRenderer,
+  SigmaRenderer
+} from '@cytoscape/cytoscapejs-renderer'
 
 import { Set } from 'immutable'
 
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
 class RawInteractionPanel extends Component {
-
   componentWillReceiveProps(nextProps) {
     const runAnalysys = nextProps.uiState.get('runEnrichment')
 
@@ -52,7 +54,6 @@ class RawInteractionPanel extends Component {
       height: '100%',
       background: '#555555'
     }
-    // return (<div/>)
 
     return this.getMainContents(networkAreaStyle)
   }
@@ -62,7 +63,7 @@ class RawInteractionPanel extends Component {
     const visualStyle = this.props.networkStyle
 
     if (newNet === null || newNet === undefined || visualStyle === null) {
-      return <div />
+      return <div><h3>(Network not available)</h3></div>
     }
 
     const filters = this.props.filters
@@ -102,22 +103,7 @@ class RawInteractionPanel extends Component {
         style={networkAreaStyle}
         eventHandlers={this.getCustomEventHandlers()}
         rendererOptions={{
-          layout: this.checkPresetLayout(this.props.subnet),
-          // defaultFilter: {
-          //   command: 'filter',
-          //   parameters: {
-          //     options: {
-          //       type: 'numeric',
-          //       isPrimary: true,
-          //       range:
-          //         '[' +
-          //         primaryFilter.attributeName +
-          //         ' < ' +
-          //         primaryFilter.threshold +
-          //         ']'
-          //     }
-          //   }
-          // }
+          layout: this.checkPresetLayout(this.props.subnet)
         }}
         command={this.props.commands}
       />

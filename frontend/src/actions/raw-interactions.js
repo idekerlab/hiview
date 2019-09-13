@@ -30,7 +30,14 @@ const fetchNetwork = url => {
 }
 
 export const RECEIVE_INTERACTIONS = 'RECEIVE_INTERACTIONS'
-const receiveNetwork = (url, network, filters, groups, extraEdges, originalCX) => {
+const receiveNetwork = (
+  url,
+  network,
+  filters,
+  groups,
+  extraEdges,
+  originalCX
+) => {
   return {
     type: RECEIVE_INTERACTIONS,
     url,
@@ -159,6 +166,7 @@ const processCx = cx => {
     }
   }
 
+  console.log('CYJS Net = ', cx, nodes, [...nMap.values()])
   return {
     data,
     elements: {
@@ -192,7 +200,6 @@ export const fetchInteractionsFromUrl = (
   maxEdgeCount = 500,
   summary = {}
 ) => {
-
   const EDGE_COUNT_TH = 10000
 
   // Get only top 10000 edges.
@@ -224,10 +231,7 @@ export const fetchInteractionsFromUrl = (
 
   let originalCX = null
 
-  let url = urlOriginal
-  if(edgeCount > 100) {
-    url = urlFiltered
-  }
+  let url = urlFiltered
 
   return dispatch => {
     dispatch(fetchNetwork(url))
@@ -243,62 +247,51 @@ export const fetchInteractionsFromUrl = (
     const headers = new Headers()
     headers.set('Content-Type', 'application/json')
 
-   let settings = {
-     method: 'GET',
-     headers
-   }
-    if(edgeCount > 100) {
-      settings = {
-        method: 'POST',
-        body: JSON.stringify(query),
-        headers
-      }
-
+    let settings = {
+      method: 'POST',
+      body: JSON.stringify(query),
+      headers
     }
 
+    return fetchNet(url, settings)
+      .then(response => {
+        let t1 = performance.now()
+        console.log('Data fetch  TIME = ', t1 - t0)
 
-    return (
-      fetchNet(url, settings)
-        .then(response => {
-          let t1 = performance.now()
-          console.log('Data fetch  TIME = ', t1 - t0)
+        if (!response.ok) {
+          throw Error(response)
+        } else {
+          return response.json()
+        }
+      })
+      .then(cx => {
+        originalCX = cx
+        const newNet = processCx(cx)
+        dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
+        return newNet
+      })
+      .then(network => filterEdge(network, maxEdgeCount))
+      .then(network => createFilter(network, maxEdgeCount))
+      .then(netAndFilter => createGroups(netAndFilter))
+      .then(netAndFilter => {
+        const t3 = performance.now()
+        console.log('* Total raw interaction update time = ', t3 - t0)
 
-          if (!response.ok) {
-            throw Error(response)
-          } else {
-            return response.json()
-          }
-        })
-        .then(cx => {
-          originalCX = cx
-          const newNet = processCx(cx)
-          dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
-          return newNet
-        })
-        .then(network => filterEdge(network, maxEdgeCount))
-        // .then(network => sortEdges(network, maxEdgeCount))
-        .then(network => createFilter(network, maxEdgeCount))
-        .then(netAndFilter => createGroups(netAndFilter))
-        .then(netAndFilter => {
-          const t3 = performance.now()
-          console.log('* Total raw interaction update time = ', t3 - t0)
-
-          return dispatch(
-            receiveNetwork(
-              url,
-              netAndFilter[0],
-              netAndFilter[1],
-              netAndFilter[2],
-              netAndFilter[3],
-              originalCX
-            )
+        return dispatch(
+          receiveNetwork(
+            url,
+            netAndFilter[0],
+            netAndFilter[1],
+            netAndFilter[2],
+            netAndFilter[3],
+            originalCX
           )
-        })
-        .catch(err => {
-          console.log('Raw interaction fetch ERROR! ', err)
-          return dispatch(receiveNetwork(url, null, 'Error!'))
-        })
-    )
+        )
+      })
+      .catch(err => {
+        console.log('Raw interaction fetch ERROR! ', err)
+        return dispatch(receiveNetwork(url, null, 'Error!'))
+      })
   }
 }
 
@@ -326,7 +319,6 @@ const createGroups = netAndFilter => {
   const networkData = network.data
   const group = networkData.Group
 
-
   if (group === undefined) {
     netAndFilter.push(null)
   } else {
@@ -352,10 +344,10 @@ const createGroups = netAndFilter => {
           let tagParts = nodePropName.split('_')
 
           let tag = tagParts[1] + ':' + tagParts[2]
-          if(tagParts[1] === undefined || tagParts[2] === undefined) {
+          if (tagParts[1] === undefined || tagParts[2] === undefined) {
             tagParts = nodePropName.split(':')
             const tLen = tagParts.length
-            tag = tagParts[tLen-2] + ':' + tagParts[tLen-1]
+            tag = tagParts[tLen - 2] + ':' + tagParts[tLen - 1]
           } else if (tagParts.length >= 3) {
             let idx = 3
             while (idx < tagParts.length) {
