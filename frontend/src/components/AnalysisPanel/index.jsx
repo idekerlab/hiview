@@ -72,7 +72,6 @@ class AnalysisPanel extends Component {
           })}
         </Tabs>
 
-        <SettingsPanel style={settingStyle} />
         {panels[idx]}
       </div>
     )

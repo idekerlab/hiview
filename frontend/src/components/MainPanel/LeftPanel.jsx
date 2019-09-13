@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import SplitPane from 'react-split-pane'
-
 import NetworkPanel from '../NetworkPanel'
-
-import BottomPanel from '../BottomPanel'
 import AnalysisPanel from '../AnalysisPanel'
+
 const mainViewerStyle = {
   background: '#EFEFEF'
 }
@@ -76,6 +74,7 @@ class LeftPanel extends Component {
       <SplitPane
         split="horizontal"
         minSize={100}
+        maxSize={-55}
         size={this.state.topPanelHeight}
         onDragFinished={topPanelHeight =>
           this.handleHorizontalResize(topPanelHeight)
