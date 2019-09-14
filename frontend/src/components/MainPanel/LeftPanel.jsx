@@ -75,7 +75,7 @@ class LeftPanel extends Component {
         split="horizontal"
         minSize={100}
         maxSize={-55}
-        size={this.state.topPanelHeight}
+        size={window.innerHeight - 55}
         onDragFinished={topPanelHeight =>
           this.handleHorizontalResize(topPanelHeight)
         }

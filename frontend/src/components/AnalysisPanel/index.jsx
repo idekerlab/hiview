@@ -1,30 +1,9 @@
 import React, { Component } from 'react'
-import SettingsPanel from './SettingsPanel'
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import { withStyles } from '@material-ui/core/styles'
 
 import PlotPanel from '../PlotPanel'
 
-const styles = theme => ({
-  root: {
-    width: '100%',
-    margin: 0,
-    padding: 0,
-    background: '#EFEFEF'
-  }
-})
-
-const settingStyle = {
-  width: '48px',
-  height: '48px',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  position: 'absolute',
-  left: 0,
-  top: 0
-}
 
 class AnalysisPanel extends Component {
   constructor(props) {

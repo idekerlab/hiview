@@ -6,9 +6,9 @@ const backgrounds = [
   'GO_Biological_Process_2018',
   'GO_Cellular_Component_2018',
   'GO_Molecular_Function_2018',
-  'KEGG_2016',
+  'KEGG_2019_Human',
   'Reactome_2016',
-  'WikiPathways_2016',
+  'WikiPathways_2019_Human',
   'Human_Phenotype_Ontology',
   'Jensen_DISEASES'
 ]
@@ -76,6 +76,8 @@ export const runEnrichment = (url = ENRICHR_URL, genes, subsystemId) => {
         const tasks = parallelCall(url, jobId)
         Promise.all(tasks)
           .then(allResult => {
+
+            console.log('ENR ALL', allResult)
             const resultMap = {}
             allResult.forEach(entry => {
               const key = Object.keys(entry)[0]
