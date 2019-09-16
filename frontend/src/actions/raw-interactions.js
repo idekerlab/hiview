@@ -166,7 +166,6 @@ const processCx = cx => {
     }
   }
 
-  console.log('CYJS Net = ', cx, nodes, [...nMap.values()])
   return {
     data,
     elements: {

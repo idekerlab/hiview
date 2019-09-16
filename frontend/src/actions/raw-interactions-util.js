@@ -331,6 +331,8 @@ export const filterEdge = (network, maxEdgeCount) => {
   network.data['edgeScoreRange'] = [subMin, maxScore]
   network.data['edgeColorMap'] = colorMap
 
+  console.log('ALL ne attr:', network.data)
+
   const subsetLen = subset.length
   const nodeSet = new Set()
 
