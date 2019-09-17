@@ -94,7 +94,7 @@ class BarPlot extends Component {
           stackBy="x"
           margin={{ left: leftWidth, right: 10, top: 0, bottom: 50 }}
         >
-          <XAxis />
+          <XAxis title={'Enrichr Combined Score'} position={'middle'} />
           <YAxis />
 
           <HorizontalBarSeries
