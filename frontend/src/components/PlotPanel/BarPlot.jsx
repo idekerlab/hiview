@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Map, List } from 'immutable'
 
+import EmptyPanel from './EmptyPanel'
+
 import { XYPlot, XAxis, YAxis, HorizontalBarSeries } from 'react-vis'
 
 const RANKING_MAX = 10
@@ -28,6 +30,14 @@ class BarPlot extends Component {
 
   render() {
     const dataPoints = this.props.data
+
+    if (
+      dataPoints === null ||
+      dataPoints === undefined ||
+      dataPoints.length === 0
+    ) {
+      return <EmptyPanel />
+    }
 
     // Create label-value array
     const dataMap = {}
@@ -57,6 +67,23 @@ class BarPlot extends Component {
 
     // Pick top n (default = 10) data
     const originalData = [...sorted.entries()].slice(0, max)
+
+    console.log('Datap = ', originalData)
+    let dataLen = originalData.length
+
+    let isEmpty = true
+    while (dataLen--) {
+      if (originalData[dataLen][1] < 0.05) {
+        isEmpty = false
+        break
+      }
+    }
+
+    if (isEmpty) {
+      return (
+        <EmptyPanel message={'No significant annotations found (p-val>0.05)'} />
+      )
+    }
 
     let maxTextLength = 0
 
@@ -94,7 +121,7 @@ class BarPlot extends Component {
           stackBy="x"
           margin={{ left: leftWidth, right: 10, top: 0, bottom: 50 }}
         >
-          <XAxis title={'Enrichr Combined Score'} position={'middle'} />
+          <XAxis title={'Adjusted p-value (-log10)'} position={'middle'} />
           <YAxis />
 
           <HorizontalBarSeries

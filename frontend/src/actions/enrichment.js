@@ -81,8 +81,7 @@ export const runEnrichment = (url = ENRICHR_URL, genes, subsystemId) => {
             const resultMap = {}
             allResult.forEach(entry => {
               const key = Object.keys(entry)[0]
-              const value = entry[key]
-              resultMap[key] = value
+              resultMap[key] = entry[key]
             })
             return resultMap
           })
