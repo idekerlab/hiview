@@ -13,6 +13,8 @@ export const SHOW_MAIN_MENU = 'SHOW_MAIN_MENU'
 export const SHOW_PLOT_PANEL = 'SHOW_PLOT_PANEL'
 export const RUN_ENRICHMENT = 'RUN_ENRICHMENT'
 
+export const SET_DEFAULT_DEPTH = 'SET_DEFAULT_DEPTH'
+
 export const CHANGE_VIEWER = 'CHANGE_VIEWER'
 
 export const showAppBar = createAction(SHOW_APP_BAR)
@@ -31,3 +33,6 @@ export const runEnrichment = createAction(RUN_ENRICHMENT)
 
 // Switch viewer type
 export const changeViewer = createAction(CHANGE_VIEWER)
+
+// Default expand depth of the CP viewer
+export const setDefaultDepth = createAction(SET_DEFAULT_DEPTH)

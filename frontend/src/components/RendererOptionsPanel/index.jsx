@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import ListItemAvatar from '@material-ui/core/ListItemAvatar'
 
 import Divider from '@material-ui/core/Divider'
 import Switch from '@material-ui/core/Switch'
@@ -15,12 +15,14 @@ import { deepOrange, blueGrey } from '@material-ui/core/colors'
 import Avatar from '@material-ui/core/Avatar'
 import Slider from 'rc-slider'
 import Select from '@material-ui/core/Select'
-import MenuItem from '@material-ui/core/MenuItem';
+import MenuItem from '@material-ui/core/MenuItem'
 import 'rc-slider/assets/index.css'
 import { teal } from '@material-ui/core/colors/index'
 
 import { ChromePicker } from 'react-color'
 import Button from '@material-ui/core/Button'
+
+import DepthSelector from './DepthSelector'
 
 const CIRCLE_PACKING = 'Circle Packing'
 const NODE_LINK = 'Node-Link Diagram'
@@ -64,11 +66,15 @@ class RendererOptionsPanel extends Component {
   }
 
   handleColorPickerOpenRoot = () => {
-    this.setState({ displayColorPickerRoot: !this.state.displayColorPickerRoot })
+    this.setState({
+      displayColorPickerRoot: !this.state.displayColorPickerRoot
+    })
   }
 
   handleColorPickerOpenLeaf = () => {
-    this.setState({ displayColorPickerLeaf: !this.state.displayColorPickerLeaf })
+    this.setState({
+      displayColorPickerLeaf: !this.state.displayColorPickerLeaf
+    })
   }
 
   handleColorPickerClose = () => {
@@ -80,11 +86,11 @@ class RendererOptionsPanel extends Component {
 
   handleChangeCompleteRoot = (color, event) => {
     this.props.renderingOptionsActions.setRootColor(color.hex)
-  };
+  }
 
   handleChangeCompleteLeaf = (color, event) => {
     this.props.renderingOptionsActions.setLeafColor(color.hex)
-  };
+  }
 
   handleClose = () => {
     this.setState({ open: false })
@@ -163,7 +169,6 @@ class RendererOptionsPanel extends Component {
     }
 
     if (this.state.viewer === CIRCLE_PACKING) {
-
       const rootColor = this.props.renderingOptions.get('rootColor')
       const leafColor = this.props.renderingOptions.get('leafColor')
 
@@ -174,7 +179,6 @@ class RendererOptionsPanel extends Component {
       const leafColorStyle = {
         backgroundColor: leafColor
       }
-
 
       return (
         <List>
@@ -218,7 +222,9 @@ class RendererOptionsPanel extends Component {
             <ListItemText primary="Leaf Node Color" />
             <Button
               onClick={this.handleColorPickerOpenLeaf}
-              variant="contained" color="default">
+              variant="contained"
+              color="default"
+            >
               Change
             </Button>
             {this.state.displayColorPickerLeaf ? (
@@ -354,6 +360,8 @@ class RendererOptionsPanel extends Component {
               <MenuItem value={CIRCLE_PACKING}>{CIRCLE_PACKING}</MenuItem>
             </Select>
           </ListItem>
+
+          <DepthSelector {...this.props} />
 
           {this.getOptions()}
         </List>

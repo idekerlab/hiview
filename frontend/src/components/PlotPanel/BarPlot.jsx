@@ -68,7 +68,6 @@ class BarPlot extends Component {
     // Pick top n (default = 10) data
     const originalData = [...sorted.entries()].slice(0, max)
 
-    console.log('Datap = ', originalData)
     let dataLen = originalData.length
 
     let isEmpty = true
@@ -103,8 +102,6 @@ class BarPlot extends Component {
     const reversed = List([...data])
       .reverse()
       .toJS()
-
-    console.log('Plot data', reversed)
 
     const leftWidth = FONT_SIZE * maxTextLength + 20
     const panelWidth = leftWidth + 500
