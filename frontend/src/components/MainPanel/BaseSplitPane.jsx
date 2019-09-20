@@ -45,23 +45,13 @@ export default class BaseSplitPane extends Component {
 
   render() {
     const {
-      networkActions,
-      commands,
-      commandActions,
       events,
-      eventActions,
       uiState,
       uiStateActions,
       currentProperty,
-      propertyActions,
-      search,
       network,
-      messageActions,
-      rawInteractionsActions,
       selection,
       selectionActions,
-      currentPathActions,
-      renderingOptions,
       cxtoolUrl,
       filters,
       filtersActions,

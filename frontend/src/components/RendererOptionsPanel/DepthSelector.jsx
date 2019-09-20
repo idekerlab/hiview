@@ -14,6 +14,8 @@ const DepthSelector = props => {
   const handleChange = event => {
     const value = event.target.value
     setSelected(value)
+
+    props.uiStateActions.setDefaultDepth(value + 1)
   }
 
   return (
@@ -24,7 +26,6 @@ const DepthSelector = props => {
 
       <ListItemText primary="Default Expansion Depth:" />
       <Select
-        disabled
         value={selected}
         style={{ width: '55%' }}
         onChange={handleChange}

@@ -63,8 +63,8 @@ class NetworkPanel extends Component {
       nodeProps: props
     }
 
-    console.log('----------------------clear--------------')
     this.props.netantActions.clearAll()
+    // console.log('----------------------newSelect--------------', newSelectionState)
 
     this.props.selectionActions.selectNode(newSelectionState)
 
@@ -72,10 +72,6 @@ class NetworkPanel extends Component {
     let nodeType = props[nodeTypeTag]
     if (!nodeType) {
       nodeType = props['nodeType']
-    }
-
-    if (!nodeType) {
-      return
     }
 
     if (nodeType === 'Gene') {
@@ -415,6 +411,7 @@ class NetworkPanel extends Component {
           selectPrimaryNode={this.selectNodes}
           commandActions={this.props.commandActions}
           renderingOptions={this.props.renderingOptions.toJS()}
+          depth={this.props.uiState.get('defaultDepth')}
         />
       )
     }

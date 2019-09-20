@@ -6,7 +6,8 @@ import {
   SHOW_MAIN_MENU,
   SHOW_PLOT_PANEL,
   RUN_ENRICHMENT,
-  CHANGE_VIEWER
+  CHANGE_VIEWER,
+  SET_DEFAULT_DEPTH
 } from '../actions/ui-state'
 
 import { handleActions } from 'redux-actions'
@@ -20,7 +21,8 @@ const defaultState = Map({
   showSearchWindow: false,
   showPlotPanel: false,
   runEnrichment: false,
-  changeViewer: false
+  changeViewer: false,
+  defaultDepth: 1
 })
 
 export default handleActions(
@@ -40,10 +42,12 @@ export default handleActions(
       state.set('runEnrichment', action.payload),
 
     [CHANGE_VIEWER]: (state, action) => {
-
-      console.log("UPDATE viewer: ", action)
+      console.log('UPDATE viewer: ', action)
       return state.set('changeViewer', action.payload)
-
+    },
+    [SET_DEFAULT_DEPTH]: (state, action) => {
+      console.log('Setting depth: ', action.payload)
+      return state.set('defaultDepth', action.payload)
     }
   },
   defaultState

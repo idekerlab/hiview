@@ -205,6 +205,7 @@ class CirclePackingPanel extends Component {
             width={this.props.style.width}
             height={this.props.style.height}
             rendererOptions={this.props.renderingOptions}
+            depth={this.props.depth}
           />
         )}
       </div>
