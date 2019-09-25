@@ -1,31 +1,26 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 
-const MAX_SELECTED= 5
+const MAX_SELECTED = 5
 
 const PRESET_COLORS = {
   ENABLED: '#333333',
   DISABLED: '#CCCCCC'
 }
 
-
-
-
 const countItem = fixedArray => {
   let i = fixedArray.length
   let itemCount = 0
-  while(i--) {
-    if(fixedArray[i] !== undefined) {
+  while (i--) {
+    if (fixedArray[i] !== undefined) {
       itemCount++
     }
   }
   return itemCount
 }
 
-
 class BaseFilter extends Component {
-
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       checked: false,
@@ -35,18 +30,17 @@ class BaseFilter extends Component {
     }
   }
 
-
   filterSelected = value => {
     const currentValue = this.state.checked
     const selectedItems = this.props.selected
 
-    if(!currentValue) {
+    if (!currentValue) {
       //　Insert to the first empty spot
       let itemIdx = 0
 
-      for(itemIdx; itemIdx<selectedItems.length; itemIdx++) {
+      for (itemIdx; itemIdx < selectedItems.length; itemIdx++) {
         const item = selectedItems[itemIdx]
-        if(item === undefined) {
+        if (item === undefined) {
           selectedItems[itemIdx] = this.props.label
           break
         }
@@ -58,17 +52,15 @@ class BaseFilter extends Component {
         labelColor: color,
         edgeColor: color
       })
-      this.props.commandActions.expandEdges(
-        {
-          edgeType: this.props.label,
-          edgeColor: color
-        }
-      )
+      this.props.commandActions.expandEdges({
+        edgeType: this.props.label,
+        edgeColor: color
+      })
     } else {
       //　Remove
-      for(let i = 0; i<selectedItems.length; i++) {
+      for (let i = 0; i < selectedItems.length; i++) {
         const item = selectedItems[i]
-        if(item === this.props.label) {
+        if (item === this.props.label) {
           selectedItems[i] = undefined
           break
         }
@@ -81,7 +73,6 @@ class BaseFilter extends Component {
       this.props.commandActions.collapseEdges(this.props.label)
     }
   }
-
 
   componentWillReceiveProps(nextProps) {
     const numberOfSelected = countItem(nextProps.selected)
@@ -107,11 +98,8 @@ class BaseFilter extends Component {
     }
   }
 
-
   render() {
-    return (
-      <div></div>
-    )
+    return <div></div>
   }
 }
 

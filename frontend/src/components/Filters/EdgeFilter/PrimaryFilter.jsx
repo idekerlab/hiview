@@ -100,8 +100,8 @@ class PrimaryFilter extends Component {
     ) {
       return <div />
     }
-    const min = minNumber.toFixed(5)
-    const max = maxNumber.toFixed(5)
+    const min = minNumber.toFixed(2)
+    const max = maxNumber.toFixed(2)
     let val = this.state.value
     if (val === undefined) {
       val = 0
@@ -133,7 +133,7 @@ class PrimaryFilter extends Component {
           defaultValue={val}
           min={Number(min)}
           max={Number(max)}
-          step={0.00001}
+          step={0.001}
           onAfterChange={this.onAfterChange}
           marks={marks}
           trackStyle={trackStyle}

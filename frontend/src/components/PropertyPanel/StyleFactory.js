@@ -112,19 +112,18 @@ export const createStyle = originalNetwork => {
 
   const edgeStyle = BASE_STYLE.edge
 
-
   edgeStyle.css['z-index'] = `data(zIndex)`
 
   const edgeColor = 'color'
   edgeStyle.css['line-color'] = `data(${edgeColor})`
 
-  if(similarityMin !== similarityMax) {
+  if (similarityMin !== similarityMax) {
     edgeStyle.css[
       'opacity'
-      ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.6, 1)`
+    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.6, 1)`
     edgeStyle.css[
       'width'
-      ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 2, 15)`
+    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 2, 15)`
   }
 
   // Define edge selection style
