@@ -18,10 +18,10 @@ const cyjs2tree = (cyjs, networkActions) => {
 
   //Find root of the tree
   const nodes = cyjs.elements.nodes
-  let nodeMap = {}
-  const root = preprocessNodes(nodes, nodeMap)
-  const rootId = root.data.id
   const edges = cyjs.elements.edges
+  let nodeMap = {}
+  const root = preprocessNodes(nodes, edges, nodeMap)
+  const rootId = root.data.id
 
   // Create table first to use D3 function
   let table = transform(rootId, edges, nodeMap)
@@ -34,7 +34,6 @@ const cyjs2tree = (cyjs, networkActions) => {
 
   table = null
   nodeMap = null
-
 
   const geneMap = new Map()
   const duplicates = new Set()
@@ -53,6 +52,32 @@ const cyjs2tree = (cyjs, networkActions) => {
   return tree
 }
 
+const findRoot = (edges, nodeSet) => {
+  let nonRoots = new Set()
+  let targets = new Set()
+
+  let idx = edges.length
+  while (idx--) {
+    const source = edges[idx].data.source
+    const target = edges[idx].data.target
+    nonRoots.add(source)
+    targets.add(target)
+  }
+
+  let vals = Array.from(targets)
+  let idx2 = vals.length
+  let rootId = null
+  console.log(nodeSet.size, nonRoots.size)
+  while (idx2--) {
+    const node = vals[idx2]
+    if (!nonRoots.has(node)) {
+      rootId = node
+      break
+    }
+  }
+  return rootId
+}
+
 const createGeneMap = (treeNode, geneMap, duplicates) => {
   const current = treeNode
 
@@ -61,7 +86,7 @@ const createGeneMap = (treeNode, geneMap, duplicates) => {
   if (children === undefined) {
     // This is a leaf node
 
-    if(treeNode.data.NodeType === 'Gene') {
+    if (treeNode.data.NodeType === 'Gene') {
       addSelfToAllParents(treeNode.parent, geneMap, treeNode.data.Label)
     } else {
       // This is a link node
@@ -82,7 +107,7 @@ const createGeneMap = (treeNode, geneMap, duplicates) => {
 const addSelfToAllParents = (treeNode, geneMap, geneName) => {
   const id = treeNode.data.Label
   let idList = geneMap.get(id)
-  if(!idList) {
+  if (!idList) {
     idList = new Set()
     geneMap.set(id, idList)
   }
@@ -97,7 +122,7 @@ const addSelfToAllParents = (treeNode, geneMap, geneName) => {
   addSelfToAllParents(parent, geneMap, geneName)
 }
 
-const preprocessNodes = (nodes, nodeMap) => {
+const preprocessNodes = (nodes, edges, nodeMap) => {
   let idx = nodes.length
 
   // Root info is stored in network data
@@ -106,9 +131,10 @@ const preprocessNodes = (nodes, nodeMap) => {
   while (idx--) {
     const node = nodes[idx]
     const data = node.data
+    const label = data['Label']
     if (
-      !data['Label'].includes('Hidden') &&
-      !data['Label'].includes('Linked')
+      (label && !label.includes('Hidden') && !label.includes('Linked')) ||
+      !label
     ) {
       const isRoot = data.isRoot
       if (isRoot) {
@@ -125,6 +151,15 @@ const preprocessNodes = (nodes, nodeMap) => {
       nodeMap[nodeData.id] = nodeData
     }
   }
+
+  if (root === null || root === undefined) {
+    let rootId = findRoot(edges, new Set(Object.keys(nodeMap)))
+    if (rootId === null) {
+      throw new Error('This data is not a tree.')
+    } else {
+      root = { data: nodeMap[rootId] }
+    }
+  }
   return root
 }
 
@@ -138,9 +173,14 @@ const preprocessNodes = (nodes, nodeMap) => {
 const transform = (rootId, edges, nodeMap) => {
   const table = []
 
+  let rootLabel = nodeMap[rootId].Label
+  if(rootLabel === undefined || rootLabel === null) {
+    rootLabel = nodeMap[rootId].id
+  }
+
   table.push({
     id: nodeMap[rootId].id,
-    Label: nodeMap[rootId].Label,
+    Label: rootLabel,
     parent: '',
     props: nodeMap[rootId]
   })
@@ -152,24 +192,44 @@ const transform = (rootId, edges, nodeMap) => {
     if (
       source !== undefined &&
       target !== undefined &&
-      edge.data['Is_Tree_Edge'] === 'Tree' &&
       nodeMap[source.id] !== undefined &&
       nodeMap[target.id] !== undefined
     ) {
-      const node = {
-        id: source.id,
-        Label: source.Label,
-        parent: target.id,
-        value: source.Size,
-        NodeType: source.NodeType,
-        props: source,
-        alias: source.alias
-      }
+      if (
+        edge.data['Is_Tree_Edge'] === 'Tree' ||
+        edge.data['Is_Tree_Edge'] === undefined
+      ) {
 
-      if (source.originalId) {
-        node['originalId'] = source.originalId
+        let label = source.Label
+        if(!label) {
+          label = ''
+        }
+        let nodeType = source.NodeType
+        if(!nodeType) {
+          nodeType = 'Term'
+        }
+
+        let size = source.Size
+        if(!size) {
+          size = source.size
+        }
+
+        const node = {
+          id: source.id,
+          Label: label,
+          parent: target.id,
+          value: size,
+          NodeType: nodeType,
+          props: source,
+          alias: source.alias
+        }
+
+
+        if (source.originalId) {
+          node['originalId'] = source.originalId
+        }
+        table.push(node)
       }
-      table.push(node)
     }
   })
 

@@ -5,7 +5,8 @@ import GenePropertyPanel from './GenePropertyPanel'
 
 const PANEL_TYPES = {
   GENE: 'gene',
-  TERM: 'term'
+  TERM: 'term',
+  DEFAULT: 'default'
 }
 
 class PropertyPanel extends Component {
@@ -85,6 +86,12 @@ class PropertyPanel extends Component {
     } else if (propType === PANEL_TYPES.GENE) {
       // Check namespace props here...
       return <GenePropertyPanel {...this.props} />
+    } else if (propType === PANEL_TYPES.DEFAULT) {
+      return (
+        <div>
+          <h2>Default Panel</h2>
+        </div>
+      )
     } else {
       // Unsupported type
       return (
