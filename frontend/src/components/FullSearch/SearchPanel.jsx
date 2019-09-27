@@ -55,8 +55,8 @@ class SearchPanel extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const nextResult = nextProps.search.result
-    const currentResult = this.props.search.result
+    const nextResult = nextProps.localSearch.results
+    const currentResult = this.props.localSearch.results
 
     if (nextResult === currentResult) {
       return
