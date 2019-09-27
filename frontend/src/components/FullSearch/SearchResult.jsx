@@ -88,6 +88,7 @@ class SearchResult extends Component {
                 button
                 onMouseOver={e => this.handleMouseOver(key, children)}
                 onMouseOut={e => this.handleMouseOut(key, children)}
+                style={{ backgroundColor: this.state['hoverBgColor' + key] }}
               >
                 <ListItemText
                   primary={nestedList[parent].props.Label}
@@ -105,12 +106,10 @@ class SearchResult extends Component {
     const idList = Object.keys(children)
     this.props.selectionActions.highlightNode(idList)
     const colorId = 'hoverBgColor' + nodeId
-    this.setState({ [colorId]: 'rgba(200, 0, 0, 0.3)' })
+    this.setState({ [colorId]: 'rgba(250, 250, 0, 0.3)' })
   }
 
   handleMouseOut = nodeId => {
-    console.log('out:', nodeId)
-
     this.props.selectionActions.removeHighlightNode()
     const colorId = 'hoverBgColor' + nodeId
     this.setState({ [colorId]: '#FFFFFF' })

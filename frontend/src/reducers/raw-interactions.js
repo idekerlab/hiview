@@ -114,7 +114,6 @@ export default function networkState(state = defState, action) {
       return state.set('loading', true).set('message', action.payload)
 
     case SET_RAW_SUMMARY:
-      console.log('---------------GOT summary for raw:::', action)
       return state
         .set('loading', false)
         .set('interactions', null)
