@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
 import Slider, { createSliderWithTooltip } from 'rc-slider'
 import 'rc-slider/assets/index.css'
@@ -19,13 +19,17 @@ const sliderRowStyle = {
 }
 
 class ContinuousFilter extends BaseFilter {
-
-
   constructor(props) {
     super(props)
     this.state = {
-      sliderValue: this.props.value
+      value: this.props.value
     }
+  }
+
+  onSliderChange = value => {
+    this.setState({
+      value
+    })
   }
 
   onAfterChange = value => {
@@ -44,6 +48,12 @@ class ContinuousFilter extends BaseFilter {
           ']'
       }
     })
+
+  }
+
+  onChecked = () => {
+    this.setState({ value: this.props.value })
+    this.filterSelected(0)
   }
 
   render() {
@@ -60,8 +70,7 @@ class ContinuousFilter extends BaseFilter {
                 paddingRight: '0.2em',
                 color: this.state.labelColor
               }}
-              // checked={this.state.checked}
-              onChange={this.filterSelected}
+              onChange={this.onChecked}
               value={this.props.label}
             />
           }
@@ -71,7 +80,8 @@ class ContinuousFilter extends BaseFilter {
         <SliderWithTooltip
           style={{ width: '58%' }}
           disabled={!this.state.checked}
-          defaultValue={this.props.value}
+          value={this.state.value}
+          onChange={this.onSliderChange}
           min={this.props.min}
           max={this.props.max}
           step={this.props.step}
