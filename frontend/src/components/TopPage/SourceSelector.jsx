@@ -117,12 +117,11 @@ class SourceSelector extends Component {
     const uuid = Object.values(EXAMPLE_UUIDS)[idx]
     const name = Object.keys(EXAMPLE_UUIDS)[idx]
 
-    if(name.startsWith(GO_PREFIX)) {
+    if (name.startsWith(GO_PREFIX)) {
       this.setState({
         serverUrl: 'http://public.ndexbio.org',
         serverType: 'public'
       })
-
     }
     this.setState({ anchorEl: null })
 
@@ -269,7 +268,7 @@ class SourceSelector extends Component {
             onChange={this.handleUrlChange}
           />
 
-          <div style={{ height: '7em' }}>
+          <div style={examplePanelStyle}>
             <TextField
               autoFocus={true}
               style={textFieldStyleSmall}
@@ -336,6 +335,12 @@ class SourceSelector extends Component {
       </div>
     )
   }
+}
+
+const examplePanelStyle = {
+  height: '7em',
+  display: 'flex',
+  alignItems: 'center'
 }
 
 export default SourceSelector

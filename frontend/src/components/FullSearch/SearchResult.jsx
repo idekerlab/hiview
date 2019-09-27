@@ -102,13 +102,7 @@ class SearchResult extends Component {
   }
 
   handleMouseOver = (nodeId, children) => {
-
-
-    console.log('Enter0:', children)
     const idList = Object.keys(children)
-    console.log('Enter:', nodeId, children, idList)
-
-
     this.props.selectionActions.highlightNode(idList)
     const colorId = 'hoverBgColor' + nodeId
     this.setState({ [colorId]: 'rgba(200, 0, 0, 0.3)' })
