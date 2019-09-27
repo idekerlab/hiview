@@ -64,7 +64,6 @@ class SearchResult extends Component {
       overflow: 'auto'
     }
 
-
     if (!results || results === []) {
       return (
         <List style={resultStyle}>
@@ -80,39 +79,47 @@ class SearchResult extends Component {
 
     return (
       <List style={resultStyle}>
-        {parents.map((parent, i) => (
-          <div key={'parent-' + i}>
-            <ListItem>
-              <ListItemText
-                primary={nestedList[parent].props.Label}
-                secondary={nestedList[parent].props.NodeType}
-              />
-              {this.state[parent] ? (
-                <ExpandLess onClick={e => this.handleToggle(parent)} />
-              ) : (
-                <ExpandMore onClick={e => this.handleToggle(parent)} />
-              )}
-            </ListItem>
-
-            <Collapse
-              component="li"
-              in={this.state[parent]}
-              timeout="auto"
-              unmountOnExit
-            >
-              <AliasList
-                rootId={this.props.rootId}
-                aliases={nestedList[parent].children}
-                commandActions={this.props.commandActions}
-                selectionActions={this.props.selectionActions}
-                currentPath={this.props.currentPath}
-                uiState={this.props.uiState}
-              />
-            </Collapse>
-          </div>
-        ))}
+        {parents.map((parent, i) => {
+          const children = nestedList[parent].children
+          const key = nestedList[parent].props.Label
+          return (
+            <div key={'parent-' + i}>
+              <ListItem
+                button
+                onMouseOver={e => this.handleMouseOver(key, children)}
+                onMouseOut={e => this.handleMouseOut(key, children)}
+              >
+                <ListItemText
+                  primary={nestedList[parent].props.Label}
+                  secondary={nestedList[parent].props.NodeType}
+                />
+              </ListItem>
+            </div>
+          )
+        })}
       </List>
     )
+  }
+
+  handleMouseOver = (nodeId, children) => {
+
+
+    console.log('Enter0:', children)
+    const idList = Object.keys(children)
+    console.log('Enter:', nodeId, children, idList)
+
+
+    this.props.selectionActions.highlightNode(idList)
+    const colorId = 'hoverBgColor' + nodeId
+    this.setState({ [colorId]: 'rgba(200, 0, 0, 0.3)' })
+  }
+
+  handleMouseOut = nodeId => {
+    console.log('out:', nodeId)
+
+    this.props.selectionActions.removeHighlightNode()
+    const colorId = 'hoverBgColor' + nodeId
+    this.setState({ [colorId]: '#FFFFFF' })
   }
 }
 
