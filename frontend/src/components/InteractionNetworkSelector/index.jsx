@@ -153,7 +153,6 @@ const InteractionNetworkSelector = props => {
           rawInteractions={props.rawInteractions.toJS()}
         />
         <OpenInPortalButton genes={props.genes} />
-        <OpenInNetAntButton genes={props.genes} {...others} />
       </div>
       <TextField
         id="user-external-network"
