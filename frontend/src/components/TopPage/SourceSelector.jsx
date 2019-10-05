@@ -11,23 +11,25 @@ import { browserHistory } from 'react-router'
 import WarningDialog from './WarningDialog'
 import ErrorDialog from './ErrorDialog'
 
+import OpenNDExLoginButton from '../NdexLogin/OpenNdexLoginButton'
+
 const OBJECT_COUNT_TH = 10000
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
 
 const textFieldStyle = {
-  width: 400,
+  width: '100%',
   fontSize: '2em'
 }
 
 const textFieldStyleSmall = {
-  width: 300,
+  width: '100%',
   fontSize: '2em',
   marginRight: '0.5em'
 }
 
 const startStyle = {
-  width: 400,
+  width: '100%',
   marginTop: '2em'
 }
 
@@ -258,7 +260,7 @@ class SourceSelector extends Component {
 
     return (
       <div style={{ paddingTop: '2em' }}>
-        <div style={{ width: '450px' }}>
+        <div style={containerStyle}>
           <TextField
             style={textFieldStyle}
             placeholder="e.g. http://test.ndexbio.org"
@@ -282,9 +284,10 @@ class SourceSelector extends Component {
             />
 
             <Button
+              style={buttonStyle}
               aria-owns={anchorEl ? 'examples' : null}
               aria-haspopup="true"
-              variant="contained"
+              variant={'outlined'}
               onClick={this.handleExample}
             >
               Examples
@@ -306,6 +309,8 @@ class SourceSelector extends Component {
                 </MenuItem>
               ))}
             </Menu>
+
+            <OpenNDExLoginButton {...this.props} />
           </div>
 
           <Button
@@ -337,8 +342,22 @@ class SourceSelector extends Component {
   }
 }
 
+const containerStyle = {
+  width: '42em',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start'
+}
+
+const buttonStyle = {
+  marginRight: '1em',
+  height: '3.5em',
+  width: '12em'
+}
+
 const examplePanelStyle = {
-  height: '7em',
+  height: '5em',
+  width: '100%',
   display: 'flex',
   alignItems: 'center'
 }
