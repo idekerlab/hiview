@@ -14,7 +14,7 @@ const NdexGoogleLoginPanel = props => {
         )) ||
       (err.error && err['error']) ||
       JSON.stringify(err)
-    this.props.onError(message, false)
+    props.onError(message, false)
   }
 
   const { googleSSO, onSuccess } = props
@@ -32,28 +32,26 @@ const NdexGoogleLoginPanel = props => {
   const logo = googleSSO ? GoogleLogo : GoogleLogoDisabled
 
   return (
-    <div className="google-button">
-      <GoogleLogin
-        clientId={config.googleClientId}
-        render={renderProps => (
-          <Button
-            id="googleSignInButtonId"
-            disabled={!googleSSO}
-            className={clsName}
-            title={title}
-            onClick={renderProps.onClick}
-          >
-            <span className="google-sign-in-button-span">
-              <img src={logo} alt="" className="googleLogo" />
-              <div className="googleSignInText">Sign in with Google</div>
-            </span>
-          </Button>
-        )}
-        buttonText="Login"
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-      />
-    </div>
+    <GoogleLogin
+      clientId={config.googleClientId}
+      render={renderProps => (
+        <Button
+          id="googleSignInButtonId"
+          disabled={!googleSSO}
+          className={clsName}
+          title={title}
+          onClick={renderProps.onClick}
+        >
+          <span className="google-sign-in-button-span">
+            <img src={logo} alt="" className="googleLogo" />
+            <div className="googleSignInText">Sign in with Google</div>
+          </span>
+        </Button>
+      )}
+      buttonText="Login"
+      onSuccess={onSuccess}
+      onFailure={onFailure}
+    />
   )
 }
 

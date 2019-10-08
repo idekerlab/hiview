@@ -1,13 +1,48 @@
 import React, { useState } from 'react'
-import { DialogContent, DialogTitle, Grid, Paper } from '@material-ui/core'
+import {
+  DialogContent,
+  DialogTitle,
+  DialogActions,
+  Grid,
+  Paper,
+  Divider,
+  Button,
+  Typography
+} from '@material-ui/core'
+import { makeStyles } from '@material-ui/styles'
+import NdexGoogleLoginPanel from './NdexGoogleLoginPanel'
+import NdexCredentialsLoginPanel from './NdexCredentialsLoginPanel'
 
-
-const containerStyle = {
-  width: '100%',
-  height: '100%'
-}
+const useStyles = makeStyles({
+  root: {
+    height: '100%',
+    margin: 0,
+    padding: '0.6em',
+    display: 'flex',
+    minWidth: '30em'
+  },
+  leftComponent: {
+    display: 'flex',
+    alignItem: 'center',
+    justifyContent: 'center'
+  },
+  rightComponent: {
+    marginLeft: '0.6em',
+    flexGrow: 2
+  }
+})
 
 const NdexLoginPanel = props => {
+  const classes = useStyles()
+
+  const {
+    setDialogState,
+    onLoginSuccess,
+    onSuccess,
+    handleCredentialsSignOn,
+    handleError,
+    error
+  } = props
   const [isGoogle, setIsGoogle] = useState(true)
 
   const onError = (error, googleSSO) => {
@@ -15,51 +50,24 @@ const NdexLoginPanel = props => {
     setIsGoogle({ googleSSO })
   }
 
-  const {
-    handleClose,
-    onLoginSuccess,
-    onSuccess,
-    handleCredentialsSignOn,
-    handleError,
-    error
-  } = props
-
   return (
-    <div style={containerStyle}>
-      <DialogTitle id="form-dialog-title">
-        Sign in to your NDEx Account
-      </DialogTitle>
-      <DialogContent>
-        <div className="NDExSignInContainer">
-          <Grid container spacing={8}>
-            <Grid item xs={6} className="grid">
-              <Paper className="grid-paper">
-                <div className="grid-content">
-                  <GoogleSignOn
-                    onError={this.onError}
-                    googleSSO={googleSSO}
-                    onLoginSuccess={onLoginSuccess}
-                    onSuccess={onSuccess}
-                  />
-                </div>
-              </Paper>
-            </Grid>
-            <Grid item xs={6} className="grid">
-              <Paper className="grid-paper">
-                <div className="grid-content">
-                  <CredentialsSignOn
-                    onLoginSuccess={onLoginSuccess}
-                    handleClose={handleClose}
-                    handleCredentialsSignOn={handleCredentialsSignOn}
-                    handleError={handleError}
-                    error={error}
-                  />
-                </div>
-              </Paper>
-            </Grid>
-          </Grid>
-        </div>
-      </DialogContent>
+    <div className={classes.root}>
+      <Paper className={classes.leftComponent}>
+        <NdexGoogleLoginPanel
+          onError={onError}
+          googleSSO={isGoogle}
+          onLoginSuccess={onLoginSuccess}
+          onSuccess={onSuccess}
+        />
+      </Paper>
+      <Paper className={classes.rightComponent}>
+        <NdexCredentialsLoginPanel
+          onLoginSuccess={onLoginSuccess}
+          handleCredentialsSignOn={handleCredentialsSignOn}
+          handleError={handleError}
+          error={error}
+        />
+      </Paper>
     </div>
   )
 }
