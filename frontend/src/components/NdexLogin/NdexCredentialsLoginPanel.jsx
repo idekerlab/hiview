@@ -5,19 +5,17 @@ import Typography from '@material-ui/core/Typography'
 
 const useStyles = makeStyles({
   root: {
-    padding: '0.4em',
+    padding: '0.5em',
     margin: 0,
     display: 'flex',
     flexDirection: 'column',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   loginButton: {
     marginTop: '0.7em'
   },
   bottom: {
-
-    marginTop: '2em',
-    alignSelf: 'flex-end'
+    marginTop: '2em'
   },
   formControl: {
     flexGrow: 2
@@ -69,9 +67,7 @@ const NdexCredentialsLoginPanel = props => {
         <Divider />
 
         <Typography variant={'body1'}>
-          Need an account?
-        </Typography>
-        <Typography variant={'body2'}>
+          Need an account?{' '}
           <a href="http://ndexbio.org">Click here to sign up!</a>
         </Typography>
 

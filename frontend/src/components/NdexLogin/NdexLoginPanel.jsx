@@ -1,14 +1,5 @@
 import React, { useState } from 'react'
-import {
-  DialogContent,
-  DialogTitle,
-  DialogActions,
-  Grid,
-  Paper,
-  Divider,
-  Button,
-  Typography
-} from '@material-ui/core'
+import { Paper } from '@material-ui/core'
 import { makeStyles } from '@material-ui/styles'
 import NdexGoogleLoginPanel from './NdexGoogleLoginPanel'
 import NdexCredentialsLoginPanel from './NdexCredentialsLoginPanel'

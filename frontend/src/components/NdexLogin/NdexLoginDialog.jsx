@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import {
   Dialog,
@@ -6,7 +6,8 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Typography
+  Typography,
+  Divider
 } from '@material-ui/core'
 import NdexUserInfoPanel from './NdexUserInfoPanel'
 import NdexLoginPanel from './NdexLoginPanel'
@@ -32,45 +33,68 @@ const useStyles = makeStyles({
   },
   titleWrapper: {
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   ndexLogo: {
     height: '3em',
     marginRight: '1em'
+  },
+  actionPanel: {
+    margin: 0,
+    padding: '0.3em'
   }
 })
 
 const NdexLoginDialog = props => {
   const classes = useStyles()
-  // Open/Close state is always passed from parent component
-  const { isOpen, isLogin, errorMessage, setDialogState } = props
-  const onLoginSuccess = () => {}
 
-  const onLogout = () => {
-    // props.ndexSaveActions.setProfile(null)
-    handleClose()
+  const [isLogin, setLogin] = useState(false)
+  const [googleLogin, setGoogleLogin] = useState(null)
+
+  // Open/Close state is always passed from parent component
+  const { isOpen, errorMessage, setDialogState } = props
+
+  const onLoginSuccess = event => {
+    console.log('Login success:', event)
   }
 
-  const handleClose = () => {
-    // props.openNdexLoginDialog(false)
+  const onLogout = () => {
+    console.log('Logout:')
+    setLogin(false)
+    // props.ndexSaveActions.setProfile(null)
   }
 
   const handleCredentialsSignOn = event => {
-    event.preventDefault()
-    // this.props.ndexSaveActions.credentialsSignOn(event)
+    console.log('Credential:', event)
   }
 
-  const handleOnSuccess = resp => {
-    // this.props.ndexSaveActions.googleSignOn(resp)
+  const onGoogleSuccess = userInfo => {
+    console.log('Google:', userInfo)
+    setLogin(true)
+    setGoogleLogin(userInfo)
+    console.log('Google Set:', userInfo)
+    // setDialogState(false)
   }
 
   const handleError = error => {
+    console.log('Error:', resp)
     // this.props.ndexSaveActions.setErrorMessage(error)
   }
 
+  const loginStateUpdated = (login, error) => {
+    // User should
+  }
+
   const getContent = () => {
-    if (isLogin) {
-      return <NdexUserInfoPanel {...props} />
+    if (isLogin && googleLogin !== null) {
+      console.log('Showing G info:', googleLogin)
+      return (
+        <NdexUserInfoPanel
+          userName={googleLogin.profileObj.name}
+          userImage={googleLogin.profileObj.imageUrl}
+          onLogout={onLogout}
+        />
+      )
     }
 
     return (
@@ -79,7 +103,7 @@ const NdexLoginDialog = props => {
         onLoginSuccess={onLoginSuccess}
         onLogout={onLogout}
         handleCredentialsSignOn={handleCredentialsSignOn}
-        onSuccess={handleOnSuccess}
+        onSuccess={onGoogleSuccess}
         handleError={handleError}
         error={errorMessage}
       />
@@ -88,19 +112,32 @@ const NdexLoginDialog = props => {
 
   return (
     <Dialog className={classes.root} open={isOpen}>
-      <DialogTitle disableTypography={true} className={classes.title}>
-        <div className={classes.titleWrapper}>
-          <img src={NdexLogo} alt={'NDEx Logo'} className={classes.ndexLogo} />
-          <div>
-            <Typography variant={'title'}>{DEFAULT_TITLE}</Typography>
-            <Typography variant={'subtitle1'}>{SUBTITLE}</Typography>
+      {isLogin ? (
+        <div />
+      ) : (
+        <DialogTitle disableTypography={true} className={classes.title}>
+          <div className={classes.titleWrapper}>
+            <img
+              src={NdexLogo}
+              alt={'NDEx Logo'}
+              className={classes.ndexLogo}
+            />
+            <div>
+              <Typography variant={'title'}>{DEFAULT_TITLE}</Typography>
+              <Typography variant={'subtitle1'}>{SUBTITLE}</Typography>
+            </div>
           </div>
-        </div>
-      </DialogTitle>
+        </DialogTitle>
+      )}
       <DialogContent className={classes.content}>{getContent()}</DialogContent>
-      <DialogActions>
-        <Button onClick={() => setDialogState(false)} color={'default'}>
-          Cancel
+      <Divider />
+      <DialogActions className={classes.actionPanel}>
+        <Button
+          variant={'outlined'}
+          onClick={() => setDialogState(false)}
+          color={'default'}
+        >
+          Close
         </Button>
       </DialogActions>
     </Dialog>
