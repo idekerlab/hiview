@@ -31,6 +31,7 @@ import go from './go'
 import localSearch from './local-search'
 
 import netant from './netant'
+import credentials from './credentials'
 
 
 // Application states
@@ -65,5 +66,6 @@ export default combineReducers({
   externalNetworks,
   go,
   localSearch,
-  netant
+  netant,
+  credentials
 })

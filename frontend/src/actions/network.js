@@ -1,5 +1,6 @@
 import { createAction } from 'redux-actions'
 import { CxToJs, CyNetworkUtils } from 'cytoscape-cx2js'
+import {getHeader} from '../components/AccessUtil'
 
 import Fuse from 'fuse.js'
 import Dexie from 'dexie'
@@ -209,7 +210,7 @@ const getNetworkAttributes = cx => {
 }
 
 const fetchDataFromRemote = (url2, uuid, dispatch, serverType) => {
-  const headers = new Headers()
+  const headers = getHeader()
   headers.set('Accept-Encoding', 'br')
   const setting = {
     method: 'GET',

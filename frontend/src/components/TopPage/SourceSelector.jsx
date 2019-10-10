@@ -13,6 +13,8 @@ import ErrorDialog from './ErrorDialog'
 
 import OpenNDExLoginButton from '../NdexLogin/OpenNdexLoginButton'
 
+import { getHeader } from '../AccessUtil'
+
 const OBJECT_COUNT_TH = 10000
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i
@@ -192,10 +194,29 @@ class SourceSelector extends Component {
   }
 
   validateUrl = () => {
+    const credentials = this.props.credentials
+
+    let headers = null
+    if (credentials.loginDetails !== null) {
+      headers = getHeader(credentials)
+    }
+    console.log('Header:', headers)
+
     const url =
       this.state.serverUrl + '/v2/network/' + this.state.uuid + '/summary'
 
-    fetch(url)
+    const settings = {
+      method: 'GET'
+    }
+
+    if (headers !== null) {
+      settings['headers'] = headers
+    }
+
+    console.log('* Get summary with:', credentials, settings)
+
+
+    fetch(url, settings)
       .then(response => {
         if (!response.ok) {
           throw Error(response.status)
@@ -210,6 +231,12 @@ class SourceSelector extends Component {
             true,
             'Network does not exist',
             'Please check the UUID and server address to make sure they actually exist.'
+          )
+        } else if (err.message === '401') {
+          this.openErrorDialog(
+            true,
+            'NDEx server returned an error (401)',
+            'You are not authorized to access this hierarchy. Please login to the NDEx server first.'
           )
         } else if (err.message === '500') {
           this.openErrorDialog(
@@ -252,6 +279,10 @@ class SourceSelector extends Component {
     }
 
     return this.state.invalidUuid
+  }
+
+  loginStateUpdated = loginState => {
+    this.props.credentialsActions.setCredentials(loginState)
   }
 
   render() {
@@ -310,7 +341,10 @@ class SourceSelector extends Component {
               ))}
             </Menu>
 
-            <OpenNDExLoginButton {...this.props} />
+            <OpenNDExLoginButton
+              ndexServer={this.state.serverUrl}
+              onLoginStateUpdated={this.loginStateUpdated}
+            />
           </div>
 
           <Button

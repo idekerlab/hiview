@@ -7,6 +7,7 @@ import { MuiThemeProvider } from '@material-ui/core/styles'
 
 import TopPage from '../../components/TopPage/index'
 import * as networkActions from '../../actions/network'
+import * as credentialsActions from '../../actions/credentials'
 
 import { theme } from '../theme'
 
@@ -17,11 +18,13 @@ const FrontPage = props => (
 )
 
 const mapStateToProps = state => ({
+  credentials: state.credentials
 })
 
 function mapDispatchToProps(dispatch) {
   return {
     networkActions: bindActionCreators(networkActions, dispatch),
+    credentialsActions: bindActionCreators(credentialsActions, dispatch)
   }
 }
 

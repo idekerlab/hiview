@@ -100,7 +100,8 @@ function mapStateToProps(state) {
     externalNetworks: state.externalNetworks,
     go: state.go,
     localSearch: state.localSearch,
-    netant: state.netant
+    netant: state.netant,
+    credentials: state.credentials
   }
 }
 

@@ -7,12 +7,12 @@ import {
   DialogActions,
   Button,
   Typography,
-  Divider
+  Divider, Avatar
 } from '@material-ui/core'
+
 import NdexUserInfoPanel from './NdexUserInfoPanel'
 import NdexLoginPanel from './NdexLoginPanel'
 import { makeStyles } from '@material-ui/styles'
-import { fade } from '@material-ui/core/styles/colorManipulator'
 
 import NdexLogo from './assets/images/ndex-logo.svg'
 
@@ -42,17 +42,21 @@ const useStyles = makeStyles({
   actionPanel: {
     margin: 0,
     padding: '0.3em'
+  },
+  userIcon: {
+    height: '1.5em',
+    width: '1.5em'
   }
 })
 
 const NdexLoginDialog = props => {
   const classes = useStyles()
 
-  const [isLogin, setLogin] = useState(false)
-  const [googleLogin, setGoogleLogin] = useState(null)
+  const [login, setLogin] = useState(null)
+  const [errorMessage, setErrorMessage] = useState('')
 
   // Open/Close state is always passed from parent component
-  const { isOpen, errorMessage, setDialogState } = props
+  const { isOpen, setDialogState, onLoginStateUpdated, ndexServer, setIcon } = props
 
   const onLoginSuccess = event => {
     console.log('Login success:', event)
@@ -60,39 +64,61 @@ const NdexLoginDialog = props => {
 
   const onLogout = () => {
     console.log('Logout:')
-    setLogin(false)
-    // props.ndexSaveActions.setProfile(null)
+    setLogin(null)
+    setIcon(null)
+    onLoginStateUpdated(null)
   }
 
-  const handleCredentialsSignOn = event => {
-    console.log('Credential:', event)
+  const handleCredentialsSignOn = userInfo => {
+    console.log('Credential:', userInfo)
+    const loginInfo = { isGoogle: false, loginDetails: userInfo }
+    setLogin(loginInfo)
+    const userImage = userInfo.image
+    setIcon(
+      <Avatar className={classes.userIcon} src={userImage}>
+      </Avatar>
+    )
+    onLoginStateUpdated(loginInfo)
   }
 
   const onGoogleSuccess = userInfo => {
-    console.log('Google:', userInfo)
-    setLogin(true)
-    setGoogleLogin(userInfo)
-    console.log('Google Set:', userInfo)
-    // setDialogState(false)
+    console.log('Google:', userInfo, onLoginStateUpdated)
+    const loginInfo = { isGoogle: true, loginDetails: userInfo }
+    setLogin(loginInfo)
+    const userImage = userInfo.profileObj.imageUrl
+    setIcon(
+      <Avatar className={classes.userIcon} src={userImage}>
+      </Avatar>
+    )
+    onLoginStateUpdated(loginInfo)
+
   }
 
   const handleError = error => {
-    console.log('Error:', resp)
-    // this.props.ndexSaveActions.setErrorMessage(error)
-  }
-
-  const loginStateUpdated = (login, error) => {
-    // User should
+    console.log('Error:', error)
+    setErrorMessage(error)
   }
 
   const getContent = () => {
-    if (isLogin && googleLogin !== null) {
-      console.log('Showing G info:', googleLogin)
+    if (login !== null) {
+      console.log('user info:', login)
+
+      let userName = ''
+      let userImage = null
+      if (login.isGoogle) {
+        userName = login.loginDetails.profileObj.name
+        userImage = login.loginDetails.profileObj.imageUrl
+      } else {
+        userName = login.loginDetails.fullName
+        userImage = login.loginDetails.image
+      }
+
       return (
         <NdexUserInfoPanel
-          userName={googleLogin.profileObj.name}
-          userImage={googleLogin.profileObj.imageUrl}
+          userName={userName}
+          userImage={userImage}
           onLogout={onLogout}
+          ndexServer={ndexServer}
         />
       )
     }
@@ -106,13 +132,14 @@ const NdexLoginDialog = props => {
         onSuccess={onGoogleSuccess}
         handleError={handleError}
         error={errorMessage}
+        ndexServer={ndexServer}
       />
     )
   }
 
   return (
     <Dialog className={classes.root} open={isOpen}>
-      {isLogin ? (
+      {login !== null ? (
         <div />
       ) : (
         <DialogTitle disableTypography={true} className={classes.title}>

@@ -6,7 +6,7 @@ import NdexCredentialsLoginPanel from './NdexCredentialsLoginPanel'
 
 const useStyles = makeStyles({
   root: {
-    height: '100%',
+    height: '14.5em',
     margin: 0,
     padding: '0.6em',
     display: 'flex',
@@ -27,12 +27,12 @@ const NdexLoginPanel = props => {
   const classes = useStyles()
 
   const {
-    setDialogState,
     onLoginSuccess,
     onSuccess,
     handleCredentialsSignOn,
     handleError,
-    error
+    error,
+    ndexServer
   } = props
   const [isGoogle, setIsGoogle] = useState(true)
 
@@ -57,6 +57,7 @@ const NdexLoginPanel = props => {
           handleCredentialsSignOn={handleCredentialsSignOn}
           handleError={handleError}
           error={error}
+          ndexServer={ndexServer}
         />
       </Paper>
     </div>
