@@ -20,7 +20,10 @@ const PRESET_NETWORKS = [
   },
   { name: 'BioGrid', uuid: '36f7d8fd-23dc-11e8-b939-0ac135e8bacf' },
   { name: 'BioPlex', uuid: '98ba6a19-586e-11e7-8f50-0ac135e8bacf' },
-  { name: 'Signor', uuid: 'b0d987cb-1e6b-11e8-b939-0ac135e8bacf' }
+  {
+    name: 'Signor Complete - Human',
+    uuid: '523fff27-afe8-11e9-8bb4-0ac135e8bacf'
+  }
 ]
 
 const defaultState = {
