@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 import Button from '@material-ui/core/Button'
 import logo from '../../assets/images/cytoscape-logo-white.svg'
@@ -24,7 +24,33 @@ const styles = theme => ({
 })
 
 const OpenInCytoscapeButton = props => {
+  const [isCytoscapeRunning, setRunning] = useState(false)
+
   const { classes, externalNetworks, rawInteractions } = props
+
+  useEffect(() => {
+    // Check connection
+    try {
+      cyrestApi
+        .checkStatus(1234)
+        .then(res => {
+          if (res.status === 200) {
+            setRunning(true)
+          } else {
+            setRunning(false)
+            throw new Error('Not running')
+          }
+          return res.json()
+        })
+        .catch(e => {
+          setRunning(false)
+          console.warn('1. No Connection to Cy3', e)
+        })
+    } catch (e) {
+      setRunning(false)
+      console.warn('2. No Connection to Cy3', e)
+    }
+  }, [rawInteractions.originalCX])
 
   const handleImportNetwork = () => {
     console.log('EXT:', externalNetworks, props)
@@ -39,21 +65,24 @@ const OpenInCytoscapeButton = props => {
       cx = externalNetworks.selectedNetwork.cx
     }
 
-    console.log("POSTINGL", cx)
+    console.log('Sending CX', cx)
 
     cyrestApi.postNetwork(1234, cx)
   }
 
   return (
     <Tooltip title="Open in Cytoscape" placement="bottom">
-      <Button
-        className={classes.button}
-        variant="contained"
-        color="primary"
-        onClick={handleImportNetwork}
-      >
-        <img alt="Cytoscape logo" src={logo} className={classes.icon} />
-      </Button>
+      <div>
+        <Button
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          onClick={handleImportNetwork}
+          disabled={!isCytoscapeRunning}
+        >
+          <img alt="Cytoscape logo" src={logo} className={classes.icon} />
+        </Button>
+      </div>
     </Tooltip>
   )
 }

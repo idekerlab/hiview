@@ -151,6 +151,7 @@ const InteractionNetworkSelector = props => {
         <OpenInCytoscapeButton
           externalNetworks={externalNetworks}
           rawInteractions={props.rawInteractions.toJS()}
+          isCytoscapeRunning={false}
         />
         <OpenInPortalButton genes={props.genes} />
       </div>

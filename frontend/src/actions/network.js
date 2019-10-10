@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions'
 import { CxToJs, CyNetworkUtils } from 'cytoscape-cx2js'
-import {getHeader} from '../components/AccessUtil'
+import { getHeader } from '../components/AccessUtil'
 
 import Fuse from 'fuse.js'
 import Dexie from 'dexie'
@@ -212,14 +212,23 @@ const getNetworkAttributes = cx => {
 const fetchDataFromRemote = (url2, uuid, dispatch, serverType, credentials) => {
   console.log('From remote::', credentials)
 
-  const headers = getHeader(credentials)
-  headers['Accept-Encoding'] = 'br'
+  let headers = getHeader(credentials)
+  console.log('New header::', headers)
+  if (headers !== null) {
+    headers['Accept-Encoding'] = 'br'
+  } else {
+    headers = {
+      'Accept-Encoding': 'br'
+    }
+  }
 
   const setting = {
     method: 'GET',
     mode: 'cors',
     headers: headers
   }
+
+  console.log('settings::', setting)
 
   const url = 'http://' + serverType + '.ndexbio.org/v2/network/' + uuid
 

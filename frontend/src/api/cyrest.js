@@ -4,6 +4,7 @@ export const METHOD_GET = 'GET'
 const CYREST_BASE_URL = 'http://127.0.0.1'
 
 const checkStatus = cyRESTPort => {
+
   const statusUrl = CYREST_BASE_URL + ':' + cyRESTPort + '/v1'
   return fetch(statusUrl, {
     method: METHOD_GET
@@ -11,8 +12,7 @@ const checkStatus = cyRESTPort => {
 }
 
 const postNetwork = (cyRESTPort, payload) => {
-  const url =
-    CYREST_BASE_URL + ':' + cyRESTPort + '/cyndex2/v1/networks/cx'
+  const url = CYREST_BASE_URL + ':' + cyRESTPort + '/cyndex2/v1/networks/cx'
 
   console.log('Sending CX to Cytoscape: ', url)
 

@@ -4,6 +4,9 @@ const getHeader = credentials => {
   }
 
   const userInfo = credentials.loginDetails
+  if (userInfo === null || userInfo === undefined) {
+    return null
+  }
 
   if (credentials.isGoogle) {
     return getGoogleHeader(userInfo)
