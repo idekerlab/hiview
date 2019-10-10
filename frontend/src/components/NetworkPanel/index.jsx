@@ -242,6 +242,7 @@ class NetworkPanel extends Component {
     const locationParams = this.props.location
     const uuid = this.props.routeParams.uuid
     let serverType = locationParams.query.type
+    const credentials = this.props.credentials
 
     if (serverType === undefined) {
       serverType = 'test'
@@ -250,7 +251,7 @@ class NetworkPanel extends Component {
     const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
     this.setState({ networkUrl: url })
 
-    this.props.networkActions.fetchNetworkFromUrl(url, uuid, serverType)
+    this.props.networkActions.fetchNetworkFromUrl(url, uuid, serverType, credentials)
   }
 
   componentWillReceiveProps(nextProps) {

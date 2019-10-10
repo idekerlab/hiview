@@ -91,19 +91,19 @@ const receiveNetwork = (url, json, error) => {
 
 let t0 = 0
 let t1 = 0
-export const fetchNetworkFromUrl = (url, uuid, serverType) => {
+export const fetchNetworkFromUrl = (url, uuid, serverType, credentials) => {
   t0 = performance.now()
   return dispatch => {
     dispatch(fetchNetwork(url))
-    return getNetworkData(url, uuid, dispatch, serverType)
+    return getNetworkData(url, uuid, dispatch, serverType, credentials)
   }
 }
 
-const getNetworkData = (url, uuid, dispatch, serverType) => {
+const getNetworkData = (url, uuid, dispatch, serverType, credentials) => {
   hvDb.hierarchy.get(uuid).then(network => {
     if (network === undefined) {
       console.log('Does not exist:', uuid)
-      return fetchDataFromRemote(url, uuid, dispatch, serverType)
+      return fetchDataFromRemote(url, uuid, dispatch, serverType, credentials)
     } else {
       return fetchFromLocal(url, uuid, dispatch, network)
     }
@@ -209,9 +209,12 @@ const getNetworkAttributes = cx => {
   return cyjsData
 }
 
-const fetchDataFromRemote = (url2, uuid, dispatch, serverType) => {
-  const headers = getHeader()
-  headers.set('Accept-Encoding', 'br')
+const fetchDataFromRemote = (url2, uuid, dispatch, serverType, credentials) => {
+  console.log('From remote::', credentials)
+
+  const headers = getHeader(credentials)
+  headers['Accept-Encoding'] = 'br'
+
   const setting = {
     method: 'GET',
     mode: 'cors',
@@ -252,8 +255,6 @@ const fetchDataFromRemote = (url2, uuid, dispatch, serverType) => {
       hvDb.hierarchy.put(filtered)
       // hvDb.hierarchy.put(json)
       json = null
-
-      console.log('RES::', json, cyjs, filtered, attributeNameMap)
 
       return filtered
       // return json
