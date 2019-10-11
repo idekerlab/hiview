@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/styles'
-import { Button, Tooltip } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import logo from './assets/images/ndex-logo.svg'
 import { fade } from '@material-ui/core/styles/colorManipulator'
 import NdexLoginDialog from './NdexLoginDialog'
@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 
 const useStyles = makeStyles({
   button: {
-    width: '11em',
+    width: '10em',
     height: '3.5em',
     borderColor: '#4DA1DE',
     color: '#4DA1DE',
@@ -28,6 +28,17 @@ const useStyles = makeStyles({
   }
 })
 
+const TOOLTIP_MESSAGE = {
+  logout: {
+    title: 'Sign in to NDEx',
+    message: 'You need to sign in to use private networks in NDEx'
+  },
+  login: {
+    title: 'Logged in',
+    message: 'Now you can access private networks'
+  }
+}
+
 const DEFAULT_HANDLER = loginState => {
   // Default callback function for login status change
   console.warn('Default handler: NDEx login state updated', loginState)
@@ -44,35 +55,31 @@ const DEFAULT_HANDLER = loginState => {
  * @constructor
  */
 const OpenNDExLoginButton = props => {
+  const classes = useStyles()
   const { ndexServer, onLoginStateUpdated } = props
 
-  console.info('NDEx URL = ', ndexServer)
+  const defaultIconComponent = (
+    <img alt="NDEx logo" src={logo} className={classes.buttonIcon} />
+  )
 
   let onUpdate = DEFAULT_HANDLER
   if (onLoginStateUpdated !== null && onLoginStateUpdated !== undefined) {
     onUpdate = onLoginStateUpdated
   }
 
-  const classes = useStyles()
   const [isOpen, setOpen] = useState(false)
-  const [icon, setButtonIcon] = useState(
-    <img alt="NDEx logo" src={logo} className={classes.buttonIcon} />
-  )
+  const [isLogin, setLogin] = useState(false)
+  const [icon, setButtonIcon] = useState(defaultIconComponent)
 
   const setIcon = iconComponent => {
-    if (iconComponent === null) {
-      setButtonIcon(
-        <img alt="NDEx logo" src={logo} className={classes.buttonIcon} />
-      )
-    } else {
-      setButtonIcon(iconComponent)
-    }
+    setButtonIcon(iconComponent !== null ? iconComponent : defaultIconComponent)
   }
 
-  const message = 'You need to sign in to use private networks in NDEx'
   const setDialogState = dialogState => {
     setOpen(dialogState)
   }
+
+  const tooltipText = isLogin ? TOOLTIP_MESSAGE.login : TOOLTIP_MESSAGE.logout
 
   return (
     <div>
@@ -81,9 +88,9 @@ const OpenNDExLoginButton = props => {
         title={
           <React.Fragment>
             <Typography variant={'title'} color={'inherit'}>
-              &larr; Sign in to NDEx
+              {tooltipText.title}
             </Typography>
-            <Typography variant={'body1'}>{message}</Typography>
+            <Typography variant={'body1'}>{tooltipText.message}</Typography>
           </React.Fragment>
         }
       >
@@ -99,6 +106,7 @@ const OpenNDExLoginButton = props => {
         setIcon={setIcon}
         setDialogState={setDialogState}
         isOpen={isOpen}
+        setIsLogin={setLogin}
         ndexServer={ndexServer}
         onLoginStateUpdated={onUpdate}
       />

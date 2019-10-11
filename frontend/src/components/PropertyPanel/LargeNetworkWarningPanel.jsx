@@ -72,7 +72,8 @@ const handleImport = props => {
     props.server,
     props.url,
     props.maxEdgeCount,
-    props.summary
+    props.summary,
+    props.credentials
   )
 }
 

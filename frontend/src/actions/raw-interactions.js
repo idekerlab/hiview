@@ -1,13 +1,10 @@
+import { getHeader } from '../components/AccessUtil'
+
 const THRESHOLD_TAG = 'Main Feature Default Cutoff'
 
 import { createAction } from 'redux-actions'
 
-import {
-  sortEdges,
-  filterEdge,
-  MAIN_EDGE_TAG,
-  PATTERN
-} from './raw-interactions-util'
+import { filterEdge, MAIN_EDGE_TAG, PATTERN } from './raw-interactions-util'
 
 import cx2js from 'cytoscape-cx2js'
 
@@ -197,7 +194,8 @@ export const fetchInteractionsFromUrl = (
   server,
   url2,
   maxEdgeCount = 500,
-  summary = {}
+  summary = {},
+  credentials
 ) => {
   const EDGE_COUNT_TH = 10000
 
@@ -243,14 +241,16 @@ export const fetchInteractionsFromUrl = (
       }
     ]
 
-    const headers = new Headers()
-    headers.set('Content-Type', 'application/json')
+    const headers = getHeader(credentials)
+    headers['Content-Type'] = 'application/json'
 
     let settings = {
       method: 'POST',
       body: JSON.stringify(query),
       headers
     }
+
+    console.log('Raw fetch header w/filter:', settings)
 
     return fetchNet(url, settings)
       .then(response => {

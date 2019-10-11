@@ -67,7 +67,8 @@ class SourceSelector extends Component {
       errorDialogMessage: 'Could not load',
       errorDialogTitle: 'Error',
       warningDialogMessage: 'Are you sure?',
-      warningDialogTitle: 'Warning'
+      warningDialogTitle: 'Warning',
+      isValidUrl: true
     }
   }
 
@@ -95,9 +96,36 @@ class SourceSelector extends Component {
     this.checkUuid(currentVal)
   }
 
+  showUrlError = () => {
+    this.openErrorDialog(
+      true,
+      'Server type is invalid',
+      'Currently, we only supports public.ndexbio.org and test.ndexbio.org as backend server.  ' +
+        'Please check the server URL again.'
+    )
+  }
+
   handleUrlChange = event => {
     const url = event.target.value
-    const type = this.getServerType(url)
+    let urlObj = null
+
+    try {
+      urlObj = new URL(url)
+      this.setState({ isValidUrl: true })
+    } catch (e) {
+      this.showUrlError()
+      this.setState({
+        serverUrl: 'http://test.ndexbio.org',
+        serverType: 'test'
+      })
+      return
+    }
+
+    const type = this.getServerType(urlObj)
+    if (type === null) {
+      this.showUrlError()
+      return
+    }
 
     this.setState({
       serverUrl: event.target.value,
@@ -106,15 +134,14 @@ class SourceSelector extends Component {
   }
 
   getServerType = url => {
-    const parts = url.split('/')
-    const address = parts[parts.length - 1]
-    const type = address.split('.')[0]
+    const hostName = url.host
+    const parts = hostName.split('.')
 
-    if (!type) {
-      throw Error('Invalid URL')
+    if (parts.length === 0) {
+      return null
     }
 
-    return type
+    return parts[0]
   }
 
   handleExampleChange = (event, idx) => {
@@ -215,7 +242,6 @@ class SourceSelector extends Component {
 
     console.log('* Get summary with:', credentials, settings)
 
-
     fetch(url, settings)
       .then(response => {
         if (!response.ok) {
@@ -293,6 +319,9 @@ class SourceSelector extends Component {
       <div style={{ paddingTop: '2em' }}>
         <div style={containerStyle}>
           <TextField
+            type={'url'}
+            error={!this.state.isValidUrl}
+            required={true}
             style={textFieldStyle}
             placeholder="e.g. http://test.ndexbio.org"
             label="NDEx Server URL"

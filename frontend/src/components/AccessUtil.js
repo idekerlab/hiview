@@ -1,11 +1,11 @@
 const getHeader = credentials => {
   if (credentials === null || credentials === undefined) {
-    return null
+    return {}
   }
 
   const userInfo = credentials.loginDetails
   if (userInfo === null || userInfo === undefined) {
-    return null
+    return {}
   }
 
   if (credentials.isGoogle) {

@@ -7,7 +7,8 @@ import {
   DialogActions,
   Button,
   Typography,
-  Divider, Avatar
+  Divider,
+  Avatar
 } from '@material-ui/core'
 
 import NdexUserInfoPanel from './NdexUserInfoPanel'
@@ -56,7 +57,14 @@ const NdexLoginDialog = props => {
   const [errorMessage, setErrorMessage] = useState('')
 
   // Open/Close state is always passed from parent component
-  const { isOpen, setDialogState, onLoginStateUpdated, ndexServer, setIcon } = props
+  const {
+    isOpen,
+    setDialogState,
+    onLoginStateUpdated,
+    ndexServer,
+    setIcon,
+    setIsLogin
+  } = props
 
   const onLoginSuccess = event => {
     console.log('Login success:', event)
@@ -65,33 +73,28 @@ const NdexLoginDialog = props => {
   const onLogout = () => {
     console.log('Logout:')
     setLogin(null)
+    setIsLogin(false)
     setIcon(null)
     onLoginStateUpdated(null)
   }
 
   const handleCredentialsSignOn = userInfo => {
-    console.log('Credential:', userInfo)
     const loginInfo = { isGoogle: false, loginDetails: userInfo }
-    setLogin(loginInfo)
     const userImage = userInfo.image
-    setIcon(
-      <Avatar className={classes.userIcon} src={userImage}>
-      </Avatar>
-    )
-    onLoginStateUpdated(loginInfo)
+    onSuccessLogin(loginInfo, userImage)
   }
 
   const onGoogleSuccess = userInfo => {
-    console.log('Google:', userInfo, onLoginStateUpdated)
     const loginInfo = { isGoogle: true, loginDetails: userInfo }
-    setLogin(loginInfo)
     const userImage = userInfo.profileObj.imageUrl
-    setIcon(
-      <Avatar className={classes.userIcon} src={userImage}>
-      </Avatar>
-    )
-    onLoginStateUpdated(loginInfo)
+    onSuccessLogin(loginInfo, userImage)
+  }
 
+  const onSuccessLogin = (loginInfo, userImage) => {
+    setLogin(loginInfo)
+    setIsLogin(true)
+    setIcon(<Avatar className={classes.userIcon} src={userImage}></Avatar>)
+    onLoginStateUpdated(loginInfo)
   }
 
   const handleError = error => {

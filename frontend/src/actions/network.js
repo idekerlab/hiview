@@ -213,14 +213,8 @@ const fetchDataFromRemote = (url2, uuid, dispatch, serverType, credentials) => {
   console.log('From remote::', credentials)
 
   let headers = getHeader(credentials)
+  headers['Accept-Encoding'] = 'br'
   console.log('New header::', headers)
-  if (headers !== null) {
-    headers['Accept-Encoding'] = 'br'
-  } else {
-    headers = {
-      'Accept-Encoding': 'br'
-    }
-  }
 
   const setting = {
     method: 'GET',

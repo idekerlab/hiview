@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { browserHistory } from 'react-router'
 import CyNetworkViewer from '@cytoscape/cy-network-viewer'
 import { SigmaRenderer } from '@cytoscape/cytoscapejs-renderer'
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from '@material-ui/core/CircularProgress'
 
 // For context menu
 import CirclePackingPanel from '../CirclePackingPanel'
 
 import { Map } from 'immutable'
+import { getHeader } from '../AccessUtil'
 
 const MYGENE_URL = 'http://mygene.info/v3'
 const NDEX_LINK_TAG = 'ndex_internalLink'
@@ -82,16 +83,19 @@ class NetworkPanel extends Component {
     // From NDEx to CYJS converter
     const linkEntry = props[NDEX_LINK_TAG]
 
-
     if (!linkEntry) {
       // Link is not available = no raw interaction available OR this is a human-curated ontology
       const selectedNode = nodeProps[nodeIds[0]]
       const subsystemName = props.name
       console.log('Selected node: ++', selectedNode, props, subsystemName)
 
-      if(subsystemName.startsWith(GO_NAMESPACE)) {
-
-        console.log('This is GO+++++++++++++++++',selectedNode, subsystemName, this.props)
+      if (subsystemName.startsWith(GO_NAMESPACE)) {
+        console.log(
+          'This is GO+++++++++++++++++',
+          selectedNode,
+          subsystemName,
+          this.props
+        )
         // this.props.goActions.findGenesStarted({ goId: subsystemName })
 
         const selectedNodeId = selectedNode.props.id
@@ -104,7 +108,6 @@ class NetworkPanel extends Component {
         console.log('Gene Set = ', geneSet)
         this.props.eventActions.selected(selectedNode)
         this.props.propertyActions.setProperty(props.id, props, 'term')
-
       } else {
         this.props.eventActions.selected(selectedNode)
         this.props.propertyActions.setProperty(props.id, props, 'term')
@@ -137,7 +140,14 @@ class NetworkPanel extends Component {
     // Clear selected
     this.props.externalNetworksActions.clearExternalNetwork()
 
-    fetch(summaryUrl)
+    const credentials = this.props.credentials
+    const headers = getHeader(credentials)
+    const settings = {
+      method: 'GET',
+      headers: headers
+    }
+    console.log('Calling Summary-----------', settings)
+    fetch(summaryUrl, settings)
       .then(response => {
         if (!response.ok) {
           throw Error(response.statusText)
@@ -148,7 +158,6 @@ class NetworkPanel extends Component {
       .then(summary => {
         const edgeCount = summary.edgeCount
 
-        console.log('SET called-----------', summary)
         this.props.rawInteractionsActions.setRawSummary(summary)
 
         if (edgeCount < this.props.autoLoadThreshold) {
@@ -158,7 +167,8 @@ class NetworkPanel extends Component {
             serverType,
             link,
             this.props.maxEdgeCount,
-            summary
+            summary,
+            credentials
           )
         }
       })
@@ -170,7 +180,6 @@ class NetworkPanel extends Component {
   }
 
   selectEdges = (edgeIds, edgeProps) => {
-    console.log('====== Custom edge select function called! ========')
     console.log('Selected Edge ID: ' + edgeIds)
     console.log(edgeProps)
   }
@@ -251,7 +260,12 @@ class NetworkPanel extends Component {
     const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
     this.setState({ networkUrl: url })
 
-    this.props.networkActions.fetchNetworkFromUrl(url, uuid, serverType, credentials)
+    this.props.networkActions.fetchNetworkFromUrl(
+      url,
+      uuid,
+      serverType,
+      credentials
+    )
   }
 
   componentWillReceiveProps(nextProps) {

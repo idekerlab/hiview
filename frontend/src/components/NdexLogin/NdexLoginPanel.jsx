@@ -14,6 +14,7 @@ const useStyles = makeStyles({
   },
   leftComponent: {
     display: 'flex',
+    height: '100%',
     alignItem: 'center',
     justifyContent: 'center'
   },
@@ -46,9 +47,9 @@ const NdexLoginPanel = props => {
       <Paper className={classes.leftComponent}>
         <NdexGoogleLoginPanel
           onError={onError}
-          googleSSO={isGoogle}
           onLoginSuccess={onLoginSuccess}
           onSuccess={onSuccess}
+          ndexServer={ndexServer}
         />
       </Paper>
       <Paper className={classes.rightComponent}>
