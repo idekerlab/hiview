@@ -90,11 +90,10 @@ class NetworkPanel extends Component {
       console.log('Selected node: ++', selectedNode, props, subsystemName)
 
       if (subsystemName.startsWith(GO_NAMESPACE)) {
-        console.log(
-          'This is GO+++++++++++++++++',
+        console.info(
+          'This is a GO DAG.',
           selectedNode,
           subsystemName,
-          this.props
         )
         // this.props.goActions.findGenesStarted({ goId: subsystemName })
 
@@ -105,7 +104,17 @@ class NetworkPanel extends Component {
         const geneMap = this.props.network.get('geneMap')
         const geneSet = geneMap.get(selectedNodeLabel)
 
-        console.log('Gene Set = ', geneSet)
+
+        const runAnalysys = this.props.uiState.get('runEnrichment')
+        console.log('Try ENR', runAnalysys, geneSet.size)
+        if(geneSet.size < 1000 && runAnalysys) {
+          this.props.enrichmentActions.runEnrichment(
+            'http://amp.pharm.mssm.edu/Enrichr/addList',
+            [...geneSet],
+            selectedNodeId
+          )
+        }
+
         this.props.eventActions.selected(selectedNode)
         this.props.propertyActions.setProperty(props.id, props, 'term')
       } else {
@@ -146,7 +155,6 @@ class NetworkPanel extends Component {
       method: 'GET',
       headers: headers
     }
-    console.log('Calling Summary-----------', settings)
     fetch(summaryUrl, settings)
       .then(response => {
         if (!response.ok) {

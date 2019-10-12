@@ -61,6 +61,8 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid, genes) => {
     body: ''
   }
 
+  console.log('Fetching External Network = ', setting, postSetting)
+
   if(genes !== null) {
     return sendGeneList(genes, interactomeUuid, dispatch)
   }

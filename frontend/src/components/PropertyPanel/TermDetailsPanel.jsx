@@ -159,7 +159,7 @@ class TermDetailsPanel extends Component {
     const data = details.data
     if (!data['ndex_internalLink']) {
       // No interaction data
-      hidden = true
+      // hidden = true
     }
 
     let entry = {}
