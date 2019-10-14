@@ -18,6 +18,8 @@ export const RECEIVE_ANALYSIS_RESULT = 'RECEIVE_ANALYSIS_RESULT'
 export const ADD_GENE_LIST = 'ADD_GENE_LIST'
 export const CLEAR_GENE_LIST = 'CLEAR_GENE_LIST'
 
+export const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE'
+
 const sendGeneList = (url, genes, subsystemId) => ({
   type: SEND_GENE_LIST,
   url,
@@ -94,3 +96,5 @@ export const runEnrichment = (url = ENRICHR_URL, genes, subsystemId) => {
 
 export const addGeneList = createAction(ADD_GENE_LIST)
 export const clearGeneList = createAction(CLEAR_GENE_LIST)
+
+export const setErrorMessage = createAction(SET_ERROR_MESSAGE)

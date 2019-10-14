@@ -1,9 +1,9 @@
 import React from 'react'
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import Tabs from '@material-ui/core/Tabs'
+import Tab from '@material-ui/core/Tab'
 import BarPlot from './BarPlot'
 import Progress from './Progress'
-import EmptyPanel from "./EmptyPanel";
+import EmptyPanel from './EmptyPanel'
 
 const containerStyle = {
   paddingTop: '0em',
@@ -44,10 +44,19 @@ class PlotPanel extends React.Component {
     }
 
     const loading = this.props.enrichment.get('running')
+    const errorMessage = this.props.enrichment.get('errorMessage')
+
     if (loading) {
       return <Progress style={progressWrapperStyle} />
+    } else if (errorMessage !== null) {
+      return (
+        <EmptyPanel
+          style={progressWrapperStyle}
+          message={errorMessage}
+        />
+      )
     } else if (this.props.data === null) {
-      return <EmptyPanel style={progressWrapperStyle}/>
+      return <EmptyPanel style={progressWrapperStyle} />
     } else {
       const titles = Object.keys(this.props.data)
       const plotList = plots(this.props)

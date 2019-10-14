@@ -90,11 +90,7 @@ class NetworkPanel extends Component {
       console.log('Selected node: ++', selectedNode, props, subsystemName)
 
       if (subsystemName.startsWith(GO_NAMESPACE)) {
-        console.info(
-          'This is a GO DAG.',
-          selectedNode,
-          subsystemName,
-        )
+        console.info('This is a GO DAG.', selectedNode, subsystemName)
         // this.props.goActions.findGenesStarted({ goId: subsystemName })
 
         const selectedNodeId = selectedNode.props.id
@@ -104,14 +100,17 @@ class NetworkPanel extends Component {
         const geneMap = this.props.network.get('geneMap')
         const geneSet = geneMap.get(selectedNodeLabel)
 
-
         const runAnalysys = this.props.uiState.get('runEnrichment')
         console.log('Try ENR', runAnalysys, geneSet.size)
-        if(geneSet.size < 1000 && runAnalysys) {
+        if (geneSet.size < 2000 && runAnalysys) {
           this.props.enrichmentActions.runEnrichment(
             'http://amp.pharm.mssm.edu/Enrichr/addList',
             [...geneSet],
             selectedNodeId
+          )
+        } else if (runAnalysys && geneSet.size >= 2000) {
+          this.props.enrichmentActions.setErrorMessage(
+            'Gene set is too big (n>2000)'
           )
         }
 
