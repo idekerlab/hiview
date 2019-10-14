@@ -87,7 +87,7 @@ const OpenNDExLoginButton = props => {
         placement={'right'}
         title={
           <React.Fragment>
-            <Typography variant={'title'} color={'inherit'}>
+            <Typography variant={'subtitle1'} color={'inherit'}>
               {tooltipText.title}
             </Typography>
             <Typography variant={'body1'}>{tooltipText.message}</Typography>

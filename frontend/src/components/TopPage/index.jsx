@@ -3,7 +3,7 @@ import 'typeface-roboto'
 
 import SourceSelector from './SourceSelector'
 
-import { withStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 
 import { grey } from '@material-ui/core/colors'
 import Typography from '@material-ui/core/Typography'
@@ -15,12 +15,12 @@ import HelpIcon from '@material-ui/icons/HelpOutline'
 import IconButton from '@material-ui/core/IconButton'
 import GitHubIcon from '../../assets/images/github-white.svg'
 
-const styles = theme => ({
+const useStyles = makeStyles({
   container: {
     width: '100%',
     height: '100%'
   },
-  root: {
+  innerContainer: {
     width: '100%',
     height: '100%',
     margin: 0,
@@ -83,7 +83,7 @@ const handleClickHelp = () => {
 }
 
 const TopPage = props => {
-  const { classes } = props
+  const classes = useStyles()
 
   return (
     <div className={classes.container}>
@@ -106,7 +106,7 @@ const TopPage = props => {
         </Toolbar>
       </AppBar>
 
-      <div className={classes.root}>
+      <div className={classes.innerContainer}>
         <div>
           <Typography variant="h1" className={classes.h1}>
             HiView
@@ -132,4 +132,4 @@ const TopPage = props => {
   )
 }
 
-export default withStyles(styles)(TopPage)
+export default TopPage

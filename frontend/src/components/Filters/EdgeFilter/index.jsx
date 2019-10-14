@@ -148,7 +148,7 @@ class EdgeFilter extends Component {
       // Old data format.  Just render plain list
       return (
         <div className={classes.root}>
-          <Typography variant="title" className={classes.title}>
+          <Typography variant="subtitle1" className={classes.title}>
             Interaction Features:
           </Typography>
 
@@ -166,7 +166,7 @@ class EdgeFilter extends Component {
     // Now creates sub-categories
     return (
       <div className={classes.root}>
-        <Typography variant="title" className={classes.title}>
+        <Typography variant="subtitle1" className={classes.title}>
           Interaction Features:
         </Typography>
 
