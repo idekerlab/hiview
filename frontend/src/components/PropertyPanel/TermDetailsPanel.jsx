@@ -26,7 +26,6 @@ import LargeNetworkWarningPanel from './LargeNetworkWarningPanel'
 import InteractionNetworkSelector from '../InteractionNetworkSelector'
 import CytoscapeViewer from '../CytoscapeViewer'
 
-
 const filterPanelStyle = {
   display: 'inline-flex',
   boxSizing: 'border-box',
@@ -125,7 +124,6 @@ class TermDetailsPanel extends Component {
       const rawUuid = summary.externalId
       const rawUrl = this.props.cxtoolUrl + rawUuid + '?server=' + serverType
 
-      console.log('Large network warning::::')
       return (
         <LargeNetworkWarningPanel
           summary={summary}
@@ -159,7 +157,7 @@ class TermDetailsPanel extends Component {
     const data = details.data
     if (!data['ndex_internalLink']) {
       // No interaction data
-      // hidden = true
+      hidden = true
     }
 
     let entry = {}

@@ -15,7 +15,6 @@ import HelpIcon from '@material-ui/icons/HelpOutline'
 import IconButton from '@material-ui/core/IconButton'
 import GitHubIcon from '../../assets/images/github-white.svg'
 
-
 const styles = theme => ({
   container: {
     width: '100%',
@@ -85,8 +84,6 @@ const handleClickHelp = () => {
 
 const TopPage = props => {
   const { classes } = props
-
-  console.log('Top props', props)
 
   return (
     <div className={classes.container}>

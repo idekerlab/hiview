@@ -44,7 +44,7 @@ const EXAMPLE_UUIDS = {
   'DNA Repair': 'ab704ae4-0719-11e8-b03c-0660b7976219',
   'Human data-driven hierarchy - draft v0.1':
     '2900c930-fad7-11e8-ad43-0660b7976219',
-  'Gene Ontology: BP': '9166bc71-7bef-11e9-848d-0ac135e8bacf',
+  // 'Gene Ontology: BP': '9166bc71-7bef-11e9-848d-0ac135e8bacf',
   'Gene Ontology: CC': '0a393b91-7be9-11e9-848d-0ac135e8bacf',
   'Gene Ontology: MF': '21892e2b-7beb-11e9-848d-0ac135e8bacf'
 }
@@ -182,7 +182,6 @@ class SourceSelector extends Component {
   }
 
   checkNetworkSummary = summary => {
-    console.log('# Summary', summary)
     this.props.networkActions.setSummary(summary)
     const edgeCount = summary.edgeCount
     const nodeCount = summary.nodeCount
@@ -195,7 +194,8 @@ class SourceSelector extends Component {
       ' edges)'
 
     const message =
-      'You are about to load a large hierarchy.  This may take a very long time to load and may crash your browser.' +
+      'You are about to load a large hierarchy.  ' +
+      'This may take a very long time to load and may crash your browser.' +
       ' Do you still want to load this?'
 
     if (nodeCount >= OBJECT_COUNT_TH || edgeCount >= OBJECT_COUNT_TH) {
@@ -227,7 +227,6 @@ class SourceSelector extends Component {
     if (credentials.loginDetails !== null) {
       headers = getHeader(credentials)
     }
-    console.log('Header:', headers)
 
     const url =
       this.state.serverUrl + '/v2/network/' + this.state.uuid + '/summary'
@@ -240,7 +239,6 @@ class SourceSelector extends Component {
       settings['headers'] = headers
     }
 
-    console.log('* Get summary with:', credentials, settings)
 
     fetch(url, settings)
       .then(response => {

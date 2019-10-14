@@ -113,13 +113,9 @@ class NetworkPanel extends Component {
             'Gene set is too big (n>2000)'
           )
         }
-
-        this.props.eventActions.selected(selectedNode)
-        this.props.propertyActions.setProperty(props.id, props, 'term')
-      } else {
-        this.props.eventActions.selected(selectedNode)
-        this.props.propertyActions.setProperty(props.id, props, 'term')
       }
+      this.props.eventActions.selected(selectedNode)
+      this.props.propertyActions.setProperty(props.id, props, 'term')
 
       return
     }
