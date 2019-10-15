@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 
-import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem'
+import FormHelperText from '@material-ui/core/FormHelperText'
+import FormControl from '@material-ui/core/FormControl'
 import Select from '@material-ui/core/Select'
 
 import Button from '@material-ui/core/Button'
@@ -28,7 +28,7 @@ const styles = theme => ({
     width: '100%'
   },
   button: {
-    margin: theme.spacing.unit,
+    marginRight: '0.5em'
   },
   icon: {
     fontSize: '2em'
@@ -60,14 +60,16 @@ class LayoutSelector extends Component {
     const layoutName = this.state.layout
 
     const extAction = this.props.externalNetworksActions
-    if(extAction !== undefined && extAction !== null) {
+    if (extAction !== undefined && extAction !== null) {
       extAction.setLayout(layoutName)
     }
 
-    this.props.commandActions.applyLayout({
-      name: layoutName,
-      options: {}
-    })
+    if (this.props.commandActions.applyLayout !== undefined) {
+      this.props.commandActions.applyLayout({
+        name: layoutName,
+        options: {}
+      })
+    }
   }
 
   handleFit = event => {
@@ -75,7 +77,7 @@ class LayoutSelector extends Component {
 
     // This is for other networks' view
     const extAction = this.props.externalNetworksActions
-    if(extAction !== undefined && extAction !== null) {
+    if (extAction !== undefined && extAction !== null) {
       extAction.setCommand('fit')
     }
   }

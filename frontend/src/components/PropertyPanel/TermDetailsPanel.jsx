@@ -160,10 +160,18 @@ class TermDetailsPanel extends Component {
       hidden = true
     }
 
+    let geneList = []
+
+    // Special case: GO term
+    // TODO: better alternative to generalize this?
+    if (data.name !== undefined && data.name.startsWith('GO:')) {
+      // console.log('GO Term:', data.name)
+      hidden = false
+    }
+
     let entry = {}
     let subnet = null
 
-    let geneList = []
     if (data === undefined) {
       entry = {}
     } else {
@@ -172,6 +180,10 @@ class TermDetailsPanel extends Component {
 
       if (subnet !== null && subnet !== undefined) {
         geneList = subnet.elements.nodes.map(node => node.data.name)
+      } else {
+        const geneMap = this.props.network.get('geneMap')
+        const geneSet = geneMap.get(data.Label)
+        geneList = [...geneSet]
       }
     }
 

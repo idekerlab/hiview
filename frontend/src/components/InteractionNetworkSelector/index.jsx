@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 
 import FormHelperText from '@material-ui/core/FormHelperText'
@@ -34,9 +34,6 @@ const styles = theme => ({
   formControl: {
     minWidth: '20em',
     width: '100%m'
-  },
-  button: {
-    margin: theme.spacing.unit
   },
   icon: {
     fontSize: '2em'
@@ -102,7 +99,11 @@ const InteractionNetworkSelector = props => {
       const geneMap = props.network.get('geneMap')
       const geneSet = geneMap.get(subsystem.Label)
       const genes = [...geneSet]
-      console.log('Selected ====>', subsystem, genes)
+
+      // The set is too big
+      if (genes.length > 1000) {
+        return
+      }
 
       props.externalNetworksActions.fetchExternalNetworkFromUrl(
         null,
