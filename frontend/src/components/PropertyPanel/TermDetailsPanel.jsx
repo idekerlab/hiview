@@ -169,20 +169,19 @@ class TermDetailsPanel extends Component {
       hidden = false
     }
 
-    let entry = {}
     let subnet = null
+    subnet = interactions
 
-    if (data === undefined) {
-      entry = {}
+    if (subnet !== null && subnet !== undefined) {
+      geneList = subnet.elements.nodes.map(node => node.data.name)
     } else {
-      entry = data
-      subnet = interactions
+      const geneMap = this.props.network.get('geneMap')
+      const label = data.Label
+      const geneSet = geneMap.get(label)
 
-      if (subnet !== null && subnet !== undefined) {
-        geneList = subnet.elements.nodes.map(node => node.data.name)
+      if(geneSet === undefined) {
+        geneList = []
       } else {
-        const geneMap = this.props.network.get('geneMap')
-        const geneSet = geneMap.get(data.Label)
         geneList = [...geneSet]
       }
     }

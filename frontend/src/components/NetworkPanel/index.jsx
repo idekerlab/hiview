@@ -65,7 +65,6 @@ class NetworkPanel extends Component {
     }
 
     this.props.netantActions.clearAll()
-    // console.log('----------------------newSelect--------------', newSelectionState)
 
     this.props.selectionActions.selectNode(newSelectionState)
 

@@ -250,8 +250,6 @@ export const fetchInteractionsFromUrl = (
       headers
     }
 
-    console.log('Raw fetch header w/filter:', settings)
-
     return fetchNet(url, settings)
       .then(response => {
         let t1 = performance.now()
@@ -556,7 +554,6 @@ export const getNetworkSummary = (uuid, server, url, maxEdgeCount = 500) => {
         }
       })
       .then(summary => {
-        console.log('* Summary2: ', summary)
         return dispatch(receiveSummary(summary))
       })
       .catch(err => {
