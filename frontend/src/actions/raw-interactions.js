@@ -14,6 +14,12 @@ const cx2JsConverter = new cx2js.CxToJs(utils)
 
 const NDEX_API = '.ndexbio.org/v2/network/'
 
+
+// For network density
+const calcDensity = (n, m) => {
+  return (2*m)/(n*(n-1)) //  for undirected
+}
+
 // Set loading message
 export const SET_MESSAGE = 'SET_MESSAGE'
 export const setMessage = createAction(SET_MESSAGE)
@@ -87,6 +93,19 @@ const processCx = cx => {
   const data = convertNetworkAttr(networkAttributes)
 
   let nodeIdx = nodes.length
+  let edgeIdx = edges.length
+
+  const density = calcDensity(nodeIdx, edgeIdx)
+
+  console.log('"** Density = ', density)
+
+  let scalingFactor = 1.0
+  if(density > 0.1) {
+    scalingFactor = density * 10
+  } else if( nodeIdx > 1000) {
+    scalingFactor = 2
+  }
+
   const nMap = new Map()
 
   while (nodeIdx--) {
@@ -105,12 +124,13 @@ const processCx = cx => {
     const position = layout[layoutIdx]
     const nodeId = position['node']
     nMap.get(nodeId)['position'] = {
-      x: position.x,
-      y: position.y
+      x: position.x * scalingFactor,
+      y: position.y * scalingFactor
     }
   }
 
-  let edgeIdx = edges.length
+  console.log('nMap===', nMap.size, nMap.values())
+
   const eMap = new Map()
 
   while (edgeIdx--) {
@@ -163,13 +183,25 @@ const processCx = cx => {
     }
   }
 
-  return {
+
+  let idx2 = 0
+  const nodeArray = []
+  for(let val of nMap.values()) {
+    nodeArray.push(val)
+    idx2 = idx2 + 1
+  }
+
+  console.log(idx2 + ' nMap===FINAL3', nodeArray, nodeArray.length)
+  const cyNetwork = {
     data,
     elements: {
-      nodes: [...nMap.values()],
+      nodes: nodeArray,
       edges: [...eMap.values()]
     }
   }
+  console.log('CyNetwork2', cyNetwork.elements.nodes.length)
+
+  return cyNetwork
 }
 
 const TYPE_DOUBLE = 'double'
@@ -197,19 +229,17 @@ export const fetchInteractionsFromUrl = (
   summary = {},
   credentials
 ) => {
-  const EDGE_COUNT_TH = 10000
 
   // Get only top 10000 edges.
   const urlFiltered =
     'http://dev2.ndexbio.org/edgefilter/v1/network/' +
     uuid +
-    '/edgefilter?limit=10000'
+    '/edgefilter?limit=' + maxEdgeCount
 
-  const urlOriginal = 'http://' + server + '.ndexbio.org/v2/network/' + uuid
+  // const urlOriginal = 'http://' + server + '.ndexbio.org/v2/network/' + uuid
 
   const t0 = performance.now()
   const networkAttr = summary.properties
-  const edgeCount = summary.edgeCount
 
   let idx = networkAttr.length
 
@@ -252,9 +282,6 @@ export const fetchInteractionsFromUrl = (
 
     return fetchNet(url, settings)
       .then(response => {
-        let t1 = performance.now()
-        console.log('Data fetch  TIME = ', t1 - t0)
-
         if (!response.ok) {
           throw Error(response)
         } else {
@@ -263,7 +290,12 @@ export const fetchInteractionsFromUrl = (
       })
       .then(cx => {
         originalCX = cx
+        let tF= performance.now()
+        console.log('* Download TIME = ', tF - t0)
+        console.log('Original CX::', cx)
         const newNet = processCx(cx)
+        console.log('CyNetwork33', newNet.elements.nodes.length)
+        console.log('Processed::', newNet, summary)
         dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
         return newNet
       })

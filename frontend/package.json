@@ -60,6 +60,7 @@
         "flexsearch": "^0.6.22",
         "fuse.js": "^3.4.4",
         "immutable": "3.8.2",
+        "lodash": "^4.17.15",
         "lunr": "^2.3.6",
         "prop-types": "^15.7.2",
         "rc-slider": "^8.6.7",

@@ -213,11 +213,17 @@ const getColorForRange = (colorMap, val) => {
 }
 
 export const filterEdge = (network, maxEdgeCount) => {
+
+  console.log('Original: ', network)
+
+
   if(network.elements.edges === undefined || network.elements.edges === null ||
   network.elements.edges.length === 0 || !network.data[MAIN_EDGE_TAG]) {
     network.data['allEdgeScoreRange'] = [0,0]
     return network
   }
+  console.log('Original Node count: ', network.elements.nodes.length)
+
   let mainEdgeType = network.data[MAIN_EDGE_TAG]
   if (mainEdgeType !== undefined) {
     mainEdgeType = mainEdgeType.replace(/ /g, '_')
@@ -355,19 +361,19 @@ export const filterEdge = (network, maxEdgeCount) => {
     nodeSet.add(edge.data.target)
   }
 
-  let j = nodes.length
-  const newNodes = new Array(nodeSet.size)
-
-  let idx = 0
-  while (j--) {
-    const node = nodes[j]
-    if (nodeSet.has(node.data.id)) {
-      newNodes[idx] = node
-      idx++
-    }
-  }
+  // let j = nodes.length
+  // const newNodes = new Array(nodeSet.size)
+  //
+  // let idx = 0
+  // while (j--) {
+  //   const node = nodes[j]
+  //   if (nodeSet.has(node.data.id)) {
+  //     newNodes[idx] = node
+  //     idx++
+  //   }
+  // }
   network.elements.edges = subset
-  network.elements.nodes = newNodes
+  // network.elements.nodes = newNodes
   return network
 }
 

@@ -17,7 +17,7 @@ import {
 } from '../actions/raw-interactions'
 import { Map, Set } from 'immutable'
 
-const DEF_MAX_EDGE_COUNT = 1000
+const DEF_MAX_EDGE_COUNT = 10000
 const LOADING_NETWORK_MESSAGE ='Downloading all interactions from NDEx...'
 
 const defState = Map({
@@ -32,7 +32,7 @@ const defState = Map({
   selected: [],
   selectedPerm: Set(),
   summary: null,
-  autoLoadThreshold: 10000,
+  autoLoadThreshold: 20000,
   plot: {
     range: {
       min: 0,

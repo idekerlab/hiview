@@ -1,11 +1,31 @@
+import _ from 'lodash'
 const MAIN_INTERACTION_TYPE_TAG = 'Main Feature'
-const ATTR_TYPES = {
-  MIN: 'min',
-  MAX: 'max',
-  TYPE: 'type'
+const INTERACTION_TAG = 'interaction'
+
+const calcFontSize = cyNode => {
+  const cy = cyNode.cy()
+  const ext = cy.extent()
+
+  return ext.w / 50.0
 }
 
-const INTERACTION_TAG = 'interaction'
+const calcNodeWidth = cyNode => {
+  const cy = cyNode.cy()
+  const ext = cy.extent()
+
+  return ext.w / 10
+}
+
+const calcNodeHeight = cyNode => {
+  const cy = cyNode.cy()
+  const ext = cy.extent()
+
+  return ext.w / 25
+}
+
+const fontSizeCalculator = _.memoize(calcFontSize)
+const nodeWidthCalculator = _.memoize(calcNodeWidth)
+const nodeHeightCalculator = _.memoize(calcNodeHeight)
 
 const BASE_STYLE = {
   node: {
@@ -20,7 +40,7 @@ const BASE_STYLE = {
       'background-opacity': 0,
       'background-color': '#222222',
       'border-width': 0,
-      'font-size': 22,
+      'font-size': 20,
       label: 'data(name)'
     }
   },
@@ -28,9 +48,13 @@ const BASE_STYLE = {
     selector: 'node:selected',
     css: {
       // shape: 'ellipse',
-      width: 120,
-      height: 35,
-      'font-size': 28,
+      // width: 120,
+      width: n => nodeWidthCalculator(n),
+      height: n => nodeHeightCalculator(n),
+      'font-size': n => {
+        return fontSizeCalculator(n)
+      },
+      // 'font-size': 28,
       'font-weight': 400,
       color: '#FFFFFF',
       'background-opacity': 1,

@@ -80,7 +80,8 @@ class NetworkPanel extends Component {
     }
 
     // From NDEx to CYJS converter
-    const linkEntry = props[NDEX_LINK_TAG]
+    let linkEntry = props[NDEX_LINK_TAG]
+
 
     if (!linkEntry) {
       // Link is not available = no raw interaction available OR this is a human-curated ontology

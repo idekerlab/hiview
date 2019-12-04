@@ -5,6 +5,9 @@ import { Set } from 'immutable'
 
 const TreeViewer = CyTreeViewer(CirclePackingRenderer)
 
+// For hover on node timeout
+let task = null
+
 class CirclePackingPanel extends Component {
   state = {
     tree: null,
@@ -105,12 +108,6 @@ class CirclePackingPanel extends Component {
       this.props.rawInteractionsActions.deselectPerm(toBeRemoved.toJS())
     }
 
-    const hoverOutNode = (id, data) => {
-      if (this.props.rawInteractions.get('selected').length !== 0) {
-        this.props.rawInteractionsActions.setSelected([])
-      }
-    }
-
     const selectNodes = (nodeId, data) => {
       // This will be called only when CTR-click is called in renderer.
       if (!data) {
@@ -139,22 +136,18 @@ class CirclePackingPanel extends Component {
       })
     }
 
-    const hoverOnNode = (id, data, parent) => {
+    const hoverOutNode = (id, data) => {
+      window.clearTimeout(task)
+
+      if (this.props.rawInteractions.get('selected').length !== 0) {
+        console.log('--------- clear selection ----------')
+        this.props.rawInteractionsActions.setSelected([])
+      }
+    }
+
+    const runHighlight = (id, data, groups) => {
       const t1 = performance.now()
-      // Check invalid parameter.  Name is always required
-      if (
-        data === null ||
-        data.props === null ||
-        data.props.name === undefined
-      ) {
-        return
-      }
-
-      const groups = this.props.groups
-      if (!groups) {
-        return
-      }
-
+      console.log('Hover Task Start ===> ')
       // Set selected state
       this.props.selectionActions.enterNode(data)
       const currentSelection = this.props.selection.get('main').nodeId
@@ -173,6 +166,25 @@ class CirclePackingPanel extends Component {
       } else {
         this.props.rawInteractionsActions.setSelected(geneIds)
       }
+      console.log('Hover End ===> ', performance.now() - t1)
+    }
+
+    const hoverOnNode = (id, data, parent) => {
+      // Check invalid parameter.  Name is always required
+      if (
+        data === null ||
+        data.props === null ||
+        data.props.name === undefined
+      ) {
+        return
+      }
+
+      const groups = this.props.groups
+      if (!groups) {
+        return
+      }
+
+      task = setTimeout(() => runHighlight(id, data, groups), 300)
     }
 
     return {
