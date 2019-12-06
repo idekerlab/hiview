@@ -2,30 +2,47 @@ import _ from 'lodash'
 const MAIN_INTERACTION_TYPE_TAG = 'Main Feature'
 const INTERACTION_TAG = 'interaction'
 
+// Font size will be calculated based on viewport size.
+const VIEW_TO_FONT_SIZE_RATIO = 350
+const BASE_FONT_SIZE = 18
+const LARGE_FONT_SIZE = 30
+
 const calcFontSize = cyNode => {
   const cy = cyNode.cy()
   const ext = cy.extent()
 
-  return ext.w / 50.0
+  const size = ext.w / VIEW_TO_FONT_SIZE_RATIO
+  if (size > BASE_FONT_SIZE) {
+    return size
+  }
+  return LARGE_FONT_SIZE
 }
 
 const calcNodeWidth = cyNode => {
+  const nodeName = cyNode.data('name')
   const cy = cyNode.cy()
   const ext = cy.extent()
+  const size = ext.w / VIEW_TO_FONT_SIZE_RATIO
+  if (size > BASE_FONT_SIZE) {
+    return (nodeName.length + 1) * size
+  }
+  return (nodeName.length + 1) * LARGE_FONT_SIZE
 
-  return ext.w / 10
 }
 
 const calcNodeHeight = cyNode => {
   const cy = cyNode.cy()
   const ext = cy.extent()
-
-  return ext.w / 40
+  const size = ext.w / VIEW_TO_FONT_SIZE_RATIO
+  if (size > BASE_FONT_SIZE) {
+    return size * 1.1
+  }
+  return LARGE_FONT_SIZE * 1.1
 }
 
-const fontSizeCalculator = _.memoize(calcFontSize)
-const nodeWidthCalculator = _.memoize(calcNodeWidth)
-const nodeHeightCalculator = _.memoize(calcNodeHeight)
+// const fontSizeCalculator = _.memoize(calcFontSize)
+// const nodeWidthCalculator = _.memoize(calcNodeWidth)
+// const nodeHeightCalculator = _.memoize(calcNodeHeight)
 
 const BASE_STYLE = {
   node: {
@@ -37,25 +54,24 @@ const BASE_STYLE = {
       'text-valign': 'center',
       'text-halign': 'center',
       color: '#FFFFFF',
+      'text-opacity': 0.6,
       'background-opacity': 0,
       'background-color': '#222222',
       'border-width': 0,
-      'font-size': 25,
+      'font-size': BASE_FONT_SIZE,
       label: 'data(name)'
     }
   },
   nodeSelected: {
     selector: 'node:selected',
     css: {
+      'text-opacity': 1,
       // shape: 'ellipse',
       // width: 120,
-      width: n => nodeWidthCalculator(n),
-      height: n => nodeHeightCalculator(n),
-      'font-size': n => {
-        return fontSizeCalculator(n)
-      },
-      // 'font-size': 28,
-      'font-weight': 400,
+      width: n => calcNodeWidth(n),
+      height: n => calcNodeHeight(n),
+      'font-size': n => calcFontSize(n),
+      'font-weight': 500,
       color: '#FFFFFF',
       'background-opacity': 1,
       'background-color': '#FF0000'
@@ -144,10 +160,10 @@ export const createStyle = originalNetwork => {
   if (similarityMin !== similarityMax) {
     edgeStyle.css[
       'opacity'
-    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.6, 1)`
+    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.7, 1)`
     edgeStyle.css[
       'width'
-    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 2, 15)`
+    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 3, 18)`
   }
 
   // Define edge selection style

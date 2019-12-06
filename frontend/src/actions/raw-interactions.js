@@ -217,13 +217,16 @@ export const fetchInteractionsFromUrl = (
   const urlFiltered =
     'http://dev2.ndexbio.org/edgefilter/v1/network/' +
     uuid +
-    '/edgefilter?limit=10000'
+    '/topNEdgeFilter?limit=10000'
+    // '/edgefilter?limit=10000'
 
   // const urlOriginal = 'http://' + server + '.ndexbio.org/v2/network/' + uuid
 
   const t0 = performance.now()
   const networkAttr = summary.properties
 
+
+  console.log('------------------------', summary)
   let idx = networkAttr.length
 
   let th = 0
@@ -254,6 +257,9 @@ export const fetchInteractionsFromUrl = (
       }
     ]
 
+    console.log('------------------------q', query)
+
+
     const headers = getHeader(credentials)
     headers['Content-Type'] = 'application/json'
 
@@ -272,6 +278,7 @@ export const fetchInteractionsFromUrl = (
         }
       })
       .then(cx => {
+        console.log('------------------------CX', cx)
         originalCX = cx
         const newNet = processCx(cx)
         dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
