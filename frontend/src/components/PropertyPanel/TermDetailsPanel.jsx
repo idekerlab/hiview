@@ -26,6 +26,8 @@ import LargeNetworkWarningPanel from './LargeNetworkWarningPanel'
 import InteractionNetworkSelector from '../InteractionNetworkSelector'
 import CytoscapeViewer from '../CytoscapeViewer'
 
+const WARNING_TH = 2000000
+
 const filterPanelStyle = {
   display: 'inline-flex',
   boxSizing: 'border-box',
@@ -110,6 +112,7 @@ class TermDetailsPanel extends Component {
     }
 
     const summary = raw.summary
+    // const autoLoadTh = WARNING_TH
     const autoLoadTh = raw.autoLoadThreshold
     const locationParams = this.props.location
     const uuid = this.props.routeParams.uuid

@@ -32,9 +32,11 @@ const progressStyle = {
   zIndex: 1000
 }
 
-const styles = theme => ({
-  progress: progressStyle
-})
+
+// TODO: better filter?
+
+let last = null
+
 
 class NetworkPanel extends Component {
   constructor(props) {
@@ -42,7 +44,7 @@ class NetworkPanel extends Component {
     this.state = {
       updating: false,
       networkUrl: '',
-      hoverNode: null
+      hoverNode: null,
     }
   }
 
@@ -54,8 +56,16 @@ class NetworkPanel extends Component {
   }
 
   selectNodes = (nodeIds, nodeProps) => {
+
     // First node in the selection
     const nodeId = nodeIds[0]
+
+    // If same one is selected, just ignore.
+    if(last === nodeId) {
+      return
+    }
+    last = nodeId
+
     const props = nodeProps[nodeId].props
 
     const newSelectionState = {
@@ -164,6 +174,8 @@ class NetworkPanel extends Component {
         this.props.rawInteractionsActions.setRawSummary(summary)
 
         if (edgeCount < this.props.autoLoadThreshold) {
+
+          console.log('Loading Raw ===============================================')
           // Directly set prop from node attributes
           this.props.rawInteractionsActions.fetchInteractionsFromUrl(
             linkId,

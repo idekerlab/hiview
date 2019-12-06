@@ -32,15 +32,13 @@ const defState = Map({
   selected: [],
   selectedPerm: Set(),
   summary: null,
-  autoLoadThreshold: 20000,
+  autoLoadThreshold: 1000000,
   plot: {
     range: {
       min: 0,
       max: 1
     }
-
   }
-
 })
 
 export default function networkState(state = defState, action) {

@@ -6,6 +6,7 @@ import { Set } from 'immutable'
 const TreeViewer = CyTreeViewer(CirclePackingRenderer)
 
 // For hover on node timeout
+const HOVER_TIMEOUT = 180 // Event will be fired after 180ms
 let task = null
 
 class CirclePackingPanel extends Component {
@@ -140,16 +141,14 @@ class CirclePackingPanel extends Component {
       window.clearTimeout(task)
 
       if (this.props.rawInteractions.get('selected').length !== 0) {
-        console.log('--------- clear selection ----------')
         this.props.rawInteractionsActions.setSelected([])
       }
     }
 
     const runHighlight = (id, data, groups) => {
-      const t1 = performance.now()
-      console.log('Hover Task Start ===> ')
       // Set selected state
       this.props.selectionActions.enterNode(data)
+
       const currentSelection = this.props.selection.get('main').nodeId
       if (id === currentSelection) {
         this.props.rawInteractionsActions.setSelected([])
@@ -166,7 +165,6 @@ class CirclePackingPanel extends Component {
       } else {
         this.props.rawInteractionsActions.setSelected(geneIds)
       }
-      console.log('Hover End ===> ', performance.now() - t1)
     }
 
     const hoverOnNode = (id, data, parent) => {
@@ -184,7 +182,7 @@ class CirclePackingPanel extends Component {
         return
       }
 
-      task = setTimeout(() => runHighlight(id, data, groups), 300)
+      task = setTimeout(() => runHighlight(id, data, groups), HOVER_TIMEOUT)
     }
 
     return {

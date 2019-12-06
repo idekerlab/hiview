@@ -20,7 +20,7 @@ const calcNodeHeight = cyNode => {
   const cy = cyNode.cy()
   const ext = cy.extent()
 
-  return ext.w / 25
+  return ext.w / 40
 }
 
 const fontSizeCalculator = _.memoize(calcFontSize)
@@ -40,7 +40,7 @@ const BASE_STYLE = {
       'background-opacity': 0,
       'background-color': '#222222',
       'border-width': 0,
-      'font-size': 20,
+      'font-size': 25,
       label: 'data(name)'
     }
   },

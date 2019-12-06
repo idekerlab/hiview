@@ -97,13 +97,10 @@ const processCx = cx => {
 
   const density = calcDensity(nodeIdx, edgeIdx)
 
-  console.log('"** Density = ', density)
-
+  console.log('"* Network Density = ', density)
   let scalingFactor = 1.0
   if(density > 0.1) {
     scalingFactor = density * 10
-  } else if( nodeIdx > 1000) {
-    scalingFactor = 2
   }
 
   const nMap = new Map()
@@ -124,12 +121,10 @@ const processCx = cx => {
     const position = layout[layoutIdx]
     const nodeId = position['node']
     nMap.get(nodeId)['position'] = {
-      x: position.x * scalingFactor,
-      y: position.y * scalingFactor
+      x: position.x,
+      y: position.y
     }
   }
-
-  console.log('nMap===', nMap.size, nMap.values())
 
   const eMap = new Map()
 
@@ -183,25 +178,13 @@ const processCx = cx => {
     }
   }
 
-
-  let idx2 = 0
-  const nodeArray = []
-  for(let val of nMap.values()) {
-    nodeArray.push(val)
-    idx2 = idx2 + 1
-  }
-
-  console.log(idx2 + ' nMap===FINAL3', nodeArray, nodeArray.length)
-  const cyNetwork = {
+  return {
     data,
     elements: {
-      nodes: nodeArray,
+      nodes: [...nMap.values()],
       edges: [...eMap.values()]
     }
   }
-  console.log('CyNetwork2', cyNetwork.elements.nodes.length)
-
-  return cyNetwork
 }
 
 const TYPE_DOUBLE = 'double'
@@ -234,7 +217,7 @@ export const fetchInteractionsFromUrl = (
   const urlFiltered =
     'http://dev2.ndexbio.org/edgefilter/v1/network/' +
     uuid +
-    '/edgefilter?limit=' + maxEdgeCount
+    '/edgefilter?limit=10000'
 
   // const urlOriginal = 'http://' + server + '.ndexbio.org/v2/network/' + uuid
 
@@ -290,12 +273,7 @@ export const fetchInteractionsFromUrl = (
       })
       .then(cx => {
         originalCX = cx
-        let tF= performance.now()
-        console.log('* Download TIME = ', tF - t0)
-        console.log('Original CX::', cx)
         const newNet = processCx(cx)
-        console.log('CyNetwork33', newNet.elements.nodes.length)
-        console.log('Processed::', newNet, summary)
         dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
         return newNet
       })

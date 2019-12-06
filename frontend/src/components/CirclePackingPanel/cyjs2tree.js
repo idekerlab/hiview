@@ -32,6 +32,8 @@ const cyjs2tree = (cyjs, networkActions) => {
     .id(d => d.id)
     .parentId(d => d.parent)(table)
 
+  console.log('%%%%%%%%%%%TREE = ', tree.value)
+
   table = null
   nodeMap = null
 
