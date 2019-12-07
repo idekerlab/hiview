@@ -40,9 +40,6 @@ const calcNodeHeight = cyNode => {
   return LARGE_FONT_SIZE * 1.1
 }
 
-// const fontSizeCalculator = _.memoize(calcFontSize)
-// const nodeWidthCalculator = _.memoize(calcNodeWidth)
-// const nodeHeightCalculator = _.memoize(calcNodeHeight)
 
 const BASE_STYLE = {
   node: {

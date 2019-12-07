@@ -226,7 +226,6 @@ export const fetchInteractionsFromUrl = (
   const networkAttr = summary.properties
 
 
-  console.log('------------------------', summary)
   let idx = networkAttr.length
 
   let th = 0
@@ -257,9 +256,6 @@ export const fetchInteractionsFromUrl = (
       }
     ]
 
-    console.log('------------------------q', query)
-
-
     const headers = getHeader(credentials)
     headers['Content-Type'] = 'application/json'
 
@@ -278,7 +274,6 @@ export const fetchInteractionsFromUrl = (
         }
       })
       .then(cx => {
-        console.log('------------------------CX', cx)
         originalCX = cx
         const newNet = processCx(cx)
         dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
@@ -402,6 +397,7 @@ const createGroups = netAndFilter => {
 
 const createFilter = (network, maxEdgeCount) => {
   const defCutoff = network.data[THRESHOLD_TAG]
+  console.log('@@@@@@@@@@------------------------Cutoff', defCutoff)
 
   const filters = []
 

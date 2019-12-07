@@ -1,5 +1,6 @@
 import * as d3Scale from 'd3-scale'
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
+import {min} from "d3-array";
 export const MAIN_EDGE_TAG = 'Main Feature'
 export const PATTERN = /[ -]/g
 
@@ -100,10 +101,12 @@ const filterOld = (edges, maxEdgeCount) => {
 }
 
 const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
-  // Create color mapper based on the local range (parent score to max)
 
+  // Create color mapper based on the local range (parent score to max)
   weightRange.push(parentScore)
   weightRange.sort()
+
+  console.log('* Final range::', weightRange)
 
   const slots = weightRange.length
   const colorScale = d3Scale
@@ -214,9 +217,6 @@ const getColorForRange = (colorMap, val) => {
 
 export const filterEdge = (network, maxEdgeCount) => {
 
-  console.log('Original: ', network)
-
-
   if(network.elements.edges === undefined || network.elements.edges === null ||
   network.elements.edges.length === 0 || !network.data[MAIN_EDGE_TAG]) {
     network.data['allEdgeScoreRange'] = [0,0]
@@ -240,7 +240,6 @@ export const filterEdge = (network, maxEdgeCount) => {
     weightRange = childrenWeight.split('|').map(val => Number(val))
   }
 
-  const nodes = network.elements.nodes
   const originalEdges = removeZeroEdges(network.elements.edges, mainEdgeType)
   let edges = []
   let minScore = -1
@@ -257,7 +256,7 @@ export const filterEdge = (network, maxEdgeCount) => {
   }
 
   if(maxScore === undefined ) {
-    maxScore = 0.0
+    maxScore = 1.0
     console.warn('Missing max score:', mainEdgeType, maxScore, originalEdges[0])
 
   }
@@ -295,6 +294,7 @@ export const filterEdge = (network, maxEdgeCount) => {
   // console.log("MIN / Max ==========", minScore, maxScore, edges)
   network.data['allEdgeScoreRange'] = [minScore, maxScore]
 
+  console.log('W range: This equal to number of subsystems inside', weightRange, minScore, maxScore)
   // Create colors for range.  0 is always global minimum
   const colorMap = generateColorMap(weightRange, 0, maxScore, parentScore)
 
