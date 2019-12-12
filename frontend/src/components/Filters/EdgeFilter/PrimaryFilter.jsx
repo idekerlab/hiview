@@ -46,6 +46,7 @@ class PrimaryFilter extends Component {
 
   componentDidMount() {
     const filters = this.props.filters
+    console.log('*** Pfilter = ', filters, this.props)
 
     if (!filters || filters.length === 0) {
       return
@@ -125,6 +126,9 @@ class PrimaryFilter extends Component {
         }
       }
     }
+
+
+    console.log('Primary filter details:', min, max, marks, trackStyle)
 
     return (
       <div style={rootStyle}>

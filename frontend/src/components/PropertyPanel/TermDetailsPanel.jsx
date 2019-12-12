@@ -119,25 +119,25 @@ class TermDetailsPanel extends Component {
     let serverType = locationParams.query.type
     const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
 
-    if (
-      summary &&
-      summary.edgeCount > autoLoadTh &&
-      raw.interactions === null
-    ) {
-      const rawUuid = summary.externalId
-      const rawUrl = this.props.cxtoolUrl + rawUuid + '?server=' + serverType
-
-      return (
-        <LargeNetworkWarningPanel
-          summary={summary}
-          uuid={rawUuid}
-          server={serverType}
-          url={rawUrl}
-          maxEdgeCount={this.props.maxEdgeCount}
-          rawInteractionsActions={this.props.rawInteractionsActions}
-        />
-      )
-    }
+    // if (
+    //   summary &&
+    //   summary.edgeCount > autoLoadTh &&
+    //   raw.interactions === null
+    // ) {
+    //   const rawUuid = summary.externalId
+    //   const rawUrl = this.props.cxtoolUrl + rawUuid + '?server=' + serverType
+    //
+    //   return (
+    //     <LargeNetworkWarningPanel
+    //       summary={summary}
+    //       uuid={rawUuid}
+    //       server={serverType}
+    //       url={rawUrl}
+    //       maxEdgeCount={this.props.maxEdgeCount}
+    //       rawInteractionsActions={this.props.rawInteractionsActions}
+    //     />
+    //   )
+    // }
 
     const interactions = raw.interactions
     const selected = raw.selected

@@ -13,7 +13,8 @@ import {
   RECEIVE_SUMMARY,
   SET_RAW_SUMMARY,
   SET_AUTO_LOAD_THRESHOLD,
-  SET_LOADING
+  SET_LOADING,
+  SET_EDGE_SCORE_RANGE
 } from '../actions/raw-interactions'
 import { Map, Set } from 'immutable'
 
@@ -28,11 +29,12 @@ const defState = Map({
   filters: null,
   extraEdges: null,
   maxEdgeCount: DEF_MAX_EDGE_COUNT,
+  edgeScoreRange: [0.0, 1.0],
   originalEdgeCount: 0,
   selected: [],
   selectedPerm: Set(),
   summary: null,
-  autoLoadThreshold: 1000000,
+  autoLoadThreshold: 10000,
   plot: {
     range: {
       min: 0,
@@ -122,6 +124,9 @@ export default function networkState(state = defState, action) {
 
     case CLEAR_SELECTED_PERM:
       return state.set('selectedPerm', Set())
+
+    case SET_EDGE_SCORE_RANGE:
+      return state.set('edgeScoreRange', action.payload)
 
     default:
       return state

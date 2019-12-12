@@ -32,11 +32,9 @@ const progressStyle = {
   zIndex: 1000
 }
 
-
 // TODO: better filter?
 
 let last = null
-
 
 class NetworkPanel extends Component {
   constructor(props) {
@@ -44,7 +42,7 @@ class NetworkPanel extends Component {
     this.state = {
       updating: false,
       networkUrl: '',
-      hoverNode: null,
+      hoverNode: null
     }
   }
 
@@ -56,12 +54,11 @@ class NetworkPanel extends Component {
   }
 
   selectNodes = (nodeIds, nodeProps) => {
-
     // First node in the selection
     const nodeId = nodeIds[0]
 
     // If same one is selected, just ignore.
-    if(last === nodeId) {
+    if (last === nodeId) {
       return
     }
     last = nodeId
@@ -76,6 +73,8 @@ class NetworkPanel extends Component {
 
     this.props.netantActions.clearAll()
 
+    const selectedNode1 = nodeProps[nodeIds[0]]
+    console.log('## Selected node: ++', selectedNode1, props)
     this.props.selectionActions.selectNode(newSelectionState)
 
     const nodeTypeTag = 'NodeType'
@@ -91,7 +90,6 @@ class NetworkPanel extends Component {
 
     // From NDEx to CYJS converter
     let linkEntry = props[NDEX_LINK_TAG]
-
 
     if (!linkEntry) {
       // Link is not available = no raw interaction available OR this is a human-curated ontology
@@ -173,19 +171,21 @@ class NetworkPanel extends Component {
 
         this.props.rawInteractionsActions.setRawSummary(summary)
 
-        if (edgeCount < this.props.autoLoadThreshold) {
+        // if (edgeCount < this.props.autoLoadThreshold) {
 
-          console.log('Loading Raw ===============================================')
-          // Directly set prop from node attributes
-          this.props.rawInteractionsActions.fetchInteractionsFromUrl(
-            linkId,
-            serverType,
-            link,
-            this.props.maxEdgeCount,
-            summary,
-            credentials
-          )
-        }
+        console.log(
+          '* Start loading interaction network'
+        )
+        // Directly set prop from node attributes
+        this.props.rawInteractionsActions.fetchInteractionsFromUrl(
+          linkId,
+          serverType,
+          link,
+          this.props.maxEdgeCount,
+          summary,
+          credentials
+        )
+        // }
       })
       .catch(err => {
         console.log('Network summary ERROR! ', err)

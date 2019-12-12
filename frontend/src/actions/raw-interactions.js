@@ -95,16 +95,15 @@ const processCx = cx => {
   let nodeIdx = nodes.length
   let edgeIdx = edges.length
 
-  const density = calcDensity(nodeIdx, edgeIdx)
-
-  console.log('"* Network Density = ', density)
-  let scalingFactor = 1.0
-  if(density > 0.1) {
-    scalingFactor = density * 10
-  }
+  // const density = calcDensity(nodeIdx, edgeIdx)
+  //
+  // console.log('"* Network Density and node array = ', density)
+  // let scalingFactor = 1.0
+  // if(density > 0.1) {
+  //   scalingFactor = density * 10
+  // }
 
   const nMap = new Map()
-
   while (nodeIdx--) {
     const n = nodes[nodeIdx]
     const node = {
@@ -115,6 +114,8 @@ const processCx = cx => {
     }
     nMap.set(n['@id'], node)
   }
+  console.log('Nmap size= ', nMap.size, nMap.keys())
+
 
   let layoutIdx = layout.length
   while (layoutIdx--) {
@@ -161,6 +162,7 @@ const processCx = cx => {
 
   // Process node attributes
   let nodeAttrIdx = nodeAttributes.length
+  const idSet = new Set()
 
   while (nodeAttrIdx--) {
     const nAttr = nodeAttributes[nodeAttrIdx]
@@ -169,10 +171,12 @@ const processCx = cx => {
     const dataType = nAttr['d']
     const strVal = nAttr['v']
 
+
     const typedVal = typeConverter(dataType, strVal)
     const nameSafe = name.replace(/ /g, '_')
 
     const node = nMap.get(id)
+    idSet.add(id)
     if (node !== undefined) {
       node.data[nameSafe] = typedVal
     }
@@ -276,6 +280,7 @@ export const fetchInteractionsFromUrl = (
       .then(cx => {
         originalCX = cx
         const newNet = processCx(cx)
+        console.log('New network = ', newNet)
         dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
         return newNet
       })
@@ -328,6 +333,7 @@ const createGroups = netAndFilter => {
   const networkData = network.data
   const group = networkData.Group
 
+
   if (group === undefined) {
     netAndFilter.push(null)
   } else {
@@ -341,7 +347,6 @@ const createGroups = netAndFilter => {
     groupMap['genes'] = []
 
     const nodes = network.elements.nodes
-
     nodes.forEach(node => {
       const nodeData = node.data
       const nodePropNames = Object.keys(nodeData)
@@ -395,11 +400,28 @@ const createGroups = netAndFilter => {
   return netAndFilter
 }
 
+
+const findMinScore = (edges, key) => {
+  let edgeCount = edges.length
+  let values = new Array(edgeCount)
+  while (edgeCount--) {
+    const edge = edges[edgeCount]
+    values[edgeCount] = edge.data[key]
+  }
+
+  const min = Math.min(...values)
+  console.log('=========================== MIN', min)
+
+  return min
+}
+
+
+
 const createFilter = (network, maxEdgeCount) => {
   const defCutoff = network.data[THRESHOLD_TAG]
-  console.log('@@@@@@@@@@------------------------Cutoff', defCutoff)
-
   const filters = []
+
+  console.log('DEF cutoff = ', defCutoff, network.data)
 
   const edges = network.elements.edges
   let edgeCount = edges.length
@@ -433,6 +455,7 @@ const createFilter = (network, maxEdgeCount) => {
   }
 
   for (let [key, value] of Object.entries(edgeTypes)) {
+
     if (value.type === 'numeric') {
       const isPrimary = mainEdgeType === key
 
@@ -444,10 +467,13 @@ const createFilter = (network, maxEdgeCount) => {
         const range = network.data['edgeScoreRange']
         min = range[0]
         max = range[1]
-
         const pw = network.data['Parent weight']
         if (pw) {
-          th = Number(pw)
+          if( pw == 0 ) {
+            th = findMinScore(edges, key)
+          } else {
+            th = Number(pw)
+          }
         }
         // If default cutoff is available, use it
         else if (defCutoff) {
@@ -543,6 +569,9 @@ export const setRawSummary = createAction(SET_RAW_SUMMARY)
 
 export const SET_LOADING = 'SET_LOADING'
 export const setLoading = createAction(SET_LOADING)
+
+export const SET_EDGE_SCORE_RANGE = 'SET_EDGE_SCORE_RANGE'
+export const setEdgeScoreRange = createAction(SET_EDGE_SCORE_RANGE)
 
 // Check size of the network
 

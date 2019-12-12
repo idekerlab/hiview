@@ -106,8 +106,6 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
   weightRange.push(parentScore)
   weightRange.sort()
 
-  console.log('* Final range::', weightRange)
-
   const slots = weightRange.length
   const colorScale = d3Scale
     .scaleSequential(d3ScaleChromatic.interpolateInferno)
@@ -215,6 +213,7 @@ const getColorForRange = (colorMap, val) => {
   return color
 }
 
+
 export const filterEdge = (network, maxEdgeCount) => {
 
   if(network.elements.edges === undefined || network.elements.edges === null ||
@@ -222,7 +221,6 @@ export const filterEdge = (network, maxEdgeCount) => {
     network.data['allEdgeScoreRange'] = [0,0]
     return network
   }
-  console.log('Original Node count: ', network.elements.nodes.length)
 
   let mainEdgeType = network.data[MAIN_EDGE_TAG]
   if (mainEdgeType !== undefined) {
@@ -295,6 +293,8 @@ export const filterEdge = (network, maxEdgeCount) => {
   network.data['allEdgeScoreRange'] = [minScore, maxScore]
 
   console.log('W range: This equal to number of subsystems inside', weightRange, minScore, maxScore)
+
+  weightRange = weightRange.filter(val => val > minScore)
   // Create colors for range.  0 is always global minimum
   const colorMap = generateColorMap(weightRange, 0, maxScore, parentScore)
 
@@ -346,7 +346,7 @@ export const filterEdge = (network, maxEdgeCount) => {
   for (let i = 0; i < subsetLen; i++) {
     const edge = subset[i]
     // Assign color
-    if (parentScore) {
+    if (parentScore !== undefined && parentScore !== null) {
       assignColor(colorMap, edge, mainEdgeType)
     } else {
       const weight = edge.data[mainEdgeType]

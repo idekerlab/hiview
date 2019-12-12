@@ -12,6 +12,7 @@ import {
 
 import Typography from '@material-ui/core/Typography'
 import AllEdgeDistribution from './AllEdgeDistribution'
+import { min } from 'd3-array'
 
 const containerStyle = {
   background: '#FFFFFF',
@@ -23,7 +24,6 @@ const blankStyle = {
   background: '#FFFFFF',
   margin: 0,
   padding: 0
-
 }
 
 const titleStyle = {
@@ -60,8 +60,23 @@ class CrossFilter extends Component {
     }
   }
 
-  render() {
+  getRangeMap = (names, weights) => {
+    const rangeMap = new Map()
 
+    if (names.length !== weights.length) {
+      console.warn('Error in weight data.')
+      return rangeMap
+    }
+
+    names.forEach((name, idx) => {
+      rangeMap.set(name, weights[idx])
+    })
+
+    console.log('RangeMap', rangeMap)
+    return rangeMap
+  }
+
+  render() {
     const data = this.props.networkData
     if (!data || Object.keys(data).length === 0) {
       return (
@@ -72,12 +87,10 @@ class CrossFilter extends Component {
       )
     }
 
-
-    const allEdgeDist = data.allEdgeScoreDist
     const maxFrequency = data.maxFrequency
     const subEdgeDist = data.subEdgeScoreDist
 
-    if(data.maxFrequency === 0) {
+    if (data.maxFrequency === 0) {
       return (
         <div
           style={blankStyle}
@@ -86,46 +99,55 @@ class CrossFilter extends Component {
       )
     }
 
-    let showAllEdgeDist = false
-    if (this.props.maxEdgeCount < this.props.originalEdgeCount) {
-      showAllEdgeDist = true
-    }
-
     const w = this.props.panelWidth
 
     const tickTotal = this.getTickCount(maxFrequency)
 
     let range = this.props.networkData.edgeScoreRange
-
     range = range.map(r => parseFloat(r))
-
-    const subsystems = this.props.networkData.Group
-
-    const groupNames = subsystems.split('|')
-
-
     const weights = this.props.networkData['Children weight']
+
     const parent = this.props.networkData['Parent weight']
+
+    const { filters } = this.props
+    const primaryFilter = filters.filter(f => f.isPrimary)
+    let realMin = 0.0
+    let realMax = 1.0
+    if (primaryFilter[0]) {
+      realMin = primaryFilter[0].min
+      realMax = primaryFilter[0].max
+      console.log('real min', range, realMin, realMax, this.props)
+    } else {
+      console.warn('Primary filter not available')
+    }
 
     let marks
 
-    if(weights) {
+    if (weights) {
       marks = {}
 
+      const minScore = range[0]
+      const maxScore = range[1]
+
       const weightRange = weights.split('|').map(val => Number(val))
+      const subsystems = this.props.networkData.Group
+      const groupNames = subsystems.split('|')
+
+      const rangeMap = this.getRangeMap(groupNames, weightRange)
 
       const weightSet = new Set(weightRange)
-      const newWeights = [...weightSet].sort()
-
+      const filteredWeights = [...weightSet].filter(
+        w => w >= realMin && w <= realMax
+      )
+      const newWeights = [...filteredWeights].sort()
       const parentWeight = Number(parent)
-
       const scoreMap = {}
 
       groupNames.forEach((label, idx) => {
         const weight = weightRange[idx]
         let labels = scoreMap[weight]
 
-        if(!labels) {
+        if (!labels) {
           labels = [label]
         } else {
           labels.push(label)
@@ -134,13 +156,13 @@ class CrossFilter extends Component {
         scoreMap[weight] = labels
       })
 
-      marks[range[0]] = {
+      marks[minScore] = {
         style: {
           wordWrap: 'break-word',
           color: '#333333',
           fontSize: '0.9em'
         },
-        label: `${range[0].toFixed(3)}`
+        label: `${minScore.toFixed(3)}`
       }
 
       const baseStyle = {
@@ -151,33 +173,25 @@ class CrossFilter extends Component {
         color: '#222222',
         fontWeight: 500,
         fontSize: '1.1em',
-        // marginBottom: '200px',
         marginTop: '-2.5em'
-        // borderRadius: '0.5em',
-        // border: 'solid 1px #777777',
-        // padding: '1em'
       }
-      const parentMark = {
-        style: baseStyle,
-        label: 'Parent'
-      }
-
-
-      marks[parentWeight] = parentMark
-
+      // const parentMark = {
+      //   style: baseStyle,
+      //   label: 'Parent'
+      // }
+      //
+      // marks[parentWeight] = parentMark
 
       let flag = false
-
       let pad = 1.5
 
       newWeights.forEach((weight, idx) => {
-
         let position = 0
-        if(flag) {
+        if (flag) {
           position = -4.3
         }
 
-        if(pad === 0) {
+        if (pad === 0) {
           pad = 1.5
         } else {
           pad = 0
@@ -185,30 +199,28 @@ class CrossFilter extends Component {
         position = position + 'em'
         flag = !flag
 
+        const label =
+          scoreMap[weight].length > 1
+            ? scoreMap[weight][0] + ', ...'
+            : scoreMap[weight][0]
+
         marks[weight] = {
           style: {
-            // display: 'flex',
-            // alignItems: 'center',
-            // justifyContent: 'center',
             wordWrap: 'break-word',
             color: '#222222',
             fontWeight: 500,
             fontSize: '1em',
-            // width: '5em',
-            // height: '5em',
             borderRadius: '0.5em',
             border: 'solid 1.5px #999999',
             padding: '0.5em',
             background: 'rgba(250, 250, 250, 0.5)',
             marginTop: position
-
           },
-          label: scoreMap[weight].reduce((l1, l2) => { return (l1 + ', ' + l2)})
+          label
         }
-
       })
 
-      marks[range[1]] = {
+      marks[maxScore] = {
         style: {
           display: 'flex',
           alignItems: 'center',
@@ -218,8 +230,10 @@ class CrossFilter extends Component {
           fontWeight: 500,
           fontSize: '1em'
         },
-        label: range[1].toFixed(3)
+        label: maxScore.toFixed(3)
       }
+
+      console.log('Final Marks = ', marks)
     }
 
     return (
@@ -244,10 +258,10 @@ class CrossFilter extends Component {
             title={'Gene Pairs (log10)'}
             position={'middle'}
             style={{
-              line: {stroke: '#666666', strokeWidth: '2px'},
-              ticks: {stroke: '#666666'},
-              text: {stroke: 'none', fill: '#333333'},
-              title: {stroke: '#222222', fontWeight: 300 }
+              line: { stroke: '#666666', strokeWidth: '2px' },
+              ticks: { stroke: '#666666' },
+              text: { stroke: 'none', fill: '#333333' },
+              title: { stroke: '#222222', fontWeight: 300 }
             }}
             tickTotal={tickTotal}
           />
@@ -265,7 +279,7 @@ class CrossFilter extends Component {
         <div style={titleStyle}>
           <Typography
             variant="h4"
-            style={{ color: '#444444', fontSize: '1.2em',paddingTop: '0.5em' }}
+            style={{ color: '#444444', fontSize: '1.2em', paddingTop: '0.5em' }}
           >
             Similarity Score
           </Typography>

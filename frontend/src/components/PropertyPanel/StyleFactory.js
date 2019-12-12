@@ -24,9 +24,9 @@ const calcNodeWidth = cyNode => {
   const ext = cy.extent()
   const size = ext.w / VIEW_TO_FONT_SIZE_RATIO
   if (size > BASE_FONT_SIZE) {
-    return (nodeName.length + 1) * size
+    return (nodeName.length) * size
   }
-  return (nodeName.length + 1) * LARGE_FONT_SIZE
+  return (nodeName.length) * LARGE_FONT_SIZE
 
 }
 
@@ -92,7 +92,7 @@ const BASE_STYLE = {
     selector: 'edge:selected',
     css: {
       opacity: 1,
-      'z-index': 1000
+      'z-index': e => e.data('zIndex') + 1000
     }
   },
   hidden: {
@@ -147,8 +147,9 @@ export const createStyle = originalNetwork => {
     similarityMax = 1
   }
 
-  const edgeStyle = BASE_STYLE.edge
+  console.log('Style generated for range:: ', similarityMin, similarityMax)
 
+  const edgeStyle = BASE_STYLE.edge
   edgeStyle.css['z-index'] = `data(zIndex)`
 
   const edgeColor = 'color'
@@ -157,10 +158,10 @@ export const createStyle = originalNetwork => {
   if (similarityMin !== similarityMax) {
     edgeStyle.css[
       'opacity'
-    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.7, 1)`
+    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 1)`
     edgeStyle.css[
       'width'
-    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 3, 18)`
+    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 1, 15)`
   }
 
   // Define edge selection style
