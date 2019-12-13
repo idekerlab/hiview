@@ -25,7 +25,6 @@ const compareBy = fieldName => (a, b) => {
 
   if(scoreA === 0) {
   }
-  // console.log('A, B = ', scoreA, scoreB)
 
   let comparison = 0
   if (scoreA > scoreB) {
@@ -256,7 +255,6 @@ export const filterEdge = (network, maxEdgeCount) => {
   if(maxScore === undefined ) {
     maxScore = 1.0
     console.warn('Missing max score:', mainEdgeType, maxScore, originalEdges[0])
-
   }
 
   // filter by edge count
@@ -291,9 +289,6 @@ export const filterEdge = (network, maxEdgeCount) => {
   // let minScore = edges[edges.length - 1].data[mainEdgeType]
   // console.log("MIN / Max ==========", minScore, maxScore, edges)
   network.data['allEdgeScoreRange'] = [minScore, maxScore]
-
-  console.log('W range: This equal to number of subsystems inside', weightRange, minScore, maxScore)
-
   weightRange = weightRange.filter(val => val > minScore)
   // Create colors for range.  0 is always global minimum
   const colorMap = generateColorMap(weightRange, 0, maxScore, parentScore)
