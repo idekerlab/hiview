@@ -46,6 +46,12 @@ class CrossFilter extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState, nextContext) {
+
+    console.log('----------------- Filtering event ------------', this.props, nextProps)
+    return true
+  }
+
   componentDidMount() {
     const height = this.divElement.clientHeight
     const width = this.divElement.clientWidth

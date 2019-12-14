@@ -348,7 +348,6 @@ class TermDetailsPanel extends Component {
           networkData={networkProps}
           originalEdgeCount={this.props.originalEdgeCount}
           maxEdgeCount={this.props.maxEdgeCount}
-          networkProps={networkProps}
           filters={raw.filters}
           commandActions={this.props.interactionsCommandActions}
           commands={this.props.interactionsCommands}

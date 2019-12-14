@@ -11,7 +11,7 @@ let task = null
 
 class CirclePackingPanel extends Component {
   state = {
-    tree: null,
+    // tree: null,
     hover: null,
     hoverNodes: null,
     selectedGroups: Set(),
@@ -19,10 +19,13 @@ class CirclePackingPanel extends Component {
   }
 
   componentDidMount() {
-    const tree = cyjs2tree(this.props.network, this.props.networkActions)
-    this.setState({
-      tree
-    })
+    const cyjs = this.props.network.get('cyjs')
+    const tree = cyjs2tree(cyjs, this.props.networkActions)
+    this.props.networkActions.setHierarchy(tree)
+    console.log('*********** HI SET', tree)
+    // this.setState({
+    //   tree
+    // })
   }
 
   selectGroups = (id, data, groups, actions) => {
@@ -196,22 +199,22 @@ class CirclePackingPanel extends Component {
   }
 
   render() {
-    // Search result is the selected ones.
-
     const selected = this.props.localSearch.ids
+    const treeData = this.props.network.get('hierarchy')
+
     return (
       <div
         ref={containerElement => (this.containerElement = containerElement)}
         style={this.props.style}
       >
-        {this.state.tree === null ? (
+        {this.props.hierarchy === null ? (
           <div />
         ) : (
           <TreeViewer
             command={this.props.command}
             selected={selected}
             highlight={this.props.selection.get('highlight')}
-            tree={this.state.tree}
+            tree={treeData}
             eventHandlers={this.getEventHandlers()}
             width={this.props.style.width}
             height={this.props.style.height}

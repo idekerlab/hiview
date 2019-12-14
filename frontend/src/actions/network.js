@@ -17,6 +17,10 @@ export const setSummary = createAction(SET_SUMMARY)
 
 export const FETCH_NETWORK = 'FETCH_NETWORK'
 
+export const SET_HIERARCHY = 'SET_HIERARCHY'
+export const setHierarchy = createAction(SET_HIERARCHY)
+
+
 // For local cache
 
 const DB_NAME = 'HiView'
@@ -236,7 +240,7 @@ const fetchDataFromRemote = (url2, uuid, dispatch, serverType, credentials) => {
     })
     .then(json => {
       t1 = performance.now()
-      console.log('Remote fetch time = ', t1 - t0, json)
+      console.log('*** Remote fetch time = ', t1 - t0, json)
       const netAttr = getNetworkAttributes(json)
       let niceCX = utils.rawCXtoNiceCX(json)
       const attributeNameMap = {}
@@ -258,6 +262,7 @@ const fetchDataFromRemote = (url2, uuid, dispatch, serverType, credentials) => {
       hvDb.hierarchy.put(filtered)
       // hvDb.hierarchy.put(json)
       json = null
+      console.log('Hierarchy is ready = ', performance.now() - t0)
 
       return filtered
       // return json
