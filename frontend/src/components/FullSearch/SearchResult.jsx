@@ -42,7 +42,7 @@ class SearchResult extends Component {
   }
 
   handleClick = (nodeId, rootId) => {
-    this.props.commandActions.findPath([nodeId, rootId])
+    // this.props.commandActions.findPath([nodeId, rootId])
   }
 
   handleToggle = label => {

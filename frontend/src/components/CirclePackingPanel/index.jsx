@@ -201,7 +201,6 @@ class CirclePackingPanel extends Component {
   render() {
     const selected = this.props.localSearch.ids
     const treeData = this.props.network.get('hierarchy')
-
     return (
       <div
         ref={containerElement => (this.containerElement = containerElement)}

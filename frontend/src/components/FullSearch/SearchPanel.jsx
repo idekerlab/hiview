@@ -93,16 +93,17 @@ class SearchPanel extends Component {
   render() {
     const { classes, localSearch } = this.props
 
+    console.log('Local search -------------', this.props)
     let rootId = null
-    if (this.props.network !== undefined) {
-      const net = this.props.network['cyjs']
-      if (!net) {
-        // No network found
-        return <div />
-      }
-      // const net = this.props.network[this.state.currentNetworkUrl]
-      rootId = net.rootId
-    }
+    // if (this.props.network !== undefined) {
+    //   const net = this.props.network['cyjs']
+    //   if (!net) {
+    //     // No network found
+    //     return <div />
+    //   }
+    //   // const net = this.props.network[this.state.currentNetworkUrl]
+    //   rootId = net.rootId
+    // }
 
     const results = localSearch.results
     let hideResult = false

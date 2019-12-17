@@ -135,6 +135,16 @@ export const createStyle = originalNetwork => {
   }
 
   let primaryEdgeType = networkData[MAIN_INTERACTION_TYPE_TAG]
+  if(primaryEdgeType === undefined) {
+    return {
+      style: [
+        BASE_STYLE.node,
+        BASE_STYLE.nodeSelected,
+        BASE_STYLE.hidden,
+        BASE_STYLE.seed
+      ]
+    }
+  }
 
   // Need to remove space due to current cxtool limitation
   primaryEdgeType = primaryEdgeType.replace(/ /g, '_')

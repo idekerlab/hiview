@@ -84,7 +84,7 @@ class CrossFilter extends Component {
 
   render() {
     const data = this.props.networkData
-    if (!data || Object.keys(data).length === 0) {
+    if (!data || Object.keys(data).length === 0 || data.edgeScoreRange === undefined) {
       return (
         <div
           style={containerStyle}
@@ -92,6 +92,8 @@ class CrossFilter extends Component {
         />
       )
     }
+
+    let range = this.props.networkData.edgeScoreRange
 
     const maxFrequency = data.maxFrequency
     const subEdgeDist = data.subEdgeScoreDist
@@ -109,7 +111,6 @@ class CrossFilter extends Component {
 
     const tickTotal = this.getTickCount(maxFrequency)
 
-    let range = this.props.networkData.edgeScoreRange
     range = range.map(r => parseFloat(r))
     const weights = this.props.networkData['Children weight']
 

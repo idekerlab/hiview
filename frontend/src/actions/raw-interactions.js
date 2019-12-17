@@ -14,10 +14,9 @@ const cx2JsConverter = new cx2js.CxToJs(utils)
 
 const NDEX_API = '.ndexbio.org/v2/network/'
 
-
 // For network density
 const calcDensity = (n, m) => {
-  return (2*m)/(n*(n-1)) //  for undirected
+  return (2 * m) / (n * (n - 1)) //  for undirected
 }
 
 // Set loading message
@@ -114,8 +113,6 @@ const processCx = cx => {
     }
     nMap.set(n['@id'], node)
   }
-  console.log('Nmap size= ', nMap.size, nMap.keys())
-
 
   let layoutIdx = layout.length
   while (layoutIdx--) {
@@ -171,7 +168,6 @@ const processCx = cx => {
     const dataType = nAttr['d']
     const strVal = nAttr['v']
 
-
     const typedVal = typeConverter(dataType, strVal)
     const nameSafe = name.replace(/ /g, '_')
 
@@ -216,19 +212,17 @@ export const fetchInteractionsFromUrl = (
   summary = {},
   credentials
 ) => {
-
   // Get only top 10000 edges.
   const urlFiltered =
     'http://dev2.ndexbio.org/edgefilter/v1/network/' +
     uuid +
     '/topNEdgeFilter?limit=10000'
-    // '/edgefilter?limit=10000'
+  // '/edgefilter?limit=10000'
 
-  // const urlOriginal = 'http://' + server + '.ndexbio.org/v2/network/' + uuid
+  const urlNoFilter = 'http://' + server + '.ndexbio.org/v2/network/' + uuid
 
   const t0 = performance.now()
   const networkAttr = summary.properties
-
 
   let idx = networkAttr.length
 
@@ -244,6 +238,8 @@ export const fetchInteractionsFromUrl = (
       mainFeature = attr['value']
     }
   }
+  console.log('Summary::', summary, mainFeature)
+  console.log('MAIN::', mainFeature)
 
   let originalCX = null
 
@@ -267,6 +263,14 @@ export const fetchInteractionsFromUrl = (
       method: 'POST',
       body: JSON.stringify(query),
       headers
+    }
+
+    if (mainFeature.length === 0) {
+      settings = {
+        method: 'GET'
+      }
+
+      url = urlNoFilter
     }
 
     return fetchNet(url, settings)
@@ -332,7 +336,6 @@ const createGroups = netAndFilter => {
   const network = netAndFilter[0]
   const networkData = network.data
   const group = networkData.Group
-
 
   if (group === undefined) {
     netAndFilter.push(null)
@@ -400,7 +403,6 @@ const createGroups = netAndFilter => {
   return netAndFilter
 }
 
-
 const findMinScore = (edges, key) => {
   let edgeCount = edges.length
   let values = new Array(edgeCount)
@@ -414,8 +416,6 @@ const findMinScore = (edges, key) => {
 
   return min
 }
-
-
 
 const createFilter = (network, maxEdgeCount) => {
   const defCutoff = network.data[THRESHOLD_TAG]
@@ -455,7 +455,6 @@ const createFilter = (network, maxEdgeCount) => {
   }
 
   for (let [key, value] of Object.entries(edgeTypes)) {
-
     if (value.type === 'numeric') {
       const isPrimary = mainEdgeType === key
 
@@ -469,7 +468,7 @@ const createFilter = (network, maxEdgeCount) => {
         max = range[1]
         const pw = network.data['Parent weight']
         if (pw) {
-          if( pw == 0 ) {
+          if (pw == 0) {
             th = findMinScore(edges, key)
           } else {
             th = Number(pw)

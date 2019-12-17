@@ -128,13 +128,25 @@ class NetworkPanel extends Component {
       return
     }
 
-    const linkParts = linkEntry.split(']')
-    if (linkParts.length !== 2) {
-      console.error('Invalid LINK entry.  Check format of the link.')
-      return
+    // Check link information type
+
+    let linkId = ''
+
+    if(linkEntry.startsWith('http')) {
+      const urlParts = linkEntry.split('/')
+      linkId = urlParts[urlParts.length - 1]
+      console.log('New UUID = ', urlParts, linkId)
+
+    } else {
+      const linkParts = linkEntry.split(']')
+      if (linkParts.length !== 2) {
+        console.error('Invalid LINK entry.  Check format of the link.')
+        return
+      }
+      const uuidWithExtraStr = linkParts[1]
+      linkId = uuidWithExtraStr.replace(')', '').replace('(', '')
     }
-    const uuidWithExtraStr = linkParts[1]
-    const linkId = uuidWithExtraStr.replace(')', '').replace('(', '')
+
 
     const locationParams = this.props.location
     let serverType = locationParams.query.type
@@ -145,6 +157,7 @@ class NetworkPanel extends Component {
     const NDEX_API = '.ndexbio.org/v2/network/'
     const summaryUrl = 'http://' + serverType + NDEX_API + linkId + '/summary'
 
+    console.log('Summary URL = ', summaryUrl)
     this.props.rawInteractionsActions.setLoading(
       'Checking summary of the interaction network...'
     )

@@ -66,10 +66,31 @@ class RawInteractionPanel extends Component {
       return <div><h3>(Network not available)</h3></div>
     }
 
+    const selected = {
+      nodes: this.props.subnetSelected,
+      edges: this.props.subnetSelectedEdge,
+      nodesPerm: this.props.subnetSelectedPerm,
+      edgesPerm: this.props.subnetSelectedEdgePerm
+    }
+
     const filters = this.props.filters
 
     if (filters === null || filters.length === 0) {
-      return
+      return (
+        <Viewer
+          key="subNetworkView"
+          network={this.props.subnet}
+          selected={selected}
+          networkType={'cyjs'}
+          networkStyle={visualStyle}
+          style={networkAreaStyle}
+          eventHandlers={this.getCustomEventHandlers()}
+          rendererOptions={{
+            layout: this.checkPresetLayout(this.props.subnet)
+          }}
+          command={this.props.commands}
+        />
+      )
     }
 
     let primaryFilter = null
@@ -86,12 +107,12 @@ class RawInteractionPanel extends Component {
       }
     })
 
-    const selected = {
-      nodes: this.props.subnetSelected,
-      edges: this.props.subnetSelectedEdge,
-      nodesPerm: this.props.subnetSelectedPerm,
-      edgesPerm: this.props.subnetSelectedEdgePerm
-    }
+    // const selected = {
+    //   nodes: this.props.subnetSelected,
+    //   edges: this.props.subnetSelectedEdge,
+    //   nodesPerm: this.props.subnetSelectedPerm,
+    //   edgesPerm: this.props.subnetSelectedEdgePerm
+    // }
 
     return (
       <Viewer
