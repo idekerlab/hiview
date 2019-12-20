@@ -46,11 +46,10 @@ class CrossFilter extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState, nextContext) {
-
-    console.log('----------------- Filtering event ------------', this.props, nextProps)
-    return true
-  }
+  // shouldComponentUpdate(nextProps, nextState, nextContext) {
+  //
+  //   return true
+  // }
 
   componentDidMount() {
     const height = this.divElement.clientHeight
@@ -78,7 +77,6 @@ class CrossFilter extends Component {
       rangeMap.set(name, weights[idx])
     })
 
-    console.log('RangeMap', rangeMap)
     return rangeMap
   }
 
@@ -113,7 +111,6 @@ class CrossFilter extends Component {
 
     range = range.map(r => parseFloat(r))
     const weights = this.props.networkData['Children weight']
-
     const parent = this.props.networkData['Parent weight']
 
     const { filters } = this.props
@@ -239,8 +236,6 @@ class CrossFilter extends Component {
         },
         label: maxScore.toFixed(3)
       }
-
-      console.log('Final Marks = ', marks)
     }
 
     return (

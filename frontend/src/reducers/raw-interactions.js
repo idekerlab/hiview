@@ -14,7 +14,8 @@ import {
   SET_RAW_SUMMARY,
   SET_AUTO_LOAD_THRESHOLD,
   SET_LOADING,
-  SET_EDGE_SCORE_RANGE
+  SET_EDGE_SCORE_RANGE,
+  SET_GROUP_POSITIONS
 } from '../actions/raw-interactions'
 import { Map, Set } from 'immutable'
 
@@ -40,7 +41,8 @@ const defState = Map({
       min: 0,
       max: 1
     }
-  }
+  },
+  groupPositions: {}
 })
 
 export default function networkState(state = defState, action) {
@@ -127,6 +129,9 @@ export default function networkState(state = defState, action) {
 
     case SET_EDGE_SCORE_RANGE:
       return state.set('edgeScoreRange', action.payload)
+
+    case SET_GROUP_POSITIONS:
+      return state.set('groupPositions', action.payload)
 
     default:
       return state

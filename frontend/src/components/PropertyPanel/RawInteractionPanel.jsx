@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
 import CyNetworkViewer from '@cytoscape/cy-network-viewer'
-import {
-  CytoscapeJsRenderer,
-  SigmaRenderer
-} from '@cytoscape/cytoscapejs-renderer'
+import { CytoscapeJsRenderer } from '@cytoscape/cytoscapejs-renderer'
 
 import { Set } from 'immutable'
 
@@ -63,7 +60,11 @@ class RawInteractionPanel extends Component {
     const visualStyle = this.props.networkStyle
 
     if (newNet === null || newNet === undefined || visualStyle === null) {
-      return <div><h3>(Network not available)</h3></div>
+      return (
+        <div>
+          <h3>(Network not available)</h3>
+        </div>
+      )
     }
 
     const selected = {
@@ -174,6 +175,20 @@ class RawInteractionPanel extends Component {
     selectEdges: this.selectEdges,
     commandFinished: this.commandFinished
   })
+}
+
+const bfs = (node, target) => {
+  const id = node.data.id
+
+  if (target === id) {
+    return node
+  }
+
+  const children = node.children
+  if (!children || children.length == 0) {
+    return null
+  }
+  return children.forEach(child => bfs(child, target))
 }
 
 export default RawInteractionPanel

@@ -168,10 +168,10 @@ export const createStyle = originalNetwork => {
   if (similarityMin !== similarityMax) {
     edgeStyle.css[
       'opacity'
-    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 1)`
+    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.4, 1)`
     edgeStyle.css[
       'width'
-    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 1, 15)`
+    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 8)`
   }
 
   // Define edge selection style

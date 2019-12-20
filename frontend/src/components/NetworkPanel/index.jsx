@@ -187,8 +187,10 @@ class NetworkPanel extends Component {
         // if (edgeCount < this.props.autoLoadThreshold) {
 
         console.log(
-          '* Start loading interaction network'
+          '* Start loading interaction network::', this.props.rawInteractions.toJS(), this.props.network.toJS()
         )
+
+        const positions = this.props.rawInteractions.get('groupPositions')
         // Directly set prop from node attributes
         this.props.rawInteractionsActions.fetchInteractionsFromUrl(
           linkId,
@@ -196,7 +198,8 @@ class NetworkPanel extends Component {
           link,
           this.props.maxEdgeCount,
           summary,
-          credentials
+          credentials,
+          positions
         )
         // }
       })

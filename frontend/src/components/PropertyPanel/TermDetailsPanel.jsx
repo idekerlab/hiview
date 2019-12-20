@@ -119,6 +119,8 @@ class TermDetailsPanel extends Component {
     let serverType = locationParams.query.type
     const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
 
+
+
     // if (
     //   summary &&
     //   summary.edgeCount > autoLoadTh &&
@@ -405,6 +407,7 @@ class TermDetailsPanel extends Component {
           enrichment={this.props.enrichment}
           enrichmentActions={this.props.enrichmentActions}
           uiState={this.props.uiState}
+          hierarchy={this.props.network.get('hierarchy')}
         />
       )
     } else {

@@ -1,3 +1,4 @@
+import {localLayout} from './raw-interactions-layout'
 import { getHeader } from '../components/AccessUtil'
 
 const THRESHOLD_TAG = 'Main Feature Default Cutoff'
@@ -55,13 +56,19 @@ const fetchNet = (url, settings) => {
   return fetch(url, settings)
 }
 
+
+const adjustLayout = (membership, nodes) => {
+
+}
+
 /**
  * This is a quick and dirty impl for CX to simplified CYJS
  *
  * @param cx
  * @returns {{data, elements: {nodes: any[], edges: any[]}}}
  */
-const processCx = cx => {
+const processCx = (cx, positions) => {
+  console.log('Processing CX@@@@@@@@@@@@@@@@@@: ', positions)
   let idx = cx.length
 
   let nodes = []
@@ -94,14 +101,6 @@ const processCx = cx => {
   let nodeIdx = nodes.length
   let edgeIdx = edges.length
 
-  // const density = calcDensity(nodeIdx, edgeIdx)
-  //
-  // console.log('"* Network Density and node array = ', density)
-  // let scalingFactor = 1.0
-  // if(density > 0.1) {
-  //   scalingFactor = density * 10
-  // }
-
   const nMap = new Map()
   while (nodeIdx--) {
     const n = nodes[nodeIdx]
@@ -118,9 +117,23 @@ const processCx = cx => {
   while (layoutIdx--) {
     const position = layout[layoutIdx]
     const nodeId = position['node']
-    nMap.get(nodeId)['position'] = {
-      x: position.x,
-      y: position.y
+    // console.log('NODEID:::', nodeId, nMap.get(nodeId).data.name)
+
+    const termName = nMap.get(nodeId).data.name
+    const circlePosition = positions[termName]
+
+    if(circlePosition === undefined) {
+      nMap.get(nodeId)['position'] = {
+        x: position.x,
+        y: position.y
+      }
+
+    } else {
+
+      nMap.get(nodeId)['position'] = {
+        x: circlePosition.x * 15,
+        y: circlePosition.y * 15
+      }
     }
   }
 
@@ -179,11 +192,14 @@ const processCx = cx => {
   }
 
   return {
-    data,
-    elements: {
-      nodes: [...nMap.values()],
-      edges: [...eMap.values()]
-    }
+    network: {
+      data,
+      elements: {
+        nodes: [...nMap.values()],
+        edges: [...eMap.values()]
+      }
+    },
+    nodeMap: nMap
   }
 }
 
@@ -210,7 +226,8 @@ export const fetchInteractionsFromUrl = (
   url2,
   maxEdgeCount = 500,
   summary = {},
-  credentials
+  credentials,
+  positions
 ) => {
   // Get only top 10000 edges.
   const urlFiltered =
@@ -238,11 +255,9 @@ export const fetchInteractionsFromUrl = (
       mainFeature = attr['value']
     }
   }
-  console.log('Summary::', summary, mainFeature)
-  console.log('MAIN::', mainFeature)
 
   let originalCX = null
-
+  let nodeMap = null
   let url = urlFiltered
 
   return dispatch => {
@@ -283,8 +298,10 @@ export const fetchInteractionsFromUrl = (
       })
       .then(cx => {
         originalCX = cx
-        const newNet = processCx(cx)
-        console.log('New network = ', newNet)
+        const processed = processCx(originalCX, positions)
+        console.log('New network = ', processed)
+        nodeMap = processed.nodeMap
+        const newNet = processed.network
         dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
         return newNet
       })
@@ -293,8 +310,14 @@ export const fetchInteractionsFromUrl = (
       .then(netAndFilter => createGroups(netAndFilter))
       .then(netAndFilter => {
         const t3 = performance.now()
-        console.log('* Total raw interaction update time = ', t3 - t0)
+        console.log('* Total raw interaction update time = ', t3 - t0, netAndFilter)
 
+
+        const network = netAndFilter[0]
+        const groups = netAndFilter[2]
+
+        localLayout(network, groups, positions, nodeMap)
+        // assignPositions(netAndFilter[2], positions, nodeMap)
         return dispatch(
           receiveNetwork(
             url,
@@ -312,6 +335,38 @@ export const fetchInteractionsFromUrl = (
       })
   }
 }
+
+const assignPositions = (groups, circlePositions, nodeMap) => {
+
+
+
+  Object.keys(groups).forEach(groupName => {
+
+    const position = circlePositions[groupName]
+    const members = groups[groupName]
+    // console.log("* Gropu info:", groupName, position, members)
+
+
+    members.forEach(memberId => {
+      const node = nodeMap.get(memberId)
+      if(members.length === 1) {
+        node.position.x = position.x * 15
+        node.position.y = position.y * 15
+      } else {
+        const direction1 = Math.random() > 0.5 ? 1 : -1
+        const direction2 = Math.random() > 0.5 ? 1 : -1
+        node.position.x = (position.x +  (Math.random() * position.r * direction1)) * 15
+        node.position.y = (position.y + (Math.random() * position.r * direction2)) * 15
+      }
+      // console.log('memberID::', nodeMap.get(memberId))
+    })
+
+  })
+  console.log(groups, circlePositions, nodeMap)
+
+
+}
+
 
 const convertNetworkAttr = attr => {
   let idx = attr.length
@@ -571,6 +626,9 @@ export const setLoading = createAction(SET_LOADING)
 
 export const SET_EDGE_SCORE_RANGE = 'SET_EDGE_SCORE_RANGE'
 export const setEdgeScoreRange = createAction(SET_EDGE_SCORE_RANGE)
+
+export const SET_GROUP_POSITIONS = 'SET_GROUP_POSITIONS'
+export const setGroupPositions = createAction(SET_GROUP_POSITIONS)
 
 // Check size of the network
 

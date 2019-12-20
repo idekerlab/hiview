@@ -18,11 +18,12 @@ class CirclePackingPanel extends Component {
     selectedGenes: []
   }
 
+  storeLayout(layout) {}
+
   componentDidMount() {
     const cyjs = this.props.network.get('cyjs')
     const tree = cyjs2tree(cyjs, this.props.networkActions)
     this.props.networkActions.setHierarchy(tree)
-    console.log('*********** HI SET', tree)
     // this.setState({
     //   tree
     // })
@@ -47,12 +48,11 @@ class CirclePackingPanel extends Component {
     this.setState({
       selectedGroups: this.state.selectedGroups.add(id)
     })
-
     geneIds.forEach(gene => this.state.selectedGenes.add(gene))
   }
 
   getEventHandlers = () => {
-    const selectNode = (id, data, zoom) => {
+    const selectNode = (id, data, zoom, node) => {
       const wrappedData = {
         props: data
       }
@@ -68,6 +68,8 @@ class CirclePackingPanel extends Component {
           selectedGenes: Set()
         })
 
+        const positions = extractPositions(node)
+        this.props.rawInteractionsActions.setGroupPositions(positions)
         this.props.selectPrimaryNode([id], { [id]: wrappedData })
         this.props.rawInteractionsActions.clearSelectedPerm()
       } else {
@@ -206,24 +208,45 @@ class CirclePackingPanel extends Component {
         ref={containerElement => (this.containerElement = containerElement)}
         style={this.props.style}
       >
-        {this.props.hierarchy === null ? (
-          <div />
-        ) : (
-          <TreeViewer
-            command={this.props.command}
-            selected={selected}
-            highlight={this.props.selection.get('highlight')}
-            tree={treeData}
-            eventHandlers={this.getEventHandlers()}
-            width={this.props.style.width}
-            height={this.props.style.height}
-            rendererOptions={this.props.renderingOptions}
-            depth={this.props.depth}
-          />
-        )}
+        <TreeViewer
+          command={this.props.command}
+          selected={selected}
+          highlight={this.props.selection.get('highlight')}
+          tree={treeData}
+          eventHandlers={this.getEventHandlers()}
+          width={this.props.style.width}
+          height={this.props.style.height}
+          rendererOptions={this.props.renderingOptions}
+          depth={this.props.depth}
+          setHierarchy={this.props.networkActions.setHierarchy}
+        />
       </div>
     )
   }
+}
+
+const extractPositions = parent => {
+  const positions = {}
+  const children = parent.children
+  if (children === undefined) {
+    return positions
+  }
+
+  children.forEach(node => {
+    // Extract ID of current node
+    let id = node.data.data.props.name
+    if(node.data.data.props.NodeType === 'Gene') {
+      id = node.data.data.props.Label
+    }
+    console.log(id, node.data.data)
+    positions[id] = {
+      r: node.r,
+      x: node.x,
+      y: node.y
+    }
+  })
+
+  return positions
 }
 
 export default CirclePackingPanel
