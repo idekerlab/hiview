@@ -238,7 +238,6 @@ const extractPositions = parent => {
     if(node.data.data.props.NodeType === 'Gene') {
       id = node.data.data.props.Label
     }
-    console.log(id, node.data.data)
     positions[id] = {
       r: node.r,
       x: node.x,

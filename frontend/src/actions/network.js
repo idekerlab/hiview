@@ -131,8 +131,6 @@ const modifyNetwork = (cyjs, attrMap) => {
   const keys = Object.keys(attrMap)
   keys.forEach(key => (newMap[attrMap[key]] = key))
 
-  console.log('NMM', newMap)
-
   const nodes = cyjs.elements.nodes
   let len = nodes.length
   while (len--) {
