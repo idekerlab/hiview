@@ -81,6 +81,7 @@ class CrossFilter extends Component {
   }
 
   render() {
+    // console.log('*** HIST:', this.props)
     const data = this.props.networkData
     if (!data || Object.keys(data).length === 0 || data.edgeScoreRange === undefined) {
       return (
@@ -120,7 +121,6 @@ class CrossFilter extends Component {
     if (primaryFilter[0]) {
       realMin = primaryFilter[0].min
       realMax = primaryFilter[0].max
-      console.log('real min', range, realMin, realMax, this.props)
     } else {
       console.warn('Primary filter not available')
     }

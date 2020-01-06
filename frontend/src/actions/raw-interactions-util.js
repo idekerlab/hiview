@@ -1,6 +1,6 @@
 import * as d3Scale from 'd3-scale'
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
-import {min} from "d3-array";
+import { min } from 'd3-array'
 export const MAIN_EDGE_TAG = 'Main Feature'
 export const PATTERN = /[ -]/g
 
@@ -15,15 +15,15 @@ const compareBy = fieldName => (a, b) => {
   let scoreA = a.data[fieldName]
   let scoreB = b.data[fieldName]
 
-  if(scoreA === undefined) {
+  if (scoreA === undefined) {
     scoreA = 0.0
   }
 
-  if(scoreB === undefined) {
+  if (scoreB === undefined) {
     scoreB = 0.0
   }
 
-  if(scoreA === 0) {
+  if (scoreA === 0) {
   }
 
   let comparison = 0
@@ -44,7 +44,6 @@ const compareBy = fieldName => (a, b) => {
  * @returns {Array}
  */
 const filter = (edges, scoreName, min) => {
-
   let subMax = -1.0
 
   let size = edges.length
@@ -61,7 +60,7 @@ const filter = (edges, scoreName, min) => {
       subset.push(edge)
     }
 
-    if(score > subMax) {
+    if (score > subMax) {
       subMax = score
     }
   }
@@ -81,7 +80,6 @@ const removeZeroEdges = (edges, scoreName) => {
     const edge = edges[size]
     const s = edge.data[scoreName]
 
-
     if (s !== 0 && s !== undefined) {
       filtered.push(edge)
     }
@@ -100,7 +98,6 @@ const filterOld = (edges, maxEdgeCount) => {
 }
 
 const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
-
   // Create color mapper based on the local range (parent score to max)
   weightRange.push(parentScore)
   weightRange.sort()
@@ -114,7 +111,7 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
   const colorMap = []
 
   let correctParentScore = parentScore
-  if(parentScore === undefined || parentScore === null || isNaN(parentScore)) {
+  if (parentScore === undefined || parentScore === null || isNaN(parentScore)) {
     correctParentScore = maxVal
   }
 
@@ -125,7 +122,7 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
     color: DEF_COLOR
   })
 
-  if(weightRange.length === 1) {
+  if (weightRange.length === 1) {
     return colorMap
   }
 
@@ -133,7 +130,6 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
     const v1 = weightRange[idx]
     const v2 = weightRange[idx + 1]
     const diff = v2 - v1
-
 
     // Case 1: two numbers are the same
     if (diff !== 0) {
@@ -161,8 +157,7 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
 }
 
 const calculateZindex = (score, edge, name) => {
-
-  if(score === undefined || isNaN(score)) {
+  if (score === undefined || isNaN(score)) {
     // Fix invalid entry
 
     edge.data[name] = 0
@@ -187,7 +182,7 @@ const assignColor = (colorMap, edge, primaryName, min) => {
     }
   }
 
-  if(color === undefined) {
+  if (color === undefined) {
     color = DEF_COLOR
   }
 
@@ -195,29 +190,29 @@ const assignColor = (colorMap, edge, primaryName, min) => {
   edge.data['zIndex'] = calculateZindex(weight, edge, primaryName)
 }
 
-const getColorForRange = (colorMap, val) => {
-  let color = DEF_COLOR
+const getColorForRange = (colorMap, rawVal, min, max) => {
+  let color = null
+  const val = rawVal.toFixed(3)
+  const mapSize = colorMap.length
 
-  for (let i = 0; i < colorMap.length; i++) {
+  for (let i = 0; i < mapSize; i++) {
     const mapEntry = colorMap[i]
     if (mapEntry.min <= val && val <= mapEntry.max) {
       color = mapEntry.color
       break
     }
   }
-  if(color === undefined) {
-    color = DEF_COLOR
-  }
-
   return color
 }
 
-
 export const filterEdge = (network, maxEdgeCount) => {
-
-  if(network.elements.edges === undefined || network.elements.edges === null ||
-  network.elements.edges.length === 0 || !network.data[MAIN_EDGE_TAG]) {
-    network.data['allEdgeScoreRange'] = [0,0]
+  if (
+    network.elements.edges === undefined ||
+    network.elements.edges === null ||
+    network.elements.edges.length === 0 ||
+    !network.data[MAIN_EDGE_TAG]
+  ) {
+    network.data['allEdgeScoreRange'] = [0, 0]
     return network
   }
 
@@ -247,12 +242,12 @@ export const filterEdge = (network, maxEdgeCount) => {
   // This is always the global maximum
   let maxScore = 0
   const maxEdge = originalEdges[0]
-  if(maxEdge !== undefined) {
+  if (maxEdge !== undefined) {
     const maxData = maxEdge.data
     maxScore = maxData[mainEdgeType]
   }
 
-  if(maxScore === undefined ) {
+  if (maxScore === undefined) {
     maxScore = 1.0
     console.warn('Missing max score:', mainEdgeType, maxScore, originalEdges[0])
   }
@@ -263,7 +258,7 @@ export const filterEdge = (network, maxEdgeCount) => {
   // Last element is always the minimum
   minScore = edges[edges.length - 1].data[mainEdgeType]
 
-  if(minScore === undefined) {
+  if (minScore === undefined) {
     minScore = 0.0
     console.warn('Missing min score:', minScore)
   }
@@ -277,7 +272,6 @@ export const filterEdge = (network, maxEdgeCount) => {
     // const result = filter(originalEdges, mainEdgeType, parentScore)
     // edges = result.subset
     // edges.sort(compareBy(mainEdgeType))
-
     // if (edges.length < maxEdgeCount) {
     //   // Edge count threshold is larger than total number of edges --> Display everything
     //   minScore = edges[edges.length - 1].data[mainEdgeType]
@@ -346,7 +340,7 @@ export const filterEdge = (network, maxEdgeCount) => {
     } else {
       const weight = edge.data[mainEdgeType]
       let newColor = colorGenerator(weight)
-      if(newColor === undefined) {
+      if (newColor === undefined) {
         newColor = DEF_COLOR
       }
       edge.data['color'] = newColor
@@ -397,6 +391,7 @@ const createBuckets = (
   const result = []
   while (edgeCount--) {
     const score = edges[edgeCount].data[scoreFieldName]
+
     if (score < curRange) {
       bucketCounter++
     } else {
@@ -410,14 +405,41 @@ const createBuckets = (
         log10val = 0
       }
       const newBucket = { x: curRange, y: log10val }
+
       if (coloring && colorMap) {
-        newBucket['color'] = getColorForRange(colorMap, curRange)
+        newBucket['color'] = getColorForRange(colorMap, curRange, min, max)
       } else if (coloring) {
         newBucket['color'] = colorScale(curRange)
       }
+
       result.push(newBucket)
       bucketCounter = 1
       curRange = curRange + delta
+    }
+
+  }
+
+  if(result.length >= 2) {
+    // Adjust bounds
+    const b1 = result[0]
+    const x1 = b1.x
+    const color1 = b1.color
+
+    const minColor = getColorForRange(colorMap, min, min, max)
+
+    if(x1 > min && minColor !== color1 ) {
+      result[0].color = minColor
+    }
+
+
+    // Last one
+    const bLast = result[result.length - 1]
+    const xLast = bLast.x
+    const colorLast = bLast.color
+
+    if(xLast > max || colorLast == null) {
+      // Remove
+      result.pop()
     }
   }
 

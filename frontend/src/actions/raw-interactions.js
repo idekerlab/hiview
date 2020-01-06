@@ -117,24 +117,29 @@ const processCx = (cx, positions) => {
   while (layoutIdx--) {
     const position = layout[layoutIdx]
     const nodeId = position['node']
-    // console.log('NODEID:::', nodeId, nMap.get(nodeId).data.name)
-
-    const termName = nMap.get(nodeId).data.name
-    const circlePosition = positions[termName]
-
-    if(circlePosition === undefined) {
-      nMap.get(nodeId)['position'] = {
-        x: position.x,
-        y: position.y
-      }
-
-    } else {
-
-      nMap.get(nodeId)['position'] = {
-        x: circlePosition.x * 15,
-        y: circlePosition.y * 15
-      }
+    nMap.get(nodeId)['position'] = {
+      x: position.x,
+      y: position.y
     }
+
+    // This is for circle-position based layout
+    //
+    // const termName = nMap.get(nodeId).data.name
+    // const circlePosition = positions[termName]
+    //
+    // if(circlePosition === undefined) {
+    //   nMap.get(nodeId)['position'] = {
+    //     x: position.x,
+    //     y: position.y
+    //   }
+    //
+    // } else {
+    //
+    //   nMap.get(nodeId)['position'] = {
+    //     x: circlePosition.x * 15,
+    //     y: circlePosition.y * 15
+    //   }
+    // }
   }
 
   const eMap = new Map()
@@ -316,7 +321,10 @@ export const fetchInteractionsFromUrl = (
         const network = netAndFilter[0]
         const groups = netAndFilter[2]
 
-        localLayout(network, groups, positions, nodeMap)
+        // This is for applying new layout locally
+        // localLayout(network, groups, positions, nodeMap)
+
+        // And this is for using given positions as-is.
         // assignPositions(netAndFilter[2], positions, nodeMap)
         return dispatch(
           receiveNetwork(
