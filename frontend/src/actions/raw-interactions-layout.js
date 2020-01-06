@@ -13,6 +13,7 @@ const localLayout = (network, groups, positions, nodeMap) => {
 
   console.log('CY instance:', cy)
 
+
   const groupNames = Object.keys(groups)
 
   console.log('GNames = ', groupNames)
@@ -29,6 +30,7 @@ const localLayout = (network, groups, positions, nodeMap) => {
     const position = positions[groupName]
 
     if(x1 == null) {
+      console.log('##############GName::', groupName, position)
       x1 = position.x
       y1 = position.y
     }
@@ -40,7 +42,7 @@ const localLayout = (network, groups, positions, nodeMap) => {
       console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!', groupName)
     } else if (memberIds.length === 1) {
       remainingGenes.push(memberIds[0])
-      console.log('### ADD', remainingGenes)
+      // console.log('### ADD', remainingGenes)
       // const node = nodeMap.get(memberIds[0])
       // node.position.x = position.x * 15
       // node.position.y = position.y * 15
@@ -142,7 +144,33 @@ const localLayout = (network, groups, positions, nodeMap) => {
         y: original.y * 40
       })
     })
+
+    const coseLayout = subgraph2.layout({
+      name: 'cose',
+      animate: false,
+      nodeOverlap: 200000,
+
+      idealEdgeLength: edge => { return 10000 }
+      // nodeRepulsion: function( node ){ return 20480; }
+
+
+      // boundingBox: {
+      //   x1: position.x * 15,
+      //   y1: position.y * 15,
+      //   w: position.r * 2 * 15,
+      //   h: position.r * 2 * 15
+      // }
+    })
+    // coseLayout.run()
+
     subgraph2.nodes().shift({ x: x1 * 15, y: y1 * 15 })
+    // subgraph2.nodes().forEach(node => {
+    //   const original = node.position()
+    //   node.position({
+    //     x: original.x * 1.2,
+    //     y: original.y * 1.2
+    //   })
+    // })
   }
 }
 

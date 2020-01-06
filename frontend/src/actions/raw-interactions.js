@@ -117,29 +117,29 @@ const processCx = (cx, positions) => {
   while (layoutIdx--) {
     const position = layout[layoutIdx]
     const nodeId = position['node']
-    nMap.get(nodeId)['position'] = {
-      x: position.x,
-      y: position.y
-    }
+    // nMap.get(nodeId)['position'] = {
+    //   x: position.x,
+    //   y: position.y
+    // }
 
     // This is for circle-position based layout
     //
-    // const termName = nMap.get(nodeId).data.name
-    // const circlePosition = positions[termName]
-    //
-    // if(circlePosition === undefined) {
-    //   nMap.get(nodeId)['position'] = {
-    //     x: position.x,
-    //     y: position.y
-    //   }
-    //
-    // } else {
-    //
-    //   nMap.get(nodeId)['position'] = {
-    //     x: circlePosition.x * 15,
-    //     y: circlePosition.y * 15
-    //   }
-    // }
+    const termName = nMap.get(nodeId).data.name
+    const circlePosition = positions[termName]
+
+    if(circlePosition === undefined) {
+      nMap.get(nodeId)['position'] = {
+        x: position.x,
+        y: position.y
+      }
+
+    } else {
+
+      nMap.get(nodeId)['position'] = {
+        x: circlePosition.x * 15,
+        y: circlePosition.y * 15
+      }
+    }
   }
 
   const eMap = new Map()
@@ -322,7 +322,7 @@ export const fetchInteractionsFromUrl = (
         const groups = netAndFilter[2]
 
         // This is for applying new layout locally
-        // localLayout(network, groups, positions, nodeMap)
+        localLayout(network, groups, positions, nodeMap)
 
         // And this is for using given positions as-is.
         // assignPositions(netAndFilter[2], positions, nodeMap)
@@ -346,14 +346,10 @@ export const fetchInteractionsFromUrl = (
 
 const assignPositions = (groups, circlePositions, nodeMap) => {
 
-
-
   Object.keys(groups).forEach(groupName => {
 
     const position = circlePositions[groupName]
     const members = groups[groupName]
-    // console.log("* Gropu info:", groupName, position, members)
-
 
     members.forEach(memberId => {
       const node = nodeMap.get(memberId)
@@ -371,7 +367,6 @@ const assignPositions = (groups, circlePositions, nodeMap) => {
 
   })
   console.log(groups, circlePositions, nodeMap)
-
 
 }
 
