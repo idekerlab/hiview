@@ -11,9 +11,12 @@ const cx2js = new CxToJs(utils)
 export const SET_UUID = 'SET_UUID'
 export const SET_SERVER = 'SET_SERVER'
 export const SET_SUMMARY = 'SET_SUMMARY'
+export const SET_TITLE = 'SET_TITLE'
+
 export const setUuid = createAction(SET_UUID)
 export const setServer = createAction(SET_SERVER)
 export const setSummary = createAction(SET_SUMMARY)
+export const setTitle = createAction(SET_TITLE)
 
 export const FETCH_NETWORK = 'FETCH_NETWORK'
 
@@ -115,9 +118,22 @@ const getNetworkData = (url, uuid, dispatch, serverType, credentials) => {
   return false
 }
 
-const fetchFromLocal = (url, uuid, dispatch, netObj) => {
-  console.log('Local Hit:', uuid, performance.now() - t0)
 
+const fetchFromLocal = (url, uuid, dispatch, netObj) => {
+  console.log('Local Hit:', uuid, netObj, performance.now() - t0)
+
+  // Set network title
+  const networkData = netObj.data
+
+  if(networkData !== null && networkData !== undefined) {
+    let title = networkData.name
+    if(!title) {
+      title = 'N/A (' + uuid + ')'
+    }
+
+    // Set title prop
+    dispatch(setTitle(title))
+  }
   const network = createLabel2IdMap(netObj)
   addOriginalToAlias(network)
   return dispatch(receiveNetwork(url, network, null))
@@ -252,6 +268,14 @@ const fetchDataFromRemote = (url2, uuid, dispatch, serverType, credentials) => {
         uuid: uuid,
         elements: elementsObj
       }
+
+      let title = netAttr.name
+      if (!title) {
+        title = 'N/A (' + uuid + ')'
+      }
+
+      // Set title prop
+      dispatch(setTitle(title))
 
       json['uuid'] = uuid
 

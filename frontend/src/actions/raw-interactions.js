@@ -304,7 +304,6 @@ export const fetchInteractionsFromUrl = (
       .then(cx => {
         originalCX = cx
         const processed = processCx(originalCX, positions)
-        console.log('New network = ', processed)
         nodeMap = processed.nodeMap
         const newNet = processed.network
         dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
@@ -474,10 +473,7 @@ const findMinScore = (edges, key) => {
     values[edgeCount] = edge.data[key]
   }
 
-  const min = Math.min(...values)
-  console.log('=========================== MIN', min)
-
-  return min
+  return Math.min(...values)
 }
 
 const createFilter = (network, maxEdgeCount) => {

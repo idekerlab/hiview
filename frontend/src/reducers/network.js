@@ -6,7 +6,8 @@ import {
   SET_UUID,
   SET_SUMMARY,
   SET_GENE_MAP,
-  SET_HIERARCHY
+  SET_HIERARCHY,
+  SET_TITLE
 } from '../actions/network'
 import { Map } from 'immutable'
 
@@ -21,7 +22,8 @@ const defState = Map({
   cyjs: null,
   summary: null,
   geneMap: null,
-  hierarchy: null
+  hierarchy: null,
+  title: null
 })
 
 export default function networkState(state = defState, action) {
@@ -30,6 +32,7 @@ export default function networkState(state = defState, action) {
       return state.set('loading', true)
         .set('cyjs', null)
         .set('hierarchy', null)
+        .set('title', null)
     case SET_GENE_MAP:
       return state.set('geneMap', action.payload)
 
@@ -55,6 +58,8 @@ export default function networkState(state = defState, action) {
     case SET_HIERARCHY:
       return state.set('hierarchy', action.payload)
         .set('cyjs', null)
+    case SET_TITLE:
+      return state.set('title', action.payload)
     default:
       return state
   }

@@ -33,15 +33,12 @@ const Overlay = props => {
   let title = DEF_TITLE
   let link = null
 
+  // This is a Immutable Map
   const { network } = props
 
   if (network !== undefined && network !== null) {
-    const cyjsData = network.get('cyjs')
-    if (cyjsData !== null && cyjsData !== undefined) {
-      title = cyjsData.data.name
-    }
+    title = network.get('title')
   }
-
   const selection = props.selection.get('enter')
   const expanded = props.selection.get('main')
 
