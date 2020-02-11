@@ -56,11 +56,6 @@ const fetchNet = (url, settings) => {
   return fetch(url, settings)
 }
 
-
-const adjustLayout = (membership, nodes) => {
-
-}
-
 /**
  * This is a quick and dirty impl for CX to simplified CYJS
  *
@@ -68,7 +63,6 @@ const adjustLayout = (membership, nodes) => {
  * @returns {{data, elements: {nodes: any[], edges: any[]}}}
  */
 const processCx = (cx, positions) => {
-  console.log('Processing CX@@@@@@@@@@@@@@@@@@: ', positions)
   let idx = cx.length
 
   let nodes = []
@@ -127,19 +121,18 @@ const processCx = (cx, positions) => {
     const termName = nMap.get(nodeId).data.name
     const circlePosition = positions[termName]
 
-    if(circlePosition === undefined) {
+    // if(circlePosition === undefined) {
       nMap.get(nodeId)['position'] = {
         x: position.x,
         y: position.y
       }
-
-    } else {
-
-      nMap.get(nodeId)['position'] = {
-        x: circlePosition.x * 15,
-        y: circlePosition.y * 15
-      }
-    }
+    // } else {
+    //
+    //   nMap.get(nodeId)['position'] = {
+    //     x: circlePosition.x * 15,
+    //     y: circlePosition.y * 15
+    //   }
+    // }
   }
 
   const eMap = new Map()
@@ -321,7 +314,7 @@ export const fetchInteractionsFromUrl = (
         const groups = netAndFilter[2]
 
         // This is for applying new layout locally
-        localLayout(network, groups, positions, nodeMap)
+        // localLayout(network, groups, positions, nodeMap)
 
         // And this is for using given positions as-is.
         // assignPositions(netAndFilter[2], positions, nodeMap)
