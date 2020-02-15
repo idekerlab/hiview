@@ -1,6 +1,6 @@
 {
     "name": "hiview",
-    "version": "2.6.0",
+    "version": "2.6.1",
     "description": "Universal hierarchy viewer with Lens feature",
     "main": "index.js",
     "scripts": {

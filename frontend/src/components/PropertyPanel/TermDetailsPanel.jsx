@@ -289,6 +289,8 @@ class TermDetailsPanel extends Component {
                 commands={this.props.interactionsCommands}
                 filtersActions={this.props.filtersActions}
                 networkData={networkProps}
+                uiState={this.props.uiState}
+                uiStateActions={this.props.uiStateActions}
               />
             </div>
           )}

@@ -7,7 +7,8 @@ import {
   SHOW_PLOT_PANEL,
   RUN_ENRICHMENT,
   CHANGE_VIEWER,
-  SET_DEFAULT_DEPTH
+  SET_DEFAULT_DEPTH,
+  ENABLE_PRIMARY_EDGE
 } from '../actions/ui-state'
 
 import { handleActions } from 'redux-actions'
@@ -22,7 +23,8 @@ const defaultState = Map({
   showPlotPanel: false,
   runEnrichment: false,
   changeViewer: false,
-  defaultDepth: 1
+  defaultDepth: 1,
+  enablePrimaryEdge: true
 })
 
 export default handleActions(
@@ -48,7 +50,9 @@ export default handleActions(
     [SET_DEFAULT_DEPTH]: (state, action) => {
       console.log('Setting depth: ', action.payload)
       return state.set('defaultDepth', action.payload)
-    }
+    },
+    [ENABLE_PRIMARY_EDGE]: (state, action) =>
+      state.set('enablePrimaryEdge', action.payload)
   },
   defaultState
 )

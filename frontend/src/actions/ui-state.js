@@ -8,6 +8,8 @@ export const SHOW_SEARCH_WINDOW = 'SHOW_SEARCH_WINDOW'
 
 export const SHOW_MAIN_MENU = 'SHOW_MAIN_MENU'
 
+export const ENABLE_PRIMARY_EDGE = 'ENABLE_PRIMARY_EDGE'
+
 
 // State of the enrichment result
 export const SHOW_PLOT_PANEL = 'SHOW_PLOT_PANEL'
@@ -36,3 +38,5 @@ export const changeViewer = createAction(CHANGE_VIEWER)
 
 // Default expand depth of the CP viewer
 export const setDefaultDepth = createAction(SET_DEFAULT_DEPTH)
+
+export const enablePrimaryEdge = createAction(ENABLE_PRIMARY_EDGE)

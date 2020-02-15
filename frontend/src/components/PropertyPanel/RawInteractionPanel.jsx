@@ -15,7 +15,6 @@ class RawInteractionPanel extends Component {
     }
 
     const newNetwork = nextProps.subnet
-
     const running = nextProps.enrichment.get('running')
     const lastRunning = this.props.enrichment.get('running')
 
@@ -52,12 +51,15 @@ class RawInteractionPanel extends Component {
       background: '#555555'
     }
 
+
     return this.getMainContents(networkAreaStyle)
   }
 
   getMainContents = networkAreaStyle => {
     const newNet = this.props.subnet
     const visualStyle = this.props.networkStyle
+    const {uiState} = this.props
+    const hidePrimary = !uiState.get('enablePrimaryEdge')
 
     if (newNet === null || newNet === undefined || visualStyle === null) {
       return (
@@ -74,6 +76,11 @@ class RawInteractionPanel extends Component {
       edgesPerm: this.props.subnetSelectedEdgePerm
     }
 
+    const hidden = {
+      nodes: [],
+      edges: []
+    }
+
     const filters = this.props.filters
 
     if (filters === null || filters.length === 0) {
@@ -82,6 +89,8 @@ class RawInteractionPanel extends Component {
           key="subNetworkView"
           network={this.props.subnet}
           selected={selected}
+          hidden={hidden}
+          hidePrimary={hidePrimary}
           networkType={'cyjs'}
           networkStyle={visualStyle}
           style={networkAreaStyle}
@@ -120,6 +129,8 @@ class RawInteractionPanel extends Component {
         key="subNetworkView"
         network={this.props.subnet}
         selected={selected}
+        hidden={hidden}
+        hidePrimary={hidePrimary}
         networkType={'cyjs'}
         networkStyle={visualStyle}
         style={networkAreaStyle}

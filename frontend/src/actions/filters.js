@@ -9,3 +9,4 @@ export const ENABLE_FILTER = 'ENABLE_FILTER'
 export const addFilter = createAction(ADD_FILTER)
 export const removeFilter = createAction(REMOVE_FILTER)
 export const enableFilter = createAction(ENABLE_FILTER)
+

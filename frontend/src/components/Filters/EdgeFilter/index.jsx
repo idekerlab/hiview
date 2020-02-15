@@ -13,6 +13,7 @@ import BooleanFilter from './BooleanFilter'
 import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import ViewListIcon from '@material-ui/icons/ViewList'
+import PrimaryEdgeSwitch from './PrimaryEdgeSwitch'
 
 // Color map for 5 categorical data
 const COLORS = ['#7570b3', '#0571b0', '#aaaaaa', '#66c2a5', '#018571']
@@ -109,8 +110,7 @@ class EdgeFilter extends Component {
 
   render() {
     const { classes } = this.props
-    const filters = this.props.filters
-    const networkData = this.props.networkData
+    const {filters, networkData, uiState, uiStateActions} = this.props
 
     let edgeGroupsText = null
     let categories = {}
@@ -150,6 +150,10 @@ class EdgeFilter extends Component {
           <Typography variant="subtitle1" className={classes.title}>
             Interaction Features:
           </Typography>
+          <PrimaryEdgeSwitch
+            uiState={uiState}
+            uiStateActions={uiStateActions}
+          />
 
           <List>
             {sortedNames.map(filterName => (

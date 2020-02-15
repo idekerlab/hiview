@@ -264,13 +264,17 @@ class NetworkPanel extends Component {
     this.props.rawInteractionsActions.setSelected([])
   }
 
+  hideEdges = (edgeIds=[]) => {
+  }
+
   // Then use it as a custom handler
   getCustomEventHandlers = () => ({
     selectNodes: this.selectNodes,
     selectEdges: this.selectEdges,
     commandFinished: this.commandFinished,
     hoverOnNode: this.hoverOnNode,
-    hoverOutNode: this.hoverOutNode
+    hoverOutNode: this.hoverOutNode,
+    hideEdges: this.hideEdges
   })
 
   handleBack = () => {

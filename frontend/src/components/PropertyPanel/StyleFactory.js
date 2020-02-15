@@ -98,7 +98,8 @@ const BASE_STYLE = {
   hidden: {
     selector: 'edge.hidden',
     css: {
-      opacity: 0.1
+      opacity: 0.1,
+      visibility: 'hidden'
     }
   },
   seed: {
