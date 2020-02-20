@@ -9,6 +9,7 @@ export const SHOW_SEARCH_WINDOW = 'SHOW_SEARCH_WINDOW'
 export const SHOW_MAIN_MENU = 'SHOW_MAIN_MENU'
 
 export const ENABLE_PRIMARY_EDGE = 'ENABLE_PRIMARY_EDGE'
+export const SET_FILTER_STATE = 'SET_FILTER_STATE'
 
 
 // State of the enrichment result
@@ -18,6 +19,7 @@ export const RUN_ENRICHMENT = 'RUN_ENRICHMENT'
 export const SET_DEFAULT_DEPTH = 'SET_DEFAULT_DEPTH'
 
 export const CHANGE_VIEWER = 'CHANGE_VIEWER'
+
 
 export const showAppBar = createAction(SHOW_APP_BAR)
 export const showCommands = createAction(SHOW_COMMANDS)
@@ -40,3 +42,4 @@ export const changeViewer = createAction(CHANGE_VIEWER)
 export const setDefaultDepth = createAction(SET_DEFAULT_DEPTH)
 
 export const enablePrimaryEdge = createAction(ENABLE_PRIMARY_EDGE)
+export const setFilterState = createAction(SET_FILTER_STATE)

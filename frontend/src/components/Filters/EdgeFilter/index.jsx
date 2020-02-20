@@ -111,6 +111,7 @@ class EdgeFilter extends Component {
   render() {
     const { classes } = this.props
     const {filters, networkData, uiState, uiStateActions} = this.props
+    const filterState = uiState.get('filterState')
 
     let edgeGroupsText = null
     let categories = {}
@@ -158,7 +159,7 @@ class EdgeFilter extends Component {
           <List>
             {sortedNames.map(filterName => (
               <ListItem key={filterName}>
-                {this.getFilter(filterMap[filterName])}
+                {this.getFilter(filterMap[filterName], filterState, uiStateActions)}
               </ListItem>
             ))}
           </List>
@@ -177,13 +178,15 @@ class EdgeFilter extends Component {
           sortedNames,
           filterMap,
           categories.filter2cat,
-          categories.cat2filter
+          categories.cat2filter,
+          filterState,
+          uiStateActions
         )}
       </div>
     )
   }
 
-  generateFilterList = (sortedNames, filterMap, filter2cat, cat2filter) => {
+  generateFilterList = (sortedNames, filterMap, filter2cat, cat2filter, filterState, uiStateActions) => {
     if (!filter2cat) {
       return <List />
     }
@@ -194,7 +197,9 @@ class EdgeFilter extends Component {
       sortedNames,
       cat2filter,
       filter2cat,
-      filterMap
+      filterMap,
+      filterState,
+      uiStateActions
     )
 
     // Remove if no children
@@ -234,7 +239,7 @@ class EdgeFilter extends Component {
     )
   }
 
-  getExistingFilters = (allFilterNames, cat2filter, filter2cat, filterMap) => {
+  getExistingFilters = (allFilterNames, cat2filter, filter2cat, filterMap, filterState, uiStateActions) => {
     const newFilters = {}
 
     // All filters without parent categories will be here.
@@ -247,7 +252,7 @@ class EdgeFilter extends Component {
         // This one does not have parent category
         const newFilterListItem = (
           <ListItem key={filterName}>
-            {this.getFilter(filterMap[filterName])}
+            {this.getFilter(filterMap[filterName], filterState, uiStateActions)}
           </ListItem>
         )
 
@@ -268,7 +273,7 @@ class EdgeFilter extends Component {
         }
         const filterListItem = (
           <ListItem key={filterName}>
-            {this.getFilter(filterMap[filterName])}
+            {this.getFilter(filterMap[filterName], filterState, uiStateActions)}
           </ListItem>
         )
         listForCategory.push(filterListItem)
@@ -280,21 +285,34 @@ class EdgeFilter extends Component {
     return newFilters
   }
 
-  getFilter(filter) {
+  getFilter(filter, filterState, uiStateActions) {
+
     if (filter === undefined) {
       return null
     }
+
     const filterType = filter.type
+    const defValue = Number(filter.min)
 
     if (filterType === FILTER_TYPES.CONTINUOUS) {
+      const name = filter.attributeName
+      let value = defValue
+      let enabled = false
+      const currentState = filterState.get(name)
+
+      if(currentState) {
+        value = currentState.value
+        enabled = currentState.enabled
+      }
+
       return (
         <ContinuousFilter
           key={filter.attributeName}
           label={filter.attributeName}
           min={Number(filter.min)}
           max={Number(filter.max)}
-          value={Number(filter.min)}
-          enabled={filter.enabled}
+          value={value}
+          enabled={enabled}
           step={0.001}
           filtersActions={this.props.filtersActions}
           commandActions={this.props.commandActions}
@@ -302,6 +320,7 @@ class EdgeFilter extends Component {
           isPrimary={false}
           selected={this.state.selected}
           colorMap={colorMap}
+          uiStateActions={uiStateActions}
         />
       )
     } else if (filterType === FILTER_TYPES.BOOLEAN) {
@@ -309,7 +328,7 @@ class EdgeFilter extends Component {
         <BooleanFilter
           key={filter.attributeName}
           label={filter.attributeName}
-          enabled={filter.enabled}
+          enabled={enabled}
           filtersActions={this.props.filtersActions}
           commandActions={this.props.commandActions}
           selected={this.state.selected}

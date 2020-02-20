@@ -8,7 +8,8 @@ import {
   RUN_ENRICHMENT,
   CHANGE_VIEWER,
   SET_DEFAULT_DEPTH,
-  ENABLE_PRIMARY_EDGE
+  ENABLE_PRIMARY_EDGE,
+  SET_FILTER_STATE
 } from '../actions/ui-state'
 
 import { handleActions } from 'redux-actions'
@@ -24,7 +25,8 @@ const defaultState = Map({
   runEnrichment: false,
   changeViewer: false,
   defaultDepth: 1,
-  enablePrimaryEdge: true
+  enablePrimaryEdge: true,
+  filterState: Map()
 })
 
 export default handleActions(
@@ -52,7 +54,19 @@ export default handleActions(
       return state.set('defaultDepth', action.payload)
     },
     [ENABLE_PRIMARY_EDGE]: (state, action) =>
-      state.set('enablePrimaryEdge', action.payload)
+      state.set('enablePrimaryEdge', action.payload),
+    [SET_FILTER_STATE]: (state, action) => {
+      const newState = action.payload
+      if(!newState) {
+        return state
+      }
+      const filterName = newState.name
+      const sliderPosition = newState.value
+      const currentFilterState = state.get('filterState')
+      const updatedState = currentFilterState.set(filterName, {value: sliderPosition, enabled: newState.enabled})
+      console.log(updatedState.toJS())
+      return state.set('filterState', updatedState)
+    }
   },
   defaultState
 )

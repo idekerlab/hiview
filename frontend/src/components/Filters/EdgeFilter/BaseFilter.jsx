@@ -23,54 +23,52 @@ class BaseFilter extends Component {
     super(props)
 
     this.state = {
-      checked: false,
-      disabled: false,
       labelColor: PRESET_COLORS.ENABLED,
       edgeColor: '#FFFFFF'
     }
   }
 
-  filterSelected = value => {
-    const currentValue = this.state.checked
-    const selectedItems = this.props.selected
+  filterSelected = (enabled) => {
+    const {selected, label} = this.props
 
-    if (!currentValue) {
+    if (enabled) {
       //　Insert to the first empty spot
       let itemIdx = 0
 
-      for (itemIdx; itemIdx < selectedItems.length; itemIdx++) {
-        const item = selectedItems[itemIdx]
+      for (itemIdx; itemIdx < selected.length; itemIdx++) {
+        const item = selected[itemIdx]
         if (item === undefined) {
-          selectedItems[itemIdx] = this.props.label
+          selected[itemIdx] = label
           break
         }
       }
 
       const color = this.props.colorMap(itemIdx)
       this.setState({
-        checked: !currentValue,
         labelColor: color,
         edgeColor: color
       })
+
+      console.log('EXPAND!!!!!!!!!!!!!')
       this.props.commandActions.expandEdges({
-        edgeType: this.props.label,
+        edgeType: label,
         edgeColor: color
       })
     } else {
+      console.log('### removing!!!!!!!!!!!!!')
       //　Remove
-      for (let i = 0; i < selectedItems.length; i++) {
-        const item = selectedItems[i]
-        if (item === this.props.label) {
-          selectedItems[i] = undefined
+      for (let i = 0; i < selected.length; i++) {
+        const item = selected[i]
+        if (item === label) {
+          selected[i] = undefined
           break
         }
       }
       this.setState({
-        checked: !currentValue,
         labelColor: PRESET_COLORS.ENABLED
       })
 
-      this.props.commandActions.collapseEdges(this.props.label)
+      this.props.commandActions.collapseEdges(label)
     }
   }
 
