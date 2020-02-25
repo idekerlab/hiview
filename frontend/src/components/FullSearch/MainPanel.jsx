@@ -27,7 +27,8 @@ class MainPanel extends React.Component {
   }
 
   handleKey = event => {
-    const query = this.state.query
+    const original = this.state.query
+    const query = this.validateQuery(original)
 
     if (event.key === 'Enter' && query !== '') {
       const index = this.props.network.index
@@ -39,9 +40,12 @@ class MainPanel extends React.Component {
   handleStart = event => {
     const query = this.state.query
     if (query !== '') {
+
+      const validated = this.validateQuery(query)
+
       const index = this.props.network.index
-      this.props.localSearchActions.localSearchStarted({ index, query })
-      this.search(query)
+      this.props.localSearchActions.localSearchStarted({ index, validated })
+      this.search(validated)
     }
   }
 
@@ -53,6 +57,11 @@ class MainPanel extends React.Component {
       query: ''
     })
     // this.props.commandActions.fit()
+  }
+
+  validateQuery = text => {
+    // Spaces, tabs, and commas will be used as valid separator.
+    return text.replace(/,/g, ' ')
   }
 
   search = (query, ids) => {

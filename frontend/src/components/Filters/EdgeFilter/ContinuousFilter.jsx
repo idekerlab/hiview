@@ -71,7 +71,6 @@ class ContinuousFilter extends BaseFilter {
   }
 
   onAfterChange = value => {
-    console.log('After new value --------------------', value)
     this.applyFilter(value)
     this.props.uiStateActions.setFilterState({
       name: this.props.label,
@@ -83,15 +82,14 @@ class ContinuousFilter extends BaseFilter {
   onChecked = event => {
     const checked = event.target.checked
     const currentSliderValue = this.props.value
-    console.log('Checked!! --------------------', checked, currentSliderValue)
     this.filterSelected(checked)
-
     this.props.uiStateActions.setFilterState({
       name: this.props.label,
       value: currentSliderValue,
       enabled: checked
     })
 
+    // TODO: create one command to do both in order
     setTimeout(() => {this.applyFilter(currentSliderValue)}, 10)
   }
 
