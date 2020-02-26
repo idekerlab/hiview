@@ -293,11 +293,11 @@ class EdgeFilter extends Component {
 
     const filterType = filter.type
     const defValue = Number(filter.min)
+    let enabled = false
 
     if (filterType === FILTER_TYPES.CONTINUOUS) {
       const name = filter.attributeName
       let value = defValue
-      let enabled = false
       const currentState = filterState.get(name)
 
       if(currentState) {

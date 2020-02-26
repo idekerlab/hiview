@@ -83,9 +83,11 @@ const BASE_STYLE = {
       'text-opacity': 0,
       'font-size': 65,
       color: '#FF0000',
-      opacity: 1,
-      'curve-style': 'bezier',
+      opacity: 0.7,
+      'curve-style': 'haystack',
+      'haystack-radius': 0.7,
       'control-point-step-size': 45
+
     }
   },
   edgeSelected: {
