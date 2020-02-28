@@ -84,10 +84,16 @@ const BASE_STYLE = {
       'font-size': 65,
       color: '#FF0000',
       opacity: 0.7,
-      'curve-style': 'haystack',
+      'curve-style': e => {
+        const parallel = e.parallelEdges()
+        if(parallel.size() > 1) {
+          return 'haystack'
+        } else {
+          return 'bezier'
+        }
+      },
       'haystack-radius': 0.7,
       'control-point-step-size': 45
-
     }
   },
   edgeSelected: {

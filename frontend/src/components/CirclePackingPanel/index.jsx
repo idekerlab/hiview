@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { CirclePackingRenderer, CyTreeViewer } from '@cytoscape/cy-tree-viewer'
 import cyjs2tree from './cyjs2tree'
 import { Set } from 'immutable'
+import {createColorMap} from "./color-map-generator";
 
 const TreeViewer = CyTreeViewer(CirclePackingRenderer)
 
@@ -201,6 +202,18 @@ class CirclePackingPanel extends Component {
   }
 
   render() {
+
+    const searchResults = this.props.localSearch
+    const selection = searchResults.results
+    let highlight = this.props.selection.get('highlight')
+    console.log('HL===========', highlight, selected)
+
+    let id2color = new Map()
+
+    if(selection !== undefined && selection.length !== 0) {
+      id2color = createColorMap(selection)
+    }
+
     const selected = this.props.localSearch.ids
     const treeData = this.props.network.get('hierarchy')
     return (
@@ -210,8 +223,8 @@ class CirclePackingPanel extends Component {
       >
         <TreeViewer
           command={this.props.command}
-          selected={selected}
-          highlight={this.props.selection.get('highlight')}
+          selected={id2color}
+          highlight={highlight}
           tree={treeData}
           eventHandlers={this.getEventHandlers()}
           width={this.props.style.width}

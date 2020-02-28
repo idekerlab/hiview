@@ -121,7 +121,7 @@ class SearchPanel extends Component {
             <Divider />
 
             <CardActions>
-              <Typography variant="title">Search Result</Typography>
+              <Typography variant='h5'>Search Result</Typography>
 
               <div className={classes.flexGrow} />
               <IconButton
