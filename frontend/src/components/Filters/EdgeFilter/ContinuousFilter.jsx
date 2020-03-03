@@ -28,10 +28,7 @@ class ContinuousFilter extends BaseFilter {
   }
 
   componentDidMount() {
-
     const {enabled, value} = this.props
-     console.log('Mount called====================', this.props.label, enabled)
-
     if(enabled) {
       setTimeout(() => {
         this.setState({

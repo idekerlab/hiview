@@ -1,10 +1,8 @@
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
 
+const colors = d3ScaleChromatic.schemeCategory10
 
 const createColorMap = selection => {
-  console.log('Creating from selection::', selection)
-
-  const colors = d3ScaleChromatic.schemePaired
 
   const uniqueGenes = new Set()
   selection.forEach(entry => {
@@ -12,8 +10,6 @@ const createColorMap = selection => {
 
     uniqueGenes.add(geneType)
   })
-
-  console.log('Genes::', uniqueGenes, colors, colors.length)
 
   const numColors = colors.length
   let idx = 0
@@ -28,7 +24,6 @@ const createColorMap = selection => {
       idx = 0
       colorMap.set(gene, colors[idx])
     }
-
     idx++
   })
 
@@ -39,9 +34,6 @@ const createColorMap = selection => {
     const color = colorMap.get(entry.Display_Label)
     id2color.set(id, color)
   })
-
-  console.log('CM::', colorMap, id2color)
-
   return id2color
 }
 

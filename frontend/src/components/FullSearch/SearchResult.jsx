@@ -2,18 +2,18 @@ import React, { Component } from 'react'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import {ListItemAvatar} from "@material-ui/core";
+import Avatar from "@material-ui/core/Avatar";
 
-import Collapse from '@material-ui/core/Collapse'
 
-import ExpandLess from '@material-ui/icons/ExpandLess'
-import ExpandMore from '@material-ui/icons/ExpandMore'
-
-import AliasList from './AliaseList'
+const HOVER_TIMEOUT = 50 // Event will be fired after 180ms
+let task = null
 
 class SearchResult extends Component {
   state = {}
 
-  buildNestedList = resultArray => {
+  buildNestedList = (resultArray, id2color) => {
     const nestedList = {}
 
     // Creates basic structure only with original nodes
@@ -21,6 +21,7 @@ class SearchResult extends Component {
       if (!entry.Hidden) {
         nestedList[entry.Label] = {
           props: entry,
+          color: id2color.get(entry.id),
           children: {
             [entry.id]: entry
           }
@@ -55,8 +56,7 @@ class SearchResult extends Component {
 
   render() {
     const { localSearch } = this.props
-    const results = localSearch.results
-
+    const {results, id2color} = localSearch
     const windowHeight = window.innerHeight * 0.75
 
     const resultStyle = {
@@ -64,7 +64,8 @@ class SearchResult extends Component {
       overflow: 'auto'
     }
 
-    if (!results || results === []) {
+    if (results === undefined || results === null || results.size === 0) {
+
       return (
         <List style={resultStyle}>
           <ListItem>
@@ -74,7 +75,7 @@ class SearchResult extends Component {
       )
     }
 
-    const nestedList = this.buildNestedList(results)
+    const nestedList = this.buildNestedList(results, id2color)
     const parents = Object.keys(nestedList)
 
     return (
@@ -82,6 +83,8 @@ class SearchResult extends Component {
         {parents.map((parent, i) => {
           const children = nestedList[parent].children
           const key = nestedList[parent].props.Label
+          const geneColor = nestedList[parent].color
+
           return (
             <div key={'parent-' + i}>
               <ListItem
@@ -91,9 +94,15 @@ class SearchResult extends Component {
                 style={{ backgroundColor: this.state['hoverBgColor' + key] }}
               >
                 <ListItemText
+                  style={{ color: geneColor, fontWeight: 700 }}
                   primary={nestedList[parent].props.Label}
                   secondary={nestedList[parent].props.NodeType}
                 />
+                <ListItemSecondaryAction>
+                  <ListItemAvatar>
+                    <Avatar style={{backgroundColor: geneColor}}>G</Avatar>
+                  </ListItemAvatar>
+                </ListItemSecondaryAction>
               </ListItem>
             </div>
           )
@@ -103,17 +112,26 @@ class SearchResult extends Component {
   }
 
   handleMouseOver = (nodeId, children) => {
+  
+    task = setTimeout(() => this.runHighlight(nodeId, children), HOVER_TIMEOUT)
+  }
+
+  handleMouseOut = nodeId => {
+    window.clearTimeout(task)
+    
+    this.props.selectionActions.removeHighlightNode()
+    const colorId = 'hoverBgColor' + nodeId
+    this.setState({ [colorId]: '#FFFFFF' })
+  }
+
+  runHighlight = (nodeId, children) => {
     const idList = Object.keys(children)
     this.props.selectionActions.highlightNode(idList)
     const colorId = 'hoverBgColor' + nodeId
     this.setState({ [colorId]: 'rgba(250, 250, 0, 0.3)' })
   }
-
-  handleMouseOut = nodeId => {
-    this.props.selectionActions.removeHighlightNode()
-    const colorId = 'hoverBgColor' + nodeId
-    this.setState({ [colorId]: '#FFFFFF' })
-  }
 }
 
 export default SearchResult
+
+let block = false

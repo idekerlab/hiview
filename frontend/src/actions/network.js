@@ -284,8 +284,6 @@ const fetchDataFromRemote = (url2, uuid, dispatch, serverType, credentials) => {
       hvDb.hierarchy.put(filtered)
       // hvDb.hierarchy.put(json)
       json = null
-      console.log('Hierarchy is ready = ', performance.now() - t0)
-
       return filtered
       // return json
     })
