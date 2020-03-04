@@ -9,7 +9,8 @@ import {
   CHANGE_VIEWER,
   SET_DEFAULT_DEPTH,
   ENABLE_PRIMARY_EDGE,
-  SET_FILTER_STATE
+  SET_FILTER_STATE,
+  SET_SEARCH_MODE
 } from '../actions/ui-state'
 
 import { handleActions } from 'redux-actions'
@@ -26,7 +27,8 @@ const defaultState = Map({
   changeViewer: false,
   defaultDepth: 1,
   enablePrimaryEdge: true,
-  filterState: Map()
+  filterState: Map(),
+  termSearchMode: false
 })
 
 export default handleActions(
@@ -66,7 +68,10 @@ export default handleActions(
       const updatedState = currentFilterState.set(filterName, {value: sliderPosition, enabled: newState.enabled})
       console.log(updatedState.toJS())
       return state.set('filterState', updatedState)
-    }
+    },
+    [SET_SEARCH_MODE]: (state, action) =>
+      state.set('termSearchMode', action.payload),
+
   },
   defaultState
 )

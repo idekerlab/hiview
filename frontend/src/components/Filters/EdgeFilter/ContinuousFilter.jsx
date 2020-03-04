@@ -95,7 +95,7 @@ class ContinuousFilter extends BaseFilter {
       width: '1em',
       height: '1em',
       paddingRight: '0.2em',
-      color: this.state.labelColor
+      color: this.props.color
     }
 
     const { label } = this.props

@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
+import * as d3ScaleChromatic from 'd3-scale-chromatic'
+
 import List from '@material-ui/core/List'
+
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -15,8 +18,9 @@ import Typography from '@material-ui/core/Typography'
 import ViewListIcon from '@material-ui/icons/ViewList'
 import PrimaryEdgeSwitch from './PrimaryEdgeSwitch'
 
-// Color map for 5 categorical data
-const COLORS = ['#7570b3', '#0571b0', '#aaaaaa', '#66c2a5', '#018571']
+// 5 will be used at once
+const COLORS = d3ScaleChromatic.schemeTableau10
+
 const colorMap = idx => COLORS[idx]
 
 const EDGE_GROUP_TAG = 'edge groups'
@@ -53,6 +57,11 @@ const styles = theme => ({
     // paddingLeft: 0
   }
 })
+
+const getColor = (idx) => {
+  const colorSpaceSize = COLORS.length
+  return COLORS[idx%colorSpaceSize]
+}
 
 class EdgeFilter extends Component {
   constructor(props) {
@@ -157,9 +166,9 @@ class EdgeFilter extends Component {
           />
 
           <List>
-            {sortedNames.map(filterName => (
+            {sortedNames.map((filterName, idx) => (
               <ListItem key={filterName}>
-                {this.getFilter(filterMap[filterName], filterState, uiStateActions)}
+                {this.getFilter(idx, filterMap[filterName], filterState, uiStateActions)}
               </ListItem>
             ))}
           </List>
@@ -245,14 +254,14 @@ class EdgeFilter extends Component {
     // All filters without parent categories will be here.
     newFilters[OTHERS_TAG] = []
 
-    allFilterNames.forEach(filterName => {
+    allFilterNames.forEach((filterName, idx) => {
       // Check this filter has parent category or not
       let categoryName = filter2cat[filterName]
       if (categoryName === undefined) {
         // This one does not have parent category
         const newFilterListItem = (
           <ListItem key={filterName}>
-            {this.getFilter(filterMap[filterName], filterState, uiStateActions)}
+            {this.getFilter(idx, filterMap[filterName], filterState, uiStateActions)}
           </ListItem>
         )
 
@@ -262,7 +271,6 @@ class EdgeFilter extends Component {
 
         return
       }
-
       const filterSet = cat2filter[categoryName]
 
       if (filterSet.has(filterName)) {
@@ -273,7 +281,7 @@ class EdgeFilter extends Component {
         }
         const filterListItem = (
           <ListItem key={filterName}>
-            {this.getFilter(filterMap[filterName], filterState, uiStateActions)}
+            {this.getFilter(idx, filterMap[filterName], filterState, uiStateActions)}
           </ListItem>
         )
         listForCategory.push(filterListItem)
@@ -285,7 +293,7 @@ class EdgeFilter extends Component {
     return newFilters
   }
 
-  getFilter(filter, filterState, uiStateActions) {
+  getFilter(idx, filter, filterState, uiStateActions) {
 
     if (filter === undefined) {
       return null
@@ -294,6 +302,7 @@ class EdgeFilter extends Component {
     const filterType = filter.type
     const defValue = Number(filter.min)
     let enabled = false
+    const color = getColor(idx)
 
     if (filterType === FILTER_TYPES.CONTINUOUS) {
       const name = filter.attributeName
@@ -319,8 +328,8 @@ class EdgeFilter extends Component {
           commands={this.props.commands}
           isPrimary={false}
           selected={this.state.selected}
-          colorMap={colorMap}
           uiStateActions={uiStateActions}
+          color={color}
         />
       )
     } else if (filterType === FILTER_TYPES.BOOLEAN) {
@@ -332,7 +341,7 @@ class EdgeFilter extends Component {
           filtersActions={this.props.filtersActions}
           commandActions={this.props.commandActions}
           selected={this.state.selected}
-          colorMap={colorMap}
+          color={color}
         />
       )
     }

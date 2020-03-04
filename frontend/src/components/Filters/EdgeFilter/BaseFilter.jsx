@@ -23,39 +23,23 @@ class BaseFilter extends Component {
     super(props)
 
     this.state = {
-      labelColor: PRESET_COLORS.ENABLED,
-      edgeColor: '#FFFFFF'
+      labelColor: PRESET_COLORS.ENABLED
     }
   }
 
   filterSelected = (enabled) => {
-    const {selected, label} = this.props
+    const {selected, label, color} = this.props
 
     if (enabled) {
-      //　Insert to the first empty spot
-      let itemIdx = 0
-
-      for (itemIdx; itemIdx < selected.length; itemIdx++) {
-        const item = selected[itemIdx]
-        if (item === undefined) {
-          selected[itemIdx] = label
-          break
-        }
-      }
-
-      const color = this.props.colorMap(itemIdx)
       this.setState({
-        labelColor: color,
-        edgeColor: color
+        labelColor: color
       })
 
-      console.log('EXPAND!!!!!!!!!!!!!')
       this.props.commandActions.expandEdges({
         edgeType: label,
         edgeColor: color
       })
     } else {
-      console.log('### removing!!!!!!!!!!!!!')
       //　Remove
       for (let i = 0; i < selected.length; i++) {
         const item = selected[i]

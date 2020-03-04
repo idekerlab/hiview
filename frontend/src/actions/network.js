@@ -45,6 +45,8 @@ const initDB = () => {
 
 initDB()
 
+
+//TODO: Need to create two search mode.
 const generateIndex = networkJson => {
   if (!networkJson) {
     throw Error('Network not loaded')
@@ -53,17 +55,34 @@ const generateIndex = networkJson => {
   const nodes = networkJson.elements.nodes
   const nodeData = nodes.map(node => node.data)
 
-  const options = {
+  // For individual exact match
+  const geneSearchOptions = {
+    shouldSort: true,
+    threshold: 0.0,
+    tokenize: false,
+    location: 0,
+    distance: 10,
+    maxPatternLength: 6,
+    minMatchCharLength: 3,
+    keys: ['Label']
+  }
+  
+  // For fuzzy term name match
+  const systemSearchOptions = {
     shouldSort: true,
     threshold: 0.0,
     tokenize: false,
     location: 0,
     distance: 100,
-    maxPatternLength: 12,
+    maxPatternLength: 40,
     minMatchCharLength: 3,
     keys: ['Label', 'GO_term_ID']
   }
-  return new Fuse(nodeData, options)
+
+  const geneIndex = new Fuse(nodeData, geneSearchOptions)
+  const systemIndex = new Fuse(nodeData, systemSearchOptions)
+
+  return geneIndex
 }
 
 const fetchNetwork = url => {
