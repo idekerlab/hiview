@@ -1,4 +1,5 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects'
+import {SEARCH_MODE} from '../reducers/ui-state'
 
 import {
   LOCAL_SEARCH_FAILED,
@@ -13,9 +14,9 @@ export default function* localSearchSaga() {
 function* watchSearch(action) {
   let index = action.payload.index
   let query = action.payload.query
+  const searchMode = action.payload.searchMode
 
   const matches = query.match(/"[^']*"/g)
-
   const removed = query.replace(/"[^']*"/g, '')
   let queryArray = removed.split(/ +/)
 
@@ -26,32 +27,23 @@ function* watchSearch(action) {
   }
 
   queryArray = [...queryArray, ...phrases]
-  console.log('**************q array = ', queryArray, removed)
 
   let resArray = []
 
   try {
     let len = queryArray.length
+
+    // Run search for each word
     while (len--) {
       const geneSymbol = queryArray[len]
       const results = index.search(geneSymbol)
-      // console.log('**************G = ', geneSymbol)
-
       resArray = [...resArray, ...results]
     }
 
-    const resultJson = resArray
-    console.log(
-      'Got search results::::::::::::::::',
-      action,
-      resultJson,
-      query,
-      resArray.map(entry => entry.Label)
-    )
     yield put({
       type: LOCAL_SEARCH_SUCCEEDED,
       payload: {
-        results: resultJson
+        results: filterResult(queryArray, resArray, searchMode)
       }
     })
   } catch (e) {
@@ -64,5 +56,16 @@ function* watchSearch(action) {
         error: e.message
       }
     })
+  }
+}
+
+const filterResult = (queryArray, results, searchMode) => {
+  if(searchMode === SEARCH_MODE.EXACT) {
+    const qSet = new Set(queryArray.map(q => q.toUpperCase()))
+    return results.filter(res => qSet.has(res.Display_Label))
+  } else if(searchMode === SEARCH_MODE.PREFIX){
+    return results
+  } else {
+    return results
   }
 }

@@ -16,6 +16,13 @@ import {
 import { handleActions } from 'redux-actions'
 import { Map } from 'immutable'
 
+
+export const SEARCH_MODE = {
+  EXACT: 'exact',
+  PREFIX: 'prefix',
+  FUZZY: 'fuzzy'
+}
+
 const defaultState = Map({
   showMainMenu: false,
   showAppBar: true,
@@ -28,7 +35,7 @@ const defaultState = Map({
   defaultDepth: 1,
   enablePrimaryEdge: true,
   filterState: Map(),
-  termSearchMode: false
+  searchMode: SEARCH_MODE.EXACT
 })
 
 export default handleActions(
@@ -48,11 +55,9 @@ export default handleActions(
       state.set('runEnrichment', action.payload),
 
     [CHANGE_VIEWER]: (state, action) => {
-      console.log('UPDATE viewer: ', action)
       return state.set('changeViewer', action.payload)
     },
     [SET_DEFAULT_DEPTH]: (state, action) => {
-      console.log('Setting depth: ', action.payload)
       return state.set('defaultDepth', action.payload)
     },
     [ENABLE_PRIMARY_EDGE]: (state, action) =>
@@ -66,12 +71,10 @@ export default handleActions(
       const sliderPosition = newState.value
       const currentFilterState = state.get('filterState')
       const updatedState = currentFilterState.set(filterName, {value: sliderPosition, enabled: newState.enabled})
-      console.log(updatedState.toJS())
       return state.set('filterState', updatedState)
     },
     [SET_SEARCH_MODE]: (state, action) =>
-      state.set('termSearchMode', action.payload),
-
+      state.set('searchMode', action.payload),
   },
   defaultState
 )

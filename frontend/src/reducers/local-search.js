@@ -52,7 +52,6 @@ const localSearch = handleActions(
       }
     },
     [clearSearchResults]: (state, payload) => {
-      console.log('Local search results cleared', payload)
       return {
         ...state,
         results: [],

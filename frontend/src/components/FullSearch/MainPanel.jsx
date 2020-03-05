@@ -3,7 +3,11 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
 import RefreshIcon from '@material-ui/icons/Refresh'
+import SettingsIcon from '@material-ui/icons/Settings'
 import Input from '@material-ui/core/Input'
+
+import SearchOptionDialog from './SearchOptionDialog'
+
 
 const baseStyle = {
   width: '100%',
@@ -16,7 +20,8 @@ class MainPanel extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      query: ''
+      query: '',
+      open: false
     }
   }
 
@@ -27,12 +32,8 @@ class MainPanel extends React.Component {
   }
 
   handleKey = event => {
-    const original = this.state.query
-    const query = this.validateQuery(original)
-
+    const query = this.state.query
     if (event.key === 'Enter' && query !== '') {
-      const index = this.props.network.index
-      this.props.localSearchActions.localSearchStarted({ index, query })
       this.search(query)
     }
   }
@@ -40,12 +41,7 @@ class MainPanel extends React.Component {
   handleStart = event => {
     const query = this.state.query
     if (query !== '') {
-
-      const validated = this.validateQuery(query)
-
-      const index = this.props.network.index
-      this.props.localSearchActions.localSearchStarted({ index, validated })
-      this.search(validated)
+      this.search(query)
     }
   }
 
@@ -64,22 +60,12 @@ class MainPanel extends React.Component {
     return text.replace(/,/g, ' ')
   }
 
-  search = (query, ids) => {
-    // this.props.searchActions.clear()
+  search = (q) => {
+    const searchMode = this.props.uiState.get('searchMode')
+    const query = this.validateQuery(q)
+    const index = this.props.network.index
+    this.props.localSearchActions.localSearchStarted({ index, query, searchMode })
     this.props.commandActions.reset()
-
-    // const results = index.search(query)
-    // const ids = results.map(result => result.id)
-
-    // const uuid = this.props.routeParams.uuid
-    // const options = {
-    //   baseUrl: '',
-    //   uuid: uuid
-    // }
-
-    // this.props.searchActions.searchNdex(query, options)
-    // this.props.searchActions.setSearchResult(query, options, ids)
-
     this.setState({
       expand: true
     })
@@ -89,6 +75,28 @@ class MainPanel extends React.Component {
     const currentPanelState = this.props.uiState.get('showMainMenu')
     this.props.uiStateActions.showMainMenu(!currentPanelState)
   }
+
+  toggleSearchOptionDialog = () => {
+    const currentDialogState = this.state.open
+    this.setState({
+      open: !currentDialogState
+    })
+  }
+
+  handleSearchOptionDialogOpen = () => {
+    this.setState({
+      open: true
+    })
+  };
+
+  handleSearchOptionDialogClose = (value) => {
+
+    this.props.uiStateActions.setSearchMode(value)
+
+    this.setState({
+      open: false
+    })
+  };
 
   render() {
     return (
@@ -112,6 +120,9 @@ class MainPanel extends React.Component {
           <SearchIcon />
         </IconButton>
 
+        <IconButton aria-label="Reset" onClick={this.handleReset}>
+          <RefreshIcon />
+        </IconButton>
         <div
           style={{
             width: '0.1em',
@@ -119,9 +130,10 @@ class MainPanel extends React.Component {
             borderLeft: '1px solid #aaaaaa'
           }}
         />
-        <IconButton aria-label="Reset" onClick={this.handleReset}>
-          <RefreshIcon />
+        <IconButton aria-label="Settings" onClick={this.handleSearchOptionDialogOpen}>
+          <SettingsIcon />
         </IconButton>
+        <SearchOptionDialog searchMode={this.props.uiState.get('searchMode')} open={this.state.open} onClose={this.handleSearchOptionDialogClose} />
       </div>
     )
   }
