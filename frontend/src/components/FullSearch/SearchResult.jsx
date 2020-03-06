@@ -2,10 +2,9 @@ import React, { Component } from 'react'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemText from '@material-ui/core/ListItemText'
-import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
-import {ListItemAvatar} from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
-
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction'
+import { ListItemAvatar } from '@material-ui/core'
+import Avatar from '@material-ui/core/Avatar'
 
 const HOVER_TIMEOUT = 40 // Event will be fired after 180ms
 let task = null
@@ -56,7 +55,7 @@ class SearchResult extends Component {
 
   render() {
     const { localSearch } = this.props
-    const {results, id2color} = localSearch
+    const { results, id2color } = localSearch
     const windowHeight = window.innerHeight * 0.75
 
     const resultStyle = {
@@ -65,7 +64,6 @@ class SearchResult extends Component {
     }
 
     if (results === undefined || results === null || results.size === 0) {
-
       return (
         <List style={resultStyle}>
           <ListItem>
@@ -100,7 +98,7 @@ class SearchResult extends Component {
                 />
                 <ListItemSecondaryAction>
                   <ListItemAvatar>
-                    <Avatar style={{backgroundColor: geneColor}}>G</Avatar>
+                    <Avatar style={{ backgroundColor: geneColor }}>G</Avatar>
                   </ListItemAvatar>
                 </ListItemSecondaryAction>
               </ListItem>
@@ -117,7 +115,7 @@ class SearchResult extends Component {
 
   handleMouseOut = nodeId => {
     window.clearTimeout(task)
-    
+
     this.props.selectionActions.removeHighlightNode()
     const colorId = 'hoverBgColor' + nodeId
     this.setState({ [colorId]: '#FFFFFF' })

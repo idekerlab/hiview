@@ -29,7 +29,8 @@ const defState = Map({
 export default function networkState(state = defState, action) {
   switch (action.type) {
     case FETCH_NETWORK:
-      return state.set('loading', true)
+      return state
+        .set('loading', true)
         .set('cyjs', null)
         .set('hierarchy', null)
         .set('title', null)
@@ -37,7 +38,6 @@ export default function networkState(state = defState, action) {
       return state.set('geneMap', action.payload)
 
     case RECEIVE_NETWORK:
-
       const net = action.network
       return state
         .set('cyjs', net)
@@ -56,8 +56,7 @@ export default function networkState(state = defState, action) {
     case SET_SUMMARY:
       return state.set('summary', action.payload)
     case SET_HIERARCHY:
-      return state.set('hierarchy', action.payload)
-        .set('cyjs', null)
+      return state.set('hierarchy', action.payload).set('cyjs', null)
     case SET_TITLE:
       return state.set('title', action.payload)
     default:

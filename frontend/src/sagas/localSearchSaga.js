@@ -1,5 +1,5 @@
 import { all, call, put, takeLatest } from 'redux-saga/effects'
-import {SEARCH_MODE} from '../reducers/ui-state'
+import { SEARCH_MODE } from '../reducers/ui-state'
 
 import {
   LOCAL_SEARCH_FAILED,
@@ -12,9 +12,14 @@ export default function* localSearchSaga() {
 }
 
 function* watchSearch(action) {
-  let index = action.payload.index
+  let { geneIndex, systemIndex } = action.payload.index
   let query = action.payload.query
   const searchMode = action.payload.searchMode
+
+  let index = geneIndex
+  if (searchMode === SEARCH_MODE.FUZZY) {
+    index = systemIndex
+  }
 
   const matches = query.match(/"[^']*"/g)
   const removed = query.replace(/"[^']*"/g, '')
@@ -60,12 +65,13 @@ function* watchSearch(action) {
 }
 
 const filterResult = (queryArray, results, searchMode) => {
-  if(searchMode === SEARCH_MODE.EXACT) {
+  if (searchMode === SEARCH_MODE.EXACT) {
     const qSet = new Set(queryArray.map(q => q.toUpperCase()))
     return results.filter(res => qSet.has(res.Display_Label))
-  } else if(searchMode === SEARCH_MODE.PREFIX){
+  } else if (searchMode === SEARCH_MODE.PREFIX) {
     return results
   } else {
-    return results
+    // This is for systems
+    return results.filter(res => res.NodeType === 'Term')
   }
 }

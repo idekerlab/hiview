@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:3000/a2e47c19-59bf-11ea-a7ab-0660b7976219?type=test&server=http://test.ndexbio.org",
+      "webRoot": "${workspaceRoot}/src"
+    }
+  ]
+}

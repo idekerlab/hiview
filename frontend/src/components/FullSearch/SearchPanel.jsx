@@ -56,11 +56,10 @@ class SearchPanel extends Component {
     this.setState({ expanded: !this.state.expanded })
   }
 
-  handleShowResult = (showResultPanel) => {
+  handleShowResult = showResultPanel => {
     this.setState({
       showResultPanel
     })
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -110,7 +109,7 @@ class SearchPanel extends Component {
 
         {this.state.showResultPanel ? (
           this.getResultPanel(classes, rootId)
-        ): (
+        ) : (
           <div />
         )}
       </Card>
@@ -120,7 +119,7 @@ class SearchPanel extends Component {
   getResultPanel = (classes, rootId) => {
     const results = this.props.localSearch.results
 
-    if(results === undefined || results.length === 0) {
+    if (results === undefined || results.length === 0) {
       return <NotFoundPanel />
     } else {
       return (
@@ -128,7 +127,7 @@ class SearchPanel extends Component {
           <Divider />
 
           <CardActions>
-            <Typography variant='h6'>Found (Exact Mode) </Typography>
+            <Typography variant="h6">Found (Exact Mode) </Typography>
             <div className={classes.flexGrow} />
             <IconButton
               className={classnames(classes.expand, {
@@ -155,7 +154,6 @@ class SearchPanel extends Component {
             </CardContent>
           </Collapse>
         </div>
-
       )
     }
   }

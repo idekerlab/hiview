@@ -23,7 +23,6 @@ export const FETCH_NETWORK = 'FETCH_NETWORK'
 export const SET_HIERARCHY = 'SET_HIERARCHY'
 export const setHierarchy = createAction(SET_HIERARCHY)
 
-
 // For local cache
 
 const DB_NAME = 'HiView'
@@ -45,7 +44,6 @@ const initDB = () => {
 
 initDB()
 
-
 //TODO: Need to create two search mode.
 const generateIndex = networkJson => {
   if (!networkJson) {
@@ -66,11 +64,11 @@ const generateIndex = networkJson => {
     minMatchCharLength: 3,
     keys: ['Label']
   }
-  
+
   // For fuzzy term name match
   const systemSearchOptions = {
     shouldSort: true,
-    threshold: 0.0,
+    threshold: 0.3,
     tokenize: false,
     location: 0,
     distance: 100,
@@ -82,7 +80,7 @@ const generateIndex = networkJson => {
   const geneIndex = new Fuse(nodeData, geneSearchOptions)
   const systemIndex = new Fuse(nodeData, systemSearchOptions)
 
-  return geneIndex
+  return { geneIndex, systemIndex }
 }
 
 const fetchNetwork = url => {
@@ -137,16 +135,15 @@ const getNetworkData = (url, uuid, dispatch, serverType, credentials) => {
   return false
 }
 
-
 const fetchFromLocal = (url, uuid, dispatch, netObj) => {
   console.log('Local Hit:', uuid, netObj, performance.now() - t0)
 
   // Set network title
   const networkData = netObj.data
 
-  if(networkData !== null && networkData !== undefined) {
+  if (networkData !== null && networkData !== undefined) {
     let title = networkData.name
-    if(!title) {
+    if (!title) {
       title = 'N/A (' + uuid + ')'
     }
 
