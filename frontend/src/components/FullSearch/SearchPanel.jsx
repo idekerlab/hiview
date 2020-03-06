@@ -15,6 +15,7 @@ import Divider from '@material-ui/core/Divider'
 import SearchResult from './SearchResult'
 
 import MainPanel from './MainPanel'
+import NotFoundPanel from './NotFoundPanel'
 
 const styles = theme => ({
   card: {
@@ -46,12 +47,20 @@ class SearchPanel extends Component {
     this.state = {
       query: '',
       expanded: false,
+      showResultPanel: false,
       id2label: {}
     }
   }
 
   handleExpandClick = () => {
     this.setState({ expanded: !this.state.expanded })
+  }
+
+  handleShowResult = (showResultPanel) => {
+    this.setState({
+      showResultPanel
+    })
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -91,67 +100,64 @@ class SearchPanel extends Component {
   }
 
   render() {
-    const { classes, localSearch } = this.props
+    const { classes } = this.props
 
     let rootId = null
-    // if (this.props.network !== undefined) {
-    //   const net = this.props.network['cyjs']
-    //   if (!net) {
-    //     // No network found
-    //     return <div />
-    //   }
-    //   // const net = this.props.network[this.state.currentNetworkUrl]
-    //   rootId = net.rootId
-    // }
-
-    const results = localSearch.results
-    let hideResult = false
-    if (!results || results.length === 0) {
-      hideResult = true
-    }
 
     return (
       <Card className={classes.card}>
-        <MainPanel {...this.props} />
+        <MainPanel {...this.props} handleShowResult={this.handleShowResult} />
 
-        {hideResult ? (
+        {this.state.showResultPanel ? (
+          this.getResultPanel(classes, rootId)
+        ): (
           <div />
-        ) : (
-          <div>
-            <Divider />
-
-            <CardActions>
-              <Typography variant='h5'>Search Result</Typography>
-
-              <div className={classes.flexGrow} />
-              <IconButton
-                className={classnames(classes.expand, {
-                  [classes.expandOpen]: this.state.expanded
-                })}
-                onClick={this.handleExpandClick}
-                aria-expanded={this.state.expanded}
-                aria-label="Show more"
-              >
-                <ExpandMoreIcon />
-              </IconButton>
-            </CardActions>
-            <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-              <CardContent style={{ padding: 0 }}>
-                <SearchResult
-                  localSearch={this.props.localSearch}
-                  search={this.props.search}
-                  commandActions={this.props.commandActions}
-                  selectionActions={this.props.selectionActions}
-                  rootId={rootId}
-                  currentPath={this.props.currentPath}
-                  uiState={this.props.uiState}
-                />
-              </CardContent>
-            </Collapse>
-          </div>
         )}
       </Card>
     )
+  }
+
+  getResultPanel = (classes, rootId) => {
+    const results = this.props.localSearch.results
+
+    if(results === undefined || results.length === 0) {
+      return <NotFoundPanel />
+    } else {
+      return (
+        <div>
+          <Divider />
+
+          <CardActions>
+            <Typography variant='h6'>Found (Exact Mode) </Typography>
+            <div className={classes.flexGrow} />
+            <IconButton
+              className={classnames(classes.expand, {
+                [classes.expandOpen]: this.state.expanded
+              })}
+              onClick={this.handleExpandClick}
+              aria-expanded={this.state.expanded}
+              aria-label="Show more"
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </CardActions>
+          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+            <CardContent style={{ padding: 0 }}>
+              <SearchResult
+                localSearch={this.props.localSearch}
+                search={this.props.search}
+                commandActions={this.props.commandActions}
+                selectionActions={this.props.selectionActions}
+                rootId={rootId}
+                currentPath={this.props.currentPath}
+                uiState={this.props.uiState}
+              />
+            </CardContent>
+          </Collapse>
+        </div>
+
+      )
+    }
   }
 }
 

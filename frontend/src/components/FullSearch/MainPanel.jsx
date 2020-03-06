@@ -46,13 +46,12 @@ class MainPanel extends React.Component {
   }
 
   handleReset = event => {
-    // this.props.searchActions.clear()
     this.props.commandActions.reset()
     this.props.localSearchActions.clearSearchResults()
     this.setState({
       query: ''
     })
-    // this.props.commandActions.fit()
+    this.props.handleShowResult(false)
   }
 
   validateQuery = text => {
@@ -69,6 +68,8 @@ class MainPanel extends React.Component {
     this.setState({
       expand: true
     })
+
+    this.props.handleShowResult(true)
   }
 
   handleOpen = event => {
@@ -90,9 +91,7 @@ class MainPanel extends React.Component {
   };
 
   handleSearchOptionDialogClose = (value) => {
-
     this.props.uiStateActions.setSearchMode(value)
-
     this.setState({
       open: false
     })

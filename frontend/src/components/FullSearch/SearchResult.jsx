@@ -7,7 +7,7 @@ import {ListItemAvatar} from "@material-ui/core";
 import Avatar from "@material-ui/core/Avatar";
 
 
-const HOVER_TIMEOUT = 50 // Event will be fired after 180ms
+const HOVER_TIMEOUT = 40 // Event will be fired after 180ms
 let task = null
 
 class SearchResult extends Component {
@@ -112,7 +112,6 @@ class SearchResult extends Component {
   }
 
   handleMouseOver = (nodeId, children) => {
-  
     task = setTimeout(() => this.runHighlight(nodeId, children), HOVER_TIMEOUT)
   }
 
