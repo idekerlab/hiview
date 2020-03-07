@@ -192,7 +192,7 @@ class RendererOptionsPanel extends Component {
 
           <ListItem>
             <ListItemAvatar>
-              <Avatar style={rootColorStyle}></Avatar>
+              <Avatar style={rootColorStyle}>R</Avatar>
             </ListItemAvatar>
 
             <ListItemText primary="Root Node Color" />
@@ -216,7 +216,7 @@ class RendererOptionsPanel extends Component {
           </ListItem>
           <ListItem>
             <ListItemAvatar>
-              <Avatar style={leafColorStyle}></Avatar>
+              <Avatar style={leafColorStyle}>L</Avatar>
             </ListItemAvatar>
 
             <ListItemText primary="Leaf Node Color" />

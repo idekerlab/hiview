@@ -2,12 +2,11 @@ import React from 'react'
 import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
-import RefreshIcon from '@material-ui/icons/Refresh'
+import RefreshIcon from '@material-ui/icons/Delete'
 import SettingsIcon from '@material-ui/icons/Settings'
 import Input from '@material-ui/core/Input'
 
 import SearchOptionDialog from './SearchOptionDialog'
-
 
 const baseStyle = {
   width: '100%',
@@ -59,11 +58,15 @@ class MainPanel extends React.Component {
     return text.replace(/,/g, ' ')
   }
 
-  search = (q) => {
+  search = q => {
     const searchMode = this.props.uiState.get('searchMode')
     const query = this.validateQuery(q)
     const index = this.props.network.index
-    this.props.localSearchActions.localSearchStarted({ index, query, searchMode })
+    this.props.localSearchActions.localSearchStarted({
+      index,
+      query,
+      searchMode
+    })
     this.props.commandActions.reset()
     this.setState({
       expand: true
@@ -88,14 +91,14 @@ class MainPanel extends React.Component {
     this.setState({
       open: true
     })
-  };
+  }
 
-  handleSearchOptionDialogClose = (value) => {
+  handleSearchOptionDialogClose = value => {
     this.props.uiStateActions.setSearchMode(value)
     this.setState({
       open: false
     })
-  };
+  }
 
   render() {
     return (
@@ -129,10 +132,17 @@ class MainPanel extends React.Component {
             borderLeft: '1px solid #aaaaaa'
           }}
         />
-        <IconButton aria-label="Settings" onClick={this.handleSearchOptionDialogOpen}>
+        <IconButton
+          aria-label="Settings"
+          onClick={this.handleSearchOptionDialogOpen}
+        >
           <SettingsIcon />
         </IconButton>
-        <SearchOptionDialog searchMode={this.props.uiState.get('searchMode')} open={this.state.open} onClose={this.handleSearchOptionDialogClose} />
+        <SearchOptionDialog
+          searchMode={this.props.uiState.get('searchMode')}
+          open={this.state.open}
+          onClose={this.handleSearchOptionDialogClose}
+        />
       </div>
     )
   }

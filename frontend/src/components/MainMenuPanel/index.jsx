@@ -4,45 +4,40 @@ import Drawer from '@material-ui/core/Drawer'
 import RendererOptionsPanel from '../RendererOptionsPanel'
 import TitleBar from './TitleBar'
 
-const containerStyle = {
+const rootStyle = {
   display: 'flex',
-  width: '100%',
   flexDirection: 'column'
 }
 
-export default class MainMenuPanel extends Component {
-  render() {
-    const {
-      uiState,
-      uiStateActions,
-      maxEdgeCount,
-      rawInteractionsActions
-    } = this.props
+const MainMenuPanel = props => {
+  const {
+    uiState,
+    uiStateActions,
+    maxEdgeCount,
+    rawInteractionsActions
+  } = props
 
-    const openState = uiState.get('showMainMenu')
+  const openState = uiState.get('showMainMenu')
 
-    return (
-      <Drawer
-        style={{ zIndex: 2000 }}
-        variant="persistent"
-        anchor={'left'}
-        open={openState}
-      >
-        <div style={containerStyle}>
-          <TitleBar {...this.props} />
-
-          <div style={{ width: '100%', height: '5em' }} />
-
-          <RendererOptionsPanel {...this.props} />
-
-          <MainMenu
-            maxEdgeCount={maxEdgeCount}
-            uiState={uiState}
-            uiStateActions={uiStateActions}
-            rawInteractionsActions={rawInteractionsActions}
-          />
-        </div>
-      </Drawer>
-    )
-  }
+  return (
+    <Drawer
+      style={{ zIndex: 2000 }}
+      variant="persistent"
+      anchor={'left'}
+      open={openState}
+    >
+      <div style={rootStyle}>
+        <TitleBar {...props} />
+        <RendererOptionsPanel {...props} />
+        <MainMenu
+          maxEdgeCount={maxEdgeCount}
+          uiState={uiState}
+          uiStateActions={uiStateActions}
+          rawInteractionsActions={rawInteractionsActions}
+        />
+      </div>
+    </Drawer>
+  )
 }
+
+export default MainMenuPanel

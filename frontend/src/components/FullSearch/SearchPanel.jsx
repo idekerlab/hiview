@@ -118,6 +118,7 @@ class SearchPanel extends Component {
 
   getResultPanel = (classes, rootId) => {
     const results = this.props.localSearch.results
+    const searchMode = this.props.uiState.get('searchMode')
 
     if (results === undefined || results.length === 0) {
       return <NotFoundPanel />
@@ -127,7 +128,9 @@ class SearchPanel extends Component {
           <Divider />
 
           <CardActions>
-            <Typography variant="h6">Found (Exact Mode) </Typography>
+            <Typography variant="h6">
+              {'Search Result (' + searchMode + ' matches)'}
+            </Typography>
             <div className={classes.flexGrow} />
             <IconButton
               className={classnames(classes.expand, {

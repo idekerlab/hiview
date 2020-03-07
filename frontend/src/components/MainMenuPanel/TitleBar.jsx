@@ -1,8 +1,6 @@
 import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 
-import { withStyles } from '@material-ui/core/styles'
-
-import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import IconButton from '@material-ui/core/IconButton'
@@ -10,44 +8,40 @@ import IconButton from '@material-ui/core/IconButton'
 import CloseIcon from '@material-ui/icons/KeyboardArrowLeft'
 import SettingsIcon from '@material-ui/icons/Settings'
 
-const styles = {
+const useStyles = makeStyles({
   menuButton: {
-    marginLeft: 20,
-    marginRight: -20
+    color: '#FFFFFF'
   },
   titleButton: {
     marginRight: 10
   },
-  title: {
-    width: '100%',
+  root: {
+    backgroundColor: 'teal',
+    color: '#FFFFFF',
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    alighItems: 'center'
   }
-}
+})
 
 const TitleBar = props => {
-  const { classes } = props
+  const classes = useStyles()
 
   return (
-    <AppBar position="fixed">
-      <Toolbar>
-        <div className={classes.title}>
-          <SettingsIcon className={classes.titleButton} />
+    <Toolbar className={classes.root}>
+      <SettingsIcon className={classes.titleButton} />
+      <Typography variant="h5" color="inherit">
+        Control Panel
+      </Typography>
 
-          <Typography variant="h5" color="inherit">
-            Control Panel
-          </Typography>
-        </div>
-
-        <IconButton
-          className={classes.menuButton}
-          onClick={e => handleClose(props)}
-        >
-          <CloseIcon />
-        </IconButton>
-      </Toolbar>
-    </AppBar>
+      <IconButton
+        className={classes.menuButton}
+        onClick={e => handleClose(props)}
+      >
+        <CloseIcon />
+      </IconButton>
+    </Toolbar>
   )
 }
 
@@ -56,4 +50,4 @@ const handleClose = props => {
   props.uiStateActions.showMainMenu(!currentPanelState)
 }
 
-export default withStyles(styles)(TitleBar)
+export default TitleBar
