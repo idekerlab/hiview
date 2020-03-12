@@ -3,82 +3,80 @@ import TitleBar from './TitleBar'
 import CoreGenePropPanel from './CoreGenePropPanel'
 import Typography from '@material-ui/core/Typography'
 
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { blueGrey } from '@material-ui/core/colors'
+import CircularProgress from '@material-ui/core/CircularProgress'
+import { blueGrey, blue } from '@material-ui/core/colors'
 
+import PathPanel from './PathPanel'
 
-const descriptionStyle = {
-  background: blueGrey[50],
-  padding: '1.2em'
-}
+import { makeStyles } from '@material-ui/core/styles'
 
-class GenePropertyPanel extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      subtree: {},
-      scoreFilter: 1.0,
-      subnet: {}
-    }
+const useStyles = makeStyles(theme => ({
+  root: {
+    boxSizing: 'border-box',
+    width: '100%',
+    padding: 0,
+    margin: 0,
+    background: '＃FFFFFF'
+  },
+  description: {
+    background: blueGrey[50],
+    padding: '1em'
+  },
+  path: {
+    background: '#FFFFFF',
+    margin: '1em'
+  },
+  title: {
+    borderBottom: '1px solid #666666',
+    marginBottom: '0.4em'
+  }
+}))
+
+const GenePropertyPanel = props => {
+  const classes = useStyles()
+  const details = props.currentProperty
+  if (details === undefined || details === null) {
+    return <div>no data</div>
   }
 
-  render() {
-    const details = this.props.currentProperty
-    if (
-      details === undefined ||
-      details === null ||
-      details.id === null ||
-      details.id === undefined
-    ) {
-      return <div />
-    }
+  // Loading
+  if (details.loading) {
+    return <CircularProgress />
+  }
 
-    // Loading
-    if (details.loading) {
-      return <CircularProgress />
-    }
+  const data = details.data
+  if (data === undefined || data === null) {
+    return <div>no data</div>
+  }
 
-    const data = details.data
-    const id = details.id
+  if (data.hits === undefined || data.hits.length === 0) {
+    return <div>no data</div>
+  }
 
-    if (data === undefined || data === null) {
-      return <div>no data</div>
-    }
+  const entry = data.hits[0]
 
-    if (data.hits === undefined || data.hits.length === 0) {
-      return <div>no data</div>
-    }
-
-    const entry = data.hits[0]
-
-    return (
-      <div>
-        <TitleBar
-          title={entry.name}
-          geneId={entry._id}
-          geneSymbol={entry.symbol}
-        />
-
-        <div style={descriptionStyle}>
-          <Typography
-            variant="title"
-            style={{ borderBottom: '1px solid #666666', marginBottom: '0.2em' }}
-          >
-            Summary:
-          </Typography>
-          <Typography type="subtitle1" style={{ fontSize: '1.2em' }}>
-            {entry.summary}
-          </Typography>
-        </div>
-
-        <CoreGenePropPanel geneInfo={entry} />
+  return (
+    <div className={classes.root}>
+      <div className={classes.path}>
+        <PathPanel {...props} />
       </div>
-    )
-  }
+      <TitleBar
+        title={entry.name}
+        geneId={entry._id}
+        geneSymbol={entry.symbol}
+      />
 
-  _handleTouchTap = id => {
-    window.open('http://amigo.geneontology.org/amigo/term/' + id)
-  }
+      <div className={classes.description}>
+        <Typography variant="h6" className={classes.title}>
+          Summary
+        </Typography>
+        <Typography type="subtitle1" style={{ fontSize: '1.3em' }}>
+          {entry.summary}
+        </Typography>
+      </div>
+      <CoreGenePropPanel geneInfo={entry} />
+    </div>
+  )
 }
 
 export default GenePropertyPanel

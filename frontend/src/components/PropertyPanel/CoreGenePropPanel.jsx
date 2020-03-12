@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
 
 import OpenIcon from '@material-ui/icons/OpenInNew'
 import ViewListIcon from '@material-ui/icons/ViewList'
@@ -10,7 +10,7 @@ import KeyIcon from '@material-ui/icons/VpnKey'
 
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
-import Collapse from '@material-ui/core/Collapse';
+import Collapse from '@material-ui/core/Collapse'
 
 import GoPanel from './GoPanel'
 
@@ -85,22 +85,14 @@ class CoreGenePropPanel extends Component {
             <ListItemIcon>
               <KeyIcon />
             </ListItemIcon>
-            <ListItemText
-              inset
-              primary={entrezgene}
-              secondary={'Entrez Gene ID'}
-            />
+            <ListItemText primary={entrezgene} secondary={'Entrez Gene ID'} />
           </ListItem>
 
           <ListItem>
             <ListItemIcon>
               <KeyIcon />
             </ListItemIcon>
-            <ListItemText
-              inset
-              primary={ensemblGene}
-              secondary={'Ensembl Gene ID'}
-            />
+            <ListItemText primary={ensemblGene} secondary={'Ensembl Gene ID'} />
           </ListItem>
 
           <GoPanel

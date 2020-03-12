@@ -7,7 +7,8 @@ import {
   SET_SUMMARY,
   SET_GENE_MAP,
   SET_HIERARCHY,
-  SET_TITLE
+  SET_TITLE,
+  SET_CURRENT_PATH
 } from '../actions/network'
 import { Map } from 'immutable'
 
@@ -23,7 +24,8 @@ const defState = Map({
   summary: null,
   geneMap: null,
   hierarchy: null,
-  title: null
+  title: null,
+  currentPath: []
 })
 
 export default function networkState(state = defState, action) {
@@ -34,9 +36,9 @@ export default function networkState(state = defState, action) {
         .set('cyjs', null)
         .set('hierarchy', null)
         .set('title', null)
+        .set('currentPath', [])
     case SET_GENE_MAP:
       return state.set('geneMap', action.payload)
-
     case RECEIVE_NETWORK:
       const net = action.network
       return state
@@ -59,6 +61,9 @@ export default function networkState(state = defState, action) {
       return state.set('hierarchy', action.payload).set('cyjs', null)
     case SET_TITLE:
       return state.set('title', action.payload)
+    case SET_CURRENT_PATH:
+      return state.set('currentPath', action.payload)
+
     default:
       return state
   }

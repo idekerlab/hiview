@@ -3,7 +3,6 @@ import * as d3ScaleChromatic from 'd3-scale-chromatic'
 const colors = d3ScaleChromatic.schemeCategory10
 
 const createColorMap = selection => {
-
   const uniqueGenes = new Set()
   selection.forEach(entry => {
     const geneType = entry.Display_Label
@@ -17,8 +16,7 @@ const createColorMap = selection => {
   const colorMap = new Map()
 
   uniqueGenes.forEach(gene => {
-
-    if(idx < numColors) {
+    if (idx < numColors) {
       colorMap.set(gene, colors[idx])
     } else {
       idx = 0
@@ -26,7 +24,6 @@ const createColorMap = selection => {
     }
     idx++
   })
-
 
   const id2color = new Map()
   selection.forEach(entry => {

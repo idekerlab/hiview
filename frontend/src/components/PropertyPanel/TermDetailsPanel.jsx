@@ -119,8 +119,6 @@ class TermDetailsPanel extends Component {
     let serverType = locationParams.query.type
     const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
 
-
-
     // if (
     //   summary &&
     //   summary.edgeCount > autoLoadTh &&
@@ -184,7 +182,7 @@ class TermDetailsPanel extends Component {
       const label = data.Label
       const geneSet = geneMap.get(label)
 
-      if(geneSet === undefined) {
+      if (geneSet === undefined) {
         geneList = []
       } else {
         geneList = [...geneSet]
@@ -243,6 +241,7 @@ class TermDetailsPanel extends Component {
         >
           <MessageBar
             height={50}
+            network={this.props.network}
             title={this.props.title}
             titleColor={this.props.color}
             originalEdgeCount={this.props.originalEdgeCount}

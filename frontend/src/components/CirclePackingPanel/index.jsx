@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { CirclePackingRenderer, CyTreeViewer } from '@cytoscape/cy-tree-viewer'
 import cyjs2tree from './cyjs2tree'
 import { Set } from 'immutable'
+import { findPath } from './path-finder'
 
 const TreeViewer = CyTreeViewer(CirclePackingRenderer)
 
@@ -67,6 +68,10 @@ class CirclePackingPanel extends Component {
           selectedGroups: Set(),
           selectedGenes: Set()
         })
+
+        const path = findPath(node)
+        const reorderedPath = path.reverse()
+        this.props.networkActions.setCurrentPath(reorderedPath)
 
         const positions = extractPositions(node)
         this.props.rawInteractionsActions.setGroupPositions(positions)
@@ -239,7 +244,7 @@ const extractPositions = parent => {
   children.forEach(node => {
     // Extract ID of current node
     let id = node.data.data.props.name
-    if(node.data.data.props.NodeType === 'Gene') {
+    if (node.data.data.props.NodeType === 'Gene') {
       id = node.data.data.props.Label
     }
     positions[id] = {

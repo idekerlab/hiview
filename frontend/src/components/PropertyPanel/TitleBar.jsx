@@ -25,10 +25,7 @@ const TitleBar = props => (
     >
       {props.geneSymbol}:
     </Typography>
-    <Typography
-      variant="h3"
-      style={{ color: '#666666', fontSize: '1.3em' }}
-    >
+    <Typography variant="h3" style={{ color: '#666666', fontSize: '1.3em' }}>
       {props.title}
     </Typography>
   </div>

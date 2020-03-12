@@ -23,6 +23,9 @@ export const FETCH_NETWORK = 'FETCH_NETWORK'
 export const SET_HIERARCHY = 'SET_HIERARCHY'
 export const setHierarchy = createAction(SET_HIERARCHY)
 
+export const SET_CURRENT_PATH = 'SET_CURRENT_PATH'
+export const setCurrentPath = createAction(SET_CURRENT_PATH)
+
 // For local cache
 
 const DB_NAME = 'HiView'
