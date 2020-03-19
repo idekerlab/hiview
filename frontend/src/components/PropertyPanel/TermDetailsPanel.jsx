@@ -26,6 +26,13 @@ import LargeNetworkWarningPanel from './LargeNetworkWarningPanel'
 import InteractionNetworkSelector from '../InteractionNetworkSelector'
 import CytoscapeViewer from '../CytoscapeViewer'
 
+import { makeStyles } from '@material-ui/core/styles'
+import ExpansionPanel from '@material-ui/core/ExpansionPanel'
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
+import Typography from '@material-ui/core/Typography'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+
 const WARNING_TH = 2000000
 
 const filterPanelStyle = {
@@ -50,6 +57,11 @@ const controllerStyle = {
   width: '100%',
   height: '6em',
   background: '#EEEEEE'
+}
+
+const headingStyle = {
+  fontSize: '1em',
+  fontWeight: 400
 }
 
 class TermDetailsPanel extends Component {
@@ -118,26 +130,6 @@ class TermDetailsPanel extends Component {
     const uuid = this.props.routeParams.uuid
     let serverType = locationParams.query.type
     const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
-
-    // if (
-    //   summary &&
-    //   summary.edgeCount > autoLoadTh &&
-    //   raw.interactions === null
-    // ) {
-    //   const rawUuid = summary.externalId
-    //   const rawUrl = this.props.cxtoolUrl + rawUuid + '?server=' + serverType
-    //
-    //   return (
-    //     <LargeNetworkWarningPanel
-    //       summary={summary}
-    //       uuid={rawUuid}
-    //       server={serverType}
-    //       url={rawUrl}
-    //       maxEdgeCount={this.props.maxEdgeCount}
-    //       rawInteractionsActions={this.props.rawInteractionsActions}
-    //     />
-    //   )
-    // }
 
     const interactions = raw.interactions
     const selected = raw.selected
@@ -213,6 +205,7 @@ class TermDetailsPanel extends Component {
       height: window.innerHeight - this.state.networkPanelHeight,
       display: 'flex',
       flexDirection: 'column',
+      overflowX: 'hidden',
       overflowY: 'auto'
     }
 
@@ -346,16 +339,28 @@ class TermDetailsPanel extends Component {
           style={layoutPanelStyle}
           commandActions={this.props.interactionsCommandActions}
         />
-        <CrossFilter
-          panelWidth={this.props.width}
-          networkData={networkProps}
-          originalEdgeCount={this.props.originalEdgeCount}
-          maxEdgeCount={this.props.maxEdgeCount}
-          filters={raw.filters}
-          commandActions={this.props.interactionsCommandActions}
-          commands={this.props.interactionsCommands}
-          filtersActions={this.props.filtersActions}
-        />
+
+        <ExpansionPanel>
+          <ExpansionPanelSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>Primary Score Filter</Typography>
+          </ExpansionPanelSummary>
+          <ExpansionPanelDetails>
+            <CrossFilter
+              panelWidth={this.props.width * 0.9}
+              networkData={networkProps}
+              originalEdgeCount={this.props.originalEdgeCount}
+              maxEdgeCount={this.props.maxEdgeCount}
+              filters={raw.filters}
+              commandActions={this.props.interactionsCommandActions}
+              commands={this.props.interactionsCommands}
+              filtersActions={this.props.filtersActions}
+            />
+          </ExpansionPanelDetails>
+        </ExpansionPanel>
 
         <div style={controllerStyle}>
           <AutoLoadThresholdPanel

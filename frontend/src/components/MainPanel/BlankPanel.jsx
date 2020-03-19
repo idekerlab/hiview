@@ -16,11 +16,8 @@ const style = {
 
 const BlankPanel = props => (
   <div style={style}>
-    <ArrowIcon style={{width: '5em', height: '3em', color: '#444444'}}/>
-    <Typography
-      variant={'h3'}
-      style={{ color: '#555555', fontWeight: 300 }}
-    >
+    <ArrowIcon style={{ width: '5em', height: '3em', color: '#444444' }} />
+    <Typography variant={'h3'} style={{ color: '#555555', fontWeight: 300 }}>
       Double-Click a Subsystem to Start
     </Typography>
   </div>

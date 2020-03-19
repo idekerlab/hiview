@@ -8,6 +8,7 @@ html, body, #root {
     box-sizing: border-box;
     font: 12px Roboto, 'Helvetica Neue', Helvetica, sans-serif;
     line-height: 1.2em;
+    overflow: hidden;
 }
 
 .react-contextmenu {

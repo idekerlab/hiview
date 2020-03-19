@@ -1,15 +1,8 @@
 import React from 'react'
 
 const style = {
-  position: 'fixed',
-  left: '34em',
-  top: '0.5em',
-  background: 'rgba(245, 245, 245, 0.9)',
-  zIndex: 1800,
-  minWidth: '32em',
-  padding: '0.7em',
-  borderRadius: '0.1em',
-  // border: '1px solid #999999',
+  paddingLeft: '0.6em',
+  paddingRight: '0.6em',
   color: '#555555'
 }
 
@@ -37,7 +30,7 @@ const Overlay = props => {
   const { network } = props
 
   if (network !== undefined && network !== null) {
-    title = network.get('title')
+    title = network['title']
   }
   const selection = props.selection.get('enter')
   const expanded = props.selection.get('main')
@@ -64,8 +57,6 @@ const Overlay = props => {
 
   return (
     <div style={style}>
-      <div style={titleStyle}>Hierarchy Name: {getLink(link, title)}</div>
-
       {isCirclePacking ? (
         <div />
       ) : (

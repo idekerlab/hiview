@@ -132,11 +132,10 @@ class NetworkPanel extends Component {
 
     let linkId = ''
 
-    if(linkEntry.startsWith('http')) {
+    if (linkEntry.startsWith('http')) {
       const urlParts = linkEntry.split('/')
       linkId = urlParts[urlParts.length - 1]
       console.log('New UUID = ', urlParts, linkId)
-
     } else {
       const linkParts = linkEntry.split(']')
       if (linkParts.length !== 2) {
@@ -146,7 +145,6 @@ class NetworkPanel extends Component {
       const uuidWithExtraStr = linkParts[1]
       linkId = uuidWithExtraStr.replace(')', '').replace('(', '')
     }
-
 
     const locationParams = this.props.location
     let serverType = locationParams.query.type
@@ -187,7 +185,9 @@ class NetworkPanel extends Component {
         // if (edgeCount < this.props.autoLoadThreshold) {
 
         console.log(
-          '* Start loading interaction network::', this.props.rawInteractions.toJS(), this.props.network.toJS()
+          '* Start loading interaction network::',
+          this.props.rawInteractions.toJS(),
+          this.props.network.toJS()
         )
 
         const positions = this.props.rawInteractions.get('groupPositions')
@@ -264,8 +264,7 @@ class NetworkPanel extends Component {
     this.props.rawInteractionsActions.setSelected([])
   }
 
-  hideEdges = (edgeIds=[]) => {
-  }
+  hideEdges = (edgeIds = []) => {}
 
   // Then use it as a custom handler
   getCustomEventHandlers = () => ({
@@ -392,7 +391,6 @@ class NetworkPanel extends Component {
     // const networkData = networkProp.get('cyjs')
     const networkData = networkProp
 
-
     if (loading) {
       let message = 'Loading hierarchy.  Please wait...'
 
@@ -426,8 +424,7 @@ class NetworkPanel extends Component {
       top: 0,
       left: 0,
       width: this.props.width,
-      height: this.props.height,
-      background: 'teal'
+      height: this.props.height
     }
 
     // Default layout

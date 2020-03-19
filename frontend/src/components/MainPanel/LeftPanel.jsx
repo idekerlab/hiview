@@ -3,22 +3,6 @@ import SplitPane from 'react-split-pane'
 import NetworkPanel from '../NetworkPanel'
 import AnalysisPanel from '../AnalysisPanel'
 
-const mainViewerStyle = {
-  background: '#EFEFEF'
-}
-
-const networkViewerStyle = {
-  background: '#FF00FF',
-  width: '100%',
-  height: '100%'
-}
-
-const propPanelStyle = {
-  background: '#EEEEFF',
-  width: '100%',
-  height: '100%'
-}
-
 class LeftPanel extends Component {
   constructor(props) {
     super(props)
@@ -30,7 +14,7 @@ class LeftPanel extends Component {
   componentDidMount() {
     this.props.networkActions.setUuid(this.props.params.uuid)
     this.props.networkActions.setServer(this.props.location.query.server)
-    const topPanelHeight = window.innerHeight * 0.9
+    const topPanelHeight = window.innerHeight - 100
     this.setState({
       topPanelHeight
     })
@@ -40,7 +24,6 @@ class LeftPanel extends Component {
     this.setState({
       topPanelHeight
     })
-    console.log('Main Panel resize End:', topPanelHeight)
   }
 
   render() {
@@ -72,6 +55,9 @@ class LeftPanel extends Component {
 
     return (
       <SplitPane
+        style={{
+          boxSizing: 'border-box'
+        }}
         split="horizontal"
         minSize={100}
         maxSize={-55}

@@ -83,7 +83,11 @@ class CrossFilter extends Component {
   render() {
     // console.log('*** HIST:', this.props)
     const data = this.props.networkData
-    if (!data || Object.keys(data).length === 0 || data.edgeScoreRange === undefined) {
+    if (
+      !data ||
+      Object.keys(data).length === 0 ||
+      data.edgeScoreRange === undefined
+    ) {
       return (
         <div
           style={containerStyle}

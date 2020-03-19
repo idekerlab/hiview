@@ -2,7 +2,7 @@ import React from 'react'
 
 import Commands from '../Commands'
 import MainMenuPanel from '../MainMenuPanel'
-import FullSearch from '../FullSearch'
+import LocalSearchPanel from '../LocalSearchPanel'
 import BaseSplitPane from './BaseSplitPane'
 import Overlay from '../Overlay'
 import MessageBox from '../MessageBox'
@@ -38,15 +38,6 @@ const MainPanel = props => {
 
   return (
     <div style={props.style}>
-      <Overlay
-        uiState={uiState}
-        network={network}
-        cxUrl={CXTOOL_URL}
-        selection={selection}
-        location={location}
-        routeParams={routeParams}
-      />
-
       <MessageBox uiState={uiState} selection={selection} />
 
       <MainMenuPanel
@@ -66,7 +57,7 @@ const MainPanel = props => {
         uiStateActions={uiStateActions}
       />
 
-      <FullSearch
+      <LocalSearchPanel
         network={network.toJS()}
         commandActions={commandActions}
         searchActions={searchActions}
@@ -76,9 +67,12 @@ const MainPanel = props => {
         uiState={uiState}
         uiStateActions={uiStateActions}
         routeParams={routeParams}
+        renderingOptions={renderingOptions}
         location={location}
         localSearch={localSearch}
         localSearchActions={localSearchActions}
+        cxUrl={CXTOOL_URL}
+        selection={selection}
       />
     </div>
   )

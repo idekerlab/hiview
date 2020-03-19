@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import TermDetailsPanel from './TermDetailsPanel'
 import GenePropertyPanel from './GenePropertyPanel'
 
-
 const PANEL_TYPES = {
   GENE: 'gene',
   TERM: 'term',
@@ -46,10 +45,10 @@ class PropertyPanel extends Component {
     const barTitle = label
 
     const drawerContentsStyle = {
-      overflowX: 'auto',
+      overflowX: 'never',
       boxSizing: 'border-box',
-      height: '100%',
       width: '100%',
+      height: '100%',
       margin: 0,
       padding: 0,
       background: '#FFFFFF'
