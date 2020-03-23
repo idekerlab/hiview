@@ -15,6 +15,12 @@ const NDEX_LINK_TAG = 'ndex_internalLink'
 
 const GO_NAMESPACE = 'GO:'
 
+const NDEX_API = '.ndexbio.org/v2/network/'
+
+const DEFAULT_SERVER = 'http://test.ndexbio.edu'
+const DEFAULT_TYPE = 'test'
+const DEFAULT_SUMMARY = `http://test.ndexbio.org/v2/search/network`
+
 const Viewer = CyNetworkViewer(SigmaRenderer)
 
 const progressStyle = {
@@ -30,6 +36,27 @@ const progressStyle = {
   color: 'white',
   backgroundColor: 'rgba(0,0,0,0.2)',
   zIndex: 1000
+}
+
+const name2uuid = networkName => {
+  const query = {
+    searchString: networkName
+  }
+
+  const settings = {
+    method: 'POST',
+    body: JSON.stringify(query),
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  }
+  fetch(DEFAULT_SUMMARY, settings)
+    .then(res => res.json())
+    .then(json => {
+      const firstRes = json.network[0]
+      console.log(firstRes['externalId'])
+      return firstRes
+    })
 }
 
 // TODO: better filter?
@@ -152,7 +179,6 @@ class NetworkPanel extends Component {
     this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
     // Check size before
-    const NDEX_API = '.ndexbio.org/v2/network/'
     const summaryUrl = 'http://' + serverType + NDEX_API + linkId + '/summary'
 
     console.log('Summary URL = ', summaryUrl)
@@ -294,12 +320,48 @@ class NetworkPanel extends Component {
     const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
     this.setState({ networkUrl: url })
 
-    this.props.networkActions.fetchNetworkFromUrl(
-      url,
-      uuid,
-      serverType,
-      credentials
-    )
+    const { fetchNetworkFromUrl } = this.props.networkActions
+
+    if (locationParams.query.type === undefined) {
+      const query = {
+        searchString: uuid
+      }
+      const settings = {
+        method: 'POST',
+        body: JSON.stringify(query),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }
+      fetch(DEFAULT_SUMMARY, settings)
+        .then(res => res.json())
+        .then(json => {
+          const firstRes = json.networks[0]
+          const newId = firstRes['externalId']
+          const newUrl = this.props.cxtoolUrl + newId + '?server=' + serverType
+
+          this.props.networkActions.setUuid(newId)
+          this.props.networkActions.setServer(DEFAULT_SERVER)
+
+          // Encode parameters in URL
+          const newLocationUrl = `/${newId}?type=${serverType}&server=${DEFAULT_SERVER}`
+          browserHistory.push(newLocationUrl)
+
+          this.props.networkActions.fetchNetworkFromUrl(
+            newUrl,
+            newId,
+            serverType,
+            credentials
+          )
+        })
+    } else {
+      this.props.networkActions.fetchNetworkFromUrl(
+        url,
+        uuid,
+        serverType,
+        credentials
+      )
+    }
   }
 
   componentWillReceiveProps(nextProps) {

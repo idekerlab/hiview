@@ -162,7 +162,4 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NetworkView)
+export default connect(mapStateToProps, mapDispatchToProps)(NetworkView)

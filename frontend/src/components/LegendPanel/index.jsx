@@ -40,7 +40,7 @@ const LegendPanel = props => {
 
   return (
     <div className={classes.root}>
-      <Typography variant="subtitle">Depth</Typography>
+      <Typography variant="subtitle1">Depth</Typography>
       <div style={colorBarStyle}></div>
       <div className={classes.label}>
         <div className={classes.textLeft}>0</div>
