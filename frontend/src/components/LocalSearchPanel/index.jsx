@@ -35,8 +35,7 @@ const styles = theme => ({
     width: '100%'
   },
   title: {
-    width: '100%',
-    paddingTop: '0.4em'
+    width: '100%'
   },
   card: {
     width: 360
@@ -180,11 +179,6 @@ class LocalSearchPanel extends Component {
               <Divider />
               <div className={classes.title}>
                 <Overlay {...this.props} />
-              </div>
-
-              <div className={classes.legend}>
-                <Divider />
-                <LegendPanel depth={dagHeight} {...this.props} />
               </div>
             </ExpansionPanelDetails>
           </ExpansionPanel>

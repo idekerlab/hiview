@@ -1,8 +1,7 @@
 import React from 'react'
 
 const style = {
-  paddingLeft: '0.6em',
-  paddingRight: '0.6em',
+  padding: '0.6em',
   color: '#555555'
 }
 

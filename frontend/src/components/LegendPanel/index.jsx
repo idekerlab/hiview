@@ -7,7 +7,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
-    padding: '0.5em',
+    width: '100%',
     color: '#666666'
   },
   label: {
@@ -35,12 +35,11 @@ const LegendPanel = props => {
     width: '100%',
     height: '2em',
     background: gradient,
-    marginTop: '0.2em'
+    marginTop: 0
   }
 
   return (
     <div className={classes.root}>
-      <Typography variant="subtitle1">Depth</Typography>
       <div style={colorBarStyle}></div>
       <div className={classes.label}>
         <div className={classes.textLeft}>0</div>

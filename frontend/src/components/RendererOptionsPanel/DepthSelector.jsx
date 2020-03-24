@@ -25,11 +25,7 @@ const DepthSelector = props => {
       </ListItemAvatar>
 
       <ListItemText primary="Default Expansion Depth:" />
-      <Select
-        value={selected}
-        style={{ width: '55%' }}
-        onChange={handleChange}
-      >
+      <Select value={selected} style={{ width: '55%' }} onChange={handleChange}>
         {DEPTH_RANGE.map(index => (
           <MenuItem key={index} value={index}>
             {'From root to depth ' + (index + 1)}

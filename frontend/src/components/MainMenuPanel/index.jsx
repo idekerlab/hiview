@@ -14,10 +14,19 @@ const MainMenuPanel = props => {
     uiState,
     uiStateActions,
     maxEdgeCount,
-    rawInteractionsActions
+    rawInteractionsActions,
+    network
   } = props
 
   const openState = uiState.get('showMainMenu')
+  let dagHeight = 0
+  if (network !== undefined && network !== null) {
+    const { hierarchy } = network
+
+    if (hierarchy !== undefined && hierarchy !== null) {
+      dagHeight = hierarchy.height
+    }
+  }
 
   return (
     <Drawer
@@ -28,7 +37,7 @@ const MainMenuPanel = props => {
     >
       <div style={rootStyle}>
         <TitleBar {...props} />
-        <RendererOptionsPanel {...props} />
+        <RendererOptionsPanel depth={dagHeight} {...props} />
         <MainMenu
           maxEdgeCount={maxEdgeCount}
           uiState={uiState}

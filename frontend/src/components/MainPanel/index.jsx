@@ -40,6 +40,7 @@ const MainPanel = props => {
       <MessageBox uiState={uiState} selection={selection} />
 
       <MainMenuPanel
+        network={network.toJS()}
         uiState={uiState}
         uiStateActions={uiStateActions}
         maxEdgeCount={props.rawInteractions.get('maxEdgeCount')}

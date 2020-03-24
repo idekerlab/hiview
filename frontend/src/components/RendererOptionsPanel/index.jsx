@@ -23,6 +23,7 @@ import { ChromePicker } from 'react-color'
 import Button from '@material-ui/core/Button'
 
 import DepthSelector from './DepthSelector'
+import LegendPanel from '../LegendPanel'
 
 const CIRCLE_PACKING = 'Circle Packing'
 const NODE_LINK = 'Node-Link Diagram'
@@ -187,7 +188,11 @@ class RendererOptionsPanel extends Component {
             <ListItemIcon>
               <TuneIcon />
             </ListItemIcon>
-            <ListItemText primary="Circle background colors:" />
+            <ListItemText primary="Color gradient (by depth):" />
+          </ListItem>
+
+          <ListItem>
+            <LegendPanel depth={this.props.depth} {...this.props} />
           </ListItem>
 
           <ListItem>
