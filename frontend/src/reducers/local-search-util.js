@@ -1,6 +1,16 @@
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
 
-const colors = d3ScaleChromatic.schemeCategory10
+const tableau = d3ScaleChromatic.schemeTableau10
+const colors = [
+  tableau[1],
+  tableau[2],
+  tableau[4],
+  tableau[5],
+  tableau[6],
+  tableau[7],
+  tableau[8],
+  tableau[9]
+]
 
 const createColorMap = selection => {
   const uniqueGenes = new Set()

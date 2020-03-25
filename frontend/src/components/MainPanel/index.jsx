@@ -68,6 +68,7 @@ const MainPanel = props => {
         uiStateActions={uiStateActions}
         routeParams={routeParams}
         renderingOptions={renderingOptions}
+        renderingOptionsActions={renderingOptionsActions}
         location={location}
         localSearch={localSearch}
         localSearchActions={localSearchActions}

@@ -15,6 +15,11 @@ const baseStyle = {
   alignItems: 'center'
 }
 
+// For hiding background (Use gray scale)
+const RESULT_COLOR = {
+  root: '#DDDDDD',
+  leaf: '#FFFFFF'
+}
 class MainPanel extends React.Component {
   constructor(props) {
     super(props)
@@ -45,6 +50,9 @@ class MainPanel extends React.Component {
   }
 
   handleReset = event => {
+    // this.props.renderingOptionsActions.setRootColor(null)
+    // this.props.renderingOptionsActions.setLeafColor(null)
+
     this.props.commandActions.reset()
     this.props.localSearchActions.clearSearchResults()
     this.setState({
@@ -73,6 +81,9 @@ class MainPanel extends React.Component {
     })
 
     this.props.handleShowResult(true)
+
+    // this.props.renderingOptionsActions.setRootColor(RESULT_COLOR.root)
+    // this.props.renderingOptionsActions.setLeafColor(RESULT_COLOR.leaf)
   }
 
   handleOpen = event => {

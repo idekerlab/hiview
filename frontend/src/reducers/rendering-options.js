@@ -18,6 +18,11 @@ const MIN_EDGE_SIZE = 'minEdgeSize'
 const MAX_EDGE_SIZE = 'maxEdgeSize'
 const NODE_LABEL_RATIO = 'labelSizeRatio'
 
+const DEFAULT_COLOR = {
+  root: '#08306b',
+  leaf: '#6baed6'
+}
+
 const defaultState = Map({
   minNodeSize: 2,
   maxNodeSize: 20,
@@ -26,8 +31,8 @@ const defaultState = Map({
   nodesPowRatio: 0.8,
   minEdgeSize: 0.01,
   maxEdgeSize: 0.5,
-  rootColor: '#08306b',
-  leafColor: '#6baed6'
+  rootColor: DEFAULT_COLOR.root,
+  leafColor: DEFAULT_COLOR.leaf
 })
 
 export default handleActions(
@@ -43,8 +48,20 @@ export default handleActions(
       state
         .set(MIN_EDGE_SIZE, action.payload.min)
         .set(MAX_EDGE_SIZE, action.payload.max),
-    [SET_ROOT_COLOR]: (state, action) => state.set('rootColor', action.payload),
-    [SET_LEAF_COLOR]: (state, action) => state.set('leafColor', action.payload)
+    [SET_ROOT_COLOR]: (state, action) => {
+      let newColor = action.payload
+      if (newColor == null) {
+        newColor = DEFAULT_COLOR.root
+      }
+      return state.set('rootColor', newColor)
+    },
+    [SET_LEAF_COLOR]: (state, action) => {
+      let newColor = action.payload
+      if (newColor == null) {
+        newColor = DEFAULT_COLOR.leaf
+      }
+      return state.set('leafColor', newColor)
+    }
   },
   defaultState
 )

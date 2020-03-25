@@ -7,6 +7,10 @@
       "type": "chrome",
       "request": "launch",
       "sourceMaps": true,
+      "justMyCode": false,
+      "runtimeArgs": [
+        "--preserve-symlinks"
+      ],
       "trace": true,
       "url": "http://localhost:3000/91f64754-6255-11ea-a7ab-0660b7976219?type=test&server=http://test.ndexbio.org",
       "webRoot": "${workspaceRoot}/src"
