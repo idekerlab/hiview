@@ -12,7 +12,7 @@
         "--preserve-symlinks"
       ],
       "trace": true,
-      "url": "http://localhost:3000/91f64754-6255-11ea-a7ab-0660b7976219?type=test&server=http://test.ndexbio.org",
+      "url": "http://localhost:3000/4fa41897-316a-11ea-95e0-0660b7976219?type=test&server=http://test.ndexbio.org",
       "webRoot": "${workspaceRoot}/src"
     }
   ]

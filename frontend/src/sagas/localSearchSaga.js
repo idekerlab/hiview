@@ -67,7 +67,10 @@ function* watchSearch(action) {
 const filterResult = (queryArray, results, searchMode) => {
   if (searchMode === SEARCH_MODE.EXACT) {
     const qSet = new Set(queryArray.map(q => q.toUpperCase()))
-    return results.filter(res => qSet.has(res.Display_Label))
+    const exactMatches = results.filter(
+      res => qSet.has(res.Display_Label) || qSet.has(res.Label)
+    )
+    return exactMatches
   } else if (searchMode === SEARCH_MODE.PREFIX) {
     return results
   } else {
