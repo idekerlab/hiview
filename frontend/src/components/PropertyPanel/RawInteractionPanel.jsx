@@ -51,14 +51,13 @@ class RawInteractionPanel extends Component {
       background: '#555555'
     }
 
-
     return this.getMainContents(networkAreaStyle)
   }
 
   getMainContents = networkAreaStyle => {
     const newNet = this.props.subnet
     const visualStyle = this.props.networkStyle
-    const {uiState} = this.props
+    const { uiState } = this.props
     const hidePrimary = !uiState.get('enablePrimaryEdge')
 
     if (newNet === null || newNet === undefined || visualStyle === null) {
@@ -124,6 +123,7 @@ class RawInteractionPanel extends Component {
     //   edgesPerm: this.props.subnetSelectedEdgePerm
     // }
 
+    console.log('##################CyViewer::', this.props)
     return (
       <Viewer
         key="subNetworkView"

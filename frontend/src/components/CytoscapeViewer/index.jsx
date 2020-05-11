@@ -136,12 +136,12 @@ const CytoscapeViewer = props => {
 
   const cyjs = selectedNetwork.network
 
-  const checkPresetLayout = (network, layoutName=null) => {
+  const checkPresetLayout = (network, layoutName = null) => {
     const nodes = network.elements.nodes
     const sampleNode = nodes[0]
 
     let layout = 'cose-bilkent'
-    if(layoutName !== null) {
+    if (layoutName !== null) {
       layout = layoutName
     }
     if (!sampleNode) {
@@ -161,6 +161,7 @@ const CytoscapeViewer = props => {
     name: layoutNameUpdated
   }
 
+  console.log('--------------------------------------rendering net')
   return (
     <CytoscapeComponent
       elements={CytoscapeComponent.normalizeElements(cyjs.elements)}

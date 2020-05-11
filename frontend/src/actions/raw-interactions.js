@@ -1,4 +1,4 @@
-import {localLayout} from './raw-interactions-layout'
+import { localLayout } from './raw-interactions-layout'
 import { getHeader } from '../components/AccessUtil'
 
 const THRESHOLD_TAG = 'Main Feature Default Cutoff'
@@ -122,10 +122,10 @@ const processCx = (cx, positions) => {
     const circlePosition = positions[termName]
 
     // if(circlePosition === undefined) {
-      nMap.get(nodeId)['position'] = {
-        x: position.x,
-        y: position.y
-      }
+    nMap.get(nodeId)['position'] = {
+      x: position.x,
+      y: position.y
+    }
     // } else {
     //
     //   nMap.get(nodeId)['position'] = {
@@ -307,8 +307,11 @@ export const fetchInteractionsFromUrl = (
       .then(netAndFilter => createGroups(netAndFilter))
       .then(netAndFilter => {
         const t3 = performance.now()
-        console.log('* Total raw interaction update time = ', t3 - t0, netAndFilter)
-
+        console.log(
+          '***2 Total raw interaction update time:',
+          t3 - t0,
+          netAndFilter
+        )
 
         const network = netAndFilter[0]
         const groups = netAndFilter[2]
@@ -337,31 +340,28 @@ export const fetchInteractionsFromUrl = (
 }
 
 const assignPositions = (groups, circlePositions, nodeMap) => {
-
   Object.keys(groups).forEach(groupName => {
-
     const position = circlePositions[groupName]
     const members = groups[groupName]
 
     members.forEach(memberId => {
       const node = nodeMap.get(memberId)
-      if(members.length === 1) {
+      if (members.length === 1) {
         node.position.x = position.x * 15
         node.position.y = position.y * 15
       } else {
         const direction1 = Math.random() > 0.5 ? 1 : -1
         const direction2 = Math.random() > 0.5 ? 1 : -1
-        node.position.x = (position.x +  (Math.random() * position.r * direction1)) * 15
-        node.position.y = (position.y + (Math.random() * position.r * direction2)) * 15
+        node.position.x =
+          (position.x + Math.random() * position.r * direction1) * 15
+        node.position.y =
+          (position.y + Math.random() * position.r * direction2) * 15
       }
       // console.log('memberID::', nodeMap.get(memberId))
     })
-
   })
   console.log(groups, circlePositions, nodeMap)
-
 }
-
 
 const convertNetworkAttr = attr => {
   let idx = attr.length
