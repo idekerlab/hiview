@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import TermDetailsPanel from './TermDetailsPanel'
 import GenePropertyPanel from './GenePropertyPanel'
 
@@ -8,74 +8,47 @@ const PANEL_TYPES = {
   DEFAULT: 'default'
 }
 
-class PropertyPanel extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      open: false,
-      panelWidth: this.props.width,
-      panelHeight: window.innerHeight * 0.5,
-      expand: false
-    }
-  }
+const drawerContentsStyle = {
+  overflowX: 'never',
+  boxSizing: 'border-box',
+  width: '100%',
+  height: '100%',
+  margin: 0,
+  padding: 0,
+  background: '#FFFFFF'
+}
 
-  componentWillReceiveProps(nextProps) {
-    const selected = this.props.events.get('selected')
-    const selectedNew = nextProps.events.get('selected')
-    const currentProperty = this.props.currentProperty
-    const newProperty = nextProps.currentProperty
+const PropertyPanel = props => {
+  const { currentProperty } = props
+  const { propType } = currentProperty
 
-    if (selected !== selectedNew || currentProperty !== newProperty) {
-      this.setState({
-        open: true
-      })
-    }
-  }
+  useEffect(() => {
+    console.log('********** Prop panel init ******** (called only once)', props)
+    // const { location } = props
+    // const query = location.query
+    // let rootNetworkId = null
+    // if (query !== undefined) {
+    //   rootNetworkId = query.root
+    //   if (rootNetworkId !== undefined) {
+    //     props.rawInteractionsActions.fetchInteractionsFromUrl(
+    //       rootNetworkId,
+    //       query.type
+    //     )
+    //   }
+    // }
+  }, [])
 
-  render() {
-    const propType = this.props.currentProperty.propType
-    let label = '?'
-
-    if (propType === PANEL_TYPES.TERM) {
-      label = this.props.currentProperty.data.Label
-    } else if (propType === PANEL_TYPES.GENE) {
-      label = this.props.currentProperty.id
-    }
-
-    const barTitle = label
-
-    const drawerContentsStyle = {
-      overflowX: 'never',
-      boxSizing: 'border-box',
-      width: '100%',
-      height: '100%',
-      margin: 0,
-      padding: 0,
-      background: '#FFFFFF'
-    }
-
-    const fontColor = propType === PANEL_TYPES.GENE ? '#666666' : 'orange'
-
-    return (
-      <div style={drawerContentsStyle}>
-        {this.getPanel(this.props.width, fontColor, barTitle)}
-      </div>
-    )
-  }
-
-  getPanel = (w, color, title) => {
+  const getPanel = (w, color, title) => {
     // Do not return any component if nothing is selected.
-    if (this.props.currentProperty.id === null) {
+    if (currentProperty.id === null) {
       return <div />
     }
 
     // This will be gene or term.
-    const propType = this.props.currentProperty.propType
-
     if (propType === PANEL_TYPES.TERM) {
       return (
         <TermDetailsPanel
-          {...this.props}
+          {...props}
           width={w}
           height={window.innerHeight}
           title={title}
@@ -84,7 +57,7 @@ class PropertyPanel extends Component {
       )
     } else if (propType === PANEL_TYPES.GENE) {
       // Check namespace props here...
-      return <GenePropertyPanel {...this.props} />
+      return <GenePropertyPanel {...props} />
     } else if (propType === PANEL_TYPES.DEFAULT) {
       return (
         <div>
@@ -100,6 +73,21 @@ class PropertyPanel extends Component {
       )
     }
   }
+
+  let label = '?'
+  if (propType === PANEL_TYPES.TERM) {
+    label = currentProperty.data.Label
+  } else if (propType === PANEL_TYPES.GENE) {
+    label = currentProperty.id
+  }
+
+  const fontColor = propType === PANEL_TYPES.GENE ? '#666666' : 'orange'
+
+  return (
+    <div style={drawerContentsStyle}>
+      {getPanel(props.width, fontColor, label)}
+    </div>
+  )
 }
 
 export default PropertyPanel

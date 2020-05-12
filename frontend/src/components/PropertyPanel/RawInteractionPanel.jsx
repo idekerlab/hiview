@@ -55,6 +55,8 @@ class RawInteractionPanel extends Component {
   }
 
   getMainContents = networkAreaStyle => {
+    const t0 = performance.now()
+
     const newNet = this.props.subnet
     const visualStyle = this.props.networkStyle
     const { uiState } = this.props
@@ -123,7 +125,10 @@ class RawInteractionPanel extends Component {
     //   edgesPerm: this.props.subnetSelectedEdgePerm
     // }
 
-    console.log('##################CyViewer::', this.props)
+    console.log(
+      '!!!!!!!!!!!##################CyViewer loaded::',
+      performance.now() - t0
+    )
     return (
       <Viewer
         key="subNetworkView"

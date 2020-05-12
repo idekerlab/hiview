@@ -1,14 +1,10 @@
 import { localLayout } from './raw-interactions-layout'
 import { getHeader } from '../components/AccessUtil'
-
-const THRESHOLD_TAG = 'Main Feature Default Cutoff'
-
 import { createAction } from 'redux-actions'
-
 import { filterEdge, MAIN_EDGE_TAG, PATTERN } from './raw-interactions-util'
-
 import cx2js from 'cytoscape-cx2js'
 
+const THRESHOLD_TAG = 'Main Feature Default Cutoff'
 // For CX --> cyjs conversion
 const utils = new cx2js.CyNetworkUtils()
 const cx2JsConverter = new cx2js.CxToJs(utils)
@@ -237,8 +233,11 @@ export const fetchInteractionsFromUrl = (
   const urlNoFilter = 'http://' + server + '.ndexbio.org/v2/network/' + uuid
 
   const t0 = performance.now()
-  const networkAttr = summary.properties
+  let networkAttr = summary.properties
 
+  if (networkAttr === undefined) {
+    networkAttr = []
+  }
   let idx = networkAttr.length
 
   let th = 0
@@ -296,6 +295,12 @@ export const fetchInteractionsFromUrl = (
       })
       .then(cx => {
         originalCX = cx
+        const t33 = performance.now()
+        console.log(
+          '*** download Total raw interaction update time:',
+          t33 - t0,
+          cx
+        )
         const processed = processCx(originalCX, positions)
         nodeMap = processed.nodeMap
         const newNet = processed.network
