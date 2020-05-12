@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import CyNetworkViewer from '@cytoscape/cy-network-viewer'
 import { CytoscapeJsRenderer } from '@cytoscape/cytoscapejs-renderer'
+import LoadingPanel from './LoadingPanel'
 
 import { Set } from 'immutable'
 
@@ -63,11 +64,16 @@ class RawInteractionPanel extends Component {
     const hidePrimary = !uiState.get('enablePrimaryEdge')
 
     if (newNet === null || newNet === undefined || visualStyle === null) {
-      return (
-        <div>
-          <h3>(Network not available)</h3>
-        </div>
-      )
+      if (this.props.loading) {
+        return <LoadingPanel message={'Loading network...'} />
+      } else {
+        return <LoadingPanel message={'Drawing network...'} />
+        // return (
+        //   <div>
+        //     <h3>(Network not available)</h3>
+        //   </div>
+        // )
+      }
     }
 
     const selected = {

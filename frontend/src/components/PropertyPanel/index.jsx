@@ -22,22 +22,6 @@ const PropertyPanel = props => {
   const { currentProperty } = props
   const { propType } = currentProperty
 
-  useEffect(() => {
-    console.log('********** Prop panel init ******** (called only once)', props)
-    // const { location } = props
-    // const query = location.query
-    // let rootNetworkId = null
-    // if (query !== undefined) {
-    //   rootNetworkId = query.root
-    //   if (rootNetworkId !== undefined) {
-    //     props.rawInteractionsActions.fetchInteractionsFromUrl(
-    //       rootNetworkId,
-    //       query.type
-    //     )
-    //   }
-    // }
-  }, [])
-
   const getPanel = (w, color, title) => {
     // Do not return any component if nothing is selected.
     if (currentProperty.id === null) {

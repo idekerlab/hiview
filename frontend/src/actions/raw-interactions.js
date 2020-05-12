@@ -4,10 +4,14 @@ import { createAction } from 'redux-actions'
 import { filterEdge, MAIN_EDGE_TAG, PATTERN } from './raw-interactions-util'
 import cx2js from 'cytoscape-cx2js'
 
+import LocalDB from './local-db'
+
 const THRESHOLD_TAG = 'Main Feature Default Cutoff'
 // For CX --> cyjs conversion
 const utils = new cx2js.CyNetworkUtils()
 const cx2JsConverter = new cx2js.CxToJs(utils)
+
+const hvDb = LocalDB.getDB()
 
 const NDEX_API = '.ndexbio.org/v2/network/'
 
@@ -214,10 +218,159 @@ const typeConverter = (dataType, value) => {
   return value
 }
 
+const fetchFromDB = (dispatch, entry) => {
+  const netAndFilter = entry.netAndFilter
+  return dispatch(
+    receiveNetwork(
+      entry.url,
+      netAndFilter[0],
+      netAndFilter[1],
+      netAndFilter[2],
+      netAndFilter[3],
+      entry.originalCX
+    )
+  )
+}
+
+const fetchInteractionsFromRemote = (
+  mainFeature,
+  th,
+  dispatch,
+  uuid,
+  url,
+  maxEdgeCount,
+  credentials,
+  positions
+) => {
+  const t0 = performance.now()
+
+  let originalCX = null
+  let nodeMap = null
+
+  const query = [
+    {
+      name: mainFeature,
+      value: th,
+      operator: '>'
+    }
+  ]
+
+  const headers = getHeader(credentials)
+  headers['Content-Type'] = 'application/json'
+
+  let settings = {
+    method: 'POST',
+    body: JSON.stringify(query),
+    headers
+  }
+
+  if (mainFeature.length === 0) {
+    settings = {
+      method: 'GET'
+    }
+  }
+
+  return fetchNet(url, settings)
+    .then(response => {
+      if (!response.ok) {
+        throw Error(response)
+      } else {
+        return response.json()
+      }
+    })
+    .then(cx => {
+      originalCX = cx
+      const t33 = performance.now()
+      console.log(
+        '*** download Total raw interaction update time:',
+        t33 - t0,
+        cx
+      )
+      const processed = processCx(originalCX, positions)
+      nodeMap = processed.nodeMap
+      const newNet = processed.network
+
+      dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
+      return newNet
+    })
+    .then(network => filterEdge(network, maxEdgeCount))
+    .then(network => createFilter(network, maxEdgeCount))
+    .then(netAndFilter => createGroups(netAndFilter))
+    .then(netAndFilter => {
+      const t3 = performance.now()
+      console.log(
+        '***2 Total raw interaction update time:',
+        t3 - t0,
+        netAndFilter
+      )
+
+      const network = netAndFilter[0]
+      const groups = netAndFilter[2]
+
+      // Store to local DB
+      const entry = {
+        uuid,
+        url,
+        netAndFilter,
+        originalCX
+      }
+      hvDb.interactions.put(entry)
+      // This is for applying new layout locally
+      // localLayout(network, groups, positions, nodeMap)
+
+      // And this is for using given positions as-is.
+      // assignPositions(netAndFilter[2], positions, nodeMap)
+      return dispatch(
+        receiveNetwork(
+          url,
+          netAndFilter[0],
+          netAndFilter[1],
+          netAndFilter[2],
+          netAndFilter[3],
+          originalCX
+        )
+      )
+    })
+    .catch(err => {
+      console.log('Raw interaction fetch ERROR! ', err)
+      return dispatch(receiveNetwork(url, null, 'Error!'))
+    })
+}
+
+const getInteractions = (
+  mainFeature,
+  th,
+  dispatch,
+  uuid,
+  url,
+  maxEdgeCount,
+  credentials,
+  positions
+) => {
+  // Check local data
+  hvDb.interactions.get(uuid).then(entry => {
+    if (entry === undefined) {
+      console.log('! Loading interaction remote:', uuid)
+      return fetchInteractionsFromRemote(
+        mainFeature,
+        th,
+        dispatch,
+        uuid,
+        url,
+        maxEdgeCount,
+        credentials,
+        positions
+      )
+    } else {
+      console.log('!Local cache:', uuid)
+      return fetchFromDB(dispatch, entry)
+    }
+  })
+}
 export const fetchInteractionsFromUrl = (
   uuid,
   server,
-  url2,
+  originalUrl,
   maxEdgeCount = 500,
   summary = {},
   credentials,
@@ -228,18 +381,15 @@ export const fetchInteractionsFromUrl = (
     'http://dev2.ndexbio.org/edgefilter/v1/network/' +
     uuid +
     '/topNEdgeFilter?limit=10000'
-  // '/edgefilter?limit=10000'
 
   const urlNoFilter = 'http://' + server + '.ndexbio.org/v2/network/' + uuid
 
-  const t0 = performance.now()
   let networkAttr = summary.properties
 
   if (networkAttr === undefined) {
     networkAttr = []
   }
   let idx = networkAttr.length
-
   let th = 0
   let mainFeature = ''
 
@@ -253,94 +403,24 @@ export const fetchInteractionsFromUrl = (
     }
   }
 
-  let originalCX = null
-  let nodeMap = null
   let url = urlFiltered
+  if (mainFeature.length === 0) {
+    url = urlNoFilter
+  }
 
   return dispatch => {
     dispatch(fetchNetwork(url))
 
-    const query = [
-      {
-        name: mainFeature,
-        value: th,
-        operator: '>'
-      }
-    ]
-
-    const headers = getHeader(credentials)
-    headers['Content-Type'] = 'application/json'
-
-    let settings = {
-      method: 'POST',
-      body: JSON.stringify(query),
-      headers
-    }
-
-    if (mainFeature.length === 0) {
-      settings = {
-        method: 'GET'
-      }
-
-      url = urlNoFilter
-    }
-
-    return fetchNet(url, settings)
-      .then(response => {
-        if (!response.ok) {
-          throw Error(response)
-        } else {
-          return response.json()
-        }
-      })
-      .then(cx => {
-        originalCX = cx
-        const t33 = performance.now()
-        console.log(
-          '*** download Total raw interaction update time:',
-          t33 - t0,
-          cx
-        )
-        const processed = processCx(originalCX, positions)
-        nodeMap = processed.nodeMap
-        const newNet = processed.network
-        dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
-        return newNet
-      })
-      .then(network => filterEdge(network, maxEdgeCount))
-      .then(network => createFilter(network, maxEdgeCount))
-      .then(netAndFilter => createGroups(netAndFilter))
-      .then(netAndFilter => {
-        const t3 = performance.now()
-        console.log(
-          '***2 Total raw interaction update time:',
-          t3 - t0,
-          netAndFilter
-        )
-
-        const network = netAndFilter[0]
-        const groups = netAndFilter[2]
-
-        // This is for applying new layout locally
-        // localLayout(network, groups, positions, nodeMap)
-
-        // And this is for using given positions as-is.
-        // assignPositions(netAndFilter[2], positions, nodeMap)
-        return dispatch(
-          receiveNetwork(
-            url,
-            netAndFilter[0],
-            netAndFilter[1],
-            netAndFilter[2],
-            netAndFilter[3],
-            originalCX
-          )
-        )
-      })
-      .catch(err => {
-        console.log('Raw interaction fetch ERROR! ', err)
-        return dispatch(receiveNetwork(url, null, 'Error!'))
-      })
+    return getInteractions(
+      mainFeature,
+      th,
+      dispatch,
+      uuid,
+      url,
+      maxEdgeCount,
+      credentials,
+      positions
+    )
   }
 }
 

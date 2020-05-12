@@ -22,11 +22,9 @@ import CrossFilter from '../CrossFilter'
 import SplitPane from 'react-split-pane'
 import LoadingPanel from './LoadingPanel'
 import AutoLoadThresholdPanel from './AutoLoadThresholdPanel'
-import LargeNetworkWarningPanel from './LargeNetworkWarningPanel'
 import InteractionNetworkSelector from '../InteractionNetworkSelector'
 import CytoscapeViewer from '../CytoscapeViewer'
 
-import { makeStyles } from '@material-ui/core/styles'
 import ExpansionPanel from '@material-ui/core/ExpansionPanel'
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
@@ -67,9 +65,7 @@ const headingStyle = {
 const TermDetailsPanel = props => {
   const [subtree, setSubtree] = useState({})
   const [subNet, setSubNet] = useState({})
-
   const [selectedTab, setSelectedTab] = useState(0)
-
   const [networkPanelHeight, setNetworkPanelHeight] = useState(
     window.innerHeight * 0.5
   )
@@ -179,7 +175,8 @@ const TermDetailsPanel = props => {
     selected,
     selectedPerm,
     visualStyle,
-    raw
+    raw,
+    loading = false
   ) => {
     if (hidden) {
       return <EmptyInteractionPanel height={topHeight} />
@@ -217,9 +214,9 @@ const TermDetailsPanel = props => {
   // Still loading interaction...
   const raw = props.rawInteractions.toJS()
   const loading = raw['loading']
-  if (loading) {
-    return <LoadingPanel message={raw['message']} />
-  }
+  // if (loading) {
+  //   return <LoadingPanel message={raw['message']} />
+  // }
 
   const summary = raw.summary
   // const autoLoadTh = WARNING_TH
@@ -258,7 +255,6 @@ const TermDetailsPanel = props => {
   // Special case: GO term
   // TODO: better alternative to generalize this?
   if (data.name !== undefined && data.name.startsWith('GO:')) {
-    // console.log('GO Term:', data.name)
     hidden = false
   }
 

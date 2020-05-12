@@ -3,7 +3,7 @@ import { CxToJs, CyNetworkUtils } from 'cytoscape-cx2js'
 import { getHeader } from '../components/AccessUtil'
 
 import Fuse from 'fuse.js'
-import Dexie from 'dexie'
+import LocalDB from './local-db'
 
 const utils = new CyNetworkUtils()
 const cx2js = new CxToJs(utils)
@@ -26,26 +26,7 @@ export const setHierarchy = createAction(SET_HIERARCHY)
 export const SET_CURRENT_PATH = 'SET_CURRENT_PATH'
 export const setCurrentPath = createAction(SET_CURRENT_PATH)
 
-// For local cache
-
-const DB_NAME = 'HiView'
-const DB_VERSION = 2
-const DB_STORE = 'hierarchy'
-const DB_PRIMARY_KEY = 'uuid'
-
-const hvDb = new Dexie(DB_NAME)
-
-const initDB = () => {
-  hvDb.version(DB_VERSION).stores({
-    [DB_STORE]: DB_PRIMARY_KEY
-  })
-
-  hvDb.open().catch(e => {
-    console.error(DB_NAME + ': Open failed: ' + e)
-  })
-}
-
-initDB()
+const hvDb = LocalDB.getDB()
 
 //TODO: Need to create two search mode.
 const generateIndex = networkJson => {
@@ -139,8 +120,6 @@ const getNetworkData = (url, uuid, dispatch, serverType, credentials) => {
 }
 
 const fetchFromLocal = (url, uuid, dispatch, netObj) => {
-  console.log('Local Hit:', uuid, netObj, performance.now() - t0)
-
   // Set network title
   const networkData = netObj.data
 

@@ -99,9 +99,6 @@ class NetworkPanel extends Component {
     }
 
     this.props.netantActions.clearAll()
-
-    const selectedNode1 = nodeProps[nodeIds[0]]
-    console.log('## Selected node: ++', selectedNode1, props)
     this.props.selectionActions.selectNode(newSelectionState)
 
     const nodeTypeTag = 'NodeType'
@@ -180,8 +177,6 @@ class NetworkPanel extends Component {
 
     // Check size before
     const summaryUrl = 'http://' + serverType + NDEX_API + linkId + '/summary'
-
-    console.log('Summary URL = ', summaryUrl)
     this.props.rawInteractionsActions.setLoading(
       'Checking summary of the interaction network...'
     )
