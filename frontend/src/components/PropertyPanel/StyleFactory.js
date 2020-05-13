@@ -24,10 +24,9 @@ const calcNodeWidth = cyNode => {
   const ext = cy.extent()
   const size = ext.w / VIEW_TO_FONT_SIZE_RATIO
   if (size > BASE_FONT_SIZE) {
-    return (nodeName.length) * size
+    return nodeName.length * size
   }
-  return (nodeName.length) * LARGE_FONT_SIZE
-
+  return nodeName.length * LARGE_FONT_SIZE
 }
 
 const calcNodeHeight = cyNode => {
@@ -39,7 +38,6 @@ const calcNodeHeight = cyNode => {
   }
   return LARGE_FONT_SIZE * 1.1
 }
-
 
 const BASE_STYLE = {
   node: {
@@ -86,7 +84,7 @@ const BASE_STYLE = {
       opacity: 0.7,
       'curve-style': e => {
         const parallel = e.parallelEdges()
-        if(parallel.size() > 1) {
+        if (parallel.size() > 1) {
           return 'haystack'
         } else {
           return 'bezier'
@@ -144,7 +142,7 @@ export const createStyle = originalNetwork => {
   }
 
   let primaryEdgeType = networkData[MAIN_INTERACTION_TYPE_TAG]
-  if(primaryEdgeType === undefined) {
+  if (primaryEdgeType === undefined) {
     return {
       style: [
         BASE_STYLE.node,

@@ -26,6 +26,7 @@ export const setHierarchy = createAction(SET_HIERARCHY)
 export const SET_CURRENT_PATH = 'SET_CURRENT_PATH'
 export const setCurrentPath = createAction(SET_CURRENT_PATH)
 
+
 const hvDb = LocalDB.getDB()
 
 //TODO: Need to create two search mode.

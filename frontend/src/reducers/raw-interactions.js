@@ -15,12 +15,13 @@ import {
   SET_AUTO_LOAD_THRESHOLD,
   SET_LOADING,
   SET_EDGE_SCORE_RANGE,
-  SET_GROUP_POSITIONS
+  SET_GROUP_POSITIONS,
+  CLEAR_ALL
 } from '../actions/raw-interactions'
 import { Map, Set } from 'immutable'
 
 const DEF_MAX_EDGE_COUNT = 10000
-const LOADING_NETWORK_MESSAGE ='Downloading all interactions from NDEx...'
+const LOADING_NETWORK_MESSAGE = 'Downloading all interactions from NDEx...'
 
 const defState = Map({
   originalCX: null,
@@ -47,6 +48,14 @@ const defState = Map({
 
 export default function networkState(state = defState, action) {
   switch (action.type) {
+    case CLEAR_ALL:
+      return state
+        .set('loading', false)
+        .set('message', '')
+        .set('interactions', null)
+        .set('originalCX', null)
+        .set('originalEdgeCount', 0)
+
     case FETCH_INTERACTIONS:
       return state
         .set('loading', true)

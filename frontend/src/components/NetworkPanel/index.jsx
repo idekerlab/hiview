@@ -80,6 +80,8 @@ class NetworkPanel extends Component {
     this.props.propertyActions.fetchPropertyFromUrl(geneName, qUrl, 'gene')
   }
 
+  // Main function to select current subsystem.
+  // Should be called once per double-click
   selectNodes = (nodeIds, nodeProps) => {
     // First node in the selection
     const nodeId = nodeIds[0]
@@ -91,14 +93,15 @@ class NetworkPanel extends Component {
     last = nodeId
 
     const props = nodeProps[nodeId].props
-
     const newSelectionState = {
       networkId: 'main',
       nodeId: nodeId,
       nodeProps: props
     }
 
-    this.props.netantActions.clearAll()
+    // this.props.netantActions.clearAll()
+
+    // TODO is this necessary?
     this.props.selectionActions.selectNode(newSelectionState)
 
     const nodeTypeTag = 'NodeType'
@@ -173,13 +176,13 @@ class NetworkPanel extends Component {
     const locationParams = this.props.location
     let serverType = locationParams.query.type
     const link = this.props.cxtoolUrl + linkId + '?server=' + serverType
-    this.props.eventActions.selected(nodeProps[nodeIds[0]])
+    // this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
     // Check size before
     const summaryUrl = 'http://' + serverType + NDEX_API + linkId + '/summary'
-    this.props.rawInteractionsActions.setLoading(
-      'Checking summary of the interaction network...'
-    )
+    // this.props.rawInteractionsActions.setLoading(
+    //   'Checking summary of the interaction network...'
+    // )
 
     // Clear selected
     this.props.externalNetworksActions.clearExternalNetwork()

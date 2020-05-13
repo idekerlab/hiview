@@ -549,8 +549,6 @@ const createFilter = (network, maxEdgeCount) => {
   const defCutoff = network.data[THRESHOLD_TAG]
   const filters = []
 
-  console.log('DEF cutoff = ', defCutoff, network.data)
-
   const edges = network.elements.edges
   let edgeCount = edges.length
 
@@ -702,6 +700,9 @@ export const setEdgeScoreRange = createAction(SET_EDGE_SCORE_RANGE)
 
 export const SET_GROUP_POSITIONS = 'SET_GROUP_POSITIONS'
 export const setGroupPositions = createAction(SET_GROUP_POSITIONS)
+
+export const CLEAR_ALL = 'CLEAR_ALL'
+export const clearAll = createAction(CLEAR_ALL)
 
 // Check size of the network
 

@@ -7,27 +7,23 @@ import { findPath } from './path-finder'
 const TreeViewer = CyTreeViewer(CirclePackingRenderer)
 
 // For hover on node timeout
-const HOVER_TIMEOUT = 180 // Event will be fired after 180ms
+const HOVER_TIMEOUT = 480 // Event will be fired after 180ms
 let task = null
+
+let expandId = null
 
 class CirclePackingPanel extends Component {
   state = {
-    // tree: null,
     hover: null,
     hoverNodes: null,
     selectedGroups: Set(),
     selectedGenes: []
   }
 
-  storeLayout(layout) {}
-
   componentDidMount() {
     const cyjs = this.props.network.get('cyjs')
     const tree = cyjs2tree(cyjs, this.props.networkActions)
     this.props.networkActions.setHierarchy(tree)
-    // this.setState({
-    //   tree
-    // })
   }
 
   selectGroups = (id, data, groups, actions) => {
@@ -54,13 +50,20 @@ class CirclePackingPanel extends Component {
 
   getEventHandlers = () => {
     const selectNode = (id, data, zoom, node) => {
+      if (id === expandId) {
+        return
+      }
+      console.log('->>>>>>Expand subnode Run', id)
+      expandId = id
+
+      this.props.rawInteractionsActions.clearAll()
+
       const wrappedData = {
         props: data
       }
 
       if (zoom) {
         // Move focus to new node
-
         // Clear all selected nodes
         this.setState({
           hover: null,
@@ -148,8 +151,8 @@ class CirclePackingPanel extends Component {
     }
 
     const hoverOutNode = (id, data) => {
+      console.log('--------------HV OUT', id)
       window.clearTimeout(task)
-
       if (this.props.rawInteractions.get('selected').length !== 0) {
         this.props.rawInteractionsActions.setSelected([])
       }
@@ -157,7 +160,7 @@ class CirclePackingPanel extends Component {
 
     const runHighlight = (id, data, groups) => {
       // Set selected state
-      this.props.selectionActions.enterNode(data)
+      // this.props.selectionActions.enterNode(data)
 
       const currentSelection = this.props.selection.get('main').nodeId
       if (id === currentSelection) {
@@ -179,6 +182,7 @@ class CirclePackingPanel extends Component {
     }
 
     const hoverOnNode = (id, data, parent) => {
+      console.log('--------------HV', id)
       // Check invalid parameter.  Name is always required
       if (
         data === null ||
@@ -187,12 +191,10 @@ class CirclePackingPanel extends Component {
       ) {
         return
       }
-
       const groups = this.props.groups
       if (!groups) {
         return
       }
-
       task = setTimeout(() => runHighlight(id, data, groups), HOVER_TIMEOUT)
     }
 
