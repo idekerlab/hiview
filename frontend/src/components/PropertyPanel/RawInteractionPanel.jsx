@@ -1,70 +1,59 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import CyNetworkViewer from '@cytoscape/cy-network-viewer'
 import { CytoscapeJsRenderer } from '@cytoscape/cytoscapejs-renderer'
 import LoadingPanel from './LoadingPanel'
-
 import { Set } from 'immutable'
 
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
-class RawInteractionPanel extends Component {
-  componentWillReceiveProps(nextProps) {
-    const runAnalysys = nextProps.uiState.get('runEnrichment')
+const networkAreaStyle = {
+  width: '100%',
+  height: '100%',
+  background: '#555555'
+}
 
-    if (!runAnalysys) {
+const RawInteractionPanel = props => {
+  const {
+    uiState,
+    subnet,
+    enrichment,
+    enrichmentActions,
+    selectedTerm,
+    commandActions,
+    selectionActions,
+    filters
+  } = props
+
+  useEffect(() => {
+    // Check whether enrichment analysis is required or not
+    const runAnalysys = uiState.get('runEnrichment')
+    if (!uiState.get('runEnrichment')) {
+      return
+    }
+    if (enrichment.running) {
+      return
+    }
+    if (subnet === null || subnet === undefined) {
       return
     }
 
-    const newNetwork = nextProps.subnet
-    const running = nextProps.enrichment.get('running')
-    const lastRunning = this.props.enrichment.get('running')
+    const genes = Set(subnet.elements.nodes.map(node => node.data.name))
+    enrichmentActions.runEnrichment(
+      'http://amp.pharm.mssm.edu/Enrichr/addList',
+      genes,
+      selectedTerm
+    )
+  }, [uiState.get('runEnrichment'), subnet])
 
-    if (lastRunning && running) {
-      return
-    }
-
-    if (newNetwork === null || newNetwork === undefined) {
-      return
-    }
-
-    const genes = Set(newNetwork.elements.nodes.map(node => node.data.name))
-
-    const subsystemId = this.props.enrichment.get('subsystemId')
-    const nextSubsystemId = nextProps.selectedTerm
-
-    if (subsystemId === null || subsystemId !== nextSubsystemId) {
-      if (lastRunning) {
-        return
-      }
-
-      this.props.enrichmentActions.runEnrichment(
-        'http://amp.pharm.mssm.edu/Enrichr/addList',
-        genes,
-        nextSubsystemId
-      )
-    }
-  }
-
-  render() {
-    const networkAreaStyle = {
-      width: '100%',
-      height: '100%',
-      background: '#555555'
-    }
-
-    return this.getMainContents(networkAreaStyle)
-  }
-
-  getMainContents = networkAreaStyle => {
+  const getMainContents = networkAreaStyle => {
     const t0 = performance.now()
 
-    const newNet = this.props.subnet
-    const visualStyle = this.props.networkStyle
-    const { uiState } = this.props
+    const newNet = subnet
+    const visualStyle = props.networkStyle
     const hidePrimary = !uiState.get('enablePrimaryEdge')
 
     if (newNet === null || newNet === undefined || visualStyle === null) {
-      if (this.props.loading) {
+      if (props.loading) {
         return <LoadingPanel message={'Loading network...'} />
       } else {
         return <LoadingPanel message={'Drawing network...'} />
@@ -77,10 +66,10 @@ class RawInteractionPanel extends Component {
     }
 
     const selected = {
-      nodes: this.props.subnetSelected,
-      edges: this.props.subnetSelectedEdge,
-      nodesPerm: this.props.subnetSelectedPerm,
-      edgesPerm: this.props.subnetSelectedEdgePerm
+      nodes: props.subnetSelected,
+      edges: props.subnetSelectedEdge,
+      nodesPerm: props.subnetSelectedPerm,
+      edgesPerm: props.subnetSelectedEdgePerm
     }
 
     const hidden = {
@@ -88,24 +77,22 @@ class RawInteractionPanel extends Component {
       edges: []
     }
 
-    const filters = this.props.filters
-
     if (filters === null || filters.length === 0) {
       return (
         <Viewer
           key="subNetworkView"
-          network={this.props.subnet}
+          network={subnet}
           selected={selected}
           hidden={hidden}
           hidePrimary={hidePrimary}
           networkType={'cyjs'}
           networkStyle={visualStyle}
           style={networkAreaStyle}
-          eventHandlers={this.getCustomEventHandlers()}
+          eventHandlers={getCustomEventHandlers()}
           rendererOptions={{
-            layout: this.checkPresetLayout(this.props.subnet)
+            layout: checkPresetLayout(subnet)
           }}
-          command={this.props.commands}
+          command={props.commands}
         />
       )
     }
@@ -124,13 +111,6 @@ class RawInteractionPanel extends Component {
       }
     })
 
-    // const selected = {
-    //   nodes: this.props.subnetSelected,
-    //   edges: this.props.subnetSelectedEdge,
-    //   nodesPerm: this.props.subnetSelectedPerm,
-    //   edgesPerm: this.props.subnetSelectedEdgePerm
-    // }
-
     console.log(
       '!!!!!!!!!!!##################CyViewer loaded::',
       performance.now() - t0
@@ -138,39 +118,23 @@ class RawInteractionPanel extends Component {
     return (
       <Viewer
         key="subNetworkView"
-        network={this.props.subnet}
+        network={subnet}
         selected={selected}
         hidden={hidden}
         hidePrimary={hidePrimary}
         networkType={'cyjs'}
         networkStyle={visualStyle}
         style={networkAreaStyle}
-        eventHandlers={this.getCustomEventHandlers()}
+        eventHandlers={getCustomEventHandlers()}
         rendererOptions={{
-          layout: this.checkPresetLayout(this.props.subnet)
+          layout: checkPresetLayout(subnet)
         }}
-        command={this.props.commands}
+        command={props.commands}
       />
     )
   }
 
-  checkPresetLayout = network => {
-    const nodes = network.elements.nodes
-    const sampleNode = nodes[0]
-
-    if (!sampleNode) {
-      return 'cose-bilkent'
-    }
-
-    const position = sampleNode.position
-    if (!position || (position.x === 0 && position.y === 0)) {
-      return 'cose-bilkent'
-    } else {
-      return 'preset'
-    }
-  }
-
-  selectNodes = (nodeIds, nodeProps) => {
+  const selectNodes = (nodeIds, nodeProps) => {
     const node = nodeIds[0]
     const props = nodeProps[node]
 
@@ -180,37 +144,36 @@ class RawInteractionPanel extends Component {
       nodeProps: props
     }
 
-    this.props.selectionActions.selectNode(newSelectionState)
+    selectionActions.selectNode(newSelectionState)
   }
 
-  selectEdges = (edgeIds, edgeProps) => {
-    // console.log('Selected Edge:', edgeIds, edgeProps)
-  }
-
-  commandFinished = (lastCommand, status = {}) => {
-    this.props.commandActions.clearCommand()
+  const commandFinished = (lastCommand, status = {}) => {
+    commandActions.clearCommand()
   }
 
   // Then use it as a custom handler
-  getCustomEventHandlers = () => ({
-    selectNodes: this.selectNodes,
-    selectEdges: this.selectEdges,
-    commandFinished: this.commandFinished
+  const getCustomEventHandlers = () => ({
+    selectNodes,
+    // selectEdges: selectEdges,
+    commandFinished
   })
+
+  return getMainContents(networkAreaStyle)
 }
 
-const bfs = (node, target) => {
-  const id = node.data.id
+const checkPresetLayout = network => {
+  const nodes = network.elements.nodes
+  const sampleNode = nodes[0]
 
-  if (target === id) {
-    return node
+  if (!sampleNode) {
+    return 'cose-bilkent'
   }
 
-  const children = node.children
-  if (!children || children.length == 0) {
-    return null
+  const position = sampleNode.position
+  if (!position || (position.x === 0 && position.y === 0)) {
+    return 'cose-bilkent'
+  } else {
+    return 'preset'
   }
-  return children.forEach(child => bfs(child, target))
 }
-
 export default RawInteractionPanel

@@ -15,6 +15,10 @@ const hvDb = LocalDB.getDB()
 
 const NDEX_API = '.ndexbio.org/v2/network/'
 
+// For performance
+let tp0 = 0
+let tp1 = 0
+
 // For network density
 const calcDensity = (n, m) => {
   return (2 * m) / (n * (n - 1)) //  for undirected
@@ -41,6 +45,7 @@ const receiveNetwork = (
   extraEdges,
   originalCX
 ) => {
+  console.log('** Total time loading:', performance.now() - tp0)
   return {
     type: RECEIVE_INTERACTIONS,
     url,
@@ -297,16 +302,6 @@ const fetchInteractionsFromRemote = (
     .then(network => createFilter(network, maxEdgeCount))
     .then(netAndFilter => createGroups(netAndFilter))
     .then(netAndFilter => {
-      const t3 = performance.now()
-      console.log(
-        '***2 Total raw interaction update time:',
-        t3 - t0,
-        netAndFilter
-      )
-
-      const network = netAndFilter[0]
-      const groups = netAndFilter[2]
-
       // Store to local DB
       const entry = {
         uuid,
@@ -350,7 +345,7 @@ const getInteractions = (
   // Check local data
   hvDb.interactions.get(uuid).then(entry => {
     if (entry === undefined) {
-      console.log('! Loading interaction remote:', uuid)
+      console.log('+++++++++++++++ Remote Data', uuid)
       return fetchInteractionsFromRemote(
         mainFeature,
         th,
@@ -362,7 +357,7 @@ const getInteractions = (
         positions
       )
     } else {
-      console.log('!Local cache:', uuid)
+      console.log('+++++++++++++++ Local Data', uuid)
       return fetchFromDB(dispatch, entry)
     }
   })
@@ -376,19 +371,20 @@ export const fetchInteractionsFromUrl = (
   credentials,
   positions
 ) => {
+  tp0 = performance.now()
+
   // Get only top 10000 edges.
   const urlFiltered =
     'http://dev2.ndexbio.org/edgefilter/v1/network/' +
     uuid +
     '/topNEdgeFilter?limit=10000'
-
   const urlNoFilter = 'http://' + server + '.ndexbio.org/v2/network/' + uuid
 
   let networkAttr = summary.properties
-
   if (networkAttr === undefined) {
     networkAttr = []
   }
+
   let idx = networkAttr.length
   let th = 0
   let mainFeature = ''

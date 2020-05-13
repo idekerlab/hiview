@@ -44,17 +44,13 @@ const OpenInCytoscapeButton = props => {
         })
         .catch(e => {
           setRunning(false)
-          console.warn('1. No Connection to Cy3', e)
         })
     } catch (e) {
       setRunning(false)
-      console.warn('2. No Connection to Cy3', e)
     }
   }, [rawInteractions.originalCX])
 
   const handleImportNetwork = () => {
-    console.log('EXT:', externalNetworks, props)
-
     const selectedNetwork = externalNetworks.selectedNetwork
 
     let cx = null

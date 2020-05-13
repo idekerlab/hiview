@@ -20,22 +20,28 @@ export const CLEAR_GENE_LIST = 'CLEAR_GENE_LIST'
 
 export const SET_ERROR_MESSAGE = 'SET_ERROR_MESSAGE'
 
-const sendGeneList = (url, genes, subsystemId) => ({
-  type: SEND_GENE_LIST,
-  url,
-  genes,
-  result: null,
-  running: true,
-  subsystemId
-})
+const sendGeneList = (url, genes, subsystemId) => {
+  console.log('* Enrichment analysis start:', genes)
+  return {
+    type: SEND_GENE_LIST,
+    url,
+    genes,
+    result: null,
+    running: true,
+    subsystemId
+  }
+}
 
-const receiveAnalysisResult = (url, result, subsystemId) => ({
-  type: RECEIVE_ANALYSIS_RESULT,
-  url,
-  running: false,
-  result,
-  subsystemId
-})
+const receiveAnalysisResult = (url, result, subsystemId) => {
+  console.log('* Enrichment analysis end:', result)
+  return {
+    type: RECEIVE_ANALYSIS_RESULT,
+    url,
+    running: false,
+    result,
+    subsystemId
+  }
+}
 
 const send = (url, genes) => {
   const geneString = genes.reduce((gene1, gene2) => gene1 + '\n' + gene2)
@@ -78,8 +84,6 @@ export const runEnrichment = (url = ENRICHR_URL, genes, subsystemId) => {
         const tasks = parallelCall(url, jobId)
         Promise.all(tasks)
           .then(allResult => {
-
-            console.log('ENR ALL', allResult)
             const resultMap = {}
             allResult.forEach(entry => {
               const key = Object.keys(entry)[0]

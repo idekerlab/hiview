@@ -199,18 +199,7 @@ class NetworkPanel extends Component {
         }
       })
       .then(summary => {
-        const edgeCount = summary.edgeCount
-
         this.props.rawInteractionsActions.setRawSummary(summary)
-
-        // if (edgeCount < this.props.autoLoadThreshold) {
-
-        console.log(
-          '* Start loading interaction network::',
-          this.props.rawInteractions.toJS(),
-          this.props.network.toJS()
-        )
-
         const positions = this.props.rawInteractions.get('groupPositions')
         // Directly set prop from node attributes
         this.props.rawInteractionsActions.fetchInteractionsFromUrl(
