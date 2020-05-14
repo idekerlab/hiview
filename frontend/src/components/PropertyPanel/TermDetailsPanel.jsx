@@ -61,21 +61,22 @@ const headingStyle = {
   fontSize: '1em',
   fontWeight: 400
 }
+const DUMMY_STYLE = {
+  style: []
+}
 
 const TermDetailsPanel = props => {
-  const [subtree, setSubtree] = useState({})
-  const [subNet, setSubNet] = useState({})
   const [selectedTab, setSelectedTab] = useState(0)
   const [networkPanelHeight, setNetworkPanelHeight] = useState(
     window.innerHeight * 0.5
   )
 
+  const [vs, setVS] = useState(null)
+  const [systemID, setSystemID] = useState(null)
+
   const addStyle = rawInteractions => {
     const networkStyle = StyleFactory.createStyle(rawInteractions)
-    props.interactionStyleActions.addStyle({
-      name: 'defaultStyle',
-      style: networkStyle
-    })
+    setVS(networkStyle)
   }
 
   const setScore = val => {
@@ -89,8 +90,17 @@ const TermDetailsPanel = props => {
   }
 
   useEffect(() => {
-    addStyle(props.rawInteractions)
-  }, [props.rawInteractions])
+    const newID = props.selection.get('main').nodeId
+    if (vs === null || systemID !== newID) {
+      console.log(
+        '## VS builder------------------------------------------------',
+        systemID,
+        newID
+      )
+      setSystemID(newID)
+      addStyle(props.rawInteractions)
+    }
+  }, [props.rawInteractions, props.selection.get('main')])
 
   const handleChange = (event, value) => {
     setSelectedTab(value)
@@ -181,6 +191,11 @@ const TermDetailsPanel = props => {
     if (hidden) {
       return <EmptyInteractionPanel height={topHeight} />
     }
+    if (vs === null) {
+      return (
+        <LoadingPanel message={'Network loaded.  Now creating styles...'} />
+      )
+    }
 
     if (externalNetwork === null || externalNetwork === undefined) {
       return (
@@ -197,7 +212,7 @@ const TermDetailsPanel = props => {
           selectionActions={props.selectionActions}
           filters={raw.filters}
           interactionStyleActions={props.interactionStyleActions}
-          networkStyle={visualStyle}
+          networkStyle={vs}
           panelWidth={props.width}
           expanded={props.expanded}
           enrichment={props.enrichment}

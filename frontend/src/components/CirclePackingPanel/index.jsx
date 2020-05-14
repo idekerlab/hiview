@@ -7,7 +7,7 @@ import { findPath } from './path-finder'
 const TreeViewer = CyTreeViewer(CirclePackingRenderer)
 
 // For hover on node timeout
-const HOVER_TIMEOUT = 480 // Event will be fired after 180ms
+const HOVER_TIMEOUT = 380 // Event will be fired after 180ms
 let task = null
 
 let expandId = null
@@ -151,20 +151,22 @@ class CirclePackingPanel extends Component {
     }
 
     const hoverOutNode = (id, data) => {
-      console.log('--------------HV OUT', id)
-      window.clearTimeout(task)
-      if (this.props.rawInteractions.get('selected').length !== 0) {
-        this.props.rawInteractionsActions.setSelected([])
-      }
+      // console.log('--------------HV OUT', id)
+      // window.clearTimeout(task)
+      // if (this.props.rawInteractions.get('selected').length !== 0) {
+      //   console.log('<Highlight CLEAR---------', id)
+      //   this.props.rawInteractionsActions.setSelected([])
+      // }
     }
 
     const runHighlight = (id, data, groups) => {
+      console.log('<Highlight start', id)
       // Set selected state
       // this.props.selectionActions.enterNode(data)
 
       const currentSelection = this.props.selection.get('main').nodeId
       if (id === currentSelection) {
-        this.props.rawInteractionsActions.setSelected([])
+        // this.props.rawInteractionsActions.setSelected([])
         return
       }
       let name = data.props.Original_Name
@@ -175,27 +177,27 @@ class CirclePackingPanel extends Component {
       const geneIds = groups[name]
 
       if (!geneIds) {
-        this.props.rawInteractionsActions.setSelected([])
+        // this.props.rawInteractionsActions.setSelected([])
       } else {
         this.props.rawInteractionsActions.setSelected(geneIds)
       }
     }
 
     const hoverOnNode = (id, data, parent) => {
-      console.log('--------------HV', id)
-      // Check invalid parameter.  Name is always required
-      if (
-        data === null ||
-        data.props === null ||
-        data.props.name === undefined
-      ) {
-        return
-      }
-      const groups = this.props.groups
-      if (!groups) {
-        return
-      }
-      task = setTimeout(() => runHighlight(id, data, groups), HOVER_TIMEOUT)
+      // console.log('--------------HV', id)
+      // // Check invalid parameter.  Name is always required
+      // if (
+      //   data === null ||
+      //   data.props === null ||
+      //   data.props.name === undefined
+      // ) {
+      //   return
+      // }
+      // const groups = this.props.groups
+      // if (!groups) {
+      //   return
+      // }
+      // task = setTimeout(() => runHighlight(id, data, groups), HOVER_TIMEOUT)
     }
 
     return {

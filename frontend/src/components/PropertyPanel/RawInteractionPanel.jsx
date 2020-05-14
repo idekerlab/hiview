@@ -57,7 +57,7 @@ const RawInteractionPanel = props => {
       nodeProps: props
     }
 
-    selectionActions.selectNode(newSelectionState)
+    // selectionActions.selectNode(newSelectionState)
   }
 
   const commandFinished = (lastCommand, status = {}) => {
@@ -115,19 +115,19 @@ const RawInteractionPanel = props => {
     )
   }
 
-  let primaryFilter = null
-  const filterNames = []
-  const filterMap = {}
+  // let primaryFilter = null
+  // const filterNames = []
+  // const filterMap = {}
 
-  filters.forEach(filter => {
-    const isPrimary = filter.isPrimary
-    if (isPrimary) {
-      primaryFilter = filter
-    } else {
-      filterNames.push(filter.attributeName)
-      filterMap[filter.attributeName] = filter
-    }
-  })
+  // filters.forEach(filter => {
+  //   const isPrimary = filter.isPrimary
+  //   if (isPrimary) {
+  //     primaryFilter = filter
+  //   } else {
+  //     filterNames.push(filter.attributeName)
+  //     filterMap[filter.attributeName] = filter
+  //   }
+  // })
 
   console.log('!!!!!!!!!!!##CyViewer loaded::')
   return (
@@ -140,7 +140,7 @@ const RawInteractionPanel = props => {
       networkType={'cyjs'}
       networkStyle={visualStyle}
       style={networkAreaStyle}
-      eventHandlers={getCustomEventHandlers()}
+      // eventHandlers={getCustomEventHandlers()}
       rendererOptions={{
         layout: checkPresetLayout(subnet)
       }}

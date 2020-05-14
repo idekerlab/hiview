@@ -114,7 +114,7 @@ const CytoscapeViewer = props => {
 
   const isLoading = props.externalNetworks.loading
   if (isLoading) {
-    return <LoadingPanel {...props} />
+    return <LoadingPanel message={'Loading external interactions'} />
   }
 
   const selectedNetwork = props.externalNetworks.selectedNetwork
@@ -161,7 +161,6 @@ const CytoscapeViewer = props => {
     name: layoutNameUpdated
   }
 
-  console.log('--------------------------------------rendering net')
   return (
     <CytoscapeComponent
       elements={CytoscapeComponent.normalizeElements(cyjs.elements)}

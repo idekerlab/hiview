@@ -164,8 +164,6 @@ export const createStyle = originalNetwork => {
     similarityMax = 1
   }
 
-  console.log('Style generated for range:: ', similarityMin, similarityMax)
-
   const edgeStyle = BASE_STYLE.edge
   edgeStyle.css['z-index'] = `data(zIndex)`
 
