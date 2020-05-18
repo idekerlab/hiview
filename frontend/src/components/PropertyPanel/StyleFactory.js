@@ -7,6 +7,9 @@ const VIEW_TO_FONT_SIZE_RATIO = 350
 const BASE_FONT_SIZE = 18
 const LARGE_FONT_SIZE = 30
 
+// If there are too many edge in the data, use simplified version.
+const MAX_EDGE_COUNT = 10000
+
 const calcFontSize = cyNode => {
   const cy = cyNode.cy()
   const ext = cy.extent()
@@ -39,6 +42,57 @@ const calcNodeHeight = cyNode => {
   return LARGE_FONT_SIZE * 1.1
 }
 
+const MINIMAL_STYLE = [
+  {
+    selector: 'node',
+    style: {
+      width: 10,
+      height: 10,
+      shape: 'rectangle',
+      color: '#FFFFFF',
+      'background-color': '#FFFFFF'
+      // label: 'data(name)'
+    }
+  },
+  {
+    selector: 'node:selected',
+    style: {
+      label: 'data(name)',
+      'background-color': '#FF0000',
+      'text-valign': 'bottom',
+      'text-halign': 'right',
+      color: '#FF0000'
+    }
+  },
+  {
+    selector: 'edge',
+    style: {
+      opacity: 0.4,
+      'line-color': 'data(color)',
+      'z-index': 'data(zIndex)'
+    }
+  },
+  {
+    selector: '.members',
+    css: {
+      label: 'data(name)',
+      'background-color': '#FF0000',
+      color: '#FF0000',
+      'text-valign': 'bottom',
+      'text-halign': 'right',
+      width: 30,
+      height: 30
+    }
+  },
+  {
+    selector: 'edge.hidden',
+    css: {
+      opacity: 0.05,
+      // visibility: 'hidden'
+    }
+  }
+]
+
 const BASE_STYLE = {
   node: {
     selector: 'node',
@@ -49,7 +103,7 @@ const BASE_STYLE = {
       'text-valign': 'center',
       'text-halign': 'center',
       color: '#FFFFFF',
-      'text-opacity': 0.6,
+      'text-opacity': 1,
       'background-opacity': 0,
       'background-color': '#222222',
       'border-width': 0,
@@ -60,9 +114,6 @@ const BASE_STYLE = {
   nodeSelected: {
     selector: 'node:selected',
     css: {
-      'text-opacity': 1,
-      // shape: 'ellipse',
-      // width: 120,
       width: n => calcNodeWidth(n),
       height: n => calcNodeHeight(n),
       'font-size': n => calcFontSize(n),
@@ -81,7 +132,7 @@ const BASE_STYLE = {
       'text-opacity': 0,
       'font-size': 65,
       color: '#FF0000',
-      opacity: 0.7,
+      opacity: 0.8,
       'curve-style': e => {
         const parallel = e.parallelEdges()
         if (parallel.size() > 1) {
@@ -101,11 +152,24 @@ const BASE_STYLE = {
       'z-index': e => e.data('zIndex') + 1000
     }
   },
+  members: {
+    selector: '.members',
+    css: {
+      'background-color': '#FF0000',
+      color: '#FFFFFF',
+      'background-opacity': 1,
+      'background-color': '#FF0000',
+      width: n => calcNodeWidth(n),
+      height: n => calcNodeHeight(n),
+      'font-size': n => calcFontSize(n),
+      'font-weight': 500
+    }
+  },
   hidden: {
     selector: 'edge.hidden',
     css: {
-      opacity: 0.1,
-      visibility: 'hidden'
+      opacity: 0.05,
+      // visibility: 'hidden'
     }
   },
   seed: {
@@ -119,7 +183,15 @@ const BASE_STYLE = {
   }
 }
 
+export const createSimplifiedStyle = () => {
+  return { style: MINIMAL_STYLE }
+}
+
 export const createStyle = originalNetwork => {
+  console.log(
+    '## Crearting VS-----------------------------',
+    originalNetwork.toJS().interactions
+  )
   const network = originalNetwork.toJS()
 
   if (network.loading) {
@@ -132,6 +204,9 @@ export const createStyle = originalNetwork => {
   }
 
   const edges = network.interactions.elements.edges
+  if (edges.length >= MAX_EDGE_COUNT) {
+    return createSimplifiedStyle(interactions)
+  }
 
   const networkData = interactions.data
   const childWeight = networkData['Children weight']
@@ -205,7 +280,8 @@ export const createStyle = originalNetwork => {
       edgeStyle,
       edgeSelectedStyle,
       BASE_STYLE.hidden,
-      BASE_STYLE.seed
+      BASE_STYLE.seed,
+      BASE_STYLE.members
     ]
   }
 }

@@ -92,11 +92,6 @@ const TermDetailsPanel = props => {
   useEffect(() => {
     const newID = props.selection.get('main').nodeId
     if (vs === null || systemID !== newID) {
-      console.log(
-        '## VS builder------------------------------------------------',
-        systemID,
-        newID
-      )
       setSystemID(newID)
       addStyle(props.rawInteractions)
     }

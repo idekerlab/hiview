@@ -12,6 +12,21 @@ const networkAreaStyle = {
   background: '#555555'
 }
 
+// Custom event handler
+const selectNodes = (nodeIds, nodeProps) => {
+  const node = nodeIds[0]
+  const props = nodeProps[node]
+
+  const newSelectionState = {
+    networkId: 'raw',
+    nodeId: node,
+    nodeProps: props
+  }
+
+  // if necessary, app can use selection in Cytoscape.js
+  // selectionActions.selectNode(newSelectionState)
+}
+
 const RawInteractionPanel = props => {
   const t0 = performance.now()
 
@@ -46,19 +61,6 @@ const RawInteractionPanel = props => {
       selectedTerm
     )
   }, [uiState.get('runEnrichment'), subnet])
-
-  const selectNodes = (nodeIds, nodeProps) => {
-    const node = nodeIds[0]
-    const props = nodeProps[node]
-
-    const newSelectionState = {
-      networkId: 'raw',
-      nodeId: node,
-      nodeProps: props
-    }
-
-    // selectionActions.selectNode(newSelectionState)
-  }
 
   const commandFinished = (lastCommand, status = {}) => {
     commandActions.clearCommand()
@@ -140,7 +142,7 @@ const RawInteractionPanel = props => {
       networkType={'cyjs'}
       networkStyle={visualStyle}
       style={networkAreaStyle}
-      // eventHandlers={getCustomEventHandlers()}
+      eventHandlers={getCustomEventHandlers()}
       rendererOptions={{
         layout: checkPresetLayout(subnet)
       }}
