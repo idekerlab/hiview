@@ -1,6 +1,9 @@
 import cytoscape from 'cytoscape'
 import regCose from 'cytoscape-cose-bilkent'
+import { scaleBand } from 'd3-scale'
 regCose(cytoscape)
+
+const SCALING_FACTOR = 2
 
 const localLayout = (network, groups, positions, nodeMap) => {
   console.log('Running local layout:', network, positions, nodeMap, groups)
@@ -11,29 +14,24 @@ const localLayout = (network, groups, positions, nodeMap) => {
     elements: network.elements
   })
 
-  console.log('CY instance:', cy)
-
-
   const groupNames = Object.keys(groups)
-
-  console.log('GNames = ', groupNames)
-
   const remainingGenes = []
 
-  let x1 = null
-  let y1 = null
+  // Sort from largest to smallest
 
-  console.log('============================= NSIZE', network.elements)
+  const sizeMap = new Map()
+  groupNames.forEach(name => {
+    sizeMap.set(name, groups[name].length)
+  })
 
-  groupNames.forEach(groupName => {
-    // Center and size of the area (circle)
+  const sorted = [...sizeMap.entries()].sort((a, b) => b[1] - a[1])
+
+  // Empty collection for group nodes
+  const groupNodes = cy.collection()
+
+  sorted.forEach(entry => {
+    const groupName = entry[0]
     const position = positions[groupName]
-
-    if(x1 == null) {
-      console.log('##############GName::', groupName, position)
-      x1 = position.x
-      y1 = position.y
-    }
 
     // Member genes assigned to the group
     const memberIds = groups[groupName]
@@ -49,7 +47,7 @@ const localLayout = (network, groups, positions, nodeMap) => {
     } else {
       const selectString = '#' + memberIds.join(',#')
       const memberGenes = cy.nodes(selectString)
-
+      groupNodes.merge(memberGenes)
       const connected = memberGenes.edgesWith(memberGenes)
 
       // const connected = memberGenes.connectedEdges()
@@ -94,36 +92,65 @@ const localLayout = (network, groups, positions, nodeMap) => {
       // })
       const subgraph = memberGenes.union(connected)
       let layout = {}
-      if (network.elements.nodes.length < 1000) {
+
+      if (network.elements.nodes.length < 100000) {
         layout = subgraph.layout({
           name: 'cose',
           animate: false,
+          // numIter: 500,
+          nodeOverlap: 15,
+          idealEdgeLength: 150,
+          nodeRepulsion: 4000,
+          // nodeDimensionsIncludeLabels: true,
           boundingBox: {
-            x1: position.x * 15,
-            y1: position.y * 15,
-            w: position.r * 2 * 15,
-            h: position.r * 2 * 15
+            x1: position.x,
+            y1: position.y,
+            w: position.r * 3,
+            h: position.r * 3
           }
         })
         layout.run()
-        // subgraph.nodes().shift({ x: position.x * 15, y: position.y * 15 })
+        subgraph.nodes().shift({
+          x: position.x * SCALING_FACTOR,
+          y: position.y * SCALING_FACTOR
+        })
       } else {
         layout = subgraph.layout({
           name: 'grid'
         })
         layout.run()
-        subgraph.nodes().shift({ x: position.x * 15, y: position.y * 15 })
+        // subgraph.nodes().shift({
+        //   x: position.x * SCALING_FACTOR,
+        //   y: position.y * SCALING_FACTOR
+        // })
       }
 
+      // Find the bounding box
       // subgraph.nodes().forEach(node => {
       //   const original = node.position()
-      //   node.position({
-      //     x: original.x * 30,
-      //     y: original.y * 30
-      //   })
+      //   if (original.x < xMin) {
+      //     xMin = original.x
+      //   } else if (original.x > xMax) {
+      //     xMax = original.x
+      //   }
+
+      //   if (original.y < yMin) {
+      //     yMin = original.y
+      //   } else if (original.y > yMax) {
+      //     yMax = original.y
+      //   }
+      // })
+      // subgraph.nodes().shift({
+      //   x: position.x * SCALING_FACTOR,
+      //   y: position.y * SCALING_FACTOR
       // })
     }
   })
+
+  console.log('# ALl G nodes::', groupNodes)
+
+  const box = groupNodes.boundingBox()
+  console.log('# ALl G nodes BOX::', box)
 
   // Apply layout for remaining genes
   if (remainingGenes.length !== 0) {
@@ -134,25 +161,37 @@ const localLayout = (network, groups, positions, nodeMap) => {
     const connected = memberGenes.edgesWith(memberGenes)
     const subgraph2 = memberGenes.union(connected)
     const circularLayout = subgraph2.layout({
-      name: 'circle'
+      name: 'circle',
+      boundingBox: box,
+      radius:
+        0.9 *
+        Math.sqrt(Math.pow(box.x2 - box.x2, 2) + Math.pow(box.y2 - box.y1, 2))
     })
-    circularLayout.run()
-    subgraph2.nodes().forEach(node => {
-      const original = node.position()
-      node.position({
-        x: original.x * 40,
-        y: original.y * 40
-      })
-    })
+    // circularLayout.run()
+    // subgraph2.nodes().shift({
+    //   x: box.x1 * SCALING_FACTOR,
+    //   y: box.y1 * SCALING_FACTOR
+    // })
+
+    // const xCenter = xMax - xMin
+    // const yCenter = yMax - yMin
+    // subgraph2.nodes().shift({ x: -xCenter, y: -yCenter })
+    // subgraph2.nodes().shift({
+    //   x: position.x * SCALING_FACTOR,
+    //   y: position.y * SCALING_FACTOR
+    // })
 
     const coseLayout = subgraph2.layout({
       name: 'cose',
       animate: false,
-      nodeOverlap: 200000,
+      numIter: 300,
+      // nodeOverlap: 20,
+      // idealEdgeLength: 300,
+      // nodeDimensionsIncludeLabels: true,
+      boundingBox: box
+      // randomize: true
 
-      idealEdgeLength: edge => { return 10000 }
       // nodeRepulsion: function( node ){ return 20480; }
-
 
       // boundingBox: {
       //   x1: position.x * 15,
@@ -161,9 +200,9 @@ const localLayout = (network, groups, positions, nodeMap) => {
       //   h: position.r * 2 * 15
       // }
     })
-    // coseLayout.run()
+    coseLayout.run()
 
-    subgraph2.nodes().shift({ x: x1 * 15, y: y1 * 15 })
+    // subgraph2.nodes().shift({ x: x1 * 15, y: y1 * 15 })
     // subgraph2.nodes().forEach(node => {
     //   const original = node.position()
     //   node.position({
@@ -171,6 +210,8 @@ const localLayout = (network, groups, positions, nodeMap) => {
     //     y: original.y * 1.2
     //   })
     // })
+  } else {
+    console.log('===================== Circular')
   }
 }
 

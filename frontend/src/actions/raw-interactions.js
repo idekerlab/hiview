@@ -116,23 +116,22 @@ const processCx = (cx, positions) => {
   while (layoutIdx--) {
     const position = layout[layoutIdx]
     const nodeId = position['node']
-    // nMap.get(nodeId)['position'] = {
-    //   x: position.x,
-    //   y: position.y
-    // }
-
-    // This is for circle-position based layout
-    //
-    const termName = nMap.get(nodeId).data.name
-    const circlePosition = positions[termName]
-
-    // if(circlePosition === undefined) {
     nMap.get(nodeId)['position'] = {
       x: position.x,
       y: position.y
     }
-    // } else {
+
+    // This is for circle-position based layout
     //
+    // const termName = nMap.get(nodeId).data.name
+    // const circlePosition = positions[termName]
+
+    // if (circlePosition === undefined) {
+    //   nMap.get(nodeId)['position'] = {
+    //     x: position.x,
+    //     y: position.y
+    //   }
+    // } else {
     //   nMap.get(nodeId)['position'] = {
     //     x: circlePosition.x * 15,
     //     y: circlePosition.y * 15
@@ -225,6 +224,7 @@ const typeConverter = (dataType, value) => {
 
 const fetchFromDB = (dispatch, entry) => {
   const netAndFilter = entry.netAndFilter
+
   return dispatch(
     receiveNetwork(
       entry.url,
@@ -285,12 +285,6 @@ const fetchInteractionsFromRemote = (
     })
     .then(cx => {
       originalCX = cx
-      const t33 = performance.now()
-      console.log(
-        '*** download Total raw interaction update time:',
-        t33 - t0,
-        cx
-      )
       const processed = processCx(originalCX, positions)
       nodeMap = processed.nodeMap
       const newNet = processed.network
@@ -309,7 +303,12 @@ const fetchInteractionsFromRemote = (
         netAndFilter,
         originalCX
       }
+
       hvDb.interactions.put(entry)
+
+      const network = netAndFilter[0]
+      const groups = netAndFilter[2]
+
       // This is for applying new layout locally
       // localLayout(network, groups, positions, nodeMap)
 
@@ -345,7 +344,6 @@ const getInteractions = (
   // Check local data
   hvDb.interactions.get(uuid).then(entry => {
     if (entry === undefined) {
-      console.log('+++++++++++++++ Remote Data', uuid)
       return fetchInteractionsFromRemote(
         mainFeature,
         th,
@@ -357,7 +355,6 @@ const getInteractions = (
         positions
       )
     } else {
-      console.log('+++++++++++++++ Local Data', uuid)
       return fetchFromDB(dispatch, entry)
     }
   })
@@ -374,6 +371,7 @@ export const fetchInteractionsFromUrl = (
   tp0 = performance.now()
 
   // Get only top 10000 edges.
+  // TODO: Adjust max size
   const urlFiltered =
     'http://dev2.ndexbio.org/edgefilter/v1/network/' +
     uuid +

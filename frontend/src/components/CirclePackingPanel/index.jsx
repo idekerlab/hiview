@@ -152,7 +152,6 @@ class CirclePackingPanel extends Component {
     }
 
     const runHighlight = (id, data, groups) => {
-      
       // Set selected state
       // this.props.selectionActions.enterNode(data)
 
@@ -198,15 +197,16 @@ class CirclePackingPanel extends Component {
       task = setTimeout(() => runHighlight(id, data, groups), HOVER_TIMEOUT)
     }
 
-    
     const hoverOutNode = (id, data) => {
       window.clearTimeout(task)
       clearTask = setTimeout(() => clear(), 500)
     }
 
     const clear = () => {
-        this.props.rawInteractionsActions.setSelected([])
-        console.log('clear-------------------------------------------------------')
+      this.props.rawInteractionsActions.setSelected([])
+      console.log(
+        'clear-------------------------------------------------------'
+      )
     }
 
     return {

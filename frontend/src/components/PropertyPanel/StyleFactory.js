@@ -4,7 +4,7 @@ const INTERACTION_TAG = 'interaction'
 
 // Font size will be calculated based on viewport size.
 const VIEW_TO_FONT_SIZE_RATIO = 350
-const BASE_FONT_SIZE = 18
+const BASE_FONT_SIZE = 12
 const LARGE_FONT_SIZE = 30
 
 // If there are too many edge in the data, use simplified version.
@@ -46,9 +46,9 @@ const MINIMAL_STYLE = [
   {
     selector: 'node',
     style: {
-      width: 10,
-      height: 10,
-      shape: 'rectangle',
+      width: 5,
+      height: 5,
+      shape: 'ellipse',
       color: '#FFFFFF',
       'background-color': '#FFFFFF'
       // label: 'data(name)'
@@ -67,7 +67,7 @@ const MINIMAL_STYLE = [
   {
     selector: 'edge',
     style: {
-      opacity: 0.4,
+      opacity: 0.2,
       'line-color': 'data(color)',
       'z-index': 'data(zIndex)'
     }
@@ -75,19 +75,19 @@ const MINIMAL_STYLE = [
   {
     selector: '.members',
     css: {
-      label: 'data(name)',
+      // label: 'data(name)',
       'background-color': '#FF0000',
       color: '#FF0000',
       'text-valign': 'bottom',
       'text-halign': 'right',
-      width: 30,
-      height: 30
+      width: 10,
+      height: 10
     }
   },
   {
     selector: 'edge.hidden',
     css: {
-      opacity: 0.05,
+      opacity: 0.05
       // visibility: 'hidden'
     }
   }
@@ -103,7 +103,7 @@ const BASE_STYLE = {
       'text-valign': 'center',
       'text-halign': 'center',
       color: '#FFFFFF',
-      'text-opacity': 1,
+      'text-opacity': 0.8,
       'background-opacity': 0,
       'background-color': '#222222',
       'border-width': 0,
@@ -132,7 +132,7 @@ const BASE_STYLE = {
       'text-opacity': 0,
       'font-size': 65,
       color: '#FF0000',
-      opacity: 0.8,
+      opacity: 0.05,
       'curve-style': e => {
         const parallel = e.parallelEdges()
         if (parallel.size() > 1) {
@@ -168,7 +168,7 @@ const BASE_STYLE = {
   hidden: {
     selector: 'edge.hidden',
     css: {
-      opacity: 0.05,
+      opacity: 0.05
       // visibility: 'hidden'
     }
   },

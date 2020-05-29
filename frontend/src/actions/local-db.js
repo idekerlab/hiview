@@ -1,7 +1,7 @@
 // For local cache
 import Dexie from 'dexie'
 
-const DB_NAME = 'HiView2'
+const DB_NAME = 'HiView3'
 const DB_VERSION = 1
 const DB_STORE = 'hierarchy'
 const DB_PRIMARY_KEY = 'uuid'

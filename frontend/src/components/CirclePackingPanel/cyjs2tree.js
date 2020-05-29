@@ -174,7 +174,7 @@ const transform = (rootId, edges, nodeMap) => {
   const table = []
 
   let rootLabel = nodeMap[rootId].Label
-  if(rootLabel === undefined || rootLabel === null) {
+  if (rootLabel === undefined || rootLabel === null) {
     rootLabel = nodeMap[rootId].id
   }
 
@@ -199,18 +199,17 @@ const transform = (rootId, edges, nodeMap) => {
         edge.data['Is_Tree_Edge'] === 'Tree' ||
         edge.data['Is_Tree_Edge'] === undefined
       ) {
-
         let label = source.Label
-        if(!label) {
+        if (!label) {
           label = ''
         }
         let nodeType = source.NodeType
-        if(!nodeType) {
+        if (!nodeType) {
           nodeType = 'Term'
         }
 
         let size = source.Size
-        if(!size) {
+        if (!size) {
           size = source.size
         }
 
@@ -223,7 +222,6 @@ const transform = (rootId, edges, nodeMap) => {
           props: source,
           alias: source.alias
         }
-
 
         if (source.originalId) {
           node['originalId'] = source.originalId

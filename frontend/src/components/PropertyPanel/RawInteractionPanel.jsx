@@ -131,7 +131,6 @@ const RawInteractionPanel = props => {
   //   }
   // })
 
-  console.log('!!!!!!!!!!!##CyViewer loaded::')
   return (
     <Viewer
       key="subNetworkView"
