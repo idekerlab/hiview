@@ -58,9 +58,9 @@ const styles = theme => ({
   }
 })
 
-const getColor = (idx) => {
+const getColor = idx => {
   const colorSpaceSize = COLORS.length
-  return COLORS[idx%colorSpaceSize]
+  return COLORS[idx % colorSpaceSize]
 }
 
 class EdgeFilter extends Component {
@@ -119,7 +119,7 @@ class EdgeFilter extends Component {
 
   render() {
     const { classes } = this.props
-    const {filters, networkData, uiState, uiStateActions} = this.props
+    const { filters, networkData, uiState, uiStateActions } = this.props
     const filterState = uiState.get('filterState')
 
     let edgeGroupsText = null
@@ -168,7 +168,12 @@ class EdgeFilter extends Component {
           <List>
             {sortedNames.map((filterName, idx) => (
               <ListItem key={filterName}>
-                {this.getFilter(idx, filterMap[filterName], filterState, uiStateActions)}
+                {this.getFilter(
+                  idx,
+                  filterMap[filterName],
+                  filterState,
+                  uiStateActions
+                )}
               </ListItem>
             ))}
           </List>
@@ -195,7 +200,14 @@ class EdgeFilter extends Component {
     )
   }
 
-  generateFilterList = (sortedNames, filterMap, filter2cat, cat2filter, filterState, uiStateActions) => {
+  generateFilterList = (
+    sortedNames,
+    filterMap,
+    filter2cat,
+    cat2filter,
+    filterState,
+    uiStateActions
+  ) => {
     if (!filter2cat) {
       return <List />
     }
@@ -248,7 +260,14 @@ class EdgeFilter extends Component {
     )
   }
 
-  getExistingFilters = (allFilterNames, cat2filter, filter2cat, filterMap, filterState, uiStateActions) => {
+  getExistingFilters = (
+    allFilterNames,
+    cat2filter,
+    filter2cat,
+    filterMap,
+    filterState,
+    uiStateActions
+  ) => {
     const newFilters = {}
 
     // All filters without parent categories will be here.
@@ -261,7 +280,12 @@ class EdgeFilter extends Component {
         // This one does not have parent category
         const newFilterListItem = (
           <ListItem key={filterName}>
-            {this.getFilter(idx, filterMap[filterName], filterState, uiStateActions)}
+            {this.getFilter(
+              idx,
+              filterMap[filterName],
+              filterState,
+              uiStateActions
+            )}
           </ListItem>
         )
 
@@ -281,7 +305,12 @@ class EdgeFilter extends Component {
         }
         const filterListItem = (
           <ListItem key={filterName}>
-            {this.getFilter(idx, filterMap[filterName], filterState, uiStateActions)}
+            {this.getFilter(
+              idx,
+              filterMap[filterName],
+              filterState,
+              uiStateActions
+            )}
           </ListItem>
         )
         listForCategory.push(filterListItem)
@@ -294,7 +323,6 @@ class EdgeFilter extends Component {
   }
 
   getFilter(idx, filter, filterState, uiStateActions) {
-
     if (filter === undefined) {
       return null
     }
@@ -309,7 +337,7 @@ class EdgeFilter extends Component {
       let value = defValue
       const currentState = filterState.get(name)
 
-      if(currentState) {
+      if (currentState) {
         value = currentState.value
         enabled = currentState.enabled
       }
@@ -342,6 +370,7 @@ class EdgeFilter extends Component {
           commandActions={this.props.commandActions}
           selected={this.state.selected}
           color={color}
+          uiStateActions={uiStateActions}
         />
       )
     }
