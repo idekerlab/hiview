@@ -23,12 +23,13 @@ class BaseFilter extends Component {
     super(props)
 
     this.state = {
-      labelColor: PRESET_COLORS.ENABLED
+      labelColor: PRESET_COLORS.ENABLED,
+      checked: false
     }
   }
 
-  filterSelected = (enabled) => {
-    const {selected, label, color} = this.props
+  filterSelected = enabled => {
+    const { selected, label, color } = this.props
 
     if (enabled) {
       this.setState({
@@ -53,30 +54,6 @@ class BaseFilter extends Component {
       })
 
       this.props.commandActions.collapseEdges(label)
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const numberOfSelected = countItem(nextProps.selected)
-
-    if (numberOfSelected === MAX_SELECTED) {
-      if (!nextProps.selected.includes(this.props.label)) {
-        this.setState({
-          disabled: true,
-          labelColor: PRESET_COLORS.DISABLED
-        })
-      }
-    } else if (numberOfSelected < MAX_SELECTED) {
-      if (!nextProps.selected.includes(this.props.label)) {
-        this.setState({
-          disabled: false,
-          labelColor: PRESET_COLORS.ENABLED
-        })
-      } else {
-        this.setState({
-          disabled: false
-        })
-      }
     }
   }
 

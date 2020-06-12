@@ -168,8 +168,7 @@ const BASE_STYLE = {
   hidden: {
     selector: 'edge.hidden',
     css: {
-      opacity: 0.05
-      // visibility: 'hidden'
+      visibility: 'hidden'
     }
   },
   seed: {
@@ -188,10 +187,6 @@ export const createSimplifiedStyle = () => {
 }
 
 export const createStyle = originalNetwork => {
-  console.log(
-    '## Crearting VS-----------------------------',
-    originalNetwork.toJS().interactions
-  )
   const network = originalNetwork.toJS()
 
   if (network.loading) {

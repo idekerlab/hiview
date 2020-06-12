@@ -16,12 +16,33 @@ const filterRowStyle = {
 class BooleanFilter extends BaseFilter {
   onChecked = event => {
     const checked = event.target.checked
+    this.setState({
+      checked: checked
+    })
     this.filterSelected(checked)
     this.props.uiStateActions.setFilterState({
       name: this.props.label,
       value: true,
       enabled: checked
     })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const current = this.props.currentSystem
+    const next = nextProps.currentSystem
+    const checked = this.state.checked
+
+    if (current !== next && checked) {
+      console.log('##########################>>>>>> Enterexpand', this.props)
+      setTimeout(() => {
+        this.filterSelected(true)
+        this.props.uiStateActions.setFilterState({
+          name: this.props.label,
+          value: true,
+          enabled: true
+        })
+      }, 100)
+    }
   }
 
   render() {

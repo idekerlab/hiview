@@ -327,6 +327,12 @@ class EdgeFilter extends Component {
       return null
     }
 
+    const networkData = this.props.networkData
+    let currentSystem = null
+    if (networkData !== undefined && networkData !== null) {
+      currentSystem = networkData.name
+    }
+
     const filterType = filter.type
     const defValue = Number(filter.min)
     let enabled = false
@@ -358,6 +364,7 @@ class EdgeFilter extends Component {
           selected={this.state.selected}
           uiStateActions={uiStateActions}
           color={color}
+          currentSystem={currentSystem}
         />
       )
     } else if (filterType === FILTER_TYPES.BOOLEAN) {
@@ -371,6 +378,7 @@ class EdgeFilter extends Component {
           selected={this.state.selected}
           color={color}
           uiStateActions={uiStateActions}
+          currentSystem={currentSystem}
         />
       )
     }

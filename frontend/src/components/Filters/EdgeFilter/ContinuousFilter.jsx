@@ -28,8 +28,8 @@ class ContinuousFilter extends BaseFilter {
   }
 
   componentDidMount() {
-    const {enabled, value} = this.props
-    if(enabled) {
+    const { enabled, value } = this.props
+    if (enabled) {
       setTimeout(() => {
         this.setState({
           checked: enabled
@@ -37,8 +37,19 @@ class ContinuousFilter extends BaseFilter {
 
         this.filterSelected(enabled)
         this.applyFilter(value)
-
       }, 20)
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const current = this.props.currentSystem
+    const next = nextProps.currentSystem
+
+    if (current !== next && nextProps.enabled) {
+      setTimeout(() => {
+        this.filterSelected(true)
+        this.applyFilter(this.props.value)
+      }, 500)
     }
   }
 
@@ -87,7 +98,9 @@ class ContinuousFilter extends BaseFilter {
     })
 
     // TODO: create one command to do both in order
-    setTimeout(() => {this.applyFilter(currentSliderValue)}, 10)
+    setTimeout(() => {
+      this.applyFilter(currentSliderValue)
+    }, 10)
   }
 
   render() {
