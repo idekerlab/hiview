@@ -164,7 +164,8 @@ const processCx = (cx, positions) => {
     const strVal = eAttr['v']
 
     const typedVal = typeConverter(dataType, strVal)
-    const nameSafe = name.replace(/ /g, '_')
+    // const nameSafe = name.replace(/ /g, '_')
+    const nameSafe = name.replace(PATTERN, '_')
 
     const edge = eMap.get(id)
     if (edge !== undefined) {
@@ -184,7 +185,8 @@ const processCx = (cx, positions) => {
     const strVal = nAttr['v']
 
     const typedVal = typeConverter(dataType, strVal)
-    const nameSafe = name.replace(/ /g, '_')
+    // const nameSafe = name.replace(/ /g, '_')
+    const nameSafe = name.replace(PATTERN, '_')
 
     const node = nMap.get(id)
     idSet.add(id)

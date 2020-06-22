@@ -416,10 +416,9 @@ const createBuckets = (
       bucketCounter = 1
       curRange = curRange + delta
     }
-
   }
 
-  if(result.length >= 2) {
+  if (result.length >= 2) {
     // Adjust bounds
     const b1 = result[0]
     const x1 = b1.x
@@ -427,17 +426,16 @@ const createBuckets = (
 
     const minColor = getColorForRange(colorMap, min, min, max)
 
-    if(x1 > min && minColor !== color1 ) {
+    if (x1 > min && minColor !== color1) {
       result[0].color = minColor
     }
-
 
     // Last one
     const bLast = result[result.length - 1]
     const xLast = bLast.x
     const colorLast = bLast.color
 
-    if(xLast > max || colorLast == null) {
+    if (xLast > max || colorLast == null) {
       // Remove
       result.pop()
     }
