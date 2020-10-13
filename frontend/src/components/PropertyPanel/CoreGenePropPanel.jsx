@@ -1,8 +1,5 @@
 import React, { Component } from 'react'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
+import {List, ListItem, ListItemIcon, ListItemText, Divider} from '@material-ui/core'
 
 import OpenIcon from '@material-ui/icons/OpenInNew'
 import ViewListIcon from '@material-ui/icons/ViewList'
@@ -81,25 +78,7 @@ class CoreGenePropPanel extends Component {
     return (
       <div>
         <List dense={true} style={{ margin: 0, padding: 0 }}>
-          <ListItem>
-            <ListItemIcon>
-              <KeyIcon />
-            </ListItemIcon>
-            <ListItemText primary={entrezgene} secondary={'Entrez Gene ID'} />
-          </ListItem>
 
-          <ListItem>
-            <ListItemIcon>
-              <KeyIcon />
-            </ListItemIcon>
-            <ListItemText primary={ensemblGene} secondary={'Ensembl Gene ID'} />
-          </ListItem>
-
-          <GoPanel
-            go={geneOntology}
-            open={this.state.openGo}
-            handleExpand={this.handleExpandGo}
-          />
 
           <ListItem
             button
@@ -138,6 +117,12 @@ class CoreGenePropPanel extends Component {
               </ListItem>
             ))}
           </Collapse>
+          
+          <GoPanel
+            go={geneOntology}
+            open={this.state.openGo}
+            handleExpand={this.handleExpandGo}
+          />
 
           <ListItem
             button
@@ -153,6 +138,22 @@ class CoreGenePropPanel extends Component {
           <Collapse in={this.state.openPathways} unmountOnExit>
             {this.getPathwayList(pathways)}
           </Collapse>
+
+          <Divider/>
+          
+          <ListItem>
+            <ListItemIcon>
+              <KeyIcon />
+            </ListItemIcon>
+            <ListItemText primary={entrezgene} secondary={'Entrez Gene ID'} />
+          </ListItem>
+
+          <ListItem>
+            <ListItemIcon>
+              <KeyIcon />
+            </ListItemIcon>
+            <ListItemText primary={ensemblGene} secondary={'Ensembl Gene ID'} />
+          </ListItem>
         </List>
       </div>
     )

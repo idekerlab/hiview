@@ -35,18 +35,14 @@ const startStyle = {
   marginTop: '2em'
 }
 
-const DEFAULT_EXAMPLE = 'Toy Example'
-
+const DEFAULT_EXAMPLE = 'NeST v1.0'
 const GO_PREFIX = 'Gene Ontology:'
 
 const EXAMPLE_UUIDS = {
-  [DEFAULT_EXAMPLE]: '49bca313-ab2c-11e8-9a23-0660b7976219',
-  'DNA Repair': 'ab704ae4-0719-11e8-b03c-0660b7976219',
-  'Human data-driven hierarchy - draft v0.1':
-    '2900c930-fad7-11e8-ad43-0660b7976219',
+  [DEFAULT_EXAMPLE]: '274fcd6c-1adc-11ea-a741-0660b7976219',
   // 'Gene Ontology: BP': '9166bc71-7bef-11e9-848d-0ac135e8bacf',
-  'Gene Ontology: CC': '0a393b91-7be9-11e9-848d-0ac135e8bacf',
-  'Gene Ontology: MF': '21892e2b-7beb-11e9-848d-0ac135e8bacf'
+  // 'Gene Ontology: CC': '0a393b91-7be9-11e9-848d-0ac135e8bacf',
+  // 'Gene Ontology: MF': '21892e2b-7beb-11e9-848d-0ac135e8bacf'
 }
 
 class SourceSelector extends Component {

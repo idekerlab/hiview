@@ -1,4 +1,5 @@
 import React from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -8,9 +9,20 @@ import IconButton from '@material-ui/core/IconButton'
 
 const GENECARDS_URL = 'http://www.genecards.org/cgi-bin/carddisp.pl?gene='
 
+const useStyles = makeStyles(theme => ({
+  listRoot: {
+    margin: 0,
+    padding: 0,
+    maxHeight: '100%',
+    overflow: 'auto',
+    background: 'yellow',
+  },
+}))
+
 const GeneList = props => {
+  const classes = useStyles()
+
   const handleSelect = gene => () => {
-    console.log('Gene: ', gene)
     props.externalNetworksActions.setSelectedNodes([gene])
   }
 
@@ -26,20 +38,17 @@ const GeneList = props => {
   const sorted = genes.sort()
 
   return (
-    <div style={{ overflow: 'auto' }}>
-      <List>
-        {sorted.map((gene, i) => (
-          <ListItem button key={i} onClick={handleSelect(gene)}>
-            <IconButton onClick={handleClick(gene)}>
-              <OpenIcon />
-            </IconButton>
-            <ListItemText primary={gene} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
+    <List className={classes.listRoot}>
+      {sorted.map((gene, i) => (
+        <ListItem button key={i} onClick={handleSelect(gene)}>
+          <IconButton onClick={handleClick(gene)}>
+            <OpenIcon />
+          </IconButton>
+          <ListItemText primary={gene} />
+        </ListItem>
+      ))}
+    </List>
   )
 }
-
 
 export default GeneList

@@ -9,13 +9,14 @@ const PANEL_TYPES = {
 }
 
 const drawerContentsStyle = {
-  overflowX: 'never',
   boxSizing: 'border-box',
   width: '100%',
   height: '100%',
   margin: 0,
   padding: 0,
-  background: '#FFFFFF'
+  background: '#FFFFFF',
+  display: 'flex',
+  flexDirection: 'column'
 }
 
 const PropertyPanel = props => {
@@ -33,8 +34,6 @@ const PropertyPanel = props => {
       return (
         <TermDetailsPanel
           {...props}
-          width={w}
-          height={window.innerHeight}
           title={title}
           color={color}
         />

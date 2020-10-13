@@ -42,15 +42,6 @@ import * as goActions from '../../actions/go'
 import * as localSearchActions from '../../actions/local-search'
 import * as netantActions from '../../actions/netant'
 
-const baseStyle = {
-  boxSizing: 'border-box',
-  zIndex: 0,
-  background: grey50,
-  height: '100%',
-  width: '100%',
-  margin: 0,
-  padding: 0
-}
 
 /**
  * Base component for the network viewer page.
@@ -59,7 +50,7 @@ class NetworkView extends Component {
   render() {
     return (
       <MuiThemeProvider theme={theme}>
-        <MainPanel {...this.props} style={baseStyle} />
+        <MainPanel {...this.props} />
       </MuiThemeProvider>
     )
   }

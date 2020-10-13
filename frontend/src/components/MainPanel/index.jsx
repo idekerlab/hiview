@@ -32,11 +32,19 @@ const MainPanel = props => {
     routeParams,
     location,
     localSearchActions,
-    localSearch
+    localSearch,
   } = props
 
+  const wrapperStyle = {
+    boxSizing: 'border-box',
+    width: '100%',
+    height: '100%',
+    padding: 0,
+    margin: 0,
+  }
+
   return (
-    <div style={props.style}>
+    <div style={wrapperStyle}>
       <MessageBox uiState={uiState} selection={selection} />
 
       <MainMenuPanel
@@ -51,11 +59,7 @@ const MainPanel = props => {
 
       <BaseSplitPane cxtoolUrl={CXTOOL_URL} {...props} />
 
-      <Commands
-        commandActions={commandActions}
-        uiState={uiState}
-        uiStateActions={uiStateActions}
-      />
+      <Commands commandActions={commandActions} uiState={uiState} uiStateActions={uiStateActions} />
 
       <LocalSearchPanel
         network={network.toJS()}

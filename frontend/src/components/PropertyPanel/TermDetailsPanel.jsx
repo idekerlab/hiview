@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 
-import Tabs from '@material-ui/core/Tabs'
-import Tab from '@material-ui/core/Tab'
+import { Tabs, Tab, AppBar } from '@material-ui/core'
 
 import RawInteractionPanel from './RawInteractionPanel'
 import SubsystemPanel from './SubsystemPanel'
@@ -31,45 +30,42 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
 import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
+import { createStyles, makeStyles } from '@material-ui/core'
+
+const useStyles = makeStyles(theme =>
+  createStyles({
+    root: {
+      margin: 0,
+      padding: 0,
+      width: '100%',
+      height: '100%',
+      boxSizing: 'border-box',
+    },
+    topPane: {
+      height: '100%',
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+    },
+    bottomPane: {
+      width: '100%',
+      height: '100%',
+    },
+    networkWrapper: {
+      flexGrow: 1,
+      height: '100%',
+      width: '100%',
+    },
+  }),
+)
+
 const WARNING_TH = 2000000
 
-const filterPanelStyle = {
-  display: 'inline-flex',
-  boxSizing: 'border-box',
-  width: '100%',
-  padding: '0.6em',
-  background: '#FFFFFF'
-}
-
-const controlPanelStyle = {
-  boxSizing: 'border-box'
-}
-
-const layoutPanelStyle = {
-  background: '#EEEEEE'
-}
-
-const controllerStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  width: '100%',
-  height: '6em',
-  background: '#EEEEEE'
-}
-
-const headingStyle = {
-  fontSize: '1em',
-  fontWeight: 400
-}
-const DUMMY_STYLE = {
-  style: []
-}
-
 const TermDetailsPanel = props => {
+  const classes = useStyles()
+
   const [selectedTab, setSelectedTab] = useState(0)
-  const [networkPanelHeight, setNetworkPanelHeight] = useState(
-    window.innerHeight * 0.5
-  )
+  // const [networkPanelHeight, setNetworkPanelHeight] = useState(window.innerHeight * 0.5)
 
   const [vs, setVS] = useState(null)
   const [systemID, setSystemID] = useState(null)
@@ -83,9 +79,9 @@ const TermDetailsPanel = props => {
     props.commandActions.filter({
       options: {
         type: 'numeric',
-        range: 'edge[score > ' + val + ']'
+        range: 'edge[score > ' + val + ']',
       },
-      target: 'subnet'
+      target: 'subnet',
     })
   }
 
@@ -109,37 +105,18 @@ const TermDetailsPanel = props => {
     setNetworkPanelHeight(topHeight)
   }
 
-  const getControllers = (
-    externalNetwork,
-    layoutPanelStyle,
-    networkProps,
-    controllerStyle,
-    raw
-  ) => {
+  const getControllers = (externalNetwork, layoutPanelStyle, networkProps, controllerStyle, raw) => {
     if (externalNetwork !== null) {
       const others = props
-      return (
-        <LayoutSelector
-          style={layoutPanelStyle}
-          commandActions={props.interactionsCommandActions}
-          {...others}
-        />
-      )
+      return <LayoutSelector style={layoutPanelStyle} commandActions={props.interactionsCommandActions} {...others} />
     }
 
     return (
       <React.Fragment>
-        <LayoutSelector
-          style={layoutPanelStyle}
-          commandActions={props.interactionsCommandActions}
-        />
+        <LayoutSelector style={layoutPanelStyle} commandActions={props.interactionsCommandActions} />
 
         <ExpansionPanel>
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls="panel1a-content"
-            id="panel1a-header"
-          >
+          <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
             <Typography>Primary Score Filter</Typography>
           </ExpansionPanelSummary>
           <ExpansionPanelDetails>
@@ -174,50 +151,61 @@ const TermDetailsPanel = props => {
 
   const getNetworkPanel = (
     hidden,
-    topHeight,
     externalNetwork,
     interactions,
     selected,
     selectedPerm,
     visualStyle,
     raw,
-    loading = false
+    loading = false,
   ) => {
     if (hidden) {
-      return <EmptyInteractionPanel height={topHeight} />
+      return (
+        <div className={classes.networkWrapper}>
+          <EmptyInteractionPanel />
+        </div>
+      )
     }
     if (vs === null) {
       return (
-        <LoadingPanel message={'Network loaded.  Now creating styles...'} />
+        <div className={classes.networkWrapper}>
+          <LoadingPanel message={'Network loaded.  Now creating styles...'} />
+        </div>
       )
     }
 
     if (externalNetwork === null || externalNetwork === undefined) {
       return (
-        <RawInteractionPanel
-          subnet={interactions}
-          subnetSelected={selected}
-          subnetSelectedPerm={selectedPerm}
-          selectedTerm={props.currentProperty.id}
-          handleClose={props.handleClose}
-          commandActions={props.interactionsCommandActions}
-          commands={props.interactionsCommands}
-          loading={raw.loading}
-          selection={props.selection}
-          selectionActions={props.selectionActions}
-          filters={raw.filters}
-          interactionStyleActions={props.interactionStyleActions}
-          networkStyle={vs}
-          panelWidth={props.width}
-          expanded={props.expanded}
-          enrichment={props.enrichment}
-          enrichmentActions={props.enrichmentActions}
-          uiState={props.uiState}
-          hierarchy={props.network.get('hierarchy')}
-        />
+        <div className={classes.networkWrapper}>
+          <RawInteractionPanel
+            subnet={interactions}
+            subnetSelected={selected}
+            subnetSelectedPerm={selectedPerm}
+            selectedTerm={props.currentProperty.id}
+            handleClose={props.handleClose}
+            commandActions={props.interactionsCommandActions}
+            commands={props.interactionsCommands}
+            loading={raw.loading}
+            selection={props.selection}
+            selectionActions={props.selectionActions}
+            filters={raw.filters}
+            interactionStyleActions={props.interactionStyleActions}
+            networkStyle={vs}
+            panelWidth={props.width}
+            expanded={props.expanded}
+            enrichment={props.enrichment}
+            enrichmentActions={props.enrichmentActions}
+            uiState={props.uiState}
+            hierarchy={props.network.get('hierarchy')}
+          />
+        </div>
       )
     } else {
-      return <CytoscapeViewer {...props} />
+      return (
+        <div className={classes.networkWrapper}>
+          <CytoscapeViewer {...props} />
+        </div>
+      )
     }
   }
 
@@ -243,12 +231,7 @@ const TermDetailsPanel = props => {
 
   // Term property
   const details = props.currentProperty
-  if (
-    details === undefined ||
-    details === null ||
-    details.id === null ||
-    details.id === undefined
-  ) {
+  if (details === undefined || details === null || details.id === null || details.id === undefined) {
     return <div />
   }
 
@@ -303,61 +286,33 @@ const TermDetailsPanel = props => {
     networkData = network.data
   }
 
-  const bottomStyle = {
-    boxSizing: 'border-box',
-    width: '100%',
-    height: window.innerHeight - networkPanelHeight,
-    display: 'flex',
-    flexDirection: 'column',
-    overflowX: 'hidden',
-    overflowY: 'auto'
-  }
-
   // Calculate
-  const topHeight = networkPanelHeight
+  // const topHeight = networkPanelHeight
   const allProps = props
 
   const selectedExternalNetwork = props.externalNetworks.selectedNetworkUuid
 
   return (
     <SplitPane
+      className={classes.root}
       split="horizontal"
-      minSize={50}
-      size={networkPanelHeight}
-      onDragFinished={topHeight => handleHorizontalResize(topHeight)}
+      minSize={150}
+      size={window.innerHeight / 2}
+      // onDragFinished={topHeight => handleHorizontalResize(topHeight)}
     >
-      <div
-        style={{
-          boxSizing: 'border-box',
-          height: '100%',
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column'
-        }}
-      >
+      <div className={classes.topPane}>
         <MessageBar
-          height={50}
           network={props.network}
           title={props.title}
           titleColor={props.color}
           originalEdgeCount={props.originalEdgeCount}
           maxEdgeCount={props.maxEdgeCount}
         />
-
-        {getNetworkPanel(
-          hidden,
-          topHeight,
-          selectedExternalNetwork,
-          interactions,
-          selected,
-          selectedPerm,
-          visualStyle,
-          raw
-        )}
+        {getNetworkPanel(hidden, selectedExternalNetwork, interactions, selected, selectedPerm, visualStyle, raw)}
       </div>
 
-      <div style={bottomStyle}>
-        {props.expanded ? <div style={{ height: '5.2em' }} /> : <div />}
+      <div className={classes.bottomPane}>
+        {/* {props.expanded ? <div style={{ height: '5.2em' }} /> : <div />}
 
         {hidden ? (
           <div />
@@ -388,31 +343,23 @@ const TermDetailsPanel = props => {
               uiStateActions={props.uiStateActions}
             />
           </div>
-        )}
-
-        <div>
+        )} */}
+        <AppBar position="static" color="default">
           <Tabs value={selectedTab} onChange={handleChange}>
             <Tab label="Subsystem Details" />
             <Tab label="Assigned Genes" />
           </Tabs>
-        </div>
+        </AppBar>
 
         {selectedTab === 0 && (
-          <TabContainer>
-            <SubsystemPanel
-              selectedTerm={props.currentProperty}
-              networkData={networkData}
-              title={title}
-              description={'N/A'}
-            />
-          </TabContainer>
+          <SubsystemPanel
+            selectedTerm={props.currentProperty}
+            networkData={networkData}
+            title={title}
+            description={'N/A'}
+          />
         )}
-        {selectedTab === 1 && (
-          <TabContainer>
-            <GeneList genes={geneList} {...allProps} />
-          </TabContainer>
-        )}
-        {selectedTab === 2 && <TabContainer>N/A</TabContainer>}
+        {selectedTab === 1 && <GeneList genes={geneList} {...allProps} />}
       </div>
     </SplitPane>
   )

@@ -72,7 +72,7 @@ const useStyles = makeStyles({
   }
 })
 
-const version = '2.6'
+const version = '2.7'
 
 const handleClickGh = () => {
   window.open('https://github.com/idekerlab/hiview')
@@ -125,7 +125,7 @@ const TopPage = props => {
           href="https://github.com/idekerlab/hiview"
           target="_blank"
         >
-          &copy; 2017-2019 University of California, San Diego Trey Ideker Lab
+          &copy; 2017-2020 University of California, San Diego Trey Ideker Lab
         </a>
       </footer>
     </div>

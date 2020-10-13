@@ -9,7 +9,9 @@ const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 const networkAreaStyle = {
   width: '100%',
   height: '100%',
-  background: '#555555'
+  background: '#222222',
+  boxSizing: 'border-box',
+  border: '5px solid red',
 }
 
 // Custom event handler
