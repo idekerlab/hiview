@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import { Tabs, Tab, AppBar } from '@material-ui/core'
 
@@ -34,38 +34,38 @@ import { createStyles, makeStyles } from '@material-ui/core'
 
 const useStyles = makeStyles(theme =>
   createStyles({
-    root: {
-      margin: 0,
-      padding: 0,
-      width: '100%',
-      height: '100%',
-      boxSizing: 'border-box',
-    },
     topPane: {
-      height: '100%',
       width: '100%',
+      boxSizing: 'border-box',
+      overflow: 'hidden',
       display: 'flex',
-      flexDirection: 'column',
+      flexDirection: 'column'
     },
     bottomPane: {
       width: '100%',
-      height: '100%',
+      boxSizing: 'border-box',
+      overflow: 'hidden',
     },
     networkWrapper: {
       flexGrow: 1,
-      height: '100%',
       width: '100%',
     },
+    control: {
+      width: '100%',
+      background: 'orange'
+    }
   }),
 )
 
 const WARNING_TH = 2000000
 
 const TermDetailsPanel = props => {
+  const networkContainer = useRef(null)
+
   const classes = useStyles()
 
   const [selectedTab, setSelectedTab] = useState(0)
-  // const [networkPanelHeight, setNetworkPanelHeight] = useState(window.innerHeight * 0.5)
+  const [networkPanelHeight, setNetworkPanelHeight] = useState(window.innerHeight * 0.5)
 
   const [vs, setVS] = useState(null)
   const [systemID, setSystemID] = useState(null)
@@ -85,11 +85,24 @@ const TermDetailsPanel = props => {
     })
   }
 
+
+  useEffect(() => {
+    return () => {
+      
+    }
+  }, [])
+
   useEffect(() => {
     const newID = props.selection.get('main').nodeId
     if (vs === null || systemID !== newID) {
       setSystemID(newID)
       addStyle(props.rawInteractions)
+    }
+
+    const { current } = networkContainer
+    if(current !== null && current !== undefined) {
+
+      console.log('%%%%%%%%%%%%% REF3 = ', current.clientHeight)
     }
   }, [props.rawInteractions, props.selection.get('main')])
 
@@ -102,6 +115,7 @@ const TermDetailsPanel = props => {
   }
 
   const handleHorizontalResize = topHeight => {
+    console.log('%%%%%%%%%%%%% resize = ', topHeight)
     setNetworkPanelHeight(topHeight)
   }
 
@@ -175,8 +189,9 @@ const TermDetailsPanel = props => {
     }
 
     if (externalNetwork === null || externalNetwork === undefined) {
+
       return (
-        <div className={classes.networkWrapper}>
+        <div ref={networkContainer} className={classes.networkWrapper}>
           <RawInteractionPanel
             subnet={interactions}
             subnetSelected={selected}
@@ -197,6 +212,7 @@ const TermDetailsPanel = props => {
             enrichmentActions={props.enrichmentActions}
             uiState={props.uiState}
             hierarchy={props.network.get('hierarchy')}
+            networkAreaStyle={{height: '100%', background: '#333333'}}
           />
         </div>
       )
@@ -292,13 +308,48 @@ const TermDetailsPanel = props => {
 
   const selectedExternalNetwork = props.externalNetworks.selectedNetworkUuid
 
+  const splitBase = {
+    boxSizing: 'border-box',
+    width: '100%',
+    height: '100%',
+    margin: 0,
+    padding: 0,
+    background: '#FFFFFF',
+    overflow: 'hidden',
+  }
+  
+  const paneBase = {
+    boxSizing: 'border-box',
+    width: '100%',
+    margin: 0,
+    padding: 0,
+    background: '#FFFFFF',
+  }
+  
+  const paneTop = {
+    boxSizing: 'border-box',
+    width: '100%',
+    background: 'teal',
+    overflow: 'hidden',
+  }
+  
+  const paneBottom = {
+    boxSizing: 'border-box',
+    width: '100%',
+    background: '#FFFFFF',
+    overflow: 'auto',
+  }
+
   return (
     <SplitPane
-      className={classes.root}
+      style={splitBase}
+      paneStyle={paneBase}
+      pane1Style={paneTop}
+      pane2Style={paneBottom}
       split="horizontal"
-      minSize={150}
-      size={window.innerHeight / 2}
-      // onDragFinished={topHeight => handleHorizontalResize(topHeight)}
+      minSize={window.innerHeight * 0.4}
+      defaultSize={window.innerHeight * 0.4}
+      onDragFinished={topHeight => handleHorizontalResize(topHeight)}
     >
       <div className={classes.topPane}>
         <MessageBar
@@ -309,6 +360,7 @@ const TermDetailsPanel = props => {
           maxEdgeCount={props.maxEdgeCount}
         />
         {getNetworkPanel(hidden, selectedExternalNetwork, interactions, selected, selectedPerm, visualStyle, raw)}
+        <div className={classes.control}></div>
       </div>
 
       <div className={classes.bottomPane}>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React　from 'react'
 import TermDetailsPanel from './TermDetailsPanel'
 import GenePropertyPanel from './GenePropertyPanel'
 
@@ -8,22 +8,22 @@ const PANEL_TYPES = {
   DEFAULT: 'default'
 }
 
-const drawerContentsStyle = {
-  boxSizing: 'border-box',
-  width: '100%',
-  height: '100%',
-  margin: 0,
-  padding: 0,
-  background: '#FFFFFF',
-  display: 'flex',
-  flexDirection: 'column'
-}
+// const drawerContentsStyle = {
+//   boxSizing: 'border-box',
+//   width: '100%',
+//   height: '100%',
+//   margin: 0,
+//   padding: 0,
+//   background: '#FFFFFF',
+//   display: 'flex',
+//   flexDirection: 'column'
+// }
 
 const PropertyPanel = props => {
   const { currentProperty } = props
   const { propType } = currentProperty
 
-  const getPanel = (w, color, title) => {
+  const getPanel = (color, title) => {
     // Do not return any component if nothing is selected.
     if (currentProperty.id === null) {
       return <div />
@@ -66,11 +66,7 @@ const PropertyPanel = props => {
 
   const fontColor = propType === PANEL_TYPES.GENE ? '#666666' : 'orange'
 
-  return (
-    <div style={drawerContentsStyle}>
-      {getPanel(props.width, fontColor, label)}
-    </div>
-  )
+  return getPanel(fontColor, label)
 }
 
 export default PropertyPanel

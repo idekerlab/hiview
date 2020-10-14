@@ -6,13 +6,6 @@ import { Set } from 'immutable'
 
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
-const networkAreaStyle = {
-  width: '100%',
-  height: '100%',
-  background: '#222222',
-  boxSizing: 'border-box',
-  border: '5px solid red',
-}
 
 // Custom event handler
 const selectNodes = (nodeIds, nodeProps) => {
@@ -39,9 +32,8 @@ const RawInteractionPanel = props => {
     enrichmentActions,
     selectedTerm,
     commandActions,
-    selectionActions,
     filters,
-    loading
+    networkAreaStyle
   } = props
 
   useEffect(() => {
