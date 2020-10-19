@@ -15,7 +15,7 @@ import OpenInNetAntButton from '../OpenInNetAntButton'
 // Base style
 const styles = theme => ({
   root: {
-    padding: '1em',
+    padding: 0,
     color: '#333333',
     background: '#FFFFFF',
     boxSizing: 'border-box',
@@ -33,7 +33,7 @@ const styles = theme => ({
   },
   formControl: {
     minWidth: '20em',
-    width: '100%m'
+    flexGrow: 1
   },
   icon: {
     fontSize: '2em'

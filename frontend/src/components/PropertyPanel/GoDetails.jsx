@@ -30,19 +30,13 @@ class GoDetails extends Component {
     const details = this.props.currentProperty
 
     if (details.id === nextDetails.id && details.loading === nextDetails.loading) {
-      console.log('SAME GO -----------------------------------------------------------------------------------------------------------------------')
       return false
     }
-
-    console.log("diff GO")
     return true
   }
 
 
   render() {
-    console.log("%%%%%%%%%%%%%%%% Rendering GO Details Panel")
-    console.log(this.props)
-
     const details = this.props.currentProperty
 
     if (details === undefined || details === null || details.id === null || details.id === undefined) {

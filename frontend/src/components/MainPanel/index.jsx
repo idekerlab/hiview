@@ -59,7 +59,7 @@ const MainPanel = props => {
 
       <BaseSplitPane cxtoolUrl={CXTOOL_URL} {...props} />
 
-      <Commands commandActions={commandActions} uiState={uiState} uiStateActions={uiStateActions} />
+      {/* <Commands commandActions={commandActions} uiState={uiState} uiStateActions={uiStateActions} /> */}
 
       <LocalSearchPanel
         network={network.toJS()}

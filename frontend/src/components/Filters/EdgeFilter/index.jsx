@@ -37,7 +37,7 @@ const styles = theme => ({
     position: 'relative',
     background: 'inherit',
     flexGrow: 2,
-    paddingRight: '0.6em'
+    padding: '0.6em'
   },
   title: {
     height: '2em'

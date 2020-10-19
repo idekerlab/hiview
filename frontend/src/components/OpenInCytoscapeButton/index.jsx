@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import Button from '@material-ui/core/Button'
-import logo from '../../assets/images/cytoscape-logo-white.svg'
+import logo from '../../assets/images/cytoscape-logo.svg'
 import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 
@@ -10,17 +10,10 @@ import * as cyrestApi from '../../api/cyrest'
 const styles = theme => ({
   button: {
     marginLeft: '0.5em',
-    width: '5em',
-    minWidth: '5em',
-    maxWidth: '5em',
-    minHeight: '4em',
-    maxHeight: '4em',
-    padding: 0,
-    height: '4em'
   },
   icon: {
-    height: '2.5em'
-  }
+    height: '2em',
+  },
 })
 
 const OpenInCytoscapeButton = props => {
@@ -61,24 +54,25 @@ const OpenInCytoscapeButton = props => {
       cx = externalNetworks.selectedNetwork.cx
     }
 
-    console.log('Sending CX', cx)
-
     cyrestApi.postNetwork(1234, cx)
   }
 
+  if(!isCytoscapeRunning) {
+    return <div />
+  }
+
   return (
-    <Tooltip title="Open in Cytoscape" placement="bottom">
-      <div>
-        <Button
-          className={classes.button}
-          variant="contained"
-          color="primary"
-          onClick={handleImportNetwork}
-          disabled={!isCytoscapeRunning}
-        >
-          <img alt="Cytoscape logo" src={logo} className={classes.icon} />
-        </Button>
-      </div>
+    <Tooltip title="Open in Cytoscape Desktop" arrow placement="bottom">
+      <Button
+        size="small"
+        className={classes.button}
+        color="default"
+        variant="outlined"
+        onClick={handleImportNetwork}
+        disabled={!isCytoscapeRunning}
+      >
+        <img alt="Cytoscape logo" src={logo} className={classes.icon} />
+      </Button>
     </Tooltip>
   )
 }

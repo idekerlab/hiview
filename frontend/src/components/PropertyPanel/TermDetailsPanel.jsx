@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 
 import { Tabs, Tab, AppBar } from '@material-ui/core'
+import { blueGrey } from '@material-ui/core/colors'
 
 import RawInteractionPanel from './RawInteractionPanel'
 import SubsystemPanel from './SubsystemPanel'
@@ -31,6 +32,7 @@ import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { createStyles, makeStyles } from '@material-ui/core'
+import AdvancedOptions from './AdvancedOptions'
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -39,7 +41,7 @@ const useStyles = makeStyles(theme =>
       boxSizing: 'border-box',
       overflow: 'hidden',
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
     },
     bottomPane: {
       width: '100%',
@@ -51,8 +53,17 @@ const useStyles = makeStyles(theme =>
       width: '100%',
     },
     control: {
+      boxSizing: 'border-box',
       width: '100%',
-      background: 'orange'
+      // height: '5em',
+      background: 'orange',
+    },
+    edgeFilterTitle: {
+      background: '#FFFFFF'
+    },
+    edgeFilters: {
+
+      padding: 0
     }
   }),
 )
@@ -85,11 +96,8 @@ const TermDetailsPanel = props => {
     })
   }
 
-
   useEffect(() => {
-    return () => {
-      
-    }
+    return () => {}
   }, [])
 
   useEffect(() => {
@@ -100,9 +108,7 @@ const TermDetailsPanel = props => {
     }
 
     const { current } = networkContainer
-    if(current !== null && current !== undefined) {
-
-      console.log('%%%%%%%%%%%%% REF3 = ', current.clientHeight)
+    if (current !== null && current !== undefined) {
     }
   }, [props.rawInteractions, props.selection.get('main')])
 
@@ -119,17 +125,15 @@ const TermDetailsPanel = props => {
     setNetworkPanelHeight(topHeight)
   }
 
-  const getControllers = (externalNetwork, layoutPanelStyle, networkProps, controllerStyle, raw) => {
+  const getControllers = (externalNetwork, networkProps, raw) => {
     if (externalNetwork !== null) {
       const others = props
-      return <LayoutSelector style={layoutPanelStyle} commandActions={props.interactionsCommandActions} {...others} />
+      return <LayoutSelector commandActions={props.interactionsCommandActions} {...others} />
     }
 
     return (
       <React.Fragment>
-        <LayoutSelector style={layoutPanelStyle} commandActions={props.interactionsCommandActions} />
-
-        <ExpansionPanel>
+        {/* <ExpansionPanel>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />} aria-controls="panel1a-content" id="panel1a-header">
             <Typography>Primary Score Filter</Typography>
           </ExpansionPanelSummary>
@@ -147,7 +151,7 @@ const TermDetailsPanel = props => {
           </ExpansionPanelDetails>
         </ExpansionPanel>
 
-        <div style={controllerStyle}>
+        <div>
           <AutoLoadThresholdPanel
             autoLoadThreshold={props.autoLoadThreshold}
             rawInteractionsActions={props.rawInteractionsActions}
@@ -158,7 +162,7 @@ const TermDetailsPanel = props => {
             uiStateActions={props.uiStateActions}
             rawInteractionsActions={props.rawInteractionsActions}
           />
-        </div>
+        </div> */}
       </React.Fragment>
     )
   }
@@ -189,7 +193,6 @@ const TermDetailsPanel = props => {
     }
 
     if (externalNetwork === null || externalNetwork === undefined) {
-
       return (
         <div ref={networkContainer} className={classes.networkWrapper}>
           <RawInteractionPanel
@@ -212,7 +215,7 @@ const TermDetailsPanel = props => {
             enrichmentActions={props.enrichmentActions}
             uiState={props.uiState}
             hierarchy={props.network.get('hierarchy')}
-            networkAreaStyle={{height: '100%', background: '#333333'}}
+            networkAreaStyle={{ height: '100%', background: '#333333' }}
           />
         </div>
       )
@@ -317,7 +320,7 @@ const TermDetailsPanel = props => {
     background: '#FFFFFF',
     overflow: 'hidden',
   }
-  
+
   const paneBase = {
     boxSizing: 'border-box',
     width: '100%',
@@ -325,14 +328,14 @@ const TermDetailsPanel = props => {
     padding: 0,
     background: '#FFFFFF',
   }
-  
+
   const paneTop = {
     boxSizing: 'border-box',
     width: '100%',
     background: 'teal',
     overflow: 'hidden',
   }
-  
+
   const paneBottom = {
     boxSizing: 'border-box',
     width: '100%',
@@ -360,10 +363,14 @@ const TermDetailsPanel = props => {
           maxEdgeCount={props.maxEdgeCount}
         />
         {getNetworkPanel(hidden, selectedExternalNetwork, interactions, selected, selectedPerm, visualStyle, raw)}
-        <div className={classes.control}></div>
       </div>
 
       <div className={classes.bottomPane}>
+        <LayoutSelector commandActions={props.interactionsCommandActions} />
+        <AdvancedOptions networkProps={networkProps} raw={raw} geneList={geneList} {...props} />
+        <div className={classes.control}>
+          <div>{getControllers(selectedExternalNetwork, networkProps, raw)}</div>
+        </div>
         {/* {props.expanded ? <div style={{ height: '5.2em' }} /> : <div />}
 
         {hidden ? (
@@ -381,21 +388,28 @@ const TermDetailsPanel = props => {
           </div>
         )}
 
+        */}
+
         {hidden || selectedExternalNetwork ? (
           <div />
         ) : (
-          <div style={filterPanelStyle}>
-            <EdgeFilter
-              filters={raw.filters}
-              commandActions={props.interactionsCommandActions}
-              commands={props.interactionsCommands}
-              filtersActions={props.filtersActions}
-              networkData={networkProps}
-              uiState={props.uiState}
-              uiStateActions={props.uiStateActions}
-            />
-          </div>
-        )} */}
+          <ExpansionPanel>
+            <ExpansionPanelSummary className={classes.edgeFilterTitle} expandIcon={<ExpandMoreIcon />} aria-controls="edgeFilter" id="edgeFilter">
+              <Typography>Edge Filters</Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails className={classes.edgeFilters}>
+              <EdgeFilter
+                filters={raw.filters}
+                commandActions={props.interactionsCommandActions}
+                commands={props.interactionsCommands}
+                filtersActions={props.filtersActions}
+                networkData={networkProps}
+                uiState={props.uiState}
+                uiStateActions={props.uiStateActions}
+              />
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+        )}
         <AppBar position="static" color="default">
           <Tabs value={selectedTab} onChange={handleChange}>
             <Tab label="Subsystem Details" />

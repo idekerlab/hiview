@@ -4,7 +4,9 @@ import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
 import RefreshIcon from '@material-ui/icons/Delete'
 import SettingsIcon from '@material-ui/icons/Settings'
+import HelpIcon from '@material-ui/icons/HelpOutlineOutlined'
 import Input from '@material-ui/core/Input'
+import { Tooltip } from '@material-ui/core'
 
 import SearchOptionDialog from './SearchOptionDialog'
 
@@ -12,26 +14,26 @@ const baseStyle = {
   width: '100%',
   display: 'flex',
   flexWrap: 'wrap',
-  alignItems: 'center'
+  alignItems: 'center',
 }
 
 // For hiding background (Use gray scale)
 const RESULT_COLOR = {
   root: '#DDDDDD',
-  leaf: '#FFFFFF'
+  leaf: '#FFFFFF',
 }
 class MainPanel extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       query: '',
-      open: false
+      open: false,
     }
   }
 
   handleChange = event => {
     this.setState({
-      query: event.target.value
+      query: event.target.value,
     })
   }
 
@@ -56,7 +58,7 @@ class MainPanel extends React.Component {
     this.props.commandActions.reset()
     this.props.localSearchActions.clearSearchResults()
     this.setState({
-      query: ''
+      query: '',
     })
     this.props.handleShowResult(false)
   }
@@ -73,11 +75,11 @@ class MainPanel extends React.Component {
     this.props.localSearchActions.localSearchStarted({
       index,
       query,
-      searchMode
+      searchMode,
     })
     this.props.commandActions.reset()
     this.setState({
-      expand: true
+      expand: true,
     })
 
     this.props.handleShowResult(true)
@@ -94,61 +96,77 @@ class MainPanel extends React.Component {
   toggleSearchOptionDialog = () => {
     const currentDialogState = this.state.open
     this.setState({
-      open: !currentDialogState
+      open: !currentDialogState,
     })
   }
 
   handleSearchOptionDialogOpen = () => {
     this.setState({
-      open: true
+      open: true,
     })
   }
 
   handleSearchOptionDialogClose = value => {
     this.props.uiStateActions.setSearchMode(value)
     this.setState({
-      open: false
+      open: false,
     })
+  }
+
+  handleHelp = event => {
+    window.open('https://github.com/idekerlab/hiview/wiki/HiView-User-Guide')
   }
 
   render() {
     return (
       <div style={baseStyle}>
-        <IconButton aria-label="Open main menu" onClick={this.handleOpen}>
-          <MenuIcon />
-        </IconButton>
+        <Tooltip arrow placement={'bottom'} title={'Open settings'}>
+          <IconButton aria-label="Open option panel" onClick={this.handleOpen}>
+            <MenuIcon />
+          </IconButton>
+        </Tooltip>
 
         <Input
           style={{ flexGrow: 5, height: '2em', border: 'none' }}
           placeholder="Enter search term."
           inputProps={{
-            'aria-label': 'Description'
+            'aria-label': 'Description',
           }}
           onChange={this.handleChange}
           onKeyPress={this.handleKey}
           value={this.state.query}
         />
 
-        <IconButton aria-label="Search nodes" onClick={this.handleStart}>
-          <SearchIcon />
-        </IconButton>
+        <Tooltip arrow placement={'bottom'} title={'Start to search hierarchy'}>
+          <IconButton aria-label="Search nodes" onClick={this.handleStart}>
+            <SearchIcon />
+          </IconButton>
+        </Tooltip>
 
-        <IconButton aria-label="Reset" onClick={this.handleReset}>
-          <RefreshIcon />
-        </IconButton>
+        <Tooltip arrow placement={'bottom'} title={'Clear search result'}>
+          <IconButton aria-label="Reset" onClick={this.handleReset}>
+            <RefreshIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip arrow placement={'bottom'} title={'Search options'}>
+          <IconButton aria-label="Settings" onClick={this.handleSearchOptionDialogOpen}>
+            <SettingsIcon />
+          </IconButton>
+        </Tooltip>
+
         <div
           style={{
             width: '0.1em',
             height: '2em',
-            borderLeft: '1px solid #aaaaaa'
+            borderLeft: '1px solid #aaaaaa',
           }}
         />
-        <IconButton
-          aria-label="Settings"
-          onClick={this.handleSearchOptionDialogOpen}
-        >
-          <SettingsIcon />
-        </IconButton>
+
+        <Tooltip arrow placement={'bottom'} title={'Help'}>
+          <IconButton aria-label="Help" onClick={this.handleHelp}>
+            <HelpIcon color={'secondary'} />
+          </IconButton>
+        </Tooltip>
         <SearchOptionDialog
           searchMode={this.props.uiState.get('searchMode')}
           open={this.state.open}

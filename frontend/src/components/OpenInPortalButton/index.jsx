@@ -9,13 +9,6 @@ import Tooltip from '@material-ui/core/Tooltip'
 const styles = theme => ({
   button: {
     marginLeft: '0.5em',
-    width: '8em',
-    minWidth: '8em',
-    maxWidth: '8em',
-    minHeight: '4em',
-    maxHeight: '4em',
-    padding: 0,
-    height: '4em'
   },
   icon: {
     marginLeft: '0.3em'
@@ -38,13 +31,14 @@ const OpenInPortalButton = props => {
   return (
     <Tooltip title="Search genes in the Portal" placement="bottom">
       <Button
-        variant="contained"
-        color="primary"
+        size='small'
+        variant="outlined"
+        color="default"
         onClick={handleOpen}
         className={classes.button}
       >
-        Portal
-        <OpenIcon className={classes.icon} alt="Open in Search Portal" />
+        IQuery
+        <OpenIcon className={classes.icon} alt="Open in IQuery" />
       </Button>
     </Tooltip>
   )

@@ -15,7 +15,6 @@ const useStyles = makeStyles(theme => ({
     padding: 0,
     maxHeight: '100%',
     overflow: 'auto',
-    background: 'yellow',
   },
 }))
 
@@ -35,15 +34,24 @@ const GeneList = props => {
     genes = []
   }
 
-  const sorted = genes.sort()
+  let sorted = genes.sort()
+
+  if (sorted.length > 500) {
+    sorted = sorted.slice(0, 500)
+    sorted.push('(Showing 500 genes only)')
+  }
 
   return (
     <List className={classes.listRoot}>
       {sorted.map((gene, i) => (
         <ListItem button key={i} onClick={handleSelect(gene)}>
-          <IconButton onClick={handleClick(gene)}>
-            <OpenIcon />
-          </IconButton>
+          {gene[0] === '(' ? (
+            <div />
+          ) : (
+            <IconButton onClick={handleClick(gene)}>
+              <OpenIcon />
+            </IconButton>
+          )}
           <ListItemText primary={gene} />
         </ListItem>
       ))}
