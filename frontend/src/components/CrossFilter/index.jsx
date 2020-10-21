@@ -247,7 +247,7 @@ class CrossFilter extends Component {
         style={containerStyle}
         ref={divElement => (this.divElement = divElement)}
       >
-        <XYPlot
+        {/* <XYPlot
           xType="ordinal"
           width={w}
           height={200}
@@ -272,7 +272,7 @@ class CrossFilter extends Component {
             tickTotal={tickTotal}
           />
           <XAxis />
-        </XYPlot>
+        </XYPlot> */}
 
         <PrimaryFilter
           filters={this.props.filters}

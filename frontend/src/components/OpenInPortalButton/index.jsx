@@ -29,7 +29,7 @@ const OpenInPortalButton = props => {
   }
 
   return (
-    <Tooltip title="Search genes in the Portal" placement="bottom">
+    <Tooltip title="Search genes in this subsystem in IQuery" placement="bottom">
       <Button
         size='small'
         variant="outlined"

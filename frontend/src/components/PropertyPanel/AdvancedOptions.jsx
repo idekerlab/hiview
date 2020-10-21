@@ -9,8 +9,7 @@ import AutoLoadThresholdPanel from './AutoLoadThresholdPanel'
 import MaxEdgePanel from './MaxEdgePanel'
 import CrossFilter from '../CrossFilter'
 
-
-import {blueGrey} from '@material-ui/core/colors' 
+import { blueGrey } from '@material-ui/core/colors'
 import MenuItem from '@material-ui/core/MenuItem'
 import FormHelperText from '@material-ui/core/FormHelperText'
 import FormControl from '@material-ui/core/FormControl'
@@ -32,7 +31,7 @@ const useStyles = makeStyles(theme =>
       overflow: 'hidden',
       display: 'flex',
       flexDirection: 'column',
-      background: '#EEEEEE'
+      background: '#EEEEEE',
     },
     title: {
       background: blueGrey[300],
@@ -42,8 +41,7 @@ const useStyles = makeStyles(theme =>
       width: '100%',
       boxSizing: 'border-box',
       display: 'flex',
-      padding: 0
-
+      padding: 0,
     },
     details: {
       width: '100%',
@@ -51,8 +49,7 @@ const useStyles = makeStyles(theme =>
       boxSizing: 'border-box',
       display: 'flex',
       flexDirection: 'column',
-
-    }
+    },
   }),
 )
 
@@ -62,7 +59,12 @@ const AdvancedOptions = props => {
   return (
     <div className={classes.root}>
       <ExpansionPanel>
-        <ExpansionPanelSummary className={classes.title} expandIcon={<ExpandMoreIcon />} aria-controls="advanced1" id="advanced1">
+        <ExpansionPanelSummary
+          className={classes.title}
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="advanced1"
+          id="advanced1"
+        >
           <Typography>Advanced Options</Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
@@ -78,17 +80,17 @@ const AdvancedOptions = props => {
               uiStateActions={props.uiStateActions}
               rawInteractionsActions={props.rawInteractionsActions}
             />
-            <CrossFilter
-              panelWidth={props.width * 0.9}
-              networkData={props.networkProps}
-              originalEdgeCount={props.originalEdgeCount}
-              maxEdgeCount={props.maxEdgeCount}
-              filters={props.raw.filters}
-              commandActions={props.interactionsCommandActions}
-              commands={props.interactionsCommands}
-              filtersActions={props.filtersActions}
-            />
           </div>
+          <CrossFilter
+            panelWidth={props.width * 0.9}
+            networkData={props.networkProps}
+            originalEdgeCount={props.originalEdgeCount}
+            maxEdgeCount={props.maxEdgeCount}
+            filters={props.raw.filters}
+            commandActions={props.interactionsCommandActions}
+            commands={props.interactionsCommands}
+            filtersActions={props.filtersActions}
+          />
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>
