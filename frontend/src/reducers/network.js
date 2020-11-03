@@ -33,6 +33,7 @@ export default function networkState(state = defState, action) {
     case FETCH_NETWORK:
       return state
         .set('loading', true)
+        .set('networkAttributes', null)
         .set('cyjs', null)
         .set('hierarchy', null)
         .set('title', null)
@@ -42,6 +43,7 @@ export default function networkState(state = defState, action) {
     case RECEIVE_NETWORK:
       const net = action.network
       return state
+        .set('networkAttributes', net.data)
         .set('cyjs', net)
         .set('hierarchy', null)
         .set('loading', false)

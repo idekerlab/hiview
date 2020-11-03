@@ -10,7 +10,7 @@ import BrowserTargets from '../../assets/browser-targets'
 
 const descriptionStyle = {
   color: '#555555',
-  fontFamily: 'Roboto'
+  fontFamily: 'Roboto',
 }
 
 const GO_LINK = 'http://amigo.geneontology.org/amigo/term/'
@@ -23,12 +23,11 @@ class SubsystemPanel extends Component {
       const displayOrderStr = networkData.Display
       if (displayOrderStr) {
         displayOrder = displayOrderStr.split('|')
-        displayOrder = displayOrder.map(key =>
-          ('Display_' + key).replace(/ /g, '_')
-        )
+        displayOrder = displayOrder.map(key => ('Display_' + key).replace(/ /g, '_'))
       }
     }
 
+    // This contains all property for the term
     const termData = this.props.selectedTerm.data
     const keys = Object.keys(termData)
 
@@ -42,30 +41,22 @@ class SubsystemPanel extends Component {
     }
 
     return (
-      <div style={descriptionStyle}>
-        <List>
-          {filteredKeys.map((key, i) => {
-            const label = key.replace('Display_', '').replace(/_/g, ' ')
-            const value = termData[key]
-            if (!value) {
-              return
-            }
+      <List>
+        {filteredKeys.map((key, i) => {
+          const label = key.replace('Display_', '').replace(/_/g, ' ')
+          const value = termData[key]
+          if (!value) {
+            return
+          }
 
-            return (
-              <ListItem button onClick={this.handleClick(value)} key={i}>
-                <ListItemIcon>
-                  {value.toString().startsWith('GO:') ? (
-                    <OpenIcon />
-                  ) : (
-                    <InfoIcon />
-                  )}
-                </ListItemIcon>
-                <ListItemText primary={value} secondary={label} />
-              </ListItem>
-            )
-          })}
-        </List>
-      </div>
+          return (
+            <ListItem button onClick={this.handleClick(value)} key={i}>
+              <ListItemIcon>{value.toString().startsWith('GO:') ? <OpenIcon /> : <InfoIcon />}</ListItemIcon>
+              <ListItemText primary={value} secondary={label} />
+            </ListItem>
+          )
+        })}
+      </List>
     )
   }
 

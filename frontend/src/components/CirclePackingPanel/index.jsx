@@ -54,7 +54,6 @@ class CirclePackingPanel extends Component {
       if (id === expandId) {
         return
       }
-      console.log('->>>>>>Expand subnode Run', id)
       expandId = id
 
       this.props.rawInteractionsActions.clearAll()

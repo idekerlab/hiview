@@ -121,7 +121,6 @@ const TermDetailsPanel = props => {
   }
 
   const handleHorizontalResize = topHeight => {
-    console.log('%%%%%%%%%%%%% resize = ', topHeight)
     setNetworkPanelHeight(topHeight)
   }
 
@@ -298,11 +297,15 @@ const TermDetailsPanel = props => {
     visualStyle.name = 'defaultStyle'
   }
 
-  const network = props.network.get(url)
+  // const network = props.network.get(url)
 
+  let {network} = props
   let networkData = {}
   if (network !== undefined || network === null) {
-    networkData = network.data
+    networkData = network.get('networkAttributes')
+    if(networkData === null || networkData === undefined) {
+      networkData = {}
+    }
   }
 
   // Calculate
