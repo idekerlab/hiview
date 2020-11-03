@@ -10,6 +10,8 @@ import { Tooltip } from '@material-ui/core'
 
 import SearchOptionDialog from './SearchOptionDialog'
 
+const HELP_WIKI_URL = 'https://github.com/idekerlab/hiview/wiki'
+
 const baseStyle = {
   width: '100%',
   display: 'flex',
@@ -114,7 +116,7 @@ class MainPanel extends React.Component {
   }
 
   handleHelp = event => {
-    window.open('https://github.com/idekerlab/hiview/wiki/HiView-User-Guide')
+    window.open(HELP_WIKI_URL)
   }
 
   render() {
