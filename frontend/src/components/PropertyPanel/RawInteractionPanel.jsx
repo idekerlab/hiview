@@ -6,7 +6,6 @@ import { Set } from 'immutable'
 
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
-
 // Custom event handler
 const selectNodes = (nodeIds, nodeProps) => {
   const node = nodeIds[0]
@@ -15,7 +14,7 @@ const selectNodes = (nodeIds, nodeProps) => {
   const newSelectionState = {
     networkId: 'raw',
     nodeId: node,
-    nodeProps: props
+    nodeProps: props,
   }
 
   // if necessary, app can use selection in Cytoscape.js
@@ -33,8 +32,14 @@ const RawInteractionPanel = props => {
     selectedTerm,
     commandActions,
     filters,
-    networkAreaStyle
+    networkAreaStyle,
   } = props
+  
+  const [cyReference, setCyReference] = useState(null)
+
+  useEffect(() => {
+    console.log('*Cytoscape instance assigned:', cyReference)
+  }, [cyReference])
 
   useEffect(() => {
     // Check whether enrichment analysis is required or not
@@ -49,11 +54,7 @@ const RawInteractionPanel = props => {
     }
 
     const genes = Set(subnet.elements.nodes.map(node => node.data.name))
-    enrichmentActions.runEnrichment(
-      'http://amp.pharm.mssm.edu/Enrichr/addList',
-      genes,
-      selectedTerm
-    )
+    enrichmentActions.runEnrichment('http://amp.pharm.mssm.edu/Enrichr/addList', genes, selectedTerm)
   }, [uiState.get('runEnrichment'), subnet])
 
   const commandFinished = (lastCommand, status = {}) => {
@@ -64,7 +65,7 @@ const RawInteractionPanel = props => {
   const getCustomEventHandlers = () => ({
     selectNodes,
     // selectEdges: selectEdges,
-    commandFinished
+    commandFinished,
   })
 
   const newNet = subnet
@@ -83,12 +84,12 @@ const RawInteractionPanel = props => {
     nodes: props.subnetSelected,
     edges: props.subnetSelectedEdge,
     nodesPerm: props.subnetSelectedPerm,
-    edgesPerm: props.subnetSelectedEdgePerm
+    edgesPerm: props.subnetSelectedEdgePerm,
   }
 
   const hidden = {
     nodes: [],
-    edges: []
+    edges: [],
   }
 
   if (filters === null || filters.length === 0) {
@@ -104,9 +105,10 @@ const RawInteractionPanel = props => {
         style={networkAreaStyle}
         eventHandlers={getCustomEventHandlers()}
         rendererOptions={{
-          layout: checkPresetLayout(subnet)
+          layout: checkPresetLayout(subnet),
         }}
         command={props.commands}
+        setRendererReference={setCyReference}
       />
     )
   }
@@ -137,9 +139,10 @@ const RawInteractionPanel = props => {
       style={networkAreaStyle}
       eventHandlers={getCustomEventHandlers()}
       rendererOptions={{
-        layout: checkPresetLayout(subnet)
+        layout: checkPresetLayout(subnet),
       }}
       command={props.commands}
+      setRendererReference={setCyReference}
     />
   )
 }
