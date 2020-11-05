@@ -59,12 +59,11 @@ const useStyles = makeStyles(theme =>
       background: 'orange',
     },
     edgeFilterTitle: {
-      background: '#FFFFFF'
+      background: '#FFFFFF',
     },
     edgeFilters: {
-
-      padding: 0
-    }
+      padding: 0,
+    },
   }),
 )
 
@@ -80,6 +79,8 @@ const TermDetailsPanel = props => {
 
   const [vs, setVS] = useState(null)
   const [systemID, setSystemID] = useState(null)
+
+  const [cy, setCy] = useState(null)
 
   const addStyle = rawInteractions => {
     const networkStyle = StyleFactory.createStyle(rawInteractions)
@@ -215,6 +216,7 @@ const TermDetailsPanel = props => {
             uiState={props.uiState}
             hierarchy={props.network.get('hierarchy')}
             networkAreaStyle={{ height: '100%', background: '#333333' }}
+            setCy={setCy}
           />
         </div>
       )
@@ -299,11 +301,11 @@ const TermDetailsPanel = props => {
 
   // const network = props.network.get(url)
 
-  let {network} = props
+  let { network } = props
   let networkData = {}
   if (network !== undefined || network === null) {
     networkData = network.get('networkAttributes')
-    if(networkData === null || networkData === undefined) {
+    if (networkData === null || networkData === undefined) {
       networkData = {}
     }
   }
@@ -370,7 +372,7 @@ const TermDetailsPanel = props => {
 
       <div className={classes.bottomPane}>
         <LayoutSelector commandActions={props.interactionsCommandActions} />
-        <AdvancedOptions networkProps={networkProps} raw={raw} geneList={geneList} {...props} />
+        <AdvancedOptions networkProps={networkProps} raw={raw} geneList={geneList} {...props} cy={cy} />
         <div className={classes.control}>
           <div>{getControllers(selectedExternalNetwork, networkProps, raw)}</div>
         </div>
@@ -397,7 +399,12 @@ const TermDetailsPanel = props => {
           <div />
         ) : (
           <ExpansionPanel>
-            <ExpansionPanelSummary className={classes.edgeFilterTitle} expandIcon={<ExpandMoreIcon />} aria-controls="edgeFilter" id="edgeFilter">
+            <ExpansionPanelSummary
+              className={classes.edgeFilterTitle}
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="edgeFilter"
+              id="edgeFilter"
+            >
               <Typography>Edge Filters</Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails className={classes.edgeFilters}>

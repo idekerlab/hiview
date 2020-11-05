@@ -2028,6 +2028,11 @@ caniuse-lite@^1.0.30000984:
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30000989.tgz#b9193e293ccf7e4426c5245134b8f2a56c0ac4b9"
   integrity sha512-vrMcvSuMz16YY6GSVZ0dWDTJP8jqk3iFQ/Aq5iqblPwxSVVZI+zxDyTX0VPqtQsDnfdrBDcsmhgTEOh5R8Lbpw==
 
+canvas2svg@^1.0.16:
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/canvas2svg/-/canvas2svg-1.0.16.tgz#0814c53bbab7c3406e7387279cdf257fe4f6f2bd"
+  integrity sha1-CBTFO7q3w0Buc4cnnN8lf+T28r0=
+
 caw@^2.0.0, caw@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/caw/-/caw-2.0.1.tgz#6c3ca071fc194720883c2dc5da9b074bfc7e9e95"
@@ -2685,6 +2690,11 @@ cytoscape-cx2js@^0.5.5:
   dependencies:
     cytoscape-canvas "3.0.1"
     lodash "^4.17.10"
+
+cytoscape-svg@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/cytoscape-svg/-/cytoscape-svg-0.3.1.tgz#5f49b7438e8cf9c779c1a999802f4a52384e4533"
+  integrity sha512-CaU6sUWIcCJcOWw+G1ZWHqC7ssHwXabWVo6okyIPUy3veEKoodZ3Ud2AG3Zbd8vFl8Z1W10hzyXnyy25aBXFXA==
 
 cytoscape@^3.16.2:
   version "3.16.2"
