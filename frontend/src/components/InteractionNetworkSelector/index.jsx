@@ -12,6 +12,7 @@ import TextField from '@material-ui/core/TextField'
 import OpenInPortalButton from '../OpenInPortalButton'
 import OpenInNetAntButton from '../OpenInNetAntButton'
 import SaveAsSvgButton from '../SaveAsSvgButton'
+import SaveAsSvgButtonErrorBoundary from '../SaveAsSvgButton/SaveAsSvgButtonErrorBoundary'
 
 // Base style
 const styles = theme => ({
@@ -147,7 +148,9 @@ const InteractionNetworkSelector = props => {
           isCytoscapeRunning={false}
         />
         <OpenInPortalButton genes={props.genes} />
-        <SaveAsSvgButton cy={props.cy} />
+        <SaveAsSvgButtonErrorBoundary>
+          <SaveAsSvgButton cy={props.cy} />
+        </SaveAsSvgButtonErrorBoundary>
       </div>
       <TextField
         id="user-external-network"
