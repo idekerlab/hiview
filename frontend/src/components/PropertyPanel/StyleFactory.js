@@ -4,8 +4,8 @@ const INTERACTION_TAG = 'interaction'
 
 // Font size will be calculated based on viewport size.
 const VIEW_TO_FONT_SIZE_RATIO = 350
-const BASE_FONT_SIZE = 12
-const LARGE_FONT_SIZE = 30
+const BASE_FONT_SIZE = 32
+const LARGE_FONT_SIZE = 40
 
 // If there are too many edge in the data, use simplified version.
 const MAX_EDGE_COUNT = 10000
