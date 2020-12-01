@@ -152,7 +152,7 @@ class LocalSearchPanel extends Component {
 
     return (
       <div className={classes.root}>
-        <Card className={classes.card}>
+        <Card id={'search-panel'}  className={classes.card}>
           <MainPanel {...this.props} handleShowResult={this.handleShowResult} />
 
           {this.state.showResultPanel ? (
@@ -181,7 +181,7 @@ class LocalSearchPanel extends Component {
             </ExpansionPanelDetails>
           </ExpansionPanel>
         </Card>
-      </div>
+id={'search-panel'}       </div>
     )
   }
 

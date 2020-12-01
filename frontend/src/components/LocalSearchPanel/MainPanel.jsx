@@ -9,8 +9,9 @@ import Input from '@material-ui/core/Input'
 import { Tooltip } from '@material-ui/core'
 
 import SearchOptionDialog from './SearchOptionDialog'
+import TourButton from './TourButton'
 
-const HELP_WIKI_URL = 'https://github.com/idekerlab/hiview/wiki'
+const HELP_WIKI_URL = 'https://github.com/idekerlab/hiview/wiki/HiView-User-Guide'
 
 const baseStyle = {
   width: '100%',
@@ -169,6 +170,10 @@ class MainPanel extends React.Component {
             <HelpIcon color={'secondary'} />
           </IconButton>
         </Tooltip>
+
+
+        <TourButton />
+
         <SearchOptionDialog
           searchMode={this.props.uiState.get('searchMode')}
           open={this.state.open}

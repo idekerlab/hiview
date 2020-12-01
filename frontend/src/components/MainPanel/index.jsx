@@ -1,4 +1,6 @@
 import React from 'react'
+import Tour from 'reactour'
+
 
 import Commands from '../Commands'
 import MainMenuPanel from '../MainMenuPanel'

@@ -194,7 +194,7 @@ const TermDetailsPanel = props => {
     if (externalNetwork === null || externalNetwork === undefined) {
       return (
         <div ref={networkContainer} className={classes.networkWrapper}>
-          <RawInteractionPanel
+          <RawInteractionPanel id={'interaction-panel'}
             subnet={interactions}
             subnetSelected={selected}
             subnetSelectedPerm={selectedPerm}

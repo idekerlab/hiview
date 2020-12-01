@@ -499,7 +499,7 @@ class NetworkPanel extends Component {
       )
     } else {
       return (
-        <CirclePackingPanel
+        <CirclePackingPanel id={'network-panel'} 
           {...this.props}
           selection={this.props.selection}
           command={commands}
