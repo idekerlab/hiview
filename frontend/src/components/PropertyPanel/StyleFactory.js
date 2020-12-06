@@ -4,8 +4,8 @@ const INTERACTION_TAG = 'interaction'
 
 // Font size will be calculated based on viewport size.
 const VIEW_TO_FONT_SIZE_RATIO = 350
-const BASE_FONT_SIZE = 12
-const LARGE_FONT_SIZE = 30
+const BASE_FONT_SIZE = 32
+const LARGE_FONT_SIZE = 40
 
 // If there are too many edge in the data, use simplified version.
 const MAX_EDGE_COUNT = 10000
@@ -258,12 +258,12 @@ export const createStyle = originalNetwork => {
     // This is for optional edges
     const edgeType = edge.data(INTERACTION_TAG)
     if (edgeType !== undefined) {
-      const labelText = edgeType + ': ' + edge.data(edgeType)
+      const labelText = edgeType + ': ' + formatScore(edge.data(edgeType))
       return labelText
     }
 
     if (primaryScore && typeof primaryScore === 'number') {
-      return primaryScore.toFixed(4)
+      return formatScore(primaryScore)
     }
     return '-'
   }
@@ -280,3 +280,5 @@ export const createStyle = originalNetwork => {
     ]
   }
 }
+
+const formatScore = score => Number.parseFloat(score).toFixed(5) 

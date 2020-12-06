@@ -350,22 +350,6 @@ class RendererOptionsPanel extends Component {
             <ListItemText primary="Main Options:" />
           </ListItem>
 
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar>H</Avatar>
-            </ListItemAvatar>
-
-            <ListItemText primary="Viewer Type:" />
-            <Select
-              style={{ width: '55%' }}
-              value={this.state.viewer}
-              onChange={this.handleViewerChange}
-            >
-              <MenuItem value={NODE_LINK}>{NODE_LINK}</MenuItem>
-              <MenuItem value={CIRCLE_PACKING}>{CIRCLE_PACKING}</MenuItem>
-            </Select>
-          </ListItem>
-
           <DepthSelector {...this.props} />
 
           {this.getOptions()}
