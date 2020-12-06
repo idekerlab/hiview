@@ -163,7 +163,7 @@ const SaveAsSvgButton = props => {
   }
 
   const handleExportSvg = () => {
-    const svg = bufferCanvasImage({}, cy)
+    const svg = bufferCanvasImage({ bg: 'rgb(51, 51, 51)' }, cy)
     downloadTxtFile(svg)
   }
 
