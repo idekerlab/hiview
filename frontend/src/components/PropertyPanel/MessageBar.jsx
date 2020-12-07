@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const getWarning = (originalCount, maxCount, classes) => {
-  if (originalCount < maxCount) {
+  if (originalCount <= maxCount) {
     return <div />
   } else {
     return (

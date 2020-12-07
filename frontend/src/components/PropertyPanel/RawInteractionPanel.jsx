@@ -34,7 +34,7 @@ const RawInteractionPanel = props => {
     filters,
     networkAreaStyle,
   } = props
-  
+
   const [cyReference, setCyReference] = useState(null)
 
   useEffect(() => {
@@ -112,20 +112,6 @@ const RawInteractionPanel = props => {
       />
     )
   }
-
-  // let primaryFilter = null
-  // const filterNames = []
-  // const filterMap = {}
-
-  // filters.forEach(filter => {
-  //   const isPrimary = filter.isPrimary
-  //   if (isPrimary) {
-  //     primaryFilter = filter
-  //   } else {
-  //     filterNames.push(filter.attributeName)
-  //     filterMap[filter.attributeName] = filter
-  //   }
-  // })
 
   return (
     <Viewer
