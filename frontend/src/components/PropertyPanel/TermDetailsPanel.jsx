@@ -33,6 +33,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { createStyles, makeStyles } from '@material-ui/core'
 import AdvancedOptions from './AdvancedOptions'
+import CopyToClipboardButton from '../CopyToClipboardButton'
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -369,6 +370,7 @@ const TermDetailsPanel = props => {
       </div>
 
       <div className={classes.bottomPane}>
+        <CopyToClipboardButton geneList={geneList}/>
         <LayoutSelector commandActions={props.interactionsCommandActions} />
         <AdvancedOptions networkProps={networkProps} raw={raw} geneList={geneList} {...props} />
         <div className={classes.control}>
