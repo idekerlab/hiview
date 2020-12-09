@@ -33,12 +33,17 @@ const RawInteractionPanel = props => {
     commandActions,
     filters,
     networkAreaStyle,
+    setCy,
+    setHandleSvg,
   } = props
 
   const [cyReference, setCyReference] = useState(null)
 
   useEffect(() => {
     console.log('*Cytoscape instance assigned:', cyReference)
+    if (cyReference) {
+      setCy(cyReference)
+    }
   }, [cyReference])
 
   useEffect(() => {

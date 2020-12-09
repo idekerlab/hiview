@@ -11,6 +11,8 @@ import OpenInCytoscapeButton from '../OpenInCytoscapeButton'
 import TextField from '@material-ui/core/TextField'
 import OpenInPortalButton from '../OpenInPortalButton'
 import OpenInNetAntButton from '../OpenInNetAntButton'
+import SaveAsSvgButton from '../SaveAsSvgButton'
+import SaveAsSvgButtonErrorBoundary from '../SaveAsSvgButton/SaveAsSvgButtonErrorBoundary'
 
 // Base style
 const styles = theme => ({
@@ -23,21 +25,21 @@ const styles = theme => ({
     display: 'flex',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   column: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    width: '100%'
+    width: '100%',
   },
   formControl: {
     minWidth: '20em',
-    flexGrow: 1
+    flexGrow: 1,
   },
   icon: {
-    fontSize: '2em'
-  }
+    fontSize: '2em',
+  },
 })
 
 const InteractionNetworkSelector = props => {
@@ -53,7 +55,7 @@ const InteractionNetworkSelector = props => {
     const interactomeUUID = getUuid(newNetName)
     props.externalNetworksActions.setExternalNetwork({
       name: newNetName,
-      uuid: interactomeUUID
+      uuid: interactomeUUID,
     })
 
     fetchNet(interactomeUUID)
@@ -70,7 +72,7 @@ const InteractionNetworkSelector = props => {
       // Need validation
       props.externalNetworksActions.setExternalNetwork({
         name: query,
-        uuid: query
+        uuid: query,
       })
 
       fetchNet(query)
@@ -105,12 +107,7 @@ const InteractionNetworkSelector = props => {
         return
       }
 
-      props.externalNetworksActions.fetchExternalNetworkFromUrl(
-        null,
-        null,
-        interactomeUUID,
-        genes
-      )
+      props.externalNetworksActions.fetchExternalNetworkFromUrl(null, null, interactomeUUID, genes)
       return
     }
 
@@ -125,11 +122,7 @@ const InteractionNetworkSelector = props => {
     const NDEX_API = '.ndexbio.org/v2/network/'
     const url = 'http://' + serverType + NDEX_API + uuid
 
-    props.externalNetworksActions.fetchExternalNetworkFromUrl(
-      url,
-      uuid,
-      interactomeUUID
-    )
+    props.externalNetworksActions.fetchExternalNetworkFromUrl(url, uuid, interactomeUUID)
   }
 
   return (
@@ -155,6 +148,9 @@ const InteractionNetworkSelector = props => {
           isCytoscapeRunning={false}
         />
         <OpenInPortalButton genes={props.genes} />
+        <SaveAsSvgButtonErrorBoundary>
+          <SaveAsSvgButton cy={props.cy} />
+        </SaveAsSvgButtonErrorBoundary>
       </div>
       <TextField
         id="user-external-network"
