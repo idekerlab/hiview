@@ -12,7 +12,7 @@ import Warning from './Warning'
 import LoadingPanel from '../PropertyPanel/LoadingPanel'
 let cyInstance = null
 
-const BASE_STYLE = { width: '100%', height: '100%', background: '#222522' }
+const BASE_STYLE = { width: '100%', height: '100%', background: '#000000' }
 
 const PRESET_LAYOUT = {
   name: 'preset',
