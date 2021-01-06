@@ -33,6 +33,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { createStyles, makeStyles } from '@material-ui/core'
 import AdvancedOptions from './AdvancedOptions'
+import CopyToClipboardButton from '../CopyToClipboardButton'
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -215,8 +216,12 @@ const TermDetailsPanel = props => {
             enrichmentActions={props.enrichmentActions}
             uiState={props.uiState}
             hierarchy={props.network.get('hierarchy')}
+<<<<<<< HEAD
             networkAreaStyle={{ height: '100%', background: '#333333' }}
             setCy={setCy}
+=======
+            networkAreaStyle={{ height: '100%', background: '#000000' }}
+>>>>>>> 768718b57cf56e6f0e179423f9143fa30e91414a
           />
         </div>
       )
@@ -371,6 +376,7 @@ const TermDetailsPanel = props => {
       </div>
 
       <div className={classes.bottomPane}>
+        <CopyToClipboardButton geneList={geneList}/>
         <LayoutSelector commandActions={props.interactionsCommandActions} />
         <AdvancedOptions networkProps={networkProps} raw={raw} geneList={geneList} {...props} cy={cy} />
         <div className={classes.control}>
