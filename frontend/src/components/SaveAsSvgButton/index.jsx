@@ -7,9 +7,17 @@ import canvas2svg from 'canvas2svg'
 
 const styles = theme => ({
   button: {
-    marginLeft: '0.5em',
+    margin: '0.25em',
+    width: '3.4em',
   },
-  icon: {},
+  icon: {
+    fontSize: '2em',
+  },
+  tooltip: {
+    fontSize: '16px',
+    fontWeight: '300',
+    textAlign: 'center',
+  },
 })
 
 const SaveAsSvgButton = props => {
@@ -168,7 +176,7 @@ const SaveAsSvgButton = props => {
   }
 
   return (
-    <Tooltip title="Export as SVG">
+    <Tooltip title={<div className={classes.tooltip}>Export as SVG</div>}>
       <Button size="small" color="default" variant="outlined" className={classes.button} onClick={handleExportSvg}>
         <PhotoSizeSelectActualIcon className={classes.icon} />
       </Button>

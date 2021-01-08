@@ -14,6 +14,7 @@ import GeneList from './GeneList'
 import * as StyleFactory from './StyleFactory'
 
 import LayoutSelector from '../LayoutSelector'
+import ExportButtons from '../ExportButtons'
 import EmptyInteractionPanel from './EmptyInteractionPanel.jsx'
 import MaxEdgePanel from './MaxEdgePanel'
 import MessageBar from './MessageBar'
@@ -372,30 +373,11 @@ const TermDetailsPanel = props => {
       </div>
 
       <div className={classes.bottomPane}>
-        <CopyToClipboardButton geneList={geneList} />
         <LayoutSelector commandActions={props.interactionsCommandActions} />
-        <AdvancedOptions networkProps={networkProps} raw={raw} geneList={geneList} {...props} cy={cy} />
+        <ExportButtons geneList={geneList} cy={cy} />
         <div className={classes.control}>
           <div>{getControllers(selectedExternalNetwork, networkProps, raw)}</div>
         </div>
-        {/* {props.expanded ? <div style={{ height: '5.2em' }} /> : <div />}
-
-        {hidden ? (
-          <div />
-        ) : (
-          <div style={controlPanelStyle}>
-            <InteractionNetworkSelector genes={geneList} {...allProps} />
-            {getControllers(
-              selectedExternalNetwork,
-              layoutPanelStyle,
-              networkProps,
-              controllerStyle,
-              raw
-            )}
-          </div>
-        )}
-
-        */}
 
         {hidden || selectedExternalNetwork ? (
           <div />

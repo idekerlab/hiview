@@ -6,13 +6,21 @@ import OpenIcon from '@material-ui/icons/OpenInBrowser'
 import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 
+import ndexLogo from '../../assets/images/ndex-logo.svg'
+
 const styles = theme => ({
   button: {
-    marginLeft: '0.5em',
+    margin: '0.25em',
+    width: '3.4em',
   },
   icon: {
-    marginLeft: '0.3em'
-  }
+    height: '2em',
+  },
+  tooltip: {
+    fontSize: '16px',
+    fontWeight: '300',
+    textAlign: 'center',
+  },
 })
 
 const BASE_URL = 'http://search.ndexbio.org/?genes='
@@ -29,16 +37,11 @@ const OpenInPortalButton = props => {
   }
 
   return (
-    <Tooltip title="Search genes in this subsystem in IQuery" placement="bottom">
-      <Button
-        size='small'
-        variant="outlined"
-        color="default"
-        onClick={handleOpen}
-        className={classes.button}
-      >
-        IQuery
-        <OpenIcon className={classes.icon} alt="Open in IQuery" />
+    <Tooltip title={<div className={classes.tooltip}>Search genes in this subsystem in IQuery</div>} placement="bottom">
+      <Button size="small" variant="outlined" color="default" onClick={handleOpen} className={classes.button}>
+        {/*IQuery
+        <OpenIcon className={classes.icon} alt="Open in IQuery" />*/}
+        <img src={ndexLogo} className={classes.icon} />
       </Button>
     </Tooltip>
   )
