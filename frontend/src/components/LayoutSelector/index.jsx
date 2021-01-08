@@ -20,6 +20,7 @@ const useStyles = makeStyles(theme =>
       alignItems: 'center',
       justifyContent: 'center',
       padding: theme.spacing(1),
+      columnGap: '0.5em',
     },
     flexContainer: {
       display: 'flex',
@@ -112,41 +113,38 @@ const LayoutSelector = props => {
   return (
     <div className={classes.root}>
       <div className={classes.flexContainer}>
-        <div className={classes.flexContainer}>
-          <div className={classes.leftPaddedGrid}>
-            <strong>Layout:</strong>
-          </div>
-          <div className={classes.flexContainer}>
-            <div className={classes.rightPaddedGrid}>
-              <FormControl className={classes.formControl}>
-                <Select fullWidth value={layout} onChange={handleChange('layout')} className={classes.select}>
-                  <MenuItem value={LAYOUTS.COSE}>COSE (Force-Directed)</MenuItem>
-                  <MenuItem value={LAYOUTS.GRID}>Grid</MenuItem>
-                  <MenuItem value={LAYOUTS.CIRCLE}>Circle</MenuItem>
-                  <MenuItem value={LAYOUTS.COCENTRIC}>Cocentric</MenuItem>
-                  <MenuItem value={LAYOUTS.BREADTHFIRST}>Breadthfirst</MenuItem>
-                </Select>
-              </FormControl>
-            </div>
-            <Tooltip title={<div className={classes.tooltip}>Apply layout</div>} arrow placement="top">
-              <span>
-                <Button
-                  className={classes.button}
-                  variant={buttonDisabled ? 'outlined' : 'contained'}
-                  size="small"
-                  color="primary"
-                  onClick={handleClick}
-                  size="small"
-                  display="inline-block"
-                  disabled={buttonDisabled}
-                >
-                  <ApplyIcon className={classes.icon} />
-                </Button>
-              </span>
-            </Tooltip>
-          </div>
+        <div className={classes.leftPaddedGrid}>
+          <strong>Layout:</strong>
         </div>
-        <div className={classes.spacer} />
+        <div className={classes.flexContainer}>
+          <div className={classes.rightPaddedGrid}>
+            <FormControl className={classes.formControl}>
+              <Select fullWidth value={layout} onChange={handleChange('layout')} className={classes.select}>
+                <MenuItem value={LAYOUTS.COSE}>COSE (Force-Directed)</MenuItem>
+                <MenuItem value={LAYOUTS.GRID}>Grid</MenuItem>
+                <MenuItem value={LAYOUTS.CIRCLE}>Circle</MenuItem>
+                <MenuItem value={LAYOUTS.COCENTRIC}>Cocentric</MenuItem>
+                <MenuItem value={LAYOUTS.BREADTHFIRST}>Breadthfirst</MenuItem>
+              </Select>
+            </FormControl>
+          </div>
+          <Tooltip title={<div className={classes.tooltip}>Apply layout</div>} arrow placement="top">
+            <span>
+              <Button
+                className={classes.button}
+                variant={buttonDisabled ? 'outlined' : 'contained'}
+                size="small"
+                color="primary"
+                onClick={handleClick}
+                size="small"
+                display="inline-block"
+                disabled={buttonDisabled}
+              >
+                <ApplyIcon className={classes.icon} />
+              </Button>
+            </span>
+          </Tooltip>
+        </div>
       </div>
       <div className={classes.flexContainer}>
         <Tooltip title={<div className={classes.tooltip}>Fit network view</div>} arrow placement="top">

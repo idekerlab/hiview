@@ -20,11 +20,13 @@ const useStyles = makeStyles(theme =>
       justifyContent: 'center',
       padding: theme.spacing(1),
       paddingTop: 0,
+      columnGap: '0.5em',
     },
-    spacer: {
-      width: '0.5em',
-      height: 0,
-      backgroundColor: 'transparent',
+    flexContainer: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   }),
 )
@@ -34,12 +36,15 @@ const ExportButtons = props => {
 
   return (
     <div className={classes.root}>
-      <CopyToClipboardButton genes={props.geneList} />
-      <OpenInPortalButton genes={props.geneList} />
-      <div className={classes.spacer} />
-      <SaveAsSvgButtonErrorBoundary>
-        <SaveAsSvgButton cy={props.cy} />
-      </SaveAsSvgButtonErrorBoundary>
+      <div className={classes.flexContainer}>
+        <CopyToClipboardButton genes={props.geneList} />
+        <OpenInPortalButton genes={props.geneList} />
+      </div>
+      <div className={classes.flexContainer}>
+        <SaveAsSvgButtonErrorBoundary>
+          <SaveAsSvgButton cy={props.cy} />
+        </SaveAsSvgButtonErrorBoundary>
+      </div>
       {/*<OpenInCytoscapeButton
           externalNetworks={externalNetworks}
           rawInteractions={props.rawInteractions.toJS()}
