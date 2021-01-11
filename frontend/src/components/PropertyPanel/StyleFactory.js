@@ -243,10 +243,39 @@ export const createStyle = originalNetwork => {
   if (similarityMin !== similarityMax) {
     edgeStyle.css[
       'opacity'
-    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.4, 1)`
+    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.7, 1)`
+
+    // Pick top 10%
+    const range = Math.abs(similarityMax - similarityMin) 
+    const topRange = range * 0.95
+    const maxThreshold = similarityMin + topRange
+    
+    const maxWidth = 7
+    const minWidth = 0.1
+    const rangeWidth = Math.abs(maxWidth - minWidth) 
+
+    const globalMin = Number.parseFloat(networkData[`${primaryEdgeType} min`])
+    const globalMax = Number.parseFloat(networkData[`${primaryEdgeType} max`])
+    const globalRange = Math.abs(globalMax - globalMin)
+    const globalTop = globalRange * 0.9
+    const globalTh = globalMin + globalTop
+
+
+    // edgeStyle.css[
+    //   'width'
+    // ] = `mapData(${primaryEdgeType},${similarityMin},${maxThreshold}, 0.2, 7)`
+    
     edgeStyle.css[
       'width'
-    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 8)`
+    ] = e => {
+      const weight = e.data(primaryEdgeType)
+
+      if(globalTh <= weight) {
+        return 7
+      }
+
+      return ((Math.abs(weight - similarityMin))/range ) * rangeWidth
+    }
   }
 
   // Define edge selection style

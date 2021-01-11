@@ -6,6 +6,7 @@
             "type": "chrome",
             "request": "launch",
             // "url": "http://localhost:3000/a2e47c19-59bf-11ea-a7ab-0660b7976219?type=test&server=http://test.ndexbio.org",
+            // Nest 1.5
             // "url": "http://localhost:3000/274fcd6c-1adc-11ea-a741-0660b7976219?type=test&server=http://test.ndexbio.edu",
             // Anton 1
             "url": "http://localhost:3000/90b49f92-286b-11eb-890f-0660b7976219?type=test&server=http://test.ndexbio.org",
@@ -13,4 +14,3 @@
         }
     ]
 }
-90b49f92-286b-11eb-890f-0660b7976219
