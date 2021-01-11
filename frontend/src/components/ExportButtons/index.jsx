@@ -31,11 +31,12 @@ const useStyles = makeStyles(theme =>
 
 const ExportButtons = props => {
   const classes = useStyles()
+  const { geneList } = props
 
   return (
     <div className={classes.root}>
-      <CopyToClipboardButton genes={props.geneList} />
-      <OpenInPortalButton genes={props.geneList} />
+      <CopyToClipboardButton genes={geneList} />
+      <OpenInPortalButton genes={geneList} />
       <div className={classes.spacer} />
       <SaveAsSvgButtonErrorBoundary>
         <SaveAsSvgButton cy={props.cy} />

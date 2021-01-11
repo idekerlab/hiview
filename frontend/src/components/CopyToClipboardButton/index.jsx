@@ -24,14 +24,14 @@ const useStyles = makeStyles(theme =>
 )
 
 const CopyToClipboardButton = props => {
-  const { geneList } = props
+  const { genes } = props
   const classes = useStyles()
 
   const _handleCopy = () => {
-    const genes = geneList.join(' ')
-    console.log('Genes:', genes)
+    const geneString = genes.join(' ')
+    console.log('Genes:', geneString)
     if (navigator.clipboard) {
-      navigator.clipboard.writeText(genes)
+      navigator.clipboard.writeText(geneString)
     }
   }
 
