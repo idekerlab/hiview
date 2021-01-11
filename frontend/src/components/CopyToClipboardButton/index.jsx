@@ -9,12 +9,16 @@ import Tooltip from '@material-ui/core/Tooltip'
 const useStyles = makeStyles(theme =>
   createStyles({
     button: {
-      width: '100%',
-      marginTop: '0.5em',
-      marginBottom: '0.5em',
+      width: '3.4em',
+      margin: '0.25em',
     },
     icon: {
-      marginLeft: '0.4em',
+      fontSize: '2em',
+    },
+    tooltip: {
+      fontSize: '16px',
+      fontWeight: '300',
+      textAlign: 'center',
     },
   }),
 )
@@ -32,9 +36,11 @@ const CopyToClipboardButton = props => {
   }
 
   return (
-    <Tooltip title="Copy genes above as space-delimited text to the clipboard" placement="bottom">
-      <Button small fullwidth variant="outlined" color="primary" onClick={_handleCopy} className={classes.button}>
-        Copy Gene List to Clipboard
+    <Tooltip
+      title={<div className={classes.tooltip}>Copy genes above as space-delimited text to the clipboard</div>}
+      placement="bottom"
+    >
+      <Button size="small" variant="outlined" color="primary" onClick={_handleCopy} className={classes.button}>
         <ClipboardIcon className={classes.icon} alt="Copy gene list to clipboard" />
       </Button>
     </Tooltip>

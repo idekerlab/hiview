@@ -16,19 +16,47 @@ const useStyles = makeStyles(theme =>
       background: '#EEEEEE',
       width: '100%',
       display: 'flex',
+      flexWrap: 'wrap',
       alignItems: 'center',
-      justifyContent: 'flex-end',
+      justifyContent: 'center',
       padding: theme.spacing(1),
+    },
+    flexContainer: {
+      display: 'flex',
+      flexWrap: 'wrap',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     formControl: {
       width: '100%',
-      flexGrow: 1
+      flexGrow: 1,
+      margin: '0.2em',
+    },
+    select: {
+      paddingLeft: '0.2em',
     },
     button: {
+      margin: '0.25em',
+      width: '3.4em',
+    },
+    rightPaddedGrid: {
+      marginRight: '0.4em',
+    },
+    leftPaddedGrid: {
       marginLeft: '0.2em',
     },
     icon: {
       fontSize: '2em',
+    },
+    tooltip: {
+      fontSize: '16px',
+      fontWeight: '300',
+      textAlign: 'center',
+    },
+    spacer: {
+      width: '0.5em',
+      height: 0,
+      backgroundColor: 'transparent',
     },
   }),
 )
@@ -45,9 +73,11 @@ const LAYOUTS = {
 const LayoutSelector = props => {
   const classes = useStyles()
   const [layout, setLayout] = useState(LAYOUTS.COSE)
+  const [buttonDisabled, setButtonDisabled] = useState(true)
 
   const handleChange = name => event => {
     setLayout(event.target.value)
+    setButtonDisabled(false)
   }
 
   const handleClick = event => {
@@ -62,6 +92,7 @@ const LayoutSelector = props => {
         options: {},
       })
     }
+    setButtonDisabled(true)
   }
 
   const handleFit = event => {
@@ -80,32 +111,73 @@ const LayoutSelector = props => {
 
   return (
     <div className={classes.root}>
-      <FormControl className={classes.formControl}>
-        <Select fullWidth value={layout} onChange={handleChange('layout')}>
-          <MenuItem value={LAYOUTS.COSE}>COSE (Force-Directed)</MenuItem>
-          <MenuItem value={LAYOUTS.GRID}>Grid</MenuItem>
-          <MenuItem value={LAYOUTS.CIRCLE}>Circle</MenuItem>
-          <MenuItem value={LAYOUTS.COCENTRIC}>Cocentric</MenuItem>
-          <MenuItem value={LAYOUTS.BREADTHFIRST}>Breadthfirst</MenuItem>
-        </Select>
-        <FormHelperText>Apply new layout to the network</FormHelperText>
-      </FormControl>
-
-      <Tooltip title="Apply layout" arrow placement="top">
-        <Button className={classes.button} variant="outlined" size="small" color="primary" onClick={handleClick} size="small">
-          <ApplyIcon className={classes.icon} />
-        </Button>
-      </Tooltip>
-      <Tooltip title="Fit network view" arrow placement="top">
-        <Button className={classes.button} variant="outlined" size="small" color="default" onClick={handleFit} size="small">
-          <FitContent className={classes.icon} />
-        </Button>
-      </Tooltip>
-      <Tooltip title="Zoom to selected genes (shift+drag to select)" arrow placement="top">
-        <Button className={classes.button} variant="outlined" size="small" color="default" onClick={handleFitSelected} size="small">
-          <FitSelected className={classes.icon} />
-        </Button>
-      </Tooltip>
+      <div className={classes.flexContainer}>
+        <div className={classes.flexContainer}>
+          <div className={classes.leftPaddedGrid}>
+            <strong>Layout:</strong>
+          </div>
+          <div className={classes.flexContainer}>
+            <div className={classes.rightPaddedGrid}>
+              <FormControl className={classes.formControl}>
+                <Select fullWidth value={layout} onChange={handleChange('layout')} className={classes.select}>
+                  <MenuItem value={LAYOUTS.COSE}>COSE (Force-Directed)</MenuItem>
+                  <MenuItem value={LAYOUTS.GRID}>Grid</MenuItem>
+                  <MenuItem value={LAYOUTS.CIRCLE}>Circle</MenuItem>
+                  <MenuItem value={LAYOUTS.COCENTRIC}>Cocentric</MenuItem>
+                  <MenuItem value={LAYOUTS.BREADTHFIRST}>Breadthfirst</MenuItem>
+                </Select>
+              </FormControl>
+            </div>
+            <Tooltip title={<div className={classes.tooltip}>Apply layout</div>} arrow placement="top">
+              <span>
+                <Button
+                  className={classes.button}
+                  variant={buttonDisabled ? 'outlined' : 'contained'}
+                  size="small"
+                  color="primary"
+                  onClick={handleClick}
+                  size="small"
+                  display="inline-block"
+                  disabled={buttonDisabled}
+                >
+                  <ApplyIcon className={classes.icon} />
+                </Button>
+              </span>
+            </Tooltip>
+          </div>
+        </div>
+        <div className={classes.spacer} />
+      </div>
+      <div className={classes.flexContainer}>
+        <Tooltip title={<div className={classes.tooltip}>Fit network view</div>} arrow placement="top">
+          <Button
+            className={classes.button}
+            variant="outlined"
+            size="small"
+            color="default"
+            onClick={handleFit}
+            size="small"
+          >
+            <FitContent className={classes.icon} />
+          </Button>
+        </Tooltip>
+        <Tooltip
+          title={<div className={classes.tooltip}>Zoom to selected genes (shift+drag to select)</div>}
+          arrow
+          placement="top"
+        >
+          <Button
+            className={classes.button}
+            variant="outlined"
+            size="small"
+            color="default"
+            onClick={handleFitSelected}
+            size="small"
+          >
+            <FitSelected className={classes.icon} />
+          </Button>
+        </Tooltip>
+      </div>
     </div>
   )
 }

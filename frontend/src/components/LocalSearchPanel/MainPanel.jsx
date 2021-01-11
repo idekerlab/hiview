@@ -15,7 +15,6 @@ const HELP_WIKI_URL = 'https://github.com/idekerlab/hiview/wiki'
 const baseStyle = {
   width: '100%',
   display: 'flex',
-  flexWrap: 'wrap',
   alignItems: 'center',
 }
 
