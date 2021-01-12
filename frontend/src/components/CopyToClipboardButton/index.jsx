@@ -29,7 +29,7 @@ const CopyToClipboardButton = props => {
 
   const _handleCopy = () => {
     const geneString = genes.join(' ')
-    console.log('Genes:', geneString)
+    // console.log('Genes:', geneString)
     if (navigator.clipboard) {
       navigator.clipboard.writeText(geneString)
     }
