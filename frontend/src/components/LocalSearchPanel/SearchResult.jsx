@@ -22,8 +22,8 @@ class SearchResult extends Component {
           props: entry,
           color: id2color.get(entry.id),
           children: {
-            [entry.id]: entry
-          }
+            [entry.id]: entry,
+          },
         }
       }
     })
@@ -60,7 +60,7 @@ class SearchResult extends Component {
 
     const resultStyle = {
       height: windowHeight,
-      overflow: 'auto'
+      overflow: 'auto',
     }
 
     if (results === undefined || results === null || results.size === 0) {
@@ -87,6 +87,7 @@ class SearchResult extends Component {
             <div key={'parent-' + i}>
               <ListItem
                 button
+                disableRipple
                 onMouseOver={e => this.handleMouseOver(key, children)}
                 onMouseOut={e => this.handleMouseOut(key, children)}
                 style={{ backgroundColor: this.state['hoverBgColor' + key] }}
@@ -98,7 +99,9 @@ class SearchResult extends Component {
                 />
                 <ListItemSecondaryAction>
                   <ListItemAvatar>
-                    <Avatar style={{ backgroundColor: geneColor }}>G</Avatar>
+                    <Avatar style={{ backgroundColor: geneColor }}>
+                      {nestedList[parent].props.NodeType == 'Gene' ? 'G' : 'T'}
+                    </Avatar>
                   </ListItemAvatar>
                 </ListItemSecondaryAction>
               </ListItem>
