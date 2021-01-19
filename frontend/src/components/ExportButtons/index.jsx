@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme =>
 
 const ExportButtons = props => {
   const classes = useStyles()
+  const { geneList } = props
 
   return (
     <div className={classes.root}>

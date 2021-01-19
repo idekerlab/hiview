@@ -166,10 +166,10 @@ class CirclePackingPanel extends Component {
 
       const geneIds = groups[name]
 
-      memberCount = geneIds.length
       if (!geneIds) {
         // this.props.rawInteractionsActions.setSelected([])
       } else {
+        memberCount = geneIds.length
         console.log(
           '# Actual Highlight start: id and count',
           id,
