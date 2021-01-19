@@ -52,8 +52,8 @@ const SearchOptionDialog = (props) => {
       <FormControl component="fieldset" className={classes.formControl}>
         <RadioGroup aria-label="search-mode" name="search-mode" value={selected} onChange={handleChecked}>
           <FormControlLabel value={SEARCH_MODE.EXACT} control={<Radio />} label="Exact match (for genes)" />
-          <FormControlLabel value={SEARCH_MODE.PREFIX} control={<Radio />} label="Prefix match (for genes)" />
-          <FormControlLabel value={SEARCH_MODE.FUZZY} control={<Radio />} label="Fuzzy match (for systems)" />
+          <FormControlLabel value={SEARCH_MODE.PREFIX} control={<Radio />} label="Prefix match (for genes and subsystems)" />
+          <FormControlLabel value={SEARCH_MODE.FUZZY} control={<Radio />} label="Fuzzy match (for subsystems)" />
         </RadioGroup>
       </FormControl>
       <div className={classes.buttons}>
