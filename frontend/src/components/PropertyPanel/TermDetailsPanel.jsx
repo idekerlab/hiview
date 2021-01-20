@@ -374,7 +374,12 @@ const TermDetailsPanel = props => {
 
       <div className={classes.bottomPane}>
         <LayoutSelector commandActions={props.interactionsCommandActions} />
-        <ExportButtons geneList={geneList} cy={cy} />
+        <ExportButtons
+          geneList={geneList}
+          cy={cy}
+          rawInteractions={props.rawInteractions}
+          externalNetworks={props.externalNetworks}
+        />
         <div className={classes.control}>
           <div>{getControllers(selectedExternalNetwork, networkProps, raw)}</div>
         </div>

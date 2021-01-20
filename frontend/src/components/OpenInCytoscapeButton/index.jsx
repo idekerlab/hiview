@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 
 import Button from '@material-ui/core/Button'
 import logo from '../../assets/images/cytoscape-logo.svg'
+import disabledLogo from '../../assets/images/cytoscape-logo-mono-light.svg'
 import { withStyles } from '@material-ui/core'
 import Tooltip from '@material-ui/core/Tooltip'
 
@@ -9,7 +10,7 @@ import * as cyrestApi from '../../api/cyrest'
 
 const styles = theme => ({
   button: {
-    marginLeft: '0.5em',
+    margin: '0.25em',
   },
   icon: {
     height: '2em',
@@ -19,7 +20,29 @@ const styles = theme => ({
 const OpenInCytoscapeButton = props => {
   const [isCytoscapeRunning, setRunning] = useState(false)
 
-  const { classes, externalNetworks, rawInteractions } = props
+  const { classes, externalNetworks } = props
+  let rawInteractions
+
+  if (props.rawInteractions !== undefined) {
+    rawInteractions = props.rawInteractions.toJS()
+  } else {
+    return (
+      <Tooltip title="Open in Cytoscape Desktop" arrow placement="bottom">
+        <span>
+          <Button
+            size="small"
+            className={classes.button}
+            color="default"
+            variant="outlined"
+            onClick={handleImportNetwork}
+            disabled={true}
+          >
+            <img alt="Cytoscape logo" src={disabledLogo} className={classes.icon} />
+          </Button>
+        </span>
+      </Tooltip>
+    )
+  }
 
   useEffect(() => {
     // Check connection
@@ -56,23 +79,20 @@ const OpenInCytoscapeButton = props => {
 
     cyrestApi.postNetwork(1234, cx)
   }
-
-  if(!isCytoscapeRunning) {
-    return <div />
-  }
-
   return (
     <Tooltip title="Open in Cytoscape Desktop" arrow placement="bottom">
-      <Button
-        size="small"
-        className={classes.button}
-        color="default"
-        variant="outlined"
-        onClick={handleImportNetwork}
-        disabled={!isCytoscapeRunning}
-      >
-        <img alt="Cytoscape logo" src={logo} className={classes.icon} />
-      </Button>
+      <span>
+        <Button
+          size="small"
+          className={classes.button}
+          color="default"
+          variant="outlined"
+          onClick={handleImportNetwork}
+          disabled={!isCytoscapeRunning}
+        >
+          <img alt="Cytoscape logo" src={isCytoscapeRunning ? logo : disabledLogo} className={classes.icon} />
+        </Button>
+      </span>
     </Tooltip>
   )
 }

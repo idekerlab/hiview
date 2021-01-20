@@ -33,24 +33,26 @@ const useStyles = makeStyles(theme =>
 
 const ExportButtons = props => {
   const classes = useStyles()
-  const { geneList } = props
+  const { geneList, rawInteractions, externalNetworks, cy } = props
+
+  console.log(rawInteractions)
 
   return (
     <div className={classes.root}>
       <div className={classes.flexContainer}>
-        <CopyToClipboardButton genes={props.geneList} />
-        <OpenInPortalButton genes={props.geneList} />
+        <CopyToClipboardButton genes={geneList} />
+        <OpenInPortalButton genes={geneList} />
       </div>
       <div className={classes.flexContainer}>
         <SaveAsSvgButtonErrorBoundary>
-          <SaveAsSvgButton cy={props.cy} />
+          <SaveAsSvgButton cy={cy} />
         </SaveAsSvgButtonErrorBoundary>
-      </div>
-      {/*<OpenInCytoscapeButton
+        <OpenInCytoscapeButton
           externalNetworks={externalNetworks}
-          rawInteractions={props.rawInteractions.toJS()}
+          rawInteractions={rawInteractions}
           isCytoscapeRunning={false}
-      />*/}
+        />
+      </div>
     </div>
   )
 }
