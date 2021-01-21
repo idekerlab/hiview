@@ -35,8 +35,6 @@ const ExportButtons = props => {
   const classes = useStyles()
   const { geneList, rawInteractions, externalNetworks, cy } = props
 
-  console.log(rawInteractions)
-
   return (
     <div className={classes.root}>
       <div className={classes.flexContainer}>

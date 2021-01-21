@@ -41,7 +41,6 @@ export default class BaseSplitPane extends Component {
     })
   }
 
-
   render() {
     const {
       events,
@@ -57,7 +56,6 @@ export default class BaseSplitPane extends Component {
       interactionStyle,
       interactionStyleActions,
     } = this.props
-
 
     return (
       <SplitPane

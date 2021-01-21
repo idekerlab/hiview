@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import Commands from '../Commands'
 import MainMenuPanel from '../MainMenuPanel'
@@ -43,6 +43,11 @@ const MainPanel = props => {
     margin: 0,
   }
 
+  const [analysisPanelHeight, setAnalysisPanelHeightHelper] = useState(false)
+  const setAnalysisPanelHeight = () => {
+    setAnalysisPanelHeightHelper(!analysisPanelHeight)
+  }
+
   return (
     <div style={wrapperStyle}>
       <MessageBox uiState={uiState} selection={selection} />
@@ -55,9 +60,10 @@ const MainPanel = props => {
         rawInteractionsActions={props.rawInteractionsActions}
         renderingOptions={renderingOptions}
         renderingOptionsActions={renderingOptionsActions}
+        setAnalysisPanelHeight={setAnalysisPanelHeight}
       />
 
-      <BaseSplitPane cxtoolUrl={CXTOOL_URL} {...props} />
+      <BaseSplitPane cxtoolUrl={CXTOOL_URL} analysisPanelHeight={analysisPanelHeight} {...props} />
 
       {/* <Commands commandActions={commandActions} uiState={uiState} uiStateActions={uiStateActions} /> */}
 

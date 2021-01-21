@@ -6,17 +6,11 @@ import TitleBar from './TitleBar'
 
 const rootStyle = {
   display: 'flex',
-  flexDirection: 'column'
+  flexDirection: 'column',
 }
 
 const MainMenuPanel = props => {
-  const {
-    uiState,
-    uiStateActions,
-    maxEdgeCount,
-    rawInteractionsActions,
-    network
-  } = props
+  const { uiState, uiStateActions, maxEdgeCount, rawInteractionsActions, network } = props
 
   const openState = uiState.get('showMainMenu')
   let dagHeight = 0
@@ -29,12 +23,7 @@ const MainMenuPanel = props => {
   }
 
   return (
-    <Drawer
-      style={{ zIndex: 2000 }}
-      variant="persistent"
-      anchor={'left'}
-      open={openState}
-    >
+    <Drawer style={{ zIndex: 2000 }} variant="persistent" anchor={'left'} open={openState}>
       <div style={rootStyle}>
         <TitleBar {...props} />
         <RendererOptionsPanel depth={dagHeight} {...props} />

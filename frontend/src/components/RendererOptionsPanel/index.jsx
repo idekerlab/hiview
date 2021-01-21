@@ -35,25 +35,25 @@ const Range = createSliderWithTooltip(Slider.Range)
 
 const baseStyle = {
   backgroundColor: blueGrey[50],
-  width: '100%'
+  width: '100%',
 }
 
 const sliderColor = teal[300]
 const trackStyle = { backgroundColor: sliderColor }
 const handleStyle = {
-  borderColor: sliderColor
+  borderColor: sliderColor,
 }
 
 const popover = {
   position: 'absolute',
-  zIndex: '2'
+  zIndex: '2',
 }
 const cover = {
   position: 'fixed',
   top: '0px',
   right: '0px',
   bottom: '0px',
-  left: '0px'
+  left: '0px',
 }
 
 class RendererOptionsPanel extends Component {
@@ -62,26 +62,26 @@ class RendererOptionsPanel extends Component {
     this.state = {
       viewer: CIRCLE_PACKING,
       displayColorPickerRoot: false,
-      displayColorPickerLeaf: false
+      displayColorPickerLeaf: false,
     }
   }
 
   handleColorPickerOpenRoot = () => {
     this.setState({
-      displayColorPickerRoot: !this.state.displayColorPickerRoot
+      displayColorPickerRoot: !this.state.displayColorPickerRoot,
     })
   }
 
   handleColorPickerOpenLeaf = () => {
     this.setState({
-      displayColorPickerLeaf: !this.state.displayColorPickerLeaf
+      displayColorPickerLeaf: !this.state.displayColorPickerLeaf,
     })
   }
 
   handleColorPickerClose = () => {
     this.setState({
       displayColorPickerRoot: false,
-      displayColorPickerLeaf: false
+      displayColorPickerLeaf: false,
     })
   }
 
@@ -116,6 +116,9 @@ class RendererOptionsPanel extends Component {
 
     console.log('GSEA: ', val)
     this.props.uiStateActions.runEnrichment(!val)
+    if (!val) {
+      this.props.setAnalysisPanelHeight()
+    }
   }
 
   onAfterChange = value => {
@@ -129,7 +132,7 @@ class RendererOptionsPanel extends Component {
   onAfterRangeChange = value => {
     const newRange = {
       min: value[0],
-      max: value[1]
+      max: value[1],
     }
     this.props.renderingOptionsActions.setNodeSizeRange(newRange)
 
@@ -140,7 +143,7 @@ class RendererOptionsPanel extends Component {
   onAfterEdgeRangeChange = value => {
     const newRange = {
       min: value[0],
-      max: value[1]
+      max: value[1],
     }
     this.props.renderingOptionsActions.setEdgeWidthRange(newRange)
 
@@ -151,22 +154,22 @@ class RendererOptionsPanel extends Component {
   getOptions = () => {
     const nodeStyle = {
       color: 'white',
-      backgroundColor: deepOrange[600]
+      backgroundColor: deepOrange[600],
     }
 
     const edgeStyle = {
       color: 'white',
-      backgroundColor: blueGrey[300]
+      backgroundColor: blueGrey[300],
     }
 
     const marks = {
       0.0: 0.0,
-      2.0: 2.0
+      2.0: 2.0,
     }
 
     const rangeMarks = {
       0.0: 0.0,
-      50.0: 50.0
+      50.0: 50.0,
     }
 
     if (this.state.viewer === CIRCLE_PACKING) {
@@ -174,11 +177,11 @@ class RendererOptionsPanel extends Component {
       const leafColor = this.props.renderingOptions.get('leafColor')
 
       const rootColorStyle = {
-        backgroundColor: rootColor
+        backgroundColor: rootColor,
       }
 
       const leafColorStyle = {
-        backgroundColor: leafColor
+        backgroundColor: leafColor,
       }
 
       return (
@@ -201,21 +204,13 @@ class RendererOptionsPanel extends Component {
             </ListItemAvatar>
 
             <ListItemText primary="Root Node Color" />
-            <Button
-              variant="contained"
-              color="default"
-              onClick={this.handleColorPickerOpenRoot}
-            >
+            <Button variant="contained" color="default" onClick={this.handleColorPickerOpenRoot}>
               Change
             </Button>
             {this.state.displayColorPickerRoot ? (
               <div style={popover}>
                 <div style={cover} onClick={this.handleColorPickerClose} />
-                <ChromePicker
-                  disableAlpha={true}
-                  color={rootColor}
-                  onChangeComplete={this.handleChangeCompleteRoot}
-                />
+                <ChromePicker disableAlpha={true} color={rootColor} onChangeComplete={this.handleChangeCompleteRoot} />
               </div>
             ) : null}
           </ListItem>
@@ -225,21 +220,13 @@ class RendererOptionsPanel extends Component {
             </ListItemAvatar>
 
             <ListItemText primary="Leaf Node Color" />
-            <Button
-              onClick={this.handleColorPickerOpenLeaf}
-              variant="contained"
-              color="default"
-            >
+            <Button onClick={this.handleColorPickerOpenLeaf} variant="contained" color="default">
               Change
             </Button>
             {this.state.displayColorPickerLeaf ? (
               <div style={popover}>
                 <div style={cover} onClick={this.handleColorPickerClose} />
-                <ChromePicker
-                  disableAlpha={true}
-                  color={leafColor}
-                  onChangeComplete={this.handleChangeCompleteLeaf}
-                />
+                <ChromePicker disableAlpha={true} color={leafColor} onChangeComplete={this.handleChangeCompleteLeaf} />
               </div>
             ) : null}
           </ListItem>
@@ -280,7 +267,7 @@ class RendererOptionsPanel extends Component {
             style={{ width: '55%' }}
             defaultValue={[
               this.props.renderingOptions.get('minNodeSize'),
-              this.props.renderingOptions.get('maxNodeSize')
+              this.props.renderingOptions.get('maxNodeSize'),
             ]}
             min={0.0}
             max={50.0}
@@ -323,7 +310,7 @@ class RendererOptionsPanel extends Component {
             style={{ width: '55%' }}
             defaultValue={[
               this.props.renderingOptions.get('minEdgeSize'),
-              this.props.renderingOptions.get('maxEdgeSize')
+              this.props.renderingOptions.get('maxEdgeSize'),
             ]}
             min={0.0}
             max={5.0}
@@ -367,10 +354,7 @@ class RendererOptionsPanel extends Component {
 
           <ListItem>
             <ListItemText primary="Automatically run gene set analysis with Enrichr:" />
-            <Switch
-              checked={this.props.uiState.get('runEnrichment')}
-              onChange={this.handleEnrichmentChange}
-            />
+            <Switch checked={this.props.uiState.get('runEnrichment')} onChange={this.handleEnrichmentChange} />
           </ListItem>
         </List>
       </div>
