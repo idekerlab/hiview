@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { createStyles, makeStyles } from '@material-ui/core'
 
 import Button from '@material-ui/core/Button'
 import logo from '../../assets/images/cytoscape-logo.svg'
@@ -8,26 +9,35 @@ import Tooltip from '@material-ui/core/Tooltip'
 
 import * as cyrestApi from '../../api/cyrest'
 
-const styles = theme => ({
-  button: {
-    margin: '0.25em',
-  },
-  icon: {
-    height: '2em',
-  },
-})
+const styles = theme => ({})
+
+const useStyles = makeStyles(theme =>
+  createStyles({
+    button: {
+      margin: '0.25em',
+    },
+    icon: {
+      height: '2em',
+    },
+    tooltip: {
+      fontSize: '16px',
+      fontWeight: '300',
+      textAlign: 'center',
+    },
+  }),
+)
 
 const OpenInCytoscapeButton = props => {
   const [isCytoscapeRunning, setRunning] = useState(false)
-
-  const { classes, externalNetworks } = props
+  const classes = useStyles()
+  const { externalNetworks } = props
   let rawInteractions
 
   if (props.rawInteractions !== undefined) {
     rawInteractions = props.rawInteractions.toJS()
   } else {
     return (
-      <Tooltip title="Open in Cytoscape Desktop" arrow placement="bottom">
+      <Tooltip title={<div className={classes.tooltip}>Open in Cytoscape Desktop</div>} arrow placement="bottom">
         <span>
           <Button
             size="small"
@@ -80,7 +90,7 @@ const OpenInCytoscapeButton = props => {
     cyrestApi.postNetwork(1234, cx)
   }
   return (
-    <Tooltip title="Open in Cytoscape Desktop" arrow placement="bottom">
+    <Tooltip title={<div className={classes.tooltip}>Open in Cytoscape Desktop</div>} arrow placement="bottom">
       <span>
         <Button
           size="small"
