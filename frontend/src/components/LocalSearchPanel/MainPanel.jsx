@@ -4,18 +4,22 @@ import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
 import RefreshIcon from '@material-ui/icons/Delete'
 import SettingsIcon from '@material-ui/icons/Settings'
-import HelpIcon from '@material-ui/icons/HelpOutlineOutlined'
 import Input from '@material-ui/core/Input'
 import { Tooltip } from '@material-ui/core'
 
+import HelpButton from './HelpButton'
 import SearchOptionDialog from './SearchOptionDialog'
-
-const HELP_WIKI_URL = 'https://github.com/idekerlab/hiview/wiki'
 
 const baseStyle = {
   width: '100%',
   display: 'flex',
   alignItems: 'center',
+}
+
+const tooltipStyle = {
+  fontSize: '16px',
+  fontWeight: '300',
+  textAlign: 'center',
 }
 
 // For hiding background (Use gray scale)
@@ -114,14 +118,10 @@ class MainPanel extends React.Component {
     })
   }
 
-  handleHelp = event => {
-    window.open(HELP_WIKI_URL)
-  }
-
   render() {
     return (
       <div style={baseStyle}>
-        <Tooltip arrow placement={'bottom'} title={'Open settings'}>
+        <Tooltip arrow placement={'bottom'} title={<span style={tooltipStyle}>Open settings</span>}>
           <IconButton aria-label="Open option panel" onClick={this.handleOpen}>
             <MenuIcon />
           </IconButton>
@@ -138,18 +138,18 @@ class MainPanel extends React.Component {
           value={this.state.query}
         />
 
-        <Tooltip arrow placement={'bottom'} title={'Start to search hierarchy'}>
+        <Tooltip arrow placement={'bottom'} title={<span style={tooltipStyle}>Start to search hierarchy</span>}>
           <IconButton aria-label="Search nodes" onClick={this.handleStart}>
             <SearchIcon />
           </IconButton>
         </Tooltip>
 
-        <Tooltip arrow placement={'bottom'} title={'Clear search result'}>
+        <Tooltip arrow placement={'bottom'} title={<span style={tooltipStyle}>Clear search result</span>}>
           <IconButton aria-label="Reset" onClick={this.handleReset}>
             <RefreshIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip arrow placement={'bottom'} title={'Search options'}>
+        <Tooltip arrow placement={'bottom'} title={<span style={tooltipStyle}>Search options</span>}>
           <IconButton aria-label="Settings" onClick={this.handleSearchOptionDialogOpen}>
             <SettingsIcon />
           </IconButton>
@@ -163,11 +163,7 @@ class MainPanel extends React.Component {
           }}
         />
 
-        <Tooltip arrow placement={'bottom'} title={'Help'}>
-          <IconButton aria-label="Help" onClick={this.handleHelp}>
-            <HelpIcon color={'secondary'} />
-          </IconButton>
-        </Tooltip>
+        <HelpButton />
         <SearchOptionDialog
           searchMode={this.props.uiState.get('searchMode')}
           open={this.state.open}
