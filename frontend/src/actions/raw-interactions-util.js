@@ -115,16 +115,22 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
     correctParentScore = maxVal
   }
 
+
+  if (weightRange.length === 1) {
+    colorMap.push({
+      min: minVal,
+      max: correctParentScore,
+      color: colorScale(maxVal)
+    })
+    return colorMap
+  }
+  
   //First entry: global minimum to Parent
   colorMap.push({
     min: minVal,
     max: correctParentScore,
     color: DEF_COLOR
   })
-
-  if (weightRange.length === 1) {
-    return colorMap
-  }
 
   for (let idx = 0; idx < len; idx++) {
     const v1 = weightRange[idx]
@@ -173,12 +179,16 @@ const assignColor = (colorMap, edge, primaryName, min) => {
 
   const weight = edge.data[primaryName]
 
-  for (let i = 0; i < colorMap.length; i++) {
-    const mapEntry = colorMap[i]
+  if(colorMap.length === 1 && weight !== undefined && weight !== null) {
+    color = colorMap[0].color
+  } else {
+    for (let i = 0; i < colorMap.length; i++) {
+      const mapEntry = colorMap[i]
 
-    if (mapEntry.min <= weight && weight <= mapEntry.max) {
-      color = mapEntry.color
-      break
+      if (mapEntry.min <= weight && weight <= mapEntry.max) {
+        color = mapEntry.color
+        break
+      }
     }
   }
 
