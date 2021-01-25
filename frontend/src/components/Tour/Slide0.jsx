@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme =>
       fontWeight: 500,
       textAlign: 'center',
       maxWidth: '100%',
-      width: '960px',
+      width: '60em',
       height: '60%',
       display: 'flex',
       flexDirection: 'column',
@@ -67,9 +67,9 @@ const AccordionSummary = withStyles({
     },
   },
   content: {
-    margin: '6px 0',
+    margin: '0.375em 0',
     '&$expanded': {
-      margin: '6px 0',
+      margin: '0.375em 0',
     },
   },
   expanded: {},

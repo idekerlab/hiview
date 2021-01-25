@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme =>
     info: {
       position: 'relative',
       left: '0.5em',
-      top: '6px',
+      top: '0.375em',
       height: '0.5em',
       width: '0.5em',
     },
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme =>
       height: '0.7em',
       width: '0.7em',
       position: 'relative',
-      bottom: '2px',
+      bottom: '0.125em',
     },
     dialog: {},
     dialogContentBorder: {
@@ -39,12 +39,8 @@ const useStyles = makeStyles(theme =>
       paddingBottom: '0.25em',
       position: 'relative',
       boxSizing: 'border-box',
-      maxHeight: '670px',
-      maxWidth: '800px',
       border: '10px solid #6DACD5',
       borderBottom: 'none',
-      width: '100%',
-      height: '100%',
     },
     dialogContentNoBorder: {
       padding: '3em',
@@ -85,8 +81,10 @@ const useStyles = makeStyles(theme =>
       boxSizing: 'border-box',
     },
     paperScrollPaper: {
-      maxHeight: '670px',
+      maxHeight: '41.875em',
       height: '100%',
+      maxWidth: '50em',
+      width: '100%',
     },
   }),
 )

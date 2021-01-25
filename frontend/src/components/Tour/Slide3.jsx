@@ -17,8 +17,7 @@ const useStyles = makeStyles(theme =>
     },
     imageContainer: {
       display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
+      margin: 'auto',
     },
     heading: {
       fontWeight: 500,
@@ -34,7 +33,7 @@ const useStyles = makeStyles(theme =>
     textContainer: {
       display: 'flex',
       flexDirection: 'column',
-      justifyContent: 'center',
+      margin: 'auto',
     },
     iconContainer: {
       display: 'flex',
@@ -76,9 +75,9 @@ const AccordionSummary = withStyles({
     },
   },
   content: {
-    margin: '6px 0',
+    margin: '0.375em 0',
     '&$expanded': {
-      margin: '6px 0',
+      margin: '0.375em 0',
     },
     display: 'block',
   },
