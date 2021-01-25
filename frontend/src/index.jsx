@@ -1,6 +1,7 @@
 import { Route, Router, browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import { Provider } from 'react-redux'
+//import { CookiesProvider } from 'react-cookie'
 
 import ReactDOM from 'react-dom'
 import React from 'react'
@@ -15,11 +16,13 @@ const history = syncHistoryWithStore(browserHistory, store)
 
 // Start the application
 ReactDOM.render(
+  // <CookiesProvider>
   <Provider store={store}>
     <Router history={history}>
       <Route component={FrontPage} path="/" />
       <Route path="/:uuid" component={NetworkView} />
     </Router>
   </Provider>,
-  document.getElementById('root')
+  // </CookiesProvider>,
+  document.getElementById('root'),
 )

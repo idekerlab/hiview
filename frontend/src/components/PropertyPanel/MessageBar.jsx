@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     background: '#222222',
     display: 'flex',
     flexDirection: 'column',
-    zIndex: 5000,
+    zIndex: 1300,
   },
   title: {
     color: '#EEEEEE',

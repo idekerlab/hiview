@@ -5,6 +5,7 @@ import MainMenuPanel from '../MainMenuPanel'
 import LocalSearchPanel from '../LocalSearchPanel'
 import BaseSplitPane from './BaseSplitPane'
 import MessageBox from '../MessageBox'
+import Tour from '../Tour'
 
 const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
 

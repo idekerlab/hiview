@@ -1,20 +1,20 @@
 import React, { Component } from 'react'
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
 
 import HomeIcon from '@material-ui/icons/Home'
 import HelpIcon from '@material-ui/icons/HelpOutline'
 
 const baseStyle = {
-  width: 400
+  width: 400,
 }
 
 export default class MainMenu extends Component {
   state = {
-    maxEdge: this.props.maxEdgeCount
+    maxEdge: this.props.maxEdgeCount,
   }
 
   handleHome = event => {
