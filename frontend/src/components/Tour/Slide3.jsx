@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
+
 import { createStyles, makeStyles, withStyles } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import MuiAccordion from '@material-ui/core/Accordion'
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary'
-import MuiAccordionDetails from '@material-ui/core/AccordionDetails'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import imageA from '../../assets/tourImages/Frame 4a.png'
 import imageB from '../../assets/tourImages/Frame 4b.png'
@@ -86,7 +85,7 @@ const AccordionSummary = withStyles({
   expanded: {},
 })(MuiAccordionSummary)
 
-const Slide3 = props => {
+const Slide3 = () => {
   const classes = useStyles()
   const [currentDisplay, setCurrentDisplay] = useState(0)
   const images = [
@@ -113,7 +112,8 @@ const Slide3 = props => {
         >
           <AccordionSummary>
             <Typography>
-              The <strong>network diagram</strong> shows the genes and subsystems of the system being viewed.
+              The <strong>network diagram</strong> shows the genes, subsystems, and interactions of the currently
+              selected system.
             </Typography>
           </AccordionSummary>
         </Accordion>
@@ -126,9 +126,34 @@ const Slide3 = props => {
           }}
         >
           <AccordionSummary>
-            <Typography>
-              Use the <strong>Layout panel</strong> to change the layout of the network. You can also export the network
-              as a list of genes, an SVG image, or to IQuery.
+            <Typography component="div">
+              Use the <strong>Layout panel</strong> to:
+              <ul>
+                <li>
+                  Change the <strong>layout</strong> of the network.
+                </li>
+                <li>
+                  Export the network as a <strong>gene set</strong> or <strong>SVG image</strong>.
+                </li>
+                <li>
+                  Submit the gene set to{' '}
+                  <strong>
+                    <a href="http://iquery.ndexbio.org/" target="_blank" rel="noopener noreferrer">
+                      IQuery
+                    </a>
+                  </strong>{' '}
+                  for analysis.
+                </li>
+                <li>
+                  Open the network in{' '}
+                  <strong>
+                    <a href="https://cytoscape.org/" target="_blank" rel="noopener noreferrer">
+                      Cytoscape
+                    </a>
+                  </strong>{' '}
+                  (if it's up and running on your machine).
+                </li>
+              </ul>
             </Typography>
           </AccordionSummary>
         </Accordion>

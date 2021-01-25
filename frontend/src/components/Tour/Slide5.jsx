@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+
 import { createStyles, makeStyles, withStyles } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import MuiAccordion from '@material-ui/core/Accordion'
@@ -15,10 +16,12 @@ import imageD from '../../assets/tourImages/Frame 6d.png'
 const useStyles = makeStyles(theme =>
   createStyles({
     image: {
-      height: '30em',
+      height: '35em',
     },
     imageContainer: {
       display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     heading: {
       fontWeight: 500,
@@ -27,14 +30,14 @@ const useStyles = makeStyles(theme =>
     },
     slideContainer: {
       display: 'flex',
-      marginLeft: '-2em',
-      marginRight: '-2em',
       height: '100%',
-      paddingTop: '3em',
+      width: '100%',
+      boxSizing: 'border-box',
     },
     textContainer: {
       display: 'flex',
       flexDirection: 'column',
+      justifyContent: 'center',
     },
     iconContainer: {
       display: 'flex',
@@ -91,7 +94,7 @@ const AccordionDetails = withStyles(theme => ({
   },
 }))(MuiAccordionDetails)
 
-const Slide5 = props => {
+const Slide5 = () => {
   const classes = useStyles()
   const [currentDisplay, setCurrentDisplay] = useState(0)
   const images = [

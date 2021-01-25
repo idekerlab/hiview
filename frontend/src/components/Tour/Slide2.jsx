@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+
 import { createStyles, makeStyles, withStyles } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import MuiAccordion from '@material-ui/core/Accordion'
@@ -16,14 +17,17 @@ import imageE2 from '../../assets/tourImages/Frame 3e2.gif'
 
 const useStyles = makeStyles(theme =>
   createStyles({
-    image: {
-      height: '20em',
-      margin: '0em 1em 1em',
-    },
     imageContainer: {
       width: '100%',
       display: 'flex',
       justifyContent: 'center',
+    },
+    image: {
+      height: '20em',
+      margin: '0em 1em 1em',
+    },
+    textContainer: {
+      marginBottom: '1em',
     },
     heading: {
       fontWeight: 500,
@@ -70,7 +74,7 @@ const AccordionSummary = withStyles({
   expanded: {},
 })(MuiAccordionSummary)
 
-const Slide1 = props => {
+const Slide1 = () => {
   const classes = useStyles()
   const [currentDisplay, setCurrentDisplay] = useState(0)
   const images = [
@@ -87,8 +91,15 @@ const Slide1 = props => {
 
   return (
     <>
-      <div className={classes.imageContainer}>{images[currentDisplay]}</div>
-      <div>
+      <div
+        className={classes.imageContainer}
+        onMouseEnter={() => {
+          setCurrentDisplay(0)
+        }}
+      >
+        {images[currentDisplay]}
+      </div>
+      <div className={classes.textContainer}>
         <Typography component="div" variant="h5" color="textPrimary" className={classes.heading}>
           Model view
         </Typography>

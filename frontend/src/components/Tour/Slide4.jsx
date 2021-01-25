@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
+
 import { createStyles, makeStyles, withStyles } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import MuiAccordion from '@material-ui/core/Accordion'
 import MuiAccordionSummary from '@material-ui/core/AccordionSummary'
 import MuiAccordionDetails from '@material-ui/core/AccordionDetails'
-
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import imageA from '../../assets/tourImages/Frame 5a.png'
@@ -14,18 +14,21 @@ import imageD from '../../assets/tourImages/Frame 5d.gif'
 
 const useStyles = makeStyles(theme =>
   createStyles({
-    image: {
-      height: '20em',
-      margin: '0em 1em 1em',
-    },
     imageContainer: {
       width: '100%',
       display: 'flex',
       justifyContent: 'center',
     },
+    image: {
+      height: '20em',
+      margin: '0em 1em 1em',
+    },
     heading: {
       fontWeight: 500,
       marginBottom: '0.75em',
+    },
+    textContainer: {
+      marginBottom: '1em',
     },
   }),
 )
@@ -77,7 +80,7 @@ const AccordionDetails = withStyles(theme => ({
   },
 }))(MuiAccordionDetails)
 
-const Slide4 = props => {
+const Slide4 = () => {
   const classes = useStyles()
   const [currentDisplay, setCurrentDisplay] = useState(3)
   const images = [
@@ -90,7 +93,7 @@ const Slide4 = props => {
   return (
     <>
       <div className={classes.imageContainer}>{images[currentDisplay]}</div>
-      <div>
+      <div className={classes.textContainer}>
         <Typography component="div" variant="h5" color="textPrimary" className={classes.heading}>
           Search bar
         </Typography>
@@ -123,7 +126,7 @@ const Slide4 = props => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
+            <Typography component="div">
               <ul>
                 <li>Exact match (for genes): Will find genes that match the search terms exactly.</li>
                 <li>

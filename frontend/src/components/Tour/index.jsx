@@ -6,8 +6,9 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import Button from '@material-ui/core/Button'
+import CircleIcon from '@material-ui/icons/FiberManualRecord'
 
-import back from '../../assets/tourImages/image 8.png'
+import background from '../../assets/tourImages/image 8.png'
 
 import Slide0 from './Slide0'
 import Slide1 from './Slide1'
@@ -33,13 +34,59 @@ const useStyles = makeStyles(theme =>
       bottom: '2px',
     },
     dialog: {},
-    dialogContent: {
+    dialogContentBorder: {
       padding: '3em',
       paddingBottom: '0.25em',
-
-      borderBottom: 'none',
       position: 'relative',
       boxSizing: 'border-box',
+      maxHeight: '670px',
+      maxWidth: '800px',
+      border: '10px solid #6DACD5',
+      borderBottom: 'none',
+      width: '100%',
+      height: '100%',
+    },
+    dialogContentNoBorder: {
+      padding: '3em',
+      paddingBottom: '0.25em',
+      position: 'relative',
+      boxSizing: 'border-box',
+    },
+    dialogActions: {
+      paddingLeft: '3em',
+      paddingRight: '3em',
+      paddingBottom: '1em',
+    },
+    circle: {
+      fontSize: '0.8em',
+      color: 'gray',
+      margin: '0.2em',
+      '&:hover': {
+        cursor: 'pointer',
+      },
+    },
+    circleContainer: {
+      marginRight: 'auto',
+      marginTop: '0.3em',
+    },
+    blueButton: {
+      backgroundColor: '#6DACD5',
+      border: '2px solid #6DACD5',
+      boxSizing: 'border-box',
+      color: 'white',
+      '&:hover': {
+        color: '#6DACD5',
+        backgroundColor: 'white',
+      },
+    },
+    grayButton: {
+      color: 'gray',
+      border: '2px solid transparent',
+      boxSizing: 'border-box',
+    },
+    paperScrollPaper: {
+      maxHeight: '670px',
+      height: '100%',
     },
   }),
 )
@@ -55,10 +102,6 @@ const Tour = props => {
     setSlide(defaultSlide)
   }
 
-  const handlePrevious = () => {
-    setSlide(slide - 1)
-  }
-
   const handleNext = () => {
     setSlide(slide + 1)
   }
@@ -72,22 +115,11 @@ const Tour = props => {
     }
   }
 
-  const mdStyle = {
-    height: '585px',
-    width: '800px',
-    border: '10px solid #6DACD5',
-    borderBottom: 'none',
-  }
-
   const backgroundStyle = {
-    height: '585px',
-    width: '800px',
-    backgroundImage: `url(${back})`,
+    backgroundImage: `url(${background})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
     padding: 0,
-    border: '10px solid #6DACD5',
-    borderBottom: 'none',
   }
   const borderStyle = {
     border: '10px solid #6DACD5',
@@ -99,19 +131,36 @@ const Tour = props => {
       open={open}
       onClose={handleClose}
       onEnter={handleOpen}
-      maxWidth={slide == slides.length - 1 ? 'xs' : 'md'}
+      maxWidth={slide === slides.length - 1 ? 'xs' : 'md'}
       className={classes.dialog}
+      classes={slide === slides.length - 1 ? null : { paperScrollPaper: classes.paperScrollPaper }}
     >
       <DialogContent
-        className={classes.dialogContent}
-        style={slide == 0 ? backgroundStyle : slide != slides.length - 1 ? mdStyle : null}
+        className={slide === slides.length - 1 ? classes.dialogContentNoBorder : classes.dialogContentBorder}
+        style={slide == 0 ? backgroundStyle : null}
       >
         <DialogContentText component="span">{slides[slide]}</DialogContentText>
       </DialogContent>
-      <DialogActions style={slide != slides.length - 1 ? borderStyle : null}>
-        {slide != 0 ? <Button onClick={handlePrevious}>Previous</Button> : null}
-        {slide != slides.length - 1 ? <Button onClick={handleNext}>Next</Button> : null}
-        <Button onClick={handleClose}>{slide != slides.length - 1 ? 'Skip' : 'Got it'}</Button>
+      <DialogActions className={classes.dialogActions} style={slide != slides.length - 1 ? borderStyle : null}>
+        <div className={classes.circleContainer}>
+          {slides.map((image, index) => (
+            <CircleIcon
+              className={classes.circle}
+              style={slide === index ? { color: '#333333' } : null}
+              onClick={() => {
+                setSlide(index)
+              }}
+            />
+          ))}
+        </div>
+        <Button className={slide === slides.length - 1 ? classes.blueButton : classes.grayButton} onClick={handleClose}>
+          {slide === slides.length - 1 ? 'Got it' : 'Skip'}
+        </Button>
+        {slide != slides.length - 1 ? (
+          <Button className={classes.blueButton} onClick={handleNext}>
+            Next
+          </Button>
+        ) : null}
       </DialogActions>
     </Dialog>
   )

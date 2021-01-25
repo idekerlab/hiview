@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react'
-//import { useCookies } from 'react-cookie'
-//import Cookies from 'universal-cookie'
+import React, { useState } from 'react'
 
 import IconButton from '@material-ui/core/IconButton'
 import HelpIcon from '@material-ui/icons/HelpOutlineOutlined'
@@ -14,21 +12,6 @@ const HelpButton = () => {
   const [anchorEl, setAnchorEl] = useState(null)
   const [tourOpen, setTourOpen] = useState(false)
 
-  /*
-  useEffect(() => {
-    const cookies = new Cookies()
-    cookies.set('myCat', 'Pacman', { path: '/' })
-    console.log(cookies.get('myCat'))
-  }, [])
-  //const [cookies, setCookies] = useCookies('firstVisit')
-
-  /*
-  useEffect(() => {
-    setCookies('firstVisit', 'false', {
-      path: '/',
-    })
-  }, [])
-*/
   const handleClick = event => {
     setAnchorEl(event.currentTarget)
   }
@@ -54,10 +37,7 @@ const HelpButton = () => {
 
   return (
     <>
-      <Tooltip arrow placement={'bottom'}>
-        {
-          //title={<span style={tooltipStyle}>Help</span>}>
-        }
+      <Tooltip arrow placement={'bottom'} title={<span style={tooltipStyle}>Help</span>}>
         <IconButton aria-label="Help" onClick={handleClick}>
           <HelpIcon color={'secondary'} />
         </IconButton>
@@ -78,7 +58,6 @@ const HelpButton = () => {
         <MenuItem onClick={handleTour}>Take the tour</MenuItem>
         <MenuItem onClick={handleDocumentation}>HiView User Guide</MenuItem>
       </Menu>
-
       <Tour open={tourOpen} setOpen={setTourOpen} />
     </>
   )
