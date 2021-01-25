@@ -81,7 +81,7 @@ const useStyles = makeStyles(theme =>
       boxSizing: 'border-box',
     },
     paperScrollPaper: {
-      maxHeight: '41.875em',
+      maxHeight: '43em',
       height: '100%',
       maxWidth: '50em',
       width: '100%',
