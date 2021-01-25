@@ -167,7 +167,7 @@ const Slide3 = () => {
         >
           <AccordionSummary>
             <Typography>
-              Use the <strong>Edge Filters</strong> panel to filter the edges by type or score.
+              Expand the <strong>Edge Filters</strong> panel to reveal controls for filtering edges by type and score.
             </Typography>
           </AccordionSummary>
         </Accordion>
