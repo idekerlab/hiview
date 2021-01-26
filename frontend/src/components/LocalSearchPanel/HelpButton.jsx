@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import IconButton from '@material-ui/core/IconButton'
 import HelpIcon from '@material-ui/icons/HelpOutlineOutlined'
@@ -7,10 +7,20 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Tour from '../Tour'
 
+import {checkFirstTimeVisitor} from '../Tour/check-visitor'
+
+
 const HelpButton = () => {
   const HELP_WIKI_URL = 'https://github.com/idekerlab/hiview/wiki'
   const [anchorEl, setAnchorEl] = useState(null)
   const [tourOpen, setTourOpen] = useState(false)
+
+  // Check first time visitor
+  useEffect(() => {
+    if(checkFirstTimeVisitor()) {
+      setTourOpen(true)
+    }
+  }, [])
 
   const handleClick = event => {
     setAnchorEl(event.currentTarget)
