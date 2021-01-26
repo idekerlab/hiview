@@ -10,33 +10,33 @@ import Typography from '@material-ui/core/Typography'
 
 const useStyles = makeStyles({
   button: {
-    width: '10em',
+    margin: '0.25em',
+    width: '5em',
     height: '3.5em',
     borderColor: '#4DA1DE',
     color: '#4DA1DE',
     '&:active': {
       borderColor: '#4DA1DE',
-      color: '#4DA1DE'
+      color: '#4DA1DE',
     },
     '&:hover': {
-      backgroundColor: fade('#4DA1DE', 0.2)
-    }
+      backgroundColor: fade('#4DA1DE', 0.2),
+    },
   },
   buttonIcon: {
-    height: '2.5em',
-    marginLeft: '0.5em'
-  }
+    height: '2em',
+  },
 })
 
 const TOOLTIP_MESSAGE = {
   logout: {
     title: 'Sign in to NDEx',
-    message: 'You need to sign in to use private networks in NDEx'
+    message: 'You need to sign in to use private networks in NDEx',
   },
   login: {
     title: 'Logged in',
-    message: 'Now you can access private networks'
-  }
+    message: 'Now you can access private networks',
+  },
 }
 
 const DEFAULT_HANDLER = loginState => {
@@ -58,9 +58,7 @@ const OpenNDExLoginButton = props => {
   const classes = useStyles()
   const { ndexServer, onLoginStateUpdated } = props
 
-  const defaultIconComponent = (
-    <img alt="NDEx logo" src={logo} className={classes.buttonIcon} />
-  )
+  const defaultIconComponent = <img alt="NDEx logo" src={logo} className={classes.buttonIcon} />
 
   let onUpdate = DEFAULT_HANDLER
   if (onLoginStateUpdated !== null && onLoginStateUpdated !== undefined) {
@@ -94,11 +92,7 @@ const OpenNDExLoginButton = props => {
           </React.Fragment>
         }
       >
-        <Button
-          className={classes.button}
-          variant={'outlined'}
-          onClick={() => setDialogState(true)}
-        >
+        <Button className={classes.button} variant={'outlined'} onClick={() => setDialogState(true)}>
           {icon}
         </Button>
       </HtmlTooltip>

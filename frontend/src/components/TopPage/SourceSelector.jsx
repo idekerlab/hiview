@@ -3,8 +3,8 @@ import React, { Component } from 'react'
 import TextField from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
+import HtmlTooltip from '../NdexLogin/HtmlTooltip'
+import SettingsIcon from '@material-ui/icons/Settings'
 
 import { browserHistory } from 'react-router'
 
@@ -12,6 +12,7 @@ import WarningDialog from './WarningDialog'
 import ErrorDialog from './ErrorDialog'
 
 import OpenNDExLoginButton from '../NdexLogin/OpenNdexLoginButton'
+import Typography from '@material-ui/core/Typography'
 
 import { getHeader } from '../AccessUtil'
 
@@ -21,18 +22,28 @@ const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3
 
 const textFieldStyle = {
   width: '100%',
-  fontSize: '2em'
+  fontSize: '2em',
 }
 
 const textFieldStyleSmall = {
   width: '100%',
   fontSize: '2em',
-  marginRight: '0.5em'
+  marginRight: '0.5em',
 }
 
 const startStyle = {
   width: '100%',
-  marginTop: '2em'
+  marginTop: '2em',
+}
+
+const buttonStyle = {
+  margin: '0.25em',
+  width: '70px',
+  height: '3.5em',
+}
+
+const buttonIconStyle = {
+  fontSize: '2.5em',
 }
 
 const DEFAULT_EXAMPLE = 'NeST v1.0'
@@ -64,7 +75,8 @@ class SourceSelector extends Component {
       errorDialogTitle: 'Error',
       warningDialogMessage: 'Are you sure?',
       warningDialogTitle: 'Warning',
-      isValidUrl: true
+      isValidUrl: true,
+      showServer: false,
     }
   }
 
@@ -72,12 +84,12 @@ class SourceSelector extends Component {
     if (uuid.match(UUID_PATTERN) !== null) {
       this.setState({
         invalidUuid: false,
-        errorText: ''
+        errorText: '',
       })
     } else {
       this.setState({
         invalidUuid: true,
-        errorText: 'Invalid UUID'
+        errorText: 'Invalid UUID',
       })
     }
   }
@@ -86,7 +98,7 @@ class SourceSelector extends Component {
     const currentVal = event.target.value
 
     this.setState({
-      uuid: currentVal
+      uuid: currentVal,
     })
 
     this.checkUuid(currentVal)
@@ -97,7 +109,7 @@ class SourceSelector extends Component {
       true,
       'Server type is invalid',
       'Currently, we only supports public.ndexbio.org and test.ndexbio.org as backend server.  ' +
-        'Please check the server URL again.'
+        'Please check the server URL again.',
     )
   }
 
@@ -112,7 +124,7 @@ class SourceSelector extends Component {
       this.showUrlError()
       this.setState({
         serverUrl: 'http://test.ndexbio.org',
-        serverType: 'test'
+        serverType: 'test',
       })
       return
     }
@@ -125,7 +137,7 @@ class SourceSelector extends Component {
 
     this.setState({
       serverUrl: event.target.value,
-      serverType: type
+      serverType: type,
     })
   }
 
@@ -147,7 +159,7 @@ class SourceSelector extends Component {
     if (name.startsWith(GO_PREFIX)) {
       this.setState({
         serverUrl: 'http://public.ndexbio.org',
-        serverType: 'public'
+        serverType: 'public',
       })
     }
     this.setState({ anchorEl: null })
@@ -155,7 +167,7 @@ class SourceSelector extends Component {
     this.setState({
       example: uuid,
       uuid: uuid,
-      selectedIndex: idx
+      selectedIndex: idx,
     })
 
     this.checkUuid(uuid)
@@ -165,7 +177,7 @@ class SourceSelector extends Component {
     this.setState({
       openError,
       errorDialogTitle: title,
-      errorDialogMessage: message
+      errorDialogMessage: message,
     })
   }
 
@@ -173,7 +185,7 @@ class SourceSelector extends Component {
     this.setState({
       openWarning,
       warningDialogTitle: title,
-      warningDialogMessage: message
+      warningDialogMessage: message,
     })
   }
 
@@ -182,12 +194,7 @@ class SourceSelector extends Component {
     const edgeCount = summary.edgeCount
     const nodeCount = summary.nodeCount
 
-    const title =
-      'Warning: Large Hierarchy (' +
-      nodeCount +
-      ' nodes / ' +
-      edgeCount +
-      ' edges)'
+    const title = 'Warning: Large Hierarchy (' + nodeCount + ' nodes / ' + edgeCount + ' edges)'
 
     const message =
       'You are about to load a large hierarchy.  ' +
@@ -224,17 +231,15 @@ class SourceSelector extends Component {
       headers = getHeader(credentials)
     }
 
-    const url =
-      this.state.serverUrl + '/v2/network/' + this.state.uuid + '/summary'
+    const url = this.state.serverUrl + '/v2/network/' + this.state.uuid + '/summary'
 
     const settings = {
-      method: 'GET'
+      method: 'GET',
     }
 
     if (headers !== null) {
       settings['headers'] = headers
     }
-
 
     fetch(url, settings)
       .then(response => {
@@ -250,25 +255,25 @@ class SourceSelector extends Component {
           this.openErrorDialog(
             true,
             'Network does not exist',
-            'Please check the UUID and server address to make sure they actually exist.'
+            'Please check the UUID and server address to make sure they actually exist.',
           )
         } else if (err.message === '401') {
           this.openErrorDialog(
             true,
             'NDEx server returned an error (401)',
-            'You are not authorized to access this hierarchy. Please login to the NDEx server first.'
+            'You are not authorized to access this hierarchy. Please login to the NDEx server first.',
           )
         } else if (err.message === '500') {
           this.openErrorDialog(
             true,
             'NDEx server returned an error (500)',
-            'Please visit NDEx web site to check the server is up and running.'
+            'Please visit NDEx web site to check the server is up and running.',
           )
         } else {
           this.openErrorDialog(
             true,
             'Unknown error (' + err.message + ')',
-            'Please report this issue to the administrator.'
+            'Please report this issue to the administrator.',
           )
         }
       })
@@ -310,25 +315,12 @@ class SourceSelector extends Component {
     const { anchorEl } = this.state
 
     return (
-      <div style={{ paddingTop: '2em' }}>
+      <div>
         <div style={containerStyle}>
-          <TextField
-            type={'url'}
-            error={!this.state.isValidUrl}
-            required={true}
-            style={textFieldStyle}
-            placeholder="e.g. http://test.ndexbio.org"
-            label="NDEx Server URL"
-            margin="normal"
-            value={this.state.serverUrl}
-            onChange={this.handleUrlChange}
-          />
-
           <div style={examplePanelStyle}>
             <TextField
               autoFocus={true}
               style={textFieldStyleSmall}
-              required={true}
               label="UUID of the main hierarchy"
               value={this.state.uuid}
               margin="normal"
@@ -337,39 +329,47 @@ class SourceSelector extends Component {
               helperText={this.state.errorText}
             />
 
-            <Button
-              style={buttonStyle}
-              aria-owns={anchorEl ? 'examples' : null}
-              aria-haspopup="true"
-              variant={'outlined'}
-              onClick={this.handleExample}
-            >
-              Examples
-            </Button>
-            <Menu
-              id="examples"
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={this.handleExampleChange}
-            >
-              {examples.map((option, index) => (
-                <MenuItem
-                  key={option}
-                  selected={index === this.state.selectedIndex}
-                  onClick={event => this.handleExampleChange(event, index)}
-                  value={EXAMPLE_UUIDS[option]}
+            <OpenNDExLoginButton ndexServer={this.state.serverUrl} onLoginStateUpdated={this.loginStateUpdated} />
+            <div>
+              <HtmlTooltip
+                placement={'right'}
+                title={
+                  <React.Fragment>
+                    <Typography variant={'subtitle1'} color={'inherit'}>
+                      {'Change NDEx server'}
+                    </Typography>
+                    <Typography variant={'body1'}>
+                      {'The default server is test.ndexbio.org. Click to change servers.'}
+                    </Typography>
+                  </React.Fragment>
+                }
+              >
+                <Button
+                  style={buttonStyle}
+                  variant={'outlined'}
+                  onClick={() => {
+                    this.setState({
+                      showServer: !this.state.showServer,
+                    })
+                  }}
                 >
-                  {option}
-                </MenuItem>
-              ))}
-            </Menu>
-
-            <OpenNDExLoginButton
-              ndexServer={this.state.serverUrl}
-              onLoginStateUpdated={this.loginStateUpdated}
-            />
+                  <SettingsIcon style={buttonIconStyle} />
+                </Button>
+              </HtmlTooltip>
+            </div>
           </div>
-
+          {this.state.showServer ? (
+            <TextField
+              type={'url'}
+              error={!this.state.isValidUrl}
+              style={textFieldStyle}
+              placeholder="e.g. http://test.ndexbio.org"
+              label="NDEx Server URL"
+              margin="normal"
+              value={this.state.serverUrl}
+              onChange={this.handleUrlChange}
+            />
+          ) : null}
           <Button
             color="primary"
             style={startStyle}
@@ -403,20 +403,14 @@ const containerStyle = {
   width: '42em',
   display: 'flex',
   flexDirection: 'column',
-  alignItems: 'flex-start'
-}
-
-const buttonStyle = {
-  marginRight: '1em',
-  height: '3.5em',
-  width: '12em'
+  alignItems: 'flex-start',
 }
 
 const examplePanelStyle = {
   height: '5em',
   width: '100%',
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
 }
 
 export default SourceSelector
