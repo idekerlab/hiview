@@ -8,7 +8,8 @@ import MenuItem from '@material-ui/core/MenuItem'
 import Tour from '../Tour'
 
 const HelpButton = () => {
-  const HELP_WIKI_URL = 'https://github.com/idekerlab/hiview/wiki'
+  const OVERVIEW_URL = 'https://github.com/idekerlab/hiview/wiki/HiView-User-Guide'
+  const USER_GUIDE_URL = 'https://github.com/idekerlab/hiview/blob/master/README.md'
   const [anchorEl, setAnchorEl] = useState(null)
   const [tourOpen, setTourOpen] = useState(false)
 
@@ -25,8 +26,12 @@ const HelpButton = () => {
     setTourOpen(true)
   }
 
-  const handleDocumentation = event => {
-    window.open(HELP_WIKI_URL)
+  const handleOverview = event => {
+    window.open(OVERVIEW_URL)
+  }
+
+  const handleUserGuide = () => {
+    window.open(USER_GUIDE_URL)
   }
 
   const tooltipStyle = {
@@ -56,7 +61,8 @@ const HelpButton = () => {
         onClose={handleClose}
       >
         <MenuItem onClick={handleTour}>Take the tour</MenuItem>
-        <MenuItem onClick={handleDocumentation}>HiView User Guide</MenuItem>
+        <MenuItem onClick={handleUserGuide}>HiView User Guide</MenuItem>
+        <MenuItem onClick={handleOverview}>HiView Overview</MenuItem>
       </Menu>
       <Tour open={tourOpen} setOpen={setTourOpen} />
     </>

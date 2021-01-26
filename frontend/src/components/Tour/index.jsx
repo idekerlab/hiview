@@ -55,7 +55,7 @@ const useStyles = makeStyles(theme =>
     },
     circle: {
       fontSize: '0.8em',
-      color: 'gray',
+      color: 'rgb(202, 202, 202)',
       margin: '0.2em',
       '&:hover': {
         cursor: 'pointer',
@@ -94,15 +94,7 @@ const Tour = props => {
   const defaultSlide = 0
   const { open, setOpen } = props
   const [slide, setSlide] = useState(defaultSlide)
-  const slides = [
-    <Slide0 key="0" />,
-    <Slide1 key="1" />,
-    <Slide2 key="2" />,
-    <Slide3 key="3" />,
-    <Slide4 key="4" />,
-    <Slide5 key="5" />,
-    <Slide6 key="6" />,
-  ]
+  const slides = [<Slide0 />, <Slide1 />, <Slide2 />, <Slide3 />, <Slide4 />, <Slide5 />, <Slide6 />]
 
   const handleOpen = () => {
     setSlide(defaultSlide)
@@ -153,7 +145,7 @@ const Tour = props => {
             <CircleIcon
               key={index}
               className={classes.circle}
-              style={slide === index ? { color: '#333333' } : null}
+              style={slide === index ? { color: 'rgb(75, 75, 75)' } : null}
               onClick={() => {
                 setSlide(index)
               }}
