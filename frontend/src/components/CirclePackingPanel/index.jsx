@@ -203,9 +203,6 @@ class CirclePackingPanel extends Component {
 
     const clear = () => {
       this.props.rawInteractionsActions.setSelected([])
-      console.log(
-        'clear-------------------------------------------------------'
-      )
     }
 
     return {
