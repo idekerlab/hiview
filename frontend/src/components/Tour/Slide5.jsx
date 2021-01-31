@@ -16,7 +16,8 @@ import imageD from '../../assets/tourImages/Frame 6d.png'
 const useStyles = makeStyles(theme =>
   createStyles({
     image: {
-      height: '35em',
+      //height: '35em',
+      height: '73.2558141vh',
     },
     imageContainer: {
       display: 'flex',
@@ -130,7 +131,13 @@ const Slide5 = () => {
     <div className={classes.slideContainer}>
       <div className={classes.imageContainer}>{images[currentDisplay]}</div>
       <div className={classes.textContainer}>
-        <Typography component="div" variant="h5" color="textPrimary" className={classes.heading}>
+        <Typography
+          component="div"
+          variant="h5"
+          color="textPrimary"
+          className={classes.heading}
+          style={{ fontSize: '3.13953488vh' }}
+        >
           Control Panel
         </Typography>
         <Accordion
@@ -142,7 +149,7 @@ const Slide5 = () => {
           }}
         >
           <AccordionSummary>
-            <Typography>
+            <Typography style={{ fontSize: '2.09302326vh' }}>
               The <strong>Control Panel</strong> lets you change the Model View's look.
             </Typography>
           </AccordionSummary>
@@ -156,16 +163,16 @@ const Slide5 = () => {
           }}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>
+            <Typography style={{ fontSize: '2.09302326vh' }}>
               Turn on the <strong>Enrichment Option</strong> to automatically run gene set enrichment analysis
             </Typography>
             <br />
-            <Typography>
+            <Typography style={{ fontSize: '2.09302326vh' }}>
               Learn more about <strong>enrichment</strong>.
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography>
+            <Typography style={{ fontSize: '2.09302326vh' }}>
               When the enrichment setting is turned on, double clicking a system will trigger a gene set enrichment
               analysis using a few major biological databases. This will show what kinds of genes are overrepresented in
               the system.

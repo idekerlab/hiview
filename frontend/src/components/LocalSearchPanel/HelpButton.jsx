@@ -7,18 +7,17 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import Tour from '../Tour'
 
-import {checkFirstTimeVisitor} from '../Tour/check-visitor'
-
+import { checkFirstTimeVisitor } from '../Tour/check-visitor'
 
 const HelpButton = () => {
   const OVERVIEW_URL = 'https://github.com/idekerlab/hiview/wiki/HiView-User-Guide'
   const USER_GUIDE_URL = 'https://github.com/idekerlab/hiview/blob/master/README.md'
   const [anchorEl, setAnchorEl] = useState(null)
-  const [tourOpen, setTourOpen] = useState(false)
+  const [tourOpen, setTourOpen] = useState(true)
 
   // Check first time visitor
   useEffect(() => {
-    if(checkFirstTimeVisitor()) {
+    if (checkFirstTimeVisitor()) {
       setTourOpen(true)
     }
   }, [])

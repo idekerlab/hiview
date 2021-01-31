@@ -20,8 +20,8 @@ const useStyles = makeStyles(theme =>
       justifyContent: 'center',
     },
     image: {
-      height: '20em',
-      margin: '0em 1em 1em',
+      height: '41.8604651vh',
+      margin: '0em 1em 2.09302326vh',
     },
     heading: {
       fontWeight: 500,
@@ -94,7 +94,13 @@ const Slide4 = () => {
     <>
       <div className={classes.imageContainer}>{images[currentDisplay]}</div>
       <div className={classes.textContainer}>
-        <Typography component="div" variant="h5" color="textPrimary" className={classes.heading}>
+        <Typography
+          component="div"
+          variant="h5"
+          color="textPrimary"
+          className={classes.heading}
+          style={{ fontSize: '3.13953488vh' }}
+        >
           Search bar
         </Typography>
         <Accordion
@@ -103,7 +109,7 @@ const Slide4 = () => {
           }}
         >
           <AccordionSummary>
-            <Typography>
+            <Typography style={{ fontSize: '2.09302326vh' }}>
               <strong>Search</strong> for genes and systems in the hierarchical model.
             </Typography>
           </AccordionSummary>
@@ -117,16 +123,16 @@ const Slide4 = () => {
           }}
         >
           <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography>
+            <Typography style={{ fontSize: '2.09302326vh' }}>
               Click the gear button to change the <strong>type of search</strong>.
             </Typography>
             <br />
-            <Typography>
+            <Typography style={{ fontSize: '2.09302326vh' }}>
               Learn more about <strong>types of searches</strong>.
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <Typography component="div">
+            <Typography component="div" style={{ fontSize: '2.09302326vh' }}>
               <ul>
                 <li>Exact match (for genes): Will find genes that match the search terms exactly.</li>
                 <li>
@@ -146,7 +152,7 @@ const Slide4 = () => {
           }}
         >
           <AccordionSummary>
-            <Typography>
+            <Typography style={{ fontSize: '2.09302326vh' }}>
               Click the hamburger menu to open the <strong>Control Panel</strong>.
             </Typography>
           </AccordionSummary>

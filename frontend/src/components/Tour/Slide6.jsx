@@ -14,12 +14,15 @@ const useStyles = makeStyles(theme =>
       justifyContent: 'center',
     },
     image: {
-      width: '22em',
+      width: '33.7747598vh',
+      //width: '22em',
       margin: '0.5em 0 2em',
     },
     heading: {
       fontWeight: 500,
       marginBottom: '0.75em',
+      whiteSpace: 'nowrap',
+      display: 'inline-block',
     },
     icon: {
       top: '0.25rem',
@@ -34,10 +37,16 @@ const Slide6 = () => {
   return (
     <>
       <div className={classes.imageContainer}>{<img src={imageA} className={classes.image} />}</div>
-      <Typography component="div" variant="h5" color="textPrimary" className={classes.heading}>
+      <Typography
+        component="div"
+        variant="h5"
+        color="textPrimary"
+        className={classes.heading}
+        style={{ fontSize: '3.13953488vh' }}
+      >
         To take this tour again,
       </Typography>
-      <Typography color="textPrimary">
+      <Typography color="textPrimary" style={{ fontSize: '2.09302326vh', marginBottom: '1em' }}>
         Click the <HelpIcon color="secondary" className={classes.icon} /> button. Or, access the HiView User Guide for
         more detailed documentation.
       </Typography>

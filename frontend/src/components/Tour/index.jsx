@@ -20,71 +20,146 @@ import Slide6 from './Slide6'
 
 const useStyles = makeStyles(theme =>
   createStyles({
-    info: {
-      position: 'relative',
-      left: '0.5em',
-      top: '0.375em',
-      height: '0.5em',
-      width: '0.5em',
-    },
-    icon: {
-      height: '0.7em',
-      width: '0.7em',
-      position: 'relative',
-      bottom: '0.125em',
-    },
-    dialog: {},
     dialogContentBorder: {
-      padding: '3em',
-      paddingBottom: '0.25em',
+      padding: '3.13953488vh 3em 0.25em',
       position: 'relative',
       boxSizing: 'border-box',
       border: '10px solid #6DACD5',
       borderBottom: 'none',
+      '&:first-child': {
+        paddingTop: '3.13953488vh',
+      },
     },
     dialogContentNoBorder: {
       padding: '3em',
       paddingBottom: '0.25em',
       position: 'relative',
       boxSizing: 'border-box',
+      border: '10px solid white',
     },
-    dialogActions: {
+    dialogActionsBorder: {
       paddingLeft: '3em',
       paddingRight: '3em',
       paddingBottom: '1em',
+      borderRightColor: 'rgb(109, 172, 213)',
+      borderRightStyle: 'solid',
+      borderRightWidth: '10px',
+      borderBottomColor: 'rgb(109, 172, 213)',
+      borderBottomStyle: 'solid',
+      borderBottomWidth: '10px',
+      borderLeftColor: 'rgb(109, 172, 213)',
+      borderLeftStyle: 'solid',
+      borderLeftWidth: '10px',
+    },
+    dialogActionsNoBorder: {
+      paddingLeft: '3em',
+      paddingRight: '3em',
+      paddingBottom: '1em',
+      borderRightColor: 'white',
+      borderRightStyle: 'solid',
+      borderRightWidth: '10px',
+      borderBottomColor: 'white',
+      borderBottomStyle: 'solid',
+      borderBottomWidth: '10px',
+      borderLeftColor: 'white',
+      borderLeftStyle: 'solid',
+      borderLeftWidth: '10px',
     },
     circle: {
-      fontSize: '0.8em',
+      fontSize: '1.6744186vh',
       color: 'rgb(202, 202, 202)',
       margin: '0.2em',
       '&:hover': {
         cursor: 'pointer',
       },
     },
-    circleContainer: {
-      marginRight: 'auto',
-      marginTop: '0.3em',
+    circleContainerFirstPage: {
+      display: 'inline-flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%',
+      float: 'left',
+      position: 'relative',
+      left: '50%',
     },
-    blueButton: {
+    circleContainerInnerFirstPage: {
+      display: 'flex',
+      alignItems: 'center',
+      position: 'relative',
+      float: 'left',
+      left: '-50%',
+    },
+    circleContainer: {
+      display: 'inline-flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100%',
+    },
+    circleContainerInner: {
+      display: 'flex',
+      alignItems: 'center',
+    },
+    navigationContainer: {
+      width: '100%',
+      display: 'flex',
+      justifyContent: 'center',
+      height: '100%',
+    },
+    navigationButtonsContainerFirstPage: { width: '37vh', display: 'inline-block', height: '100%' },
+    navigationButtonsContainer: { width: '37vh', display: 'inline-block', textAlign: 'center', height: '100%' },
+    navigationButtonsContainerLastPage: {
+      width: '100%',
+      height: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    nextButton: {
       backgroundColor: '#6DACD5',
       border: '2px solid #6DACD5',
       boxSizing: 'border-box',
       color: 'white',
+      fontSize: '1.83139535vh',
+      padding: '0.209302326vh 0',
+      minWidth: '8.37209304vh',
+      float: 'right',
+      marginLeft: '1em',
       '&:hover': {
         color: '#6DACD5',
         backgroundColor: 'white',
       },
     },
-    grayButton: {
+    skipButtonContainer: {
+      position: 'absolute',
+      right: '3em',
+    },
+    skipButton: {
       color: 'gray',
       border: '2px solid transparent',
       boxSizing: 'border-box',
+      fontSize: '1.83139535vh',
+      padding: '0.209302326vh 0',
+      width: '8.37209304vh',
+      float: 'right',
+    },
+    backButton: {
+      backgroundColor: '#6DACD5',
+      border: '2px solid #6DACD5',
+      boxSizing: 'border-box',
+      color: 'white',
+      fontSize: '1.83139535vh',
+      padding: '0.209302326vh 0',
+      minWidth: '8.37209304vh',
+      '&:hover': {
+        color: '#6DACD5',
+        backgroundColor: 'white',
+      },
+      float: 'left',
+      marginRight: '1em',
     },
     paperScrollPaper: {
-      maxHeight: '43em',
-      height: '100%',
-      maxWidth: '50em',
-      width: '100%',
+      height: '90vh',
+      width: '105vh',
     },
   }),
 )
@@ -104,6 +179,10 @@ const Tour = props => {
     setSlide(slide + 1)
   }
 
+  const handlePrevious = () => {
+    setSlide(slide - 1)
+  }
+
   const handleClose = () => {
     //Skip to last slide
     if (slide != slides.length - 1) {
@@ -119,47 +198,110 @@ const Tour = props => {
     backgroundRepeat: 'no-repeat',
     padding: 0,
   }
-  const borderStyle = {
-    border: '10px solid #6DACD5',
-    borderTop: 'none',
-  }
 
   return (
     <Dialog
       open={open}
       onClose={handleClose}
       onEnter={handleOpen}
-      maxWidth={slide === slides.length - 1 ? 'xs' : 'md'}
+      maxWidth={slide !== slides.length - 1 ? 'xl' : 'xs'}
       className={classes.dialog}
       classes={slide === slides.length - 1 ? null : { paperScrollPaper: classes.paperScrollPaper }}
     >
       <DialogContent
-        className={slide === slides.length - 1 ? classes.dialogContentNoBorder : classes.dialogContentBorder}
+        className={slide !== slides.length - 1 ? classes.dialogContentBorder : classes.dialogContentNoBorder}
         style={slide == 0 ? backgroundStyle : null}
       >
         <DialogContentText component="span">{slides[slide]}</DialogContentText>
       </DialogContent>
-      <DialogActions className={classes.dialogActions} style={slide != slides.length - 1 ? borderStyle : null}>
-        <div className={classes.circleContainer}>
-          {slides.map((image, index) => (
-            <CircleIcon
-              key={index}
-              className={classes.circle}
-              style={slide === index ? { color: 'rgb(75, 75, 75)' } : null}
-              onClick={() => {
-                setSlide(index)
-              }}
-            />
-          ))}
+      <DialogActions
+        className={slide !== slides.length - 1 ? classes.dialogActionsBorder : classes.dialogActionsNoBorder}
+      >
+        <div className={classes.navigationContainer}>
+          {slide === 0 ? (
+            <>
+              <div className={classes.navigationButtonsContainerFirstPage}>
+                <div className={classes.circleContainerFirstPage}>
+                  <div className={classes.circleContainerInnerFirstPage}>
+                    {slides.map((image, index) => (
+                      <CircleIcon
+                        key={index}
+                        className={classes.circle}
+                        style={slide === index ? { color: 'rgb(75, 75, 75)' } : null}
+                        onClick={() => {
+                          setSlide(index)
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <Button className={classes.nextButton} onClick={handleNext}>
+                  Next
+                </Button>
+              </div>
+              <div className={classes.skipButtonContainer}>
+                <Button className={classes.skipButton} onClick={handleClose}>
+                  Skip
+                </Button>
+              </div>
+            </>
+          ) : slide !== slides.length - 1 ? (
+            <>
+              <div className={classes.navigationButtonsContainer}>
+                <Button className={classes.backButton} onClick={handlePrevious}>
+                  Back
+                </Button>
+                <div className={classes.circleContainer}>
+                  <div className={classes.circleContainerInner}>
+                    {slides.map((image, index) => (
+                      <CircleIcon
+                        key={index}
+                        className={classes.circle}
+                        style={slide === index ? { color: 'rgb(75, 75, 75)' } : null}
+                        onClick={() => {
+                          setSlide(index)
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <Button className={classes.nextButton} onClick={handleNext}>
+                  Next
+                </Button>
+              </div>
+              <div className={classes.skipButtonContainer}>
+                <Button className={classes.skipButton} onClick={handleClose}>
+                  Skip
+                </Button>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={classes.navigationButtonsContainerLastPage}>
+                <Button className={classes.backButton} onClick={handlePrevious}>
+                  Back
+                </Button>
+                <div className={classes.circleContainer}>
+                  <div className={classes.circleContainerInner}>
+                    {slides.map((image, index) => (
+                      <CircleIcon
+                        key={index}
+                        className={classes.circle}
+                        style={slide === index ? { color: 'rgb(75, 75, 75)' } : null}
+                        onClick={() => {
+                          setSlide(index)
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+                <Button className={classes.nextButton} onClick={handleClose}>
+                  Got It!
+                </Button>
+              </div>
+            </>
+          )}
         </div>
-        <Button className={slide === slides.length - 1 ? classes.blueButton : classes.grayButton} onClick={handleClose}>
-          {slide === slides.length - 1 ? 'Got it' : 'Skip'}
-        </Button>
-        {slide != slides.length - 1 ? (
-          <Button className={classes.blueButton} onClick={handleNext}>
-            Next
-          </Button>
-        ) : null}
       </DialogActions>
     </Dialog>
   )
