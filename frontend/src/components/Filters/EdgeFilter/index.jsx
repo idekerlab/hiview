@@ -29,7 +29,7 @@ const OTHERS_TAG = 'Others'
 
 const FILTER_TYPES = {
   CONTINUOUS: 'continuous',
-  BOOLEAN: 'boolean'
+  BOOLEAN: 'boolean',
 }
 
 const styles = theme => ({
@@ -37,25 +37,25 @@ const styles = theme => ({
     position: 'relative',
     background: 'inherit',
     flexGrow: 2,
-    padding: '0.6em'
+    padding: '0.6em',
   },
   title: {
-    height: '2em'
+    height: '2em',
   },
   list: {
-    overflow: 'auto'
+    overflow: 'auto',
   },
   listItemLarge: {
     height: '1.3em',
     margin: 0,
-    padding: '0.3em'
+    padding: '0.3em',
   },
   listItem: {
     height: '1.7em',
     margin: 0,
-    padding: '0.3em'
+    padding: '0.3em',
     // paddingLeft: 0
-  }
+  },
 })
 
 const getColor = idx => {
@@ -68,7 +68,7 @@ class EdgeFilter extends Component {
     super(props)
     this.state = {
       open: true,
-      selected: new Array(5)
+      selected: new Array(5),
     }
   }
 
@@ -88,7 +88,7 @@ class EdgeFilter extends Component {
     const isOpen = this.state.open
 
     this.setState({
-      open: !isOpen
+      open: !isOpen,
     })
   }
 
@@ -112,7 +112,7 @@ class EdgeFilter extends Component {
 
     const bothMap = {
       filter2cat: result,
-      cat2filter
+      cat2filter,
     }
     return bothMap
   }
@@ -160,20 +160,12 @@ class EdgeFilter extends Component {
           <Typography variant="subtitle1" className={classes.title}>
             Interaction Features:
           </Typography>
-          <PrimaryEdgeSwitch
-            uiState={uiState}
-            uiStateActions={uiStateActions}
-          />
+          <PrimaryEdgeSwitch uiState={uiState} uiStateActions={uiStateActions} />
 
           <List>
             {sortedNames.map((filterName, idx) => (
               <ListItem key={filterName}>
-                {this.getFilter(
-                  idx,
-                  filterMap[filterName],
-                  filterState,
-                  uiStateActions
-                )}
+                {this.getFilter(idx, filterMap[filterName], filterState, uiStateActions)}
               </ListItem>
             ))}
           </List>
@@ -187,6 +179,7 @@ class EdgeFilter extends Component {
         <Typography variant="subtitle1" className={classes.title}>
           Interaction Features:
         </Typography>
+        <PrimaryEdgeSwitch uiState={uiState} uiStateActions={uiStateActions} />
 
         {this.generateFilterList(
           sortedNames,
@@ -194,20 +187,13 @@ class EdgeFilter extends Component {
           categories.filter2cat,
           categories.cat2filter,
           filterState,
-          uiStateActions
+          uiStateActions,
         )}
       </div>
     )
   }
 
-  generateFilterList = (
-    sortedNames,
-    filterMap,
-    filter2cat,
-    cat2filter,
-    filterState,
-    uiStateActions
-  ) => {
+  generateFilterList = (sortedNames, filterMap, filter2cat, cat2filter, filterState, uiStateActions) => {
     if (!filter2cat) {
       return <List />
     }
@@ -220,7 +206,7 @@ class EdgeFilter extends Component {
       filter2cat,
       filterMap,
       filterState,
-      uiStateActions
+      uiStateActions,
     )
 
     // Remove if no children
@@ -237,18 +223,11 @@ class EdgeFilter extends Component {
       <List dense={true} style={{ margin: 0, padding: 0 }}>
         {sortedCategoryNames.map((categoryName, i) => (
           <div key={i}>
-            <ListItem
-              button
-              onClick={d => this.handleExpand(d, categoryName)}
-              style={{ background: '#EEEEEE' }}
-            >
+            <ListItem button onClick={d => this.handleExpand(d, categoryName)} style={{ background: '#EEEEEE' }}>
               <ListItemIcon>
                 <ViewListIcon />
               </ListItemIcon>
-              <ListItemText
-                primary={categoryName.replace(/_/g, ' ')}
-                style={{ fontSize: '1.2em' }}
-              />
+              <ListItemText primary={categoryName.replace(/_/g, ' ')} style={{ fontSize: '1.2em' }} />
               {this.state.open ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={this.state[categoryName]} unmountOnExit>
@@ -260,14 +239,7 @@ class EdgeFilter extends Component {
     )
   }
 
-  getExistingFilters = (
-    allFilterNames,
-    cat2filter,
-    filter2cat,
-    filterMap,
-    filterState,
-    uiStateActions
-  ) => {
+  getExistingFilters = (allFilterNames, cat2filter, filter2cat, filterMap, filterState, uiStateActions) => {
     const newFilters = {}
 
     // All filters without parent categories will be here.
@@ -280,12 +252,7 @@ class EdgeFilter extends Component {
         // This one does not have parent category
         const newFilterListItem = (
           <ListItem key={filterName}>
-            {this.getFilter(
-              idx,
-              filterMap[filterName],
-              filterState,
-              uiStateActions
-            )}
+            {this.getFilter(idx, filterMap[filterName], filterState, uiStateActions)}
           </ListItem>
         )
 
@@ -305,12 +272,7 @@ class EdgeFilter extends Component {
         }
         const filterListItem = (
           <ListItem key={filterName}>
-            {this.getFilter(
-              idx,
-              filterMap[filterName],
-              filterState,
-              uiStateActions
-            )}
+            {this.getFilter(idx, filterMap[filterName], filterState, uiStateActions)}
           </ListItem>
         )
         listForCategory.push(filterListItem)
@@ -334,7 +296,7 @@ class EdgeFilter extends Component {
     }
 
     const filterType = filter.type
-    const defValue = Number(filter.min)
+    const defValue = Number((filter.max - filter.min) * 0.8)
     let enabled = false
     const color = getColor(idx)
 
