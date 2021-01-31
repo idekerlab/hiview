@@ -13,7 +13,7 @@ const HelpButton = () => {
   const OVERVIEW_URL = 'https://github.com/idekerlab/hiview/wiki/HiView-User-Guide'
   const USER_GUIDE_URL = 'https://github.com/idekerlab/hiview/blob/master/README.md'
   const [anchorEl, setAnchorEl] = useState(null)
-  const [tourOpen, setTourOpen] = useState(true)
+  const [tourOpen, setTourOpen] = useState(false)
 
   // Check first time visitor
   useEffect(() => {
