@@ -24,6 +24,24 @@ const useStyles = makeStyles(theme =>
   }),
 )
 
+function handlePermission() {
+  navigator.permissions.request({ name: 'geolocation' }).then(function(result) {
+    if (result.state == 'granted') {
+      report(result.state)
+      geoBtn.style.display = 'none'
+    } else if (result.state == 'prompt') {
+      report(result.state)
+      navigator.geolocation.getCurrentPosition(revealPosition, positionDenied, geoSettings)
+    } else if (result.state == 'denied') {
+      report(result.state)
+      geoBtn.style.display = 'inline'
+    }
+    result.onchange = function() {
+      report(result.state)
+    }
+  })
+}
+
 const CopyToClipboardButton = props => {
   const { genes } = props
   const [open, setOpen] = useState(false)
@@ -33,18 +51,25 @@ const CopyToClipboardButton = props => {
   const _handleCopy = () => {
     const geneString = genes.join(' ')
     // console.log('Genes:', geneString)
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(geneString)
+    const input = document.createElement('input')
+    document.body.appendChild(input)
+    input.value = geneString
+    input.focus()
+    input.select()
+    const result = document.execCommand('copy')
+
+    if (result === 'unsuccessful') {
+    } else {
       setOpen(true)
+    }
+    if (navigator.clipboard) {
+      // navigator.clipboard.writeText(geneString)
     }
   }
 
   return (
     <React.Fragment>
-      <Tooltip
-        title={<div className={classes.tooltip}>Copy gene list as text</div>}
-        placement="bottom"
-      >
+      <Tooltip title={<div className={classes.tooltip}>Copy gene list as text</div>} placement="bottom">
         <Button size="small" variant="outlined" color="primary" onClick={_handleCopy} className={classes.button}>
           <ClipboardIcon className={classes.icon} alt="Copy genes as text" />
         </Button>
