@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 import Button from '@material-ui/core/Button'
 import OpenIcon from '@material-ui/icons/OpenInBrowser'
@@ -24,23 +24,38 @@ const styles = theme => ({
 })
 
 const BASE_URL = 'http://search.ndexbio.org/?genes='
+const MAX_QUERY_LENGTH = 8170
 
 const OpenInPortalButton = props => {
   const { classes, externalNetworks } = props
+  const defaultTooltip = <div className={classes.tooltip}>Search genes in this subsystem in IQuery</div>
+  const [tooltip, setTooltip] = useState(defaultTooltip)
 
   const handleOpen = () => {
     // Simply open the data with the Portal
     const queryGeneString = props.genes.join(',')
-    const queryUrl = BASE_URL + queryGeneString
-
-    window.open(queryUrl, 'portal')
+    if (queryGeneString.length > MAX_QUERY_LENGTH) {
+      setTooltip(<div className={classes.tooltip}>The number of genes is too large. Try a smaller system.</div>)
+    } else {
+      const queryUrl = BASE_URL + queryGeneString
+      window.open(queryUrl, 'portal')
+    }
   }
 
   return (
-    <Tooltip title={<div className={classes.tooltip}>Search genes in this subsystem in IQuery</div>} placement="bottom">
-      <Button size="small" variant="outlined" color="default" onClick={handleOpen} className={classes.button}>
-        {/*IQuery
-        <OpenIcon className={classes.icon} alt="Open in IQuery" />*/}
+    <Tooltip title={tooltip} placement="bottom">
+      <Button
+        size="small"
+        variant="outlined"
+        color="default"
+        onClick={handleOpen}
+        className={classes.button}
+        onMouseLeave={() => {
+          setTimeout(() => {
+            setTooltip(defaultTooltip)
+          }, 100)
+        }}
+      >
         <img src={ndexLogo} className={classes.icon} />
       </Button>
     </Tooltip>
