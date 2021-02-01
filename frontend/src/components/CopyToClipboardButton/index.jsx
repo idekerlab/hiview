@@ -50,7 +50,6 @@ const CopyToClipboardButton = props => {
 
   const _handleCopy = () => {
     const geneString = genes.join(' ')
-    // console.log('Genes:', geneString)
     const input = document.createElement('input')
     document.body.appendChild(input)
     input.value = geneString
@@ -65,6 +64,8 @@ const CopyToClipboardButton = props => {
     if (navigator.clipboard) {
       // navigator.clipboard.writeText(geneString)
     }
+
+    document.body.removeChild(input)
   }
 
   return (
