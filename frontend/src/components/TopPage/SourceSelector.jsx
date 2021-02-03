@@ -400,7 +400,8 @@ class SourceSelector extends Component {
 }
 
 const containerStyle = {
-  width: '42em',
+  width: '45em',
+  maxWidth: '90vw',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-start',

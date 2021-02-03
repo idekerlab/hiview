@@ -27,16 +27,17 @@ const useStyles = makeStyles({
   innerContainer: {
     width: '100%',
     height: '100%',
-    margin: 0,
-    padding: 0,
+    margin: 'auto',
+    paddingTop: '3.5em',
     background: '#FFFFFF',
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
     flexDirection: 'column',
+    overflow: 'scroll',
+    alignItems: 'safe center',
   },
   bar: {
     background: '#333333',
+    height: '3.5em',
   },
   toolbar: {},
   footer: {
@@ -54,14 +55,14 @@ const useStyles = makeStyles({
   h1: {
     color: '#222222',
     fontWeight: 400,
-    fontSize: '15em',
+    fontSize: '12em',
     lineHeight: '0.8',
   },
   h3: {
     color: '#777777',
     fontWeight: 300,
-    fontSize: '2em',
-    paddingLeft: '0.5em',
+    fontSize: '1.5em',
+    paddingLeft: '0.6em',
   },
   noDecoration: {
     textDecoration: 'none',
@@ -78,6 +79,10 @@ const useStyles = makeStyles({
   queryExamplePanel: {
     width: '100%',
     paddingTop: '3em',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   queryExamples: {
     display: 'flex',
@@ -88,7 +93,6 @@ const useStyles = makeStyles({
   queryExampleButton: {
     fontSize: '1.25em',
     margin: '0.75em',
-    marginTop: '0.5em',
   },
   tourText: {
     color: 'blue',
@@ -96,6 +100,9 @@ const useStyles = makeStyles({
     '&:hover': {
       cursor: 'pointer',
     },
+  },
+  avoidWrap: {
+    display: 'inline-block',
   },
 })
 
@@ -147,7 +154,7 @@ const TopPage = props => {
       </AppBar>
 
       <div className={classes.innerContainer}>
-        <div>
+        <div style={{ marginTop: '1em' }}>
           <Typography variant="h1" className={classes.h1}>
             HiView
           </Typography>
@@ -156,43 +163,14 @@ const TopPage = props => {
           </Typography>
         </div>
 
-        <div className={classes.queryExamplePanel}>
-          <Typography align={'center'} variant={'h5'}>
-            Example hierachies:
-          </Typography>
-
-          <div className={classes.queryExamples}>
-            {EXAMPLES.map((example, index) => {
-              return (
-                <div key={example.name}>
-                  <Tooltip
-                    title={
-                      <div style={{ textAlign: 'center', fontSize: '2em', lineHeight: '1.2', fontWeight: '300' }}>
-                        {example.description}
-                      </div>
-                    }
-                    placement="bottom"
-                  >
-                    <Button className={classes.queryExampleButton} color="inherit" onClick={() => handleExample(index)}>
-                      {example.name}
-                    </Button>
-                  </Tooltip>
-                </div>
-              )
-            })}
-          </div>
-        </div>
-
-        <SourceSelector {...props} />
-
-        <div style={{ width: '60em', maxWidth: '100vw', margin: '5em', marginBottom: 0 }}>
-          <Typography style={{ fontSize: '1.1em', textAlign: 'center' }}>
+        <div style={{ width: '45em', maxWidth: '90vw', margin: '4em' }}>
+          <Typography style={{ fontSize: '1.2em', textAlign: 'justify' }}>
             HiView is a web-based tool for visualizing hierarchical models and the underlying interaction data that
             support them. In hierarchical models, biological entities are grouped in systems and their subsystems across
             multiple scales.
           </Typography>
           <br />
-          <Typography style={{ fontSize: '1.1em', textAlign: 'center' }}>
+          <Typography style={{ fontSize: '1.2em' }}>
             HiView is integrated with popular tools used in Systems Biology, such as{' '}
             <a href="https://cytoscape.org/" target="_blank" rel="noopener noreferrer">
               Cytoscape
@@ -240,6 +218,34 @@ const TopPage = props => {
             </a>
             .
           </Typography>
+        </div>
+
+        <SourceSelector {...props} />
+        <div className={classes.queryExamplePanel}>
+          <Typography align={'center'} variant={'h5'} component="div">
+            Example hierachies:
+          </Typography>
+
+          <div className={classes.queryExamples}>
+            {EXAMPLES.map((example, index) => {
+              return (
+                <div key={example.name}>
+                  <Tooltip
+                    title={
+                      <div style={{ textAlign: 'center', fontSize: '2em', lineHeight: '1.2', fontWeight: '300' }}>
+                        {example.description}
+                      </div>
+                    }
+                    placement="bottom"
+                  >
+                    <Button className={classes.queryExampleButton} color="inherit" onClick={() => handleExample(index)}>
+                      {example.name}
+                    </Button>
+                  </Tooltip>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </div>
       <Tour open={tourOpen} setOpen={setTourOpen} />
