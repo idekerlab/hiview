@@ -24,22 +24,35 @@ const useStyles = makeStyles({
     width: '100%',
     height: '100%',
   },
-  innerContainer: {
+  outerContainer: {
     width: '100%',
-    height: '100%',
-    margin: 'auto',
-    paddingTop: '3.5em',
+    height: `calc(100% - 3.5em - 3em)`, //for header and footer
+    //margin: 'auto',
     background: '#FFFFFF',
+    //display: 'flex',
+    //flexDirection: 'column',
+    overflow: 'scroll',
+    position: 'relative',
+    top: '3.5em',
+    display: 'flex',
+  },
+  innerContainer: {
+    margin: 'auto',
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'scroll',
-    alignItems: 'safe center',
+    width: '45em',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   bar: {
     background: '#333333',
     height: '3.5em',
+    minHeight: '3.5em',
   },
-  toolbar: {},
+  toolbar: {
+    minHeight: '3.5em',
+    height: '3.5em',
+  },
   footer: {
     position: 'fixed',
     bottom: 0,
@@ -101,9 +114,6 @@ const useStyles = makeStyles({
       cursor: 'pointer',
     },
   },
-  avoidWrap: {
-    display: 'inline-block',
-  },
 })
 
 const version = '2.7'
@@ -137,7 +147,7 @@ const TopPage = props => {
   return (
     <div className={classes.container}>
       <AppBar position="fixed" className={classes.bar}>
-        <Toolbar className={classes.toolBar}>
+        <Toolbar classes={{ root: classes.toolbar }}>
           <Typography variant="h4" color="inherit">
             HiView {version}
           </Typography>
@@ -153,98 +163,104 @@ const TopPage = props => {
         </Toolbar>
       </AppBar>
 
-      <div className={classes.innerContainer}>
-        <div style={{ marginTop: '1em' }}>
-          <Typography variant="h1" className={classes.h1}>
-            HiView
-          </Typography>
-          <Typography variant="h3" className={classes.h3}>
-            Universal browser for hierarchical data
-          </Typography>
-        </div>
+      <div className={classes.outerContainer}>
+        <div className={classes.innerContainer}>
+          <div style={{ marginTop: '1em' }}>
+            <Typography variant="h1" className={classes.h1}>
+              HiView
+            </Typography>
+            <Typography variant="h3" className={classes.h3}>
+              Universal browser for hierarchical data
+            </Typography>
+          </div>
 
-        <div style={{ width: '45em', maxWidth: '90vw', margin: '4em' }}>
-          <Typography style={{ fontSize: '1.2em', textAlign: 'justify' }}>
-            HiView is a web-based tool for visualizing hierarchical models and the underlying interaction data that
-            support them. In hierarchical models, biological entities are grouped in systems and their subsystems across
-            multiple scales.
-          </Typography>
-          <br />
-          <Typography style={{ fontSize: '1.2em' }}>
-            HiView is integrated with popular tools used in Systems Biology, such as{' '}
-            <a href="https://cytoscape.org/" target="_blank" rel="noopener noreferrer">
-              Cytoscape
-            </a>
-            ,{' '}
-            <a href="http://ndexbio.org/#/" target="_blank" rel="noopener noreferrer">
-              NDEx
-            </a>
-            ,{' '}
-            <a href="http://iquery.ndexbio.org/" target="_blank" rel="noopener noreferrer">
-              IQuery
-            </a>
-            ,{' '}
-            <a href="https://www.genecards.org/" target="_blank" rel="noopener noreferrer">
-              GeneCards
-            </a>
-            , and{' '}
-            <a href="https://maayanlab.cloud/Enrichr/" target="_blank" rel="noopener noreferrer">
-              Enrichr
-            </a>
-            . For additional information, please{' '}
-            <span
-              className={classes.tourText}
-              onClick={() => {
-                setTourOpen(true)
-              }}
-            >
-              Take the HiView Tour
-            </span>{' '}
-            and refer to the HiView{' '}
-            <a
-              href="https://github.com/idekerlab/hiview/blob/master/README.md"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Overview
-            </a>{' '}
-            and{' '}
-            <a
-              href="https://github.com/idekerlab/hiview/wiki/HiView-User-Guide"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              User Guide
-            </a>
-            .
-          </Typography>
-        </div>
+          <div style={{ width: '45em', maxWidth: '90vw', margin: '4em 0' }}>
+            <Typography style={{ fontSize: '1.2em', textAlign: 'justify' }}>
+              HiView is a web-based tool for visualizing hierarchical models and the underlying interaction data that
+              support them. In hierarchical models, biological entities are grouped in systems and their subsystems
+              across multiple scales.
+            </Typography>
+            <br />
+            <Typography style={{ fontSize: '1.2em' }}>
+              HiView is integrated with popular tools used in Systems Biology, such as{' '}
+              <a href="https://cytoscape.org/" target="_blank" rel="noopener noreferrer">
+                Cytoscape
+              </a>
+              ,{' '}
+              <a href="http://ndexbio.org/#/" target="_blank" rel="noopener noreferrer">
+                NDEx
+              </a>
+              ,{' '}
+              <a href="http://iquery.ndexbio.org/" target="_blank" rel="noopener noreferrer">
+                IQuery
+              </a>
+              ,{' '}
+              <a href="https://www.genecards.org/" target="_blank" rel="noopener noreferrer">
+                GeneCards
+              </a>
+              , and{' '}
+              <a href="https://maayanlab.cloud/Enrichr/" target="_blank" rel="noopener noreferrer">
+                Enrichr
+              </a>
+              . For additional information, please{' '}
+              <span
+                className={classes.tourText}
+                onClick={() => {
+                  setTourOpen(true)
+                }}
+              >
+                Take the HiView Tour
+              </span>{' '}
+              and refer to the HiView{' '}
+              <a
+                href="https://github.com/idekerlab/hiview/blob/master/README.md"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Overview
+              </a>{' '}
+              and{' '}
+              <a
+                href="https://github.com/idekerlab/hiview/wiki/HiView-User-Guide"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                User Guide
+              </a>
+              .
+            </Typography>
+          </div>
 
-        <SourceSelector {...props} />
-        <div className={classes.queryExamplePanel}>
-          <Typography align={'center'} variant={'h5'} component="div">
-            Example hierachies:
-          </Typography>
+          <SourceSelector {...props} />
+          <div className={classes.queryExamplePanel}>
+            <Typography align={'center'} variant={'h5'} component="div">
+              Example hierarchies:
+            </Typography>
 
-          <div className={classes.queryExamples}>
-            {EXAMPLES.map((example, index) => {
-              return (
-                <div key={example.name}>
-                  <Tooltip
-                    title={
-                      <div style={{ textAlign: 'center', fontSize: '2em', lineHeight: '1.2', fontWeight: '300' }}>
-                        {example.description}
-                      </div>
-                    }
-                    placement="bottom"
-                  >
-                    <Button className={classes.queryExampleButton} color="inherit" onClick={() => handleExample(index)}>
-                      {example.name}
-                    </Button>
-                  </Tooltip>
-                </div>
-              )
-            })}
+            <div className={classes.queryExamples}>
+              {EXAMPLES.map((example, index) => {
+                return (
+                  <div key={example.name}>
+                    <Tooltip
+                      title={
+                        <div style={{ textAlign: 'center', fontSize: '2em', lineHeight: '1.2', fontWeight: '300' }}>
+                          {example.description}
+                        </div>
+                      }
+                      placement="bottom"
+                    >
+                      <Button
+                        className={classes.queryExampleButton}
+                        color="inherit"
+                        onClick={() => handleExample(index)}
+                      >
+                        {example.name}
+                      </Button>
+                    </Tooltip>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>
