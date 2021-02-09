@@ -243,38 +243,42 @@ export const createStyle = originalNetwork => {
   if (similarityMin !== similarityMax) {
     edgeStyle.css[
       'opacity'
-    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.7, 1)`
+    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.9, 1)`
 
-    // Pick top 10%
+    // Pick top 20%
     const range = Math.abs(similarityMax - similarityMin) 
     const topRange = range * 0.95
     const maxThreshold = similarityMin + topRange
     
-    const maxWidth = 7
-    const minWidth = 0.1
+    const maxWidth = 8
+    const minWidth = 2
     const rangeWidth = Math.abs(maxWidth - minWidth) 
 
     const globalMin = Number.parseFloat(networkData[`${primaryEdgeType} min`])
     const globalMax = Number.parseFloat(networkData[`${primaryEdgeType} max`])
     const globalRange = Math.abs(globalMax - globalMin)
-    const globalTop = globalRange * 0.9
+    const globalTop = globalRange * 0.8
     const globalTh = globalMin + globalTop
 
-
-    // edgeStyle.css[
-    //   'width'
-    // ] = `mapData(${primaryEdgeType},${similarityMin},${maxThreshold}, 0.2, 7)`
-    
     edgeStyle.css[
       'width'
     ] = e => {
       const weight = e.data(primaryEdgeType)
 
-      if(globalTh <= weight) {
-        return 7
+      if(weight === undefined || weight === null) {
+        return minWidth
       }
 
-      return ((Math.abs(weight - similarityMin))/range ) * rangeWidth
+      if(globalTh <= weight) {
+        return maxWidth
+      }
+
+      const computed = ((Math.abs(weight - similarityMin))/range ) * rangeWidth
+      if(computed > minWidth) {
+        return computed
+      }
+
+      return minWidth
     }
   }
 
