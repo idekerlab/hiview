@@ -35,8 +35,8 @@ class ContinuousFilter extends BaseFilter {
           checked: enabled
         })
 
-        this.filterSelected(enabled)
-        this.applyFilter(value)
+        // this.filterSelected(enabled)
+        // this.applyFilter(value)
       }, 20)
     }
   }
@@ -100,7 +100,7 @@ class ContinuousFilter extends BaseFilter {
     // TODO: create one command to do both in order
     setTimeout(() => {
       this.applyFilter(currentSliderValue)
-    }, 10)
+    }, 100)
   }
 
   render() {
