@@ -22,6 +22,7 @@ class ContinuousFilter extends BaseFilter {
   constructor(props) {
     super(props)
     this.state = {
+      label: this.props.label,
       value: this.props.value,
       checked: this.props.enabled
     }
@@ -45,11 +46,13 @@ class ContinuousFilter extends BaseFilter {
     const current = this.props.currentSystem
     const next = nextProps.currentSystem
 
-    if (current !== next && nextProps.enabled) {
+    if (nextProps.label === this.state.label && 
+      current !== next && nextProps.enabled && current === undefined) {
       setTimeout(() => {
         this.filterSelected(true)
         this.applyFilter(this.props.value)
-      }, 500)
+      }, 250)
+
     }
   }
 
