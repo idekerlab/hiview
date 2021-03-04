@@ -217,7 +217,7 @@ const TermDetailsPanel = props => {
             enrichmentActions={props.enrichmentActions}
             uiState={props.uiState}
             hierarchy={props.network.get('hierarchy')}
-            networkAreaStyle={{ height: '100%', background: '#333333' }}
+            networkAreaStyle={{ height: '100%', background: '#000000' }}
             setCy={setCy}
           />
         </div>

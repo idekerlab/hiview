@@ -4,7 +4,7 @@ const INTERACTION_TAG = 'interaction'
 
 // Font size will be calculated based on viewport size.
 const VIEW_TO_FONT_SIZE_RATIO = 350
-const BASE_FONT_SIZE = 32
+const BASE_FONT_SIZE = 24
 const LARGE_FONT_SIZE = 40
 
 // If there are too many edge in the data, use simplified version.
@@ -103,7 +103,14 @@ const BASE_STYLE = {
       'text-valign': 'center',
       'text-halign': 'center',
       color: '#FFFFFF',
-      'text-opacity': 0.8,
+      'text-opacity': 1,
+      'text-background-color': '#000000',
+      'text-background-opacity': 0.5,
+      'text-background-padding': 5,
+      'text-background-shape': 'round-rectangle',
+      'text-outline-width': 0.4,
+      'text-outline-color': '#111111',
+      'text-outline-opacity': 1,
       'background-opacity': 0,
       'background-color': '#222222',
       'border-width': 0,
@@ -114,13 +121,15 @@ const BASE_STYLE = {
   nodeSelected: {
     selector: 'node:selected',
     css: {
-      width: n => calcNodeWidth(n),
-      height: n => calcNodeHeight(n),
+      // width: n => calcNodeWidth(n),
+      // height: n => calcNodeHeight(n),
       'font-size': n => calcFontSize(n),
       'font-weight': 500,
-      color: '#FFFFFF',
-      'background-opacity': 1,
-      'background-color': '#FF0000'
+      'text-background-opacity': 0.9,
+      'text-background-color': '#FF0000',
+      // color: '#FFFFFF',
+      // 'background-opacity': 1,
+      // 'background-color': '#FF0000'
     }
   },
   edge: {
@@ -155,12 +164,14 @@ const BASE_STYLE = {
   members: {
     selector: '.members',
     css: {
-      'background-color': '#FF0000',
+      // 'background-color': '#FF0000',
       color: '#FFFFFF',
-      'background-opacity': 1,
-      'background-color': '#FF0000',
-      width: n => calcNodeWidth(n),
-      height: n => calcNodeHeight(n),
+      // 'background-opacity': 1,
+      // 'background-color': '#FF0000',
+      // width: n => calcNodeWidth(n),
+      // height: n => calcNodeHeight(n),
+      'text-background-opacity': 0.9,
+      'text-background-color': '#FF0000',
       'font-size': n => calcFontSize(n),
       'font-weight': 500
     }
@@ -174,7 +185,7 @@ const BASE_STYLE = {
   seed: {
     selector: '.seed',
     css: {
-      'background-color': '#FFFFFF',
+      // 'background-color': '#FFFFFF',
       color: '#FF0000',
       width: 50,
       height: 50
