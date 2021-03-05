@@ -373,7 +373,10 @@ const TermDetailsPanel = props => {
       </div>
 
       <div className={classes.bottomPane}>
-        <LayoutSelector commandActions={props.interactionsCommandActions} />
+        <LayoutSelector 
+          commandActions={props.interactionsCommandActions} 
+          currentSubsystem={props.currentProperty.id}
+        />
         <ExportButtons
           geneList={geneList}
           cy={cy}

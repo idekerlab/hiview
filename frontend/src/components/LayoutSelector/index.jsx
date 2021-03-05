@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 import { MenuItem, FormHelperText, FormControl, Select, Button, Tooltip } from '@material-ui/core'
 
@@ -74,7 +74,14 @@ const LAYOUTS = {
 const LayoutSelector = props => {
   const classes = useStyles()
   const [layout, setLayout] = useState(LAYOUTS.COSE)
-  const [buttonDisabled, setButtonDisabled] = useState(true)
+  const [buttonDisabled, setButtonDisabled] = useState(false)
+
+  const { currentSubsystem } = props
+
+  // Enable button once new sub network is loaded.
+  useEffect(() => {
+    setButtonDisabled(false)
+  }, [currentSubsystem])
 
   const handleChange = name => event => {
     setLayout(event.target.value)
