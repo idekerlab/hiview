@@ -84,7 +84,7 @@
     "react-google-login": "^5.0.5",
     "react-mosaic-component": "^1.0.3",
     "react-redux": "5.0.6",
-    "react-router": "3.2.0",
+    "react-router": "3.2.5",
     "react-router-redux": "4.0.8",
     "react-sortable-tree": "1.8.1",
     "react-split-pane": "^0.1.92",

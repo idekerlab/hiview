@@ -42,6 +42,11 @@ class BarPlot extends Component {
     // Create label-value array
     const dataMap = {}
 
+    // Check data is correct type
+    if(! Array.isArray(dataPoints)) {
+      return <EmptyPanel message='Could not get the analysis result from Enrichr (Please try again later)' />
+    }
+
     dataPoints.forEach(data => {
       dataMap[data[1].split('_')[0]] = data[ADJ_PVAL_IDX]
     })
