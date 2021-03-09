@@ -53,6 +53,7 @@ const send = (url, genes) => {
 
   const settings = {
     method: 'POST',
+    mode: 'cors',
     body: data
   }
   // Return promise
@@ -60,10 +61,13 @@ const send = (url, genes) => {
 }
 
 const parallelCall = (url, jobId) => {
+  const settings = {
+    method: 'GET',
+    mode: 'cors'
+  }
+
   const tasks = backgrounds.map(bg =>
-    fetch(
-      `${BASE_URL}/enrich?userListId=${jobId}&backgroundType=${bg}`
-    ).then(response => response.json())
+    fetch(`${BASE_URL}/enrich?userListId=${jobId}&backgroundType=${bg}`, settings).then(response => response.json())
   )
 
   return tasks
@@ -76,6 +80,9 @@ export const runEnrichment = (url = ADD_LIST_API, genes, subsystemId) => {
 
     return send(url, genes)
       .then(response => {
+        if(!response.ok) {
+          return dispatch(receiveAnalysisResult(url, null, subsystemId)) 
+        }
         return response.json()
       })
       .then(json => {
