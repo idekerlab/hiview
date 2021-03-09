@@ -7,6 +7,7 @@ import EmptyPanel from './EmptyPanel'
 
 const containerStyle = {
   paddingTop: '0em',
+  paddingLeft: '1.5em',
   margin: 0,
   overflow: 'scroll',
   width: '100%',
@@ -84,7 +85,7 @@ const plots = props => {
   const plotList = []
 
   for (let [k, v] of Object.entries(props.data)) {
-    plotList.push(<BarPlot key={k} height={260} data={v} title={k} />)
+    plotList.push(<BarPlot key={k} height={300} data={v} title={k} />)
   }
 
   return plotList

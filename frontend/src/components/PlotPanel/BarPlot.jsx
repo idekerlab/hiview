@@ -108,8 +108,8 @@ class BarPlot extends Component {
       .reverse()
       .toJS()
 
-    const leftWidth = FONT_SIZE * maxTextLength + 20
-    const panelWidth = leftWidth + 500
+    const leftWidth = FONT_SIZE * maxTextLength + 120
+    const panelWidth = leftWidth + 550
 
     return (
       <div>

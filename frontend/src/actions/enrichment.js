@@ -1,6 +1,8 @@
 import { createAction } from 'redux-actions'
 
-const ENRICHR_URL = 'http://amp.pharm.mssm.edu/Enrichr/addList'
+const BASE_URL = 'http://maayanlab.cloud/Enrichr'
+
+const ADD_LIST_API = `${BASE_URL}/addList`
 
 const backgrounds = [
   'GO_Biological_Process_2018',
@@ -54,23 +56,20 @@ const send = (url, genes) => {
     body: data
   }
   // Return promise
-  return fetch(ENRICHR_URL, settings)
+  return fetch(ADD_LIST_API, settings)
 }
 
 const parallelCall = (url, jobId) => {
   const tasks = backgrounds.map(bg =>
     fetch(
-      'http://amp.pharm.mssm.edu/Enrichr/enrich?userListId=' +
-        jobId +
-        '&backgroundType=' +
-        bg
+      `${BASE_URL}/enrich?userListId=${jobId}&backgroundType=${bg}`
     ).then(response => response.json())
   )
 
   return tasks
 }
 
-export const runEnrichment = (url = ENRICHR_URL, genes, subsystemId) => {
+export const runEnrichment = (url = ADD_LIST_API, genes, subsystemId) => {
   return dispatch => {
     // Set state to "running"
     dispatch(sendGeneList(url, genes, subsystemId))
