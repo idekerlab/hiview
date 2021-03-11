@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions'
 
-const BASE_URL = 'http://maayanlab.cloud/Enrichr'
+const BASE_URL = 'https://maayanlab.cloud/Enrichr'
 
 const ADD_LIST_API = `${BASE_URL}/addList`
 
