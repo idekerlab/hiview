@@ -323,6 +323,7 @@ class NetworkPanel extends Component {
       fetch(DEFAULT_SUMMARY, settings)
         .then(res => res.json())
         .then(json => {
+          console.log(json)
           const firstRes = json.networks[0]
           const newId = firstRes['externalId']
           const newUrl = this.props.cxtoolUrl + newId + '?server=' + serverType

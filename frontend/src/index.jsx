@@ -13,6 +13,8 @@ import configure from './store'
 const store = configure()
 const history = syncHistoryWithStore(browserHistory, store)
 
+console.log('UA=======', navigator.userAgent)
+
 // Start the application
 ReactDOM.render(
   <Provider store={store}>

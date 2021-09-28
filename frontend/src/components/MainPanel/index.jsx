@@ -6,6 +6,7 @@ import LocalSearchPanel from '../LocalSearchPanel'
 import BaseSplitPane from './BaseSplitPane'
 import MessageBox from '../MessageBox'
 import Tour from '../Tour'
+import BrowserWarningDialog from './BrowserWarningDialog'
 
 const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
 
@@ -51,6 +52,9 @@ const MainPanel = props => {
 
   return (
     <div style={wrapperStyle}>
+      
+      <BrowserWarningDialog />
+
       <MessageBox uiState={uiState} selection={selection} />
 
       <MainMenuPanel
