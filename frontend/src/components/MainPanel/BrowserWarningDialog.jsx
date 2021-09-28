@@ -25,7 +25,7 @@ const BrowserWarningDialog = () => {
   return (
     <Dialog
       open={open}
-      onClose={handleClose}
+      onClose={_handleClose}
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
@@ -38,7 +38,7 @@ const BrowserWarningDialog = () => {
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose} color="primary" autoFocus>
+        <Button onClick={_handleClose} color="primary" autoFocus>
           Close
         </Button>
       </DialogActions>
