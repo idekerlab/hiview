@@ -4,6 +4,8 @@ import { CytoscapeJsRenderer } from '@cytoscape/cytoscapejs-renderer'
 import LoadingPanel from './LoadingPanel'
 import { Set } from 'immutable'
 
+import { insertNodeColorMapping } from '../../utils/vs-util'
+
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
 // Custom event handler
@@ -21,12 +23,11 @@ const selectNodes = (nodeIds, nodeProps) => {
   // selectionActions.selectNode(newSelectionState)
 }
 
-const RawInteractionPanel = props => {
-  const t0 = performance.now()
-
+const RawInteractionPanel = (props) => {
   const {
     uiState,
     subnet,
+    networkStyle,
     enrichment,
     enrichmentActions,
     selectedTerm,
@@ -58,9 +59,32 @@ const RawInteractionPanel = props => {
       return
     }
 
-    const genes = Set(subnet.elements.nodes.map(node => node.data.name))
-    enrichmentActions.runEnrichment('http://amp.pharm.mssm.edu/Enrichr/addList', genes, selectedTerm)
+    const genes = Set(subnet.elements.nodes.map((node) => node.data.name))
+    enrichmentActions.runEnrichment(
+      'http://amp.pharm.mssm.edu/Enrichr/addList',
+      genes,
+      selectedTerm,
+    )
   }, [uiState.get('runEnrichment'), subnet])
+
+  useEffect(() => {
+    // Update visual style if necessary
+    let edgeAttrNames = []
+    if (filters !== undefined) {
+      // Note: this always contains "Score"
+      const edgeAttrs = filters.filter(
+        (filter) => filter.attributeName !== 'Score',
+      )
+      edgeAttrNames = edgeAttrs.map((attr) => attr.attributeName)
+    }
+
+    const vsClone = insertNodeColorMapping(
+      networkStyle,
+      'dominantEvidence',
+      edgeAttrNames,
+    )
+    console.log(networkStyle)
+  }, [networkStyle])
 
   const commandFinished = (lastCommand, status = {}) => {
     commandActions.clearCommand()
@@ -138,7 +162,7 @@ const RawInteractionPanel = props => {
   )
 }
 
-const checkPresetLayout = network => {
+const checkPresetLayout = (network) => {
   const nodes = network.elements.nodes
   const sampleNode = nodes[0]
 

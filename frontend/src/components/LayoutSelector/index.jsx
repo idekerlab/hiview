@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
 
-import { MenuItem, FormHelperText, FormControl, Select, Button, Tooltip } from '@material-ui/core'
+import { MenuItem, FormControl, Select, Button, Tooltip } from '@material-ui/core'
 
 import ApplyIcon from '@material-ui/icons/Refresh'
 import FitContent from '@material-ui/icons/ZoomOutMap'
 import FitSelected from '@material-ui/icons/CenterFocusStrong'
 
 import { createStyles, makeStyles } from '@material-ui/core'
+
+import StyleSwitch from './StyleSwitch'
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -18,15 +20,17 @@ const useStyles = makeStyles(theme =>
       display: 'flex',
       flexWrap: 'wrap',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
       padding: theme.spacing(1),
       columnGap: '0.5em',
+      flexDirection: 'column'
     },
     flexContainer: {
+      width: '100%',
       display: 'flex',
       flexWrap: 'wrap',
       alignItems: 'center',
-      justifyContent: 'center',
+      justifyContent: 'flex-start',
     },
     formControl: {
       width: '100%',
@@ -119,6 +123,9 @@ const LayoutSelector = props => {
 
   return (
     <div className={classes.root}>
+      <div className={classes.flexContainer}>
+        <StyleSwitch />
+      </div>
       <div className={classes.flexContainer}>
         <div className={classes.leftPaddedGrid}>
           <strong>Layout:</strong>

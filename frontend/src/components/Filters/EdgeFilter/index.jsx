@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import * as d3ScaleChromatic from 'd3-scale-chromatic'
 
 import List from '@material-ui/core/List'
 
@@ -18,13 +17,9 @@ import Typography from '@material-ui/core/Typography'
 import ViewListIcon from '@material-ui/icons/ViewList'
 import PrimaryEdgeSwitch from './PrimaryEdgeSwitch'
 
-// 5 will be used at once
-const COLORS = d3ScaleChromatic.schemeTableau10
-
-const colorMap = idx => COLORS[idx]
+import { getColor10 } from '../../../utils/color-util'
 
 const EDGE_GROUP_TAG = 'edge groups'
-
 const OTHERS_TAG = 'Others'
 
 const FILTER_TYPES = {
@@ -58,10 +53,6 @@ const styles = theme => ({
   },
 })
 
-const getColor = idx => {
-  const colorSpaceSize = COLORS.length
-  return COLORS[idx % colorSpaceSize]
-}
 
 class EdgeFilter extends Component {
   constructor(props) {
@@ -298,7 +289,7 @@ class EdgeFilter extends Component {
     const filterType = filter.type
     const defValue = Number((filter.max - filter.min) * 0.8)
     let enabled = false
-    const color = getColor(idx)
+    const color = getColor10(idx)
 
     if (filterType === FILTER_TYPES.CONTINUOUS) {
       const name = filter.attributeName

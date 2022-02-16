@@ -33,8 +33,8 @@ import Typography from '@material-ui/core/Typography'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 
 import { createStyles, makeStyles } from '@material-ui/core'
-import AdvancedOptions from './AdvancedOptions'
-import CopyToClipboardButton from '../CopyToClipboardButton'
+
+import D3Legend from '../D3Legend'
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -301,8 +301,7 @@ const TermDetailsPanel = props => {
     visualStyle.name = 'defaultStyle'
   }
 
-  // const network = props.network.get(url)
-
+  
   let { network } = props
   let networkData = {}
   if (network !== undefined || network === null) {
@@ -373,6 +372,10 @@ const TermDetailsPanel = props => {
       </div>
 
       <div className={classes.bottomPane}>
+        <D3Legend 
+          minScore={networkProps['Score min']}
+          maxScore={networkProps['Score max']}
+        />
         <LayoutSelector 
           commandActions={props.interactionsCommandActions} 
           currentSubsystem={props.currentProperty.id}
