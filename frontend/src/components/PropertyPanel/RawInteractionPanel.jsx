@@ -89,11 +89,22 @@ const RawInteractionPanel = (props) => {
   const commandFinished = (lastCommand, status = {}) => {
     commandActions.clearCommand()
   }
+  const hoverOnNode = (nodeId, nodeProps) => {
+    // console.log("Hover:")
+    console.log(nodeId, nodeProps)
+  }
+
+  const hoverOutNode = (nodeId, nodeProps) => {
+    // console.log("Hover out:")
+    console.log(nodeId, nodeProps)
+  }
 
   // Then use it as a custom handler
   const getCustomEventHandlers = () => ({
     selectNodes,
     // selectEdges: selectEdges,
+    hoverOnNode,
+    hoverOutNode,
     commandFinished,
   })
 

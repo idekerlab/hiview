@@ -7,9 +7,9 @@ const StyleSwitch = () => {
   }
 
   return (
-    <FormGroup row>
+    <FormGroup>
       <FormControlLabel
-        control={<Switch onChange={handleChange} name="checkedB" color="primary" />}
+        control={<Switch onChange={handleChange} name="coloringChanged" color="primary" />}
         label="Node Coloring"
       />
     </FormGroup>
