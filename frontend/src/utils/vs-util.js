@@ -29,6 +29,32 @@ const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {
     }
     vsClone.style.push(attrSelector)
   }
+
+  // Node shape mappings for pleio
+ 
+  const shapeAttrSelector = {
+    selector: "node['pleio']",
+    css: {
+
+      'background-opacity': 0.9,
+      'text-background-opacity': 0,
+      'shape': (ele) => {
+        const val = ele.data('pleio')
+        if(val === undefined) {
+          return 'roundrectangle'
+        }
+
+        const numericVal = Number.parseInt(val)
+        if(Number.isInteger(numericVal) && numericVal > 1) {
+          return 'diamond'
+        }
+
+        return 'roundrectangle'
+      }
+    },
+  }
+  vsClone.style.push(shapeAttrSelector)
+
   return vsClone
 }
 

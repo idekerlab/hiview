@@ -4,8 +4,8 @@ const INTERACTION_TAG = 'interaction'
 
 // Font size will be calculated based on viewport size.
 const VIEW_TO_FONT_SIZE_RATIO = 350
-const BASE_FONT_SIZE = 24
-const LARGE_FONT_SIZE = 40
+const BASE_FONT_SIZE = 20
+const LARGE_FONT_SIZE = 30
 
 // If there are too many edge in the data, use simplified version.
 const MAX_EDGE_COUNT = 10000
@@ -97,8 +97,9 @@ const BASE_STYLE = {
   node: {
     selector: 'node',
     css: {
-      width: 48,
-      height: 13,
+      width: 110,
+      // width: 48,
+      height: 60,
       shape: 'roundrectangle',
       'text-valign': 'center',
       'text-halign': 'center',

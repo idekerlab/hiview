@@ -5,23 +5,13 @@ import LoadingPanel from './LoadingPanel'
 import { Set } from 'immutable'
 
 import { insertNodeColorMapping } from '../../utils/vs-util'
+import CustomPopover from '../CustomPopover'
 
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
-// Custom event handler
-const selectNodes = (nodeIds, nodeProps) => {
-  const node = nodeIds[0]
-  const props = nodeProps[node]
-
-  const newSelectionState = {
-    networkId: 'raw',
-    nodeId: node,
-    nodeProps: props,
-  }
-
-  // if necessary, app can use selection in Cytoscape.js
-  // selectionActions.selectNode(newSelectionState)
-}
+// TODO: Remove this - this is a special case for Anton's data
+const DDRAM_TOOLTIP_KEY = ['pleio', 'systems']
+const NODE_COLOR_KEY = 'dominantEvidence'
 
 const RawInteractionPanel = (props) => {
   const {
@@ -38,7 +28,29 @@ const RawInteractionPanel = (props) => {
     setHandleSvg,
   } = props
 
+  // These attributes will be rendered as tooltip text
+  const [tooltipKeys, setTooltipKeys] = useState([])
+
   const [cyReference, setCyReference] = useState(null)
+  const [openPopover, setOpenPopover] = useState(false)
+  
+  // Custom event handler for node click / tap
+  const selectNodes = (nodeIds, nodeProps, rawEvent) => {
+    const node = nodeIds[0]
+    const props = nodeProps[node]
+
+    // Show popup
+    const { pleio, systems } = props
+    console.log('##PS', pleio, systems)
+
+    const newSelectionState = {
+      networkId: 'raw',
+      nodeId: node,
+      nodeProps: props,
+    }
+    // if necessary, app can use selection in Cytoscape.js
+    // selectionActions.selectNode(newSelectionState)
+  }
 
   useEffect(() => {
     console.log('*Cytoscape instance assigned:', cyReference)
@@ -68,6 +80,13 @@ const RawInteractionPanel = (props) => {
   }, [uiState.get('runEnrichment'), subnet])
 
   useEffect(() => {
+    // Test subnet to check it has required attributes
+    const {elements} = subnet
+    const {nodes} = elements
+    if(nodes[0] === undefined || nodes[0]['data'][NODE_COLOR_KEY] === undefined) {
+      return
+    }
+
     // Update visual style if necessary
     let edgeAttrNames = []
     if (filters !== undefined) {
@@ -80,17 +99,18 @@ const RawInteractionPanel = (props) => {
 
     const vsClone = insertNodeColorMapping(
       networkStyle,
-      'dominantEvidence',
+      NODE_COLOR_KEY,
       edgeAttrNames,
     )
     console.log(networkStyle)
+    setTooltipKeys(DDRAM_TOOLTIP_KEY)
   }, [networkStyle])
 
   const commandFinished = (lastCommand, status = {}) => {
     commandActions.clearCommand()
   }
   const hoverOnNode = (nodeId, nodeProps) => {
-    // console.log("Hover:")
+    console.log("Hover:")
     console.log(nodeId, nodeProps)
   }
 
@@ -103,8 +123,8 @@ const RawInteractionPanel = (props) => {
   const getCustomEventHandlers = () => ({
     selectNodes,
     // selectEdges: selectEdges,
-    hoverOnNode,
-    hoverOutNode,
+    // hoverOnNode,
+    // hoverOutNode,
     commandFinished,
   })
 
@@ -134,6 +154,31 @@ const RawInteractionPanel = (props) => {
 
   if (filters === null || filters.length === 0) {
     return (
+      <React.Fragment>
+        <Viewer
+          key="subNetworkView"
+          network={subnet}
+          selected={selected}
+          hidden={hidden}
+          hidePrimary={hidePrimary}
+          networkType={'cyjs'}
+          networkStyle={visualStyle}
+          style={networkAreaStyle}
+          eventHandlers={getCustomEventHandlers()}
+          rendererOptions={{
+            layout: checkPresetLayout(subnet),
+            tooltipKeys
+          }}
+          command={props.commands}
+          setRendererReference={setCyReference}
+        />
+        <CustomPopover open={openPopover} />
+      </React.Fragment>
+    )
+  }
+
+  return (
+    <React.Fragment>
       <Viewer
         key="subNetworkView"
         network={subnet}
@@ -146,30 +191,13 @@ const RawInteractionPanel = (props) => {
         eventHandlers={getCustomEventHandlers()}
         rendererOptions={{
           layout: checkPresetLayout(subnet),
+          tooltipKeys
         }}
         command={props.commands}
         setRendererReference={setCyReference}
       />
-    )
-  }
-
-  return (
-    <Viewer
-      key="subNetworkView"
-      network={subnet}
-      selected={selected}
-      hidden={hidden}
-      hidePrimary={hidePrimary}
-      networkType={'cyjs'}
-      networkStyle={visualStyle}
-      style={networkAreaStyle}
-      eventHandlers={getCustomEventHandlers()}
-      rendererOptions={{
-        layout: checkPresetLayout(subnet),
-      }}
-      command={props.commands}
-      setRendererReference={setCyReference}
-    />
+      <CustomPopover open={openPopover} />
+    </React.Fragment>
   )
 }
 
