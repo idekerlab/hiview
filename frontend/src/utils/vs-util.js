@@ -1,4 +1,4 @@
-import { getColor10 } from './color-util'
+import { getColor10, getColorScaleInferno } from './color-util'
 
 const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {
   if (
@@ -33,7 +33,7 @@ const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {
   // Node shape mappings for pleio
  
   const shapeAttrSelector = {
-    selector: "node['pleio']",
+    selector: "node[pleio]",
     css: {
 
       'background-opacity': 0.9,
@@ -54,8 +54,22 @@ const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {
     },
   }
   vsClone.style.push(shapeAttrSelector)
+  return vsClone
+}
+
+const insertEdgeColorMapping = ({vs, attrName, scoreMin, scoreMax}) => {
+  const vsClone = Object.assign(vs)
+  const colorScale = getColorScaleInferno({min: scoreMin, max: scoreMax})
+  
+  const edgeColorMapping =  {
+    selector: `edge[${attrName}]`,
+    css: {
+      'line-color': ele => colorScale(ele.data(attrName))
+    },
+  }
+  vsClone.style.push(edgeColorMapping)
 
   return vsClone
 }
 
-export { insertNodeColorMapping }
+export { insertNodeColorMapping, insertEdgeColorMapping }

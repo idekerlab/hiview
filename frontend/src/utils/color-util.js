@@ -1,4 +1,5 @@
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
+import * as d3Scale from 'd3-scale'
 
 // Preset  discrete color map (10)
 const COLORS = d3ScaleChromatic.schemeTableau10
@@ -10,4 +11,10 @@ const getColor10 = (idx) => {
   return colorMap(idx % colorSpaceSize)
 }
 
-export { getColor10 }
+const getColorScaleInferno = ({ min = 0, max = 1 }) => {
+  return d3Scale
+    .scaleSequential(d3ScaleChromatic.interpolateInferno)
+    .domain([min, max])
+}
+
+export { getColor10, getColorScaleInferno }

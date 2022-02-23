@@ -3,8 +3,9 @@ import CyNetworkViewer from '@cytoscape/cy-network-viewer'
 import { CytoscapeJsRenderer } from '@cytoscape/cytoscapejs-renderer'
 import LoadingPanel from './LoadingPanel'
 import { Set } from 'immutable'
+import { MAIN_EDGE_TAG } from '../../actions/raw-interactions-util'
 
-import { insertNodeColorMapping } from '../../utils/vs-util'
+import { insertEdgeColorMapping, insertNodeColorMapping } from '../../utils/vs-util'
 import CustomPopover from '../CustomPopover'
 
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
@@ -33,7 +34,7 @@ const RawInteractionPanel = (props) => {
 
   const [cyReference, setCyReference] = useState(null)
   const [openPopover, setOpenPopover] = useState(false)
-  
+
   // Custom event handler for node click / tap
   const selectNodes = (nodeIds, nodeProps, rawEvent) => {
     const node = nodeIds[0]
@@ -81,9 +82,12 @@ const RawInteractionPanel = (props) => {
 
   useEffect(() => {
     // Test subnet to check it has required attributes
-    const {elements} = subnet
-    const {nodes} = elements
-    if(nodes[0] === undefined || nodes[0]['data'][NODE_COLOR_KEY] === undefined) {
+    const { elements } = subnet
+    const { nodes } = elements
+    if (
+      nodes[0] === undefined ||
+      nodes[0]['data'][NODE_COLOR_KEY] === undefined
+    ) {
       return
     }
 
@@ -103,6 +107,9 @@ const RawInteractionPanel = (props) => {
       edgeAttrNames,
     )
     console.log(networkStyle)
+
+    const primaryEdgeName = subnet.data[MAIN_EDGE_TAG]
+    insertEdgeColorMapping({vs: networkStyle, attrName: primaryEdgeName, scoreMin: 0, scoreMax: 1})
     setTooltipKeys(DDRAM_TOOLTIP_KEY)
   }, [networkStyle])
 
@@ -110,7 +117,7 @@ const RawInteractionPanel = (props) => {
     commandActions.clearCommand()
   }
   const hoverOnNode = (nodeId, nodeProps) => {
-    console.log("Hover:")
+    console.log('Hover:')
     console.log(nodeId, nodeProps)
   }
 
@@ -167,7 +174,7 @@ const RawInteractionPanel = (props) => {
           eventHandlers={getCustomEventHandlers()}
           rendererOptions={{
             layout: checkPresetLayout(subnet),
-            tooltipKeys
+            tooltipKeys,
           }}
           command={props.commands}
           setRendererReference={setCyReference}
@@ -191,7 +198,7 @@ const RawInteractionPanel = (props) => {
         eventHandlers={getCustomEventHandlers()}
         rendererOptions={{
           layout: checkPresetLayout(subnet),
-          tooltipKeys
+          tooltipKeys,
         }}
         command={props.commands}
         setRendererReference={setCyReference}
