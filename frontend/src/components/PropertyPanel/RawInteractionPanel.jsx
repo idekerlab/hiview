@@ -5,8 +5,12 @@ import LoadingPanel from './LoadingPanel'
 import { Set } from 'immutable'
 import { MAIN_EDGE_TAG } from '../../actions/raw-interactions-util'
 
-import { insertEdgeColorMapping, insertNodeColorMapping } from '../../utils/vs-util'
+import {
+  insertEdgeColorMapping,
+  insertNodeColorMapping,
+} from '../../utils/vs-util'
 import CustomPopover from '../CustomPopover'
+import { enableCustomStyling } from '../../actions/ui-state'
 
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
@@ -29,32 +33,26 @@ const RawInteractionPanel = (props) => {
     setHandleSvg,
   } = props
 
+  // For switching VS
+  const enableCustomStyling = uiState.get('enableCustomStyling')
+
+  const [originalVS, setOriginalVS] = useState(null)
+
   // These attributes will be rendered as tooltip text
   const [tooltipKeys, setTooltipKeys] = useState([])
 
+  // Cytoscape.js reference
   const [cyReference, setCyReference] = useState(null)
   const [openPopover, setOpenPopover] = useState(false)
+
 
   // Custom event handler for node click / tap
   const selectNodes = (nodeIds, nodeProps, rawEvent) => {
     const node = nodeIds[0]
     const props = nodeProps[node]
-
-    // Show popup
-    const { pleio, systems } = props
-    console.log('##PS', pleio, systems)
-
-    const newSelectionState = {
-      networkId: 'raw',
-      nodeId: node,
-      nodeProps: props,
-    }
-    // if necessary, app can use selection in Cytoscape.js
-    // selectionActions.selectNode(newSelectionState)
   }
 
   useEffect(() => {
-    console.log('*Cytoscape instance assigned:', cyReference)
     if (cyReference) {
       setCy(cyReference)
     }
@@ -81,6 +79,15 @@ const RawInteractionPanel = (props) => {
   }, [uiState.get('runEnrichment'), subnet])
 
   useEffect(() => {
+    if(originalVS === null) {
+      const clone = JSON.parse(JSON.stringify(networkStyle));
+      setOriginalVS(clone)
+    }
+
+    if(!enableCustomStyling) {
+      return
+    }
+    
     // Test subnet to check it has required attributes
     const { elements } = subnet
     const { nodes } = elements
@@ -106,12 +113,25 @@ const RawInteractionPanel = (props) => {
       NODE_COLOR_KEY,
       edgeAttrNames,
     )
-    console.log(networkStyle)
-
     const primaryEdgeName = subnet.data[MAIN_EDGE_TAG]
-    insertEdgeColorMapping({vs: networkStyle, attrName: primaryEdgeName, scoreMin: 0, scoreMax: 1})
+    insertEdgeColorMapping({
+      vs: networkStyle,
+      attrName: primaryEdgeName,
+      scoreMin: 0,
+      scoreMax: 1,
+    })
     setTooltipKeys(DDRAM_TOOLTIP_KEY)
-  }, [networkStyle])
+  }, [networkStyle, enableCustomStyling])
+
+  useEffect(() => {
+    if (cyReference !== null) {
+      let newStyle = networkStyle.style
+      if(!enableCustomStyling) {
+        newStyle = originalVS.style
+      }
+      cyReference.style().fromJson(newStyle).update()
+    }
+  }, [enableCustomStyling])
 
   const commandFinished = (lastCommand, status = {}) => {
     commandActions.clearCommand()

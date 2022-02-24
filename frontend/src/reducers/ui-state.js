@@ -10,12 +10,12 @@ import {
   SET_DEFAULT_DEPTH,
   ENABLE_PRIMARY_EDGE,
   SET_FILTER_STATE,
-  SET_SEARCH_MODE
+  SET_SEARCH_MODE,
+  ENABLE_CUSTOM_STYLING
 } from '../actions/ui-state'
 
 import { handleActions } from 'redux-actions'
 import { Map } from 'immutable'
-
 
 export const SEARCH_MODE = {
   EXACT: 'exact',
@@ -35,7 +35,8 @@ const defaultState = Map({
   defaultDepth: 1,
   enablePrimaryEdge: true,
   filterState: Map(),
-  searchMode: SEARCH_MODE.EXACT
+  searchMode: SEARCH_MODE.EXACT,
+  enableCustomStyling: true
 })
 
 export default handleActions(
@@ -75,6 +76,8 @@ export default handleActions(
     },
     [SET_SEARCH_MODE]: (state, action) =>
       state.set('searchMode', action.payload),
+    [ENABLE_CUSTOM_STYLING]: (state, action) =>
+      state.set('enableCustomStyling', action.payload),
   },
   defaultState
 )

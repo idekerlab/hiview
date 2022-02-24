@@ -379,6 +379,8 @@ const TermDetailsPanel = props => {
         <LayoutSelector 
           commandActions={props.interactionsCommandActions} 
           currentSubsystem={props.currentProperty.id}
+          uiState={props.uiState}
+          uiStateActions={props.uiStateActions}
         />
         <ExportButtons
           geneList={geneList}

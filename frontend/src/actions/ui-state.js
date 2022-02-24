@@ -23,6 +23,9 @@ export const CHANGE_VIEWER = 'CHANGE_VIEWER'
 // Gene or systems
 export const SET_SEARCH_MODE = 'SET_SEARCH_MODE'
 
+// For Anton's data only - should be removed
+export const ENABLE_CUSTOM_STYLING = 'ENABLE_CUSTOM_STYLING'
+
 
 export const showAppBar = createAction(SHOW_APP_BAR)
 export const showCommands = createAction(SHOW_COMMANDS)
@@ -47,5 +50,6 @@ export const setDefaultDepth = createAction(SET_DEFAULT_DEPTH)
 export const enablePrimaryEdge = createAction(ENABLE_PRIMARY_EDGE)
 export const setFilterState = createAction(SET_FILTER_STATE)
 
-
 export const setSearchMode = createAction(SET_SEARCH_MODE)
+
+export const enableCustomStyling = createAction(ENABLE_CUSTOM_STYLING)

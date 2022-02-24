@@ -46,7 +46,8 @@ const LayoutSelector = (props) => {
   const [layout, setLayout] = useState(LAYOUTS.COSE)
   const [buttonDisabled, setButtonDisabled] = useState(false)
 
-  const { currentSubsystem } = props
+  const { currentSubsystem, uiState, uiStateActions } = props
+  const enableCustomStyling = uiState.get('enableCustomStyling')
 
   // Enable button once new sub network is loaded.
   useEffect(() => {
@@ -90,7 +91,7 @@ const LayoutSelector = (props) => {
   return (
     <div className={classes.root}>
       <div className={classes.flexContainer}>
-        <StyleSwitch />
+        <StyleSwitch uiStateActions={uiStateActions} enableCustomStyling={enableCustomStyling}/>
       </div>
       <div className={classes.flexContainer}>
         <LayoutList layout={layout} handleChange={handleChange} />
