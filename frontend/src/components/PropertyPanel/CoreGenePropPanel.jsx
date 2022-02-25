@@ -78,8 +78,6 @@ class CoreGenePropPanel extends Component {
     return (
       <div>
         <List dense={true} style={{ margin: 0, padding: 0 }}>
-
-
           <ListItem
             button
             onClick={this.handleExpand}

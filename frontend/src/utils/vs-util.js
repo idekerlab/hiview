@@ -67,6 +67,7 @@ const insertEdgeColorMapping = ({vs, attrName, scoreMin, scoreMax}) => {
       'line-color': ele => colorScale(ele.data(attrName))
     },
   }
+
   vsClone.style.push(edgeColorMapping)
 
   return vsClone

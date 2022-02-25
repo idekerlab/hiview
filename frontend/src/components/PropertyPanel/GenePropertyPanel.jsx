@@ -48,15 +48,19 @@ const useStyles = makeStyles(theme => ({
 
 const GenePropertyPanel = props => {
   const getSummaryPanel = (summary, classes) => {
+    let message = ''
     if (summary === undefined || (summary === null) | (summary === '')) {
-      return <div />
+      message = '( Summary of this gene is not available from MyGene.info )'
+    } else {
+      message = summary
     }
+    
     return (
       <div className={classes.description}>
         <Typography variant="h6" className={classes.title}>
           Summary
         </Typography>
-        <Typography type="body1">{summary}</Typography>
+        <Typography type="body1">{message}</Typography>
       </div>
     )
   }

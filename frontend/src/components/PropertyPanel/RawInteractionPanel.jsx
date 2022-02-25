@@ -33,10 +33,13 @@ const RawInteractionPanel = (props) => {
     setHandleSvg,
   } = props
 
+  const filterState = uiState.get('filterState')
+
   // For switching VS
   const enableCustomStyling = uiState.get('enableCustomStyling')
 
   const [originalVS, setOriginalVS] = useState(null)
+  const [vsUpdated, setVsUpdated] = useState(false)
 
   // These attributes will be rendered as tooltip text
   const [tooltipKeys, setTooltipKeys] = useState([])
@@ -44,7 +47,6 @@ const RawInteractionPanel = (props) => {
   // Cytoscape.js reference
   const [cyReference, setCyReference] = useState(null)
   const [openPopover, setOpenPopover] = useState(false)
-
 
   // Custom event handler for node click / tap
   const selectNodes = (nodeIds, nodeProps, rawEvent) => {
@@ -79,15 +81,19 @@ const RawInteractionPanel = (props) => {
   }, [uiState.get('runEnrichment'), subnet])
 
   useEffect(() => {
-    if(originalVS === null) {
-      const clone = JSON.parse(JSON.stringify(networkStyle));
+    if (originalVS === null) {
+      const clone = JSON.parse(JSON.stringify(networkStyle))
       setOriginalVS(clone)
     }
 
-    if(!enableCustomStyling) {
+    if (vsUpdated) {
       return
     }
-    
+
+    if (!enableCustomStyling) {
+      return
+    }
+
     // Test subnet to check it has required attributes
     const { elements } = subnet
     const { nodes } = elements
@@ -113,20 +119,45 @@ const RawInteractionPanel = (props) => {
       NODE_COLOR_KEY,
       edgeAttrNames,
     )
+
+    const currentFilters = filterState.toJSON()
+    let colorPrimaryEdge = false
+    let showPrimary = false
     const primaryEdgeName = subnet.data[MAIN_EDGE_TAG]
-    insertEdgeColorMapping({
-      vs: networkStyle,
-      attrName: primaryEdgeName,
-      scoreMin: 0,
-      scoreMax: 1,
-    })
+    
+    for (const [attributeName, filter] of Object.entries(currentFilters)) {
+      
+      const enabled = filter.enabled
+      if (attributeName === primaryEdgeName && enabled) {
+        showPrimary = true
+      } else {
+        colorPrimaryEdge = colorPrimaryEdge || enabled
+      }
+    }
+
+    if (showPrimary && !colorPrimaryEdge) {
+      insertEdgeColorMapping({
+        vs: networkStyle,
+        attrName: primaryEdgeName,
+        scoreMin: 0,
+        scoreMax: 1,
+      })
+    }
     setTooltipKeys(DDRAM_TOOLTIP_KEY)
-  }, [networkStyle, enableCustomStyling])
+
+    // Modify style only once
+    setVsUpdated(true)
+  }, [networkStyle, enableCustomStyling, filterState])
+
+  useEffect(() => {
+    const curFilter = filterState.toJSON()
+    console.log('FilterChange', curFilter)
+  }, [filterState])
 
   useEffect(() => {
     if (cyReference !== null) {
       let newStyle = networkStyle.style
-      if(!enableCustomStyling) {
+      if (!enableCustomStyling) {
         newStyle = originalVS.style
       }
       cyReference.style().fromJson(newStyle).update()
