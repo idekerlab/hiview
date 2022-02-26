@@ -153,8 +153,8 @@ const D3Legend = ({ minScore=0.0, maxScore=1.0, w, h }) => {
 }
 
 D3Legend.propTypes = {
-  minScore: PropTypes.number.isRequired,
-  maxScore: PropTypes.number.isRequired,
+  minScore: PropTypes.number,
+  maxScore: PropTypes.number,
   w: PropTypes.number,
   h: PropTypes.number,
 }

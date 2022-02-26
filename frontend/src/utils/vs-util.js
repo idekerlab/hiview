@@ -12,13 +12,15 @@ const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {
     return
   }
 
-  const valueLen = attrValues.length
+  const sortedValues = attrValues.sort()
+  const valueLen = sortedValues.length
   const vsClone = Object.assign(vs)
   
   for (let idx = 0; idx < valueLen; idx++) {
-    const color = getColor10(idx)
+    let color = getColor10(idx)
+    const attrVal = sortedValues[idx]
     const attrSelector = {
-      selector: `node[${keyAttrName} = '${attrValues[idx]}']`,
+      selector: `node[${keyAttrName} = "${attrVal}"]`,
       css: {
         'text-background-color': color,
         'text-background-opacity': 1,
@@ -31,7 +33,6 @@ const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {
   }
 
   // Node shape mappings for pleio
- 
   const shapeAttrSelector = {
     selector: "node[pleio]",
     css: {
@@ -69,7 +70,6 @@ const insertEdgeColorMapping = ({vs, attrName, scoreMin, scoreMax}) => {
   }
 
   vsClone.style.push(edgeColorMapping)
-
   return vsClone
 }
 

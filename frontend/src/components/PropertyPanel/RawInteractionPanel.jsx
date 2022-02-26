@@ -15,7 +15,7 @@ import { enableCustomStyling } from '../../actions/ui-state'
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
 // TODO: Remove this - this is a special case for Anton's data
-const DDRAM_TOOLTIP_KEY = ['pleio', 'systems']
+const DDRAM_TOOLTIP_KEY = ['pleio', 'systems', 'dominantEvidence']
 const NODE_COLOR_KEY = 'dominantEvidence'
 
 const RawInteractionPanel = (props) => {

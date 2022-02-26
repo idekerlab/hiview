@@ -296,6 +296,8 @@ class EdgeFilter extends Component {
       let value = defValue
       const currentState = filterState.get(name)
 
+      console.log('Node: ', name, color)
+
       if (currentState) {
         value = currentState.value
         enabled = currentState.enabled
