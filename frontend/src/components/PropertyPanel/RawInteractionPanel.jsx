@@ -37,8 +37,9 @@ const RawInteractionPanel = (props) => {
 
   // For switching VS
   const enableCustomStyling = uiState.get('enableCustomStyling')
-
+  
   const [originalVS, setOriginalVS] = useState(null)
+
   const [vsUpdated, setVsUpdated] = useState(false)
 
   // These attributes will be rendered as tooltip text
@@ -124,9 +125,8 @@ const RawInteractionPanel = (props) => {
     let colorPrimaryEdge = false
     let showPrimary = false
     const primaryEdgeName = subnet.data[MAIN_EDGE_TAG]
-    
+
     for (const [attributeName, filter] of Object.entries(currentFilters)) {
-      
       const enabled = filter.enabled
       if (attributeName === primaryEdgeName && enabled) {
         showPrimary = true
@@ -135,14 +135,13 @@ const RawInteractionPanel = (props) => {
       }
     }
 
-    if (showPrimary && !colorPrimaryEdge) {
-      insertEdgeColorMapping({
-        vs: networkStyle,
-        attrName: primaryEdgeName,
-        scoreMin: 0,
-        scoreMax: 1,
-      })
-    }
+    insertEdgeColorMapping({
+      vs: networkStyle,
+      attrName: primaryEdgeName,
+      scoreMin: 0,
+      scoreMax: 1,
+    })
+    
     setTooltipKeys(DDRAM_TOOLTIP_KEY)
 
     // Modify style only once
@@ -151,7 +150,7 @@ const RawInteractionPanel = (props) => {
 
   useEffect(() => {
     const curFilter = filterState.toJSON()
-    console.log('FilterChange', curFilter)
+    // console.log('FilterChange', curFilter)
   }, [filterState])
 
   useEffect(() => {
@@ -168,7 +167,6 @@ const RawInteractionPanel = (props) => {
     commandActions.clearCommand()
   }
   const hoverOnNode = (nodeId, nodeProps) => {
-    console.log('Hover:')
     console.log(nodeId, nodeProps)
   }
 
