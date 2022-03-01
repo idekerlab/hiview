@@ -37,7 +37,9 @@ const RawInteractionPanel = (props) => {
 
   // For switching VS
   const enableCustomStyling = uiState.get('enableCustomStyling')
-  
+
+  // True if any of the individual filter is selected
+  const [filtersSelected, setFiltersSelected] = useState(null)
   const [originalVS, setOriginalVS] = useState(null)
 
   const [vsUpdated, setVsUpdated] = useState(false)
@@ -141,7 +143,7 @@ const RawInteractionPanel = (props) => {
       scoreMin: 0,
       scoreMax: 1,
     })
-    
+
     setTooltipKeys(DDRAM_TOOLTIP_KEY)
 
     // Modify style only once
@@ -149,8 +151,38 @@ const RawInteractionPanel = (props) => {
   }, [networkStyle, enableCustomStyling, filterState])
 
   useEffect(() => {
+    // No need to change if original styling (no edge mapping) is used.
+    if (
+      networkStyle === originalVS ||
+      networkStyle === null ||
+      cyReference === null
+    ) {
+      return
+    }
+
     const curFilter = filterState.toJSON()
-    // console.log('FilterChange', curFilter)
+    const filterNames = Object.keys(curFilter)
+    const filterLen = filterNames.length
+    if (filterLen === 0) {
+      return
+    }
+
+    let disableColors = false
+    filterNames.forEach((fName) => {
+      const { enabled } = curFilter[fName]
+      disableColors = disableColors || enabled
+    })
+
+    const newStyle = networkStyle.style
+    if (disableColors && filtersSelected === null) {
+      const lastMapping = networkStyle.style.pop()
+      setFiltersSelected(lastMapping)
+      cyReference.style().fromJson(newStyle).update()
+    } else if (!disableColors && filtersSelected !== null) {
+      networkStyle.style.push(filtersSelected)
+      setFiltersSelected(null)
+      cyReference.style().fromJson(newStyle).update()
+    }
   }, [filterState])
 
   useEffect(() => {
