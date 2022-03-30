@@ -1,4 +1,4 @@
-import React from 'react'
+import React　from 'react'
 import TermDetailsPanel from './TermDetailsPanel'
 import GenePropertyPanel from './GenePropertyPanel'
 
@@ -7,6 +7,17 @@ const PANEL_TYPES = {
   TERM: 'term',
   DEFAULT: 'default'
 }
+
+// const drawerContentsStyle = {
+//   boxSizing: 'border-box',
+//   width: '100%',
+//   height: '100%',
+//   margin: 0,
+//   padding: 0,
+//   background: '#FFFFFF',
+//   display: 'flex',
+//   flexDirection: 'column'
+// }
 
 const PropertyPanel = props => {
   const { currentProperty } = props

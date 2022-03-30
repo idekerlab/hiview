@@ -1,7 +1,10 @@
+const webpack = require('webpack')
 const path = require('path')
+
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
+  devtool: 'source-map',
   context: path.join(__dirname, './src'),
 
   entry: {
@@ -79,9 +82,10 @@ module.exports = {
   },
 
   plugins: [
+    new webpack.NamedModulesPlugin(),
+
     new HtmlWebpackPlugin({
       inject: true,
-      moduleIds: 'named',
       template: 'index.html'
     })
   ],
@@ -89,10 +93,7 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     host: '0.0.0.0',
-    static: {
-      directory: path.join(__dirname, 'build'),
-    },
-    compress: true,
+    contentBase: './src',
     hot: true,
     port: 3000
   }
