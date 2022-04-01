@@ -35,6 +35,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
 import { createStyles, makeStyles } from '@material-ui/core'
 
 import D3Legend from '../D3Legend'
+import EdgeInfoPanel from './EdgeInfoPanel'
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -219,6 +220,7 @@ const TermDetailsPanel = props => {
             hierarchy={props.network.get('hierarchy')}
             networkAreaStyle={{ height: '100%', background: '#000000' }}
             setCy={setCy}
+            rawInteractionsActions={props.rawInteractionsActions}
           />
         </div>
       )
@@ -376,6 +378,7 @@ const TermDetailsPanel = props => {
           minScore={networkProps['Score min']}
           maxScore={networkProps['Score max']}
         />
+        
         <LayoutSelector 
           commandActions={props.interactionsCommandActions} 
           currentSubsystem={props.currentProperty.id}
@@ -388,35 +391,15 @@ const TermDetailsPanel = props => {
           rawInteractions={props.rawInteractions}
           externalNetworks={props.externalNetworks}
         />
+        
+        <EdgeInfoPanel 
+          selectedEdge={props.rawInteractions.get('selectedEdge')}
+        />
+        
         <div className={classes.control}>
           <div>{getControllers(selectedExternalNetwork, networkProps, raw)}</div>
         </div>
 
-        {hidden || selectedExternalNetwork ? (
-          <div />
-        ) : (
-          <ExpansionPanel>
-            <ExpansionPanelSummary
-              className={classes.edgeFilterTitle}
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="edgeFilter"
-              id="edgeFilter"
-            >
-              <Typography>Edge Filters</Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails className={classes.edgeFilters}>
-              <EdgeFilter
-                filters={raw.filters}
-                commandActions={props.interactionsCommandActions}
-                commands={props.interactionsCommands}
-                filtersActions={props.filtersActions}
-                networkData={networkProps}
-                uiState={props.uiState}
-                uiStateActions={props.uiStateActions}
-              />
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        )}
         <AppBar position="static" color="default">
           <Tabs value={selectedTab} onChange={handleChange}>
             <Tab label="Subsystem Details" />

@@ -676,6 +676,10 @@ export const setPrimaryEdgeScoreRange = createAction(
 export const SET_SELECTED = 'SET_SELECTED'
 export const setSelected = createAction(SET_SELECTED)
 
+// Stores single edge selection
+export const SET_SELECTED_EDGE = 'SET_SELECTED_EDGE'
+export const setSelectedEdge = createAction(SET_SELECTED_EDGE)
+
 // CTR-Click select
 export const SET_SELECTED_PERM = 'SET_SELECTED_PERM'
 export const setSelectedPerm = createAction(SET_SELECTED_PERM)
@@ -703,6 +707,7 @@ export const setGroupPositions = createAction(SET_GROUP_POSITIONS)
 
 export const CLEAR_ALL = 'CLEAR_ALL'
 export const clearAll = createAction(CLEAR_ALL)
+
 
 // Check size of the network
 

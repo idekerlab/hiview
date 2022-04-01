@@ -10,7 +10,6 @@ import {
   insertNodeColorMapping,
 } from '../../utils/vs-util'
 import CustomPopover from '../CustomPopover'
-import { enableCustomStyling } from '../../actions/ui-state'
 
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
@@ -31,6 +30,7 @@ const RawInteractionPanel = (props) => {
     networkAreaStyle,
     setCy,
     setHandleSvg,
+    rawInteractionsActions
   } = props
 
   const filterState = uiState.get('filterState')
@@ -51,10 +51,62 @@ const RawInteractionPanel = (props) => {
   const [cyReference, setCyReference] = useState(null)
   const [openPopover, setOpenPopover] = useState(false)
 
+  // Selected edge in raw interaction network
+  // const [selectedInteraction, setSelectedInteraction] = useState(null)
+
   // Custom event handler for node click / tap
   const selectNodes = (nodeIds, nodeProps, rawEvent) => {
     const node = nodeIds[0]
     const props = nodeProps[node]
+  }
+
+  const selectEdges = (edgeIds, edgeProps, rawEvent) => {
+    const { cy } = rawEvent
+    if (cy === undefined || cy === null) {
+      return
+    }
+
+    if (
+      edgeIds === undefined ||
+      edgeIds === null ||
+      !Array.isArray(edgeIds) ||
+      edgeIds.length === 0
+    ) {
+      return
+    }
+
+    const edgeId = edgeIds[0]
+    if (
+      edgeProps === undefined ||
+      edgeProps === null
+    ) {
+      return
+    }
+
+    const edgeData = edgeProps[edgeId]
+
+    if (edgeData !== undefined) {
+      const { source, target } = edgeData
+      const s = cy.elements(`node#${source}`)
+      const t = cy.elements(`node#${target}`)
+
+      const sName = s[0].data('name')
+      const tName = t[0].data('name')
+      console.log(edgeIds, edgeProps, rawEvent, s, t)
+
+      const selectedEdgeData = {
+        source: sName,
+        target: tName,
+        edge: edgeData
+      }
+
+      rawInteractionsActions.setSelectedEdge(selectedEdgeData)
+    }
+  }
+
+  const deselectEdges = (edgeIds) => {
+    console.log('Edge deselected:', edgeIds)
+    // rawInteractionsActions.setSelectedEdge(null)
   }
 
   useEffect(() => {
@@ -210,7 +262,8 @@ const RawInteractionPanel = (props) => {
   // Then use it as a custom handler
   const getCustomEventHandlers = () => ({
     selectNodes,
-    // selectEdges: selectEdges,
+    selectEdges,
+    deselectEdges,
     // hoverOnNode,
     // hoverOutNode,
     commandFinished,

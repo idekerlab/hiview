@@ -16,7 +16,8 @@ import {
   SET_LOADING,
   SET_EDGE_SCORE_RANGE,
   SET_GROUP_POSITIONS,
-  CLEAR_ALL
+  CLEAR_ALL,
+  SET_SELECTED_EDGE,
 } from '../actions/raw-interactions'
 import { Map, Set } from 'immutable'
 
@@ -34,6 +35,7 @@ const defState = Map({
   edgeScoreRange: [0.0, 1.0],
   originalEdgeCount: 0,
   selected: [],
+  selectedEdge: null,
   selectedPerm: Set(),
   summary: null,
   autoLoadThreshold: 10000,
@@ -107,6 +109,9 @@ export default function networkState(state = defState, action) {
 
     case SET_SELECTED:
       return state.set('selected', action.payload)
+    
+    case SET_SELECTED_EDGE:
+      return state.set('selectedEdge', action.payload)
 
     case SET_SELECTED_PERM:
       const currentSelection = state.get('selectedPerm')
