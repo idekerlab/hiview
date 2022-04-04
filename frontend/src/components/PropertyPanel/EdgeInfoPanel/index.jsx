@@ -54,7 +54,6 @@ const EdgeInfoPanel = ({ selectedEdge }) => {
 
   return (
     <List
-      dense={true}
       component="nav"
       aria-labelledby="nested-edge-property-list"
       subheader={

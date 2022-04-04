@@ -10,12 +10,23 @@ import { makeStyles } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
 import OpenLinkIcon from '@material-ui/icons/OpenInNew'
 
+import Linkify from 'linkify-react'
+import DOMPurify from 'dompurify'
+import parse from 'html-react-parser'
+
 import {
   Typography,
   ListItemSecondaryAction,
   IconButton,
 } from '@material-ui/core'
 import { parseProps } from '../../../utils/edge-prop-util'
+
+const DUMMY_TEXT =
+  'Konno, N., Kijima, Y., Watano, K. et al. <a href="https://doi.org/10.1038/s41587-021-01111-2">Deep distributed computing to reconstruct extremely large lineage trees</a>. <i>Nat Biotechnol </i>(2022). https://doi.org/10.1038/s41587-021-01111-2&nbsp; [<a href="http://idekerlab.ucsd.edu/wp-content/uploads/2022/01/Konno_NatBiotechnol2022.pdf">PDF</a>]'
+
+const sanitized = DOMPurify.sanitize(DUMMY_TEXT, {
+  USE_PROFILES: { html: true }
+})
 
 // This is the special key value for encoded string
 export const NDEX_EVIDENCE_KEY = 'ndex:evidence'
@@ -24,11 +35,11 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
     minHeight: '10em',
-    backgroundColor: theme.palette.background.default,
+    backgroundColor: theme.palette.background.paper,
   },
   item: {
-    display: 'flex',
-    flexDirection: 'column',
+    borderTop: '1px solid #bbbbbb',
+    height: '6em'
   },
   inline: {
     // width: '4em'
@@ -44,6 +55,8 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(7),
   },
 }))
+
+const options = {}
 
 /**
  *
@@ -62,7 +75,7 @@ const EvidenceListItem = ({ evidence }) => {
 
   return (
     <React.Fragment>
-      <ListItem button onClick={handleClick}>
+      <ListItem className={classes.item} button onClick={handleClick}>
         {open ? <ExpandLess /> : <ExpandMore />}
         <div className={classes.item2}>
           <Typography
@@ -80,7 +93,7 @@ const EvidenceListItem = ({ evidence }) => {
             {`Class: ${evidence.class}`}
           </Typography>
         </div>
-        <div className={classes.item}>
+        <div>
           <ListItemText>
             <Typography
               variant="subtitle1"
@@ -102,19 +115,14 @@ const EvidenceListItem = ({ evidence }) => {
         </div>
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
-        <List dense={true} component="div" disablePadding>
+        <List component="div" disablePadding>
           <ListItem button className={classes.nested}>
             <ListItemText
               primary="Description:"
               secondary={
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+                parse(sanitized) 
               }
             />
-            <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="comments">
-                <OpenLinkIcon />
-              </IconButton>
-            </ListItemSecondaryAction>
           </ListItem>
         </List>
       </Collapse>
