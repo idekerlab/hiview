@@ -20,6 +20,7 @@
       
       // Latest for custom UI with edge attr
       "url": "http://localhost:3000/2f403ead-afba-11ec-b036-0660b7976219?type=test&server=https://test.ndexbio.org",
+      // "url": "http://localhost:3000/456de2dc-b477-11ec-b036-0660b7976219?type=test&server=http://test.ndexbio.org",
       "webRoot": "${workspaceRoot}/src"
     }
   ]

@@ -36,7 +36,16 @@ const EdgeInfoPanel = ({ selectedEdge }) => {
     }
 
     const { edge } = selectedEdge
+    if(edge === undefined || edge === null) {
+      setListData(null)
+      return
+    }
     const evidence = edge[NDEX_EVIDENCE_KEY]
+    if(evidence === undefined || evidence === null || !Array.isArray(evidence)) {
+      setListData(null)
+      return
+    }
+
     const evidences = evidence.map((ev) => parseProps(ev))
 
     setListData(evidences)

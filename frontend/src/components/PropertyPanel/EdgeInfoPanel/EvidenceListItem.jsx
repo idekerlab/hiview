@@ -25,7 +25,7 @@ const DUMMY_TEXT =
   'Konno, N., Kijima, Y., Watano, K. et al. <a href="https://doi.org/10.1038/s41587-021-01111-2">Deep distributed computing to reconstruct extremely large lineage trees</a>. <i>Nat Biotechnol </i>(2022). https://doi.org/10.1038/s41587-021-01111-2&nbsp; [<a href="http://idekerlab.ucsd.edu/wp-content/uploads/2022/01/Konno_NatBiotechnol2022.pdf">PDF</a>]'
 
 const sanitized = DOMPurify.sanitize(DUMMY_TEXT, {
-  USE_PROFILES: { html: true }
+  USE_PROFILES: { html: true },
 })
 
 // This is the special key value for encoded string
@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
   item: {
     borderTop: '1px solid #bbbbbb',
-    height: '6em'
+    height: '6em',
   },
   inline: {
     // width: '4em'
@@ -71,6 +71,17 @@ const EvidenceListItem = ({ evidence }) => {
 
   const handleClick = () => {
     setOpen(!open)
+  }
+
+  let description = 'N/A'
+  try {
+    if (evidence.description !== undefined) {
+      description = DOMPurify.sanitize(evidence.description, {
+        USE_PROFILES: { html: true },
+      })
+    }
+  } catch (err) {
+    console.warn('Description text is invalid.')
   }
 
   return (
@@ -119,9 +130,7 @@ const EvidenceListItem = ({ evidence }) => {
           <ListItem button className={classes.nested}>
             <ListItemText
               primary="Description:"
-              secondary={
-                parse(sanitized) 
-              }
+              secondary={parse(description)}
             />
           </ListItem>
         </List>
