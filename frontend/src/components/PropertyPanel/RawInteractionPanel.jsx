@@ -145,7 +145,7 @@ const RawInteractionPanel = (props) => {
       return
     }
 
-    if (!enableCustomStyling) {
+    if (enableCustomStyling === false) {
       return
     }
 
@@ -153,8 +153,8 @@ const RawInteractionPanel = (props) => {
     const { elements } = subnet
     const { nodes } = elements
     if (
-      nodes[0] === undefined ||
-      nodes[0]['data'][NODE_COLOR_KEY] === undefined
+      nodes[0] === undefined 
+      // nodes[0]['data'][NODE_COLOR_KEY] === undefined
     ) {
       return
     }

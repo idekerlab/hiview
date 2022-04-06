@@ -119,8 +119,9 @@ const D3Legend = ({ minScore=0.0, maxScore=1.0, w, h }) => {
   //   max = Number(maxRaw).toFixed(3)
   // }
 
-  let min = Number(minScore).toFixed(3)
-  let max = Number(maxScore).toFixed(3)
+  let min = Number(0).toFixed(2)
+  // let min = Number(minScore).toFixed(2)
+  let max = Number(maxScore).toFixed(2)
 
   return (
     <div style={rootStyle}>
@@ -131,19 +132,19 @@ const D3Legend = ({ minScore=0.0, maxScore=1.0, w, h }) => {
       </div>
       <div style={textAreaStyle}>
         <Typography component="div">
-          <Box fontSize={'0.5em'} fontWeight="fontWeightMedium" m={1}>
+          <Box fontSize={'1em'} fontWeight="fontWeightMedium" m={1}>
             {min}
           </Box>
         </Typography>
         <div style={captionStyle}>
           <Typography>
-            <Box fontSize={'0.5em'} fontWeight="fontWeightMedium" m={1}>
-              Primary Edge Score
+            <Box fontSize={'1em'} fontWeight="fontWeightMedium" m={1}>
+              DDR protein Association Score (DAS)
             </Box>
           </Typography>
         </div>
         <Typography component="div">
-          <Box fontSize={'0.5em'} fontWeight="fontWeightMedium" m={1}>
+          <Box fontSize={'1em'} fontWeight="fontWeightMedium" m={1}>
             {max}
           </Box>
         </Typography>

@@ -42,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
     height: '6em',
   },
   inline: {
-    // width: '4em'
+    height: '1.2em'
   },
   item2: {
     width: '70%',
@@ -91,14 +91,14 @@ const EvidenceListItem = ({ evidence }) => {
         <div className={classes.item2}>
           <Typography
             variant="subtitle1"
-            className={classes.inline}
+            // className={classes.inline}
             color="textPrimary"
           >
             {`feature: ${evidence.feature}`}
           </Typography>
           <Typography
             variant="subtitle2"
-            className={classes.inline}
+            // className={classes.inline}
             color="textSecondary"
           >
             {`Class: ${evidence.class}`}
@@ -127,7 +127,7 @@ const EvidenceListItem = ({ evidence }) => {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          <ListItem button className={classes.nested}>
+          <ListItem className={classes.nested}>
             <ListItemText
               primary="Description:"
               secondary={parse(description)}
