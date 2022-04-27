@@ -97,9 +97,8 @@ const BASE_STYLE = {
   node: {
     selector: 'node',
     css: {
-      width: 110,
-      // width: 48,
-      height: 60,
+      width: 100,
+      height: 40,
       shape: 'roundrectangle',
       'text-valign': 'center',
       'text-halign': 'center',
@@ -113,7 +112,7 @@ const BASE_STYLE = {
       'text-outline-color': '#111111',
       'text-outline-opacity': 1,
       'background-opacity': 0,
-      'background-color': '#222222',
+      'background-color': '#AAAAAA',
       'border-width': 0,
       'font-size': BASE_FONT_SIZE,
       label: 'data(name)'

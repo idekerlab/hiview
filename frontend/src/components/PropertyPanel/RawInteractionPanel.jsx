@@ -160,19 +160,19 @@ const RawInteractionPanel = (props) => {
     }
 
     // Update visual style if necessary
-    let edgeAttrNames = []
+    let attrNames = []
     if (filters !== undefined) {
       // Note: this always contains "Score"
-      const edgeAttrs = filters.filter(
+      const attrs = filters.filter(
         (filter) => filter.attributeName !== 'Score',
       )
-      edgeAttrNames = edgeAttrs.map((attr) => attr.attributeName)
+      attrNames = attrs.map((attr) => attr.attributeName)
     }
 
     const vsClone = insertNodeColorMapping(
       networkStyle,
       NODE_COLOR_KEY,
-      edgeAttrNames,
+      attrNames,
     )
 
     const currentFilters = filterState.toJSON()

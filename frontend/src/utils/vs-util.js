@@ -5,9 +5,9 @@ const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {
     vs === null ||
     vs === undefined ||
     keyAttrName === undefined ||
-    keyAttrName === null ||
-    Array.isArray(attrValues) === false ||
-    attrValues.length === 0
+    keyAttrName === null 
+    // Array.isArray(attrValues) === false ||
+    // attrValues.length === 0
   ) {
     return
   }
@@ -47,7 +47,7 @@ const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {
 
         const numericVal = Number.parseInt(val)
         if(Number.isInteger(numericVal) && numericVal > 1) {
-          return 'diamond'
+          return 'ellipse'
         }
 
         return 'roundrectangle'

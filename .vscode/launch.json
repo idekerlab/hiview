@@ -10,8 +10,10 @@
             
             // Anton's data
             // OLD "url": "http://localhost:3000/90b49f92-286b-11eb-890f-0660b7976219?type=test&server=test.ndexbio.org",
-            "url": "http://localhost:3000/b7cf2a78-8b73-11ec-b036-0660b7976219?type=test&server=http://test.ndexbio.org",
+            // "url": "http://localhost:3000/b7cf2a78-8b73-11ec-b036-0660b7976219?type=test&server=http://test.ndexbio.org",
+            "url": "http://localhost:3000/06a01098-c5ad-11ec-8896-0660b7976219?type=test&server=http://test.ndexbio.org",
             "webRoot": "${workspaceRoot}/frontend/src"
+
         }
     ]
 }
