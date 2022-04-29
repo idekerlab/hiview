@@ -37,7 +37,7 @@ import { createStyles, makeStyles } from '@material-ui/core'
 import D3Legend from '../D3Legend'
 import EdgeInfoPanel from './EdgeInfoPanel'
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     topPane: {
       width: '100%',
@@ -72,25 +72,27 @@ const useStyles = makeStyles(theme =>
 
 const WARNING_TH = 2000000
 
-const TermDetailsPanel = props => {
+const TermDetailsPanel = (props) => {
   const networkContainer = useRef(null)
 
   const classes = useStyles()
 
   const [selectedTab, setSelectedTab] = useState(0)
-  const [networkPanelHeight, setNetworkPanelHeight] = useState(window.innerHeight * 0.5)
+  const [networkPanelHeight, setNetworkPanelHeight] = useState(
+    window.innerHeight * 0.5,
+  )
 
   const [vs, setVS] = useState(null)
   const [systemID, setSystemID] = useState(null)
 
   const [cy, setCy] = useState(null)
 
-  const addStyle = rawInteractions => {
+  const addStyle = (rawInteractions) => {
     const networkStyle = StyleFactory.createStyle(rawInteractions)
     setVS(networkStyle)
   }
 
-  const setScore = val => {
+  const setScore = (val) => {
     props.commandActions.filter({
       options: {
         type: 'numeric',
@@ -120,18 +122,23 @@ const TermDetailsPanel = props => {
     setSelectedTab(value)
   }
 
-  const handleResize = e => {
+  const handleResize = (e) => {
     props.interactionsCommandActions.fit()
   }
 
-  const handleHorizontalResize = topHeight => {
+  const handleHorizontalResize = (topHeight) => {
     setNetworkPanelHeight(topHeight)
   }
 
   const getControllers = (externalNetwork, networkProps, raw) => {
     if (externalNetwork !== null) {
       const others = props
-      return <LayoutSelector commandActions={props.interactionsCommandActions} {...others} />
+      return (
+        <LayoutSelector
+          commandActions={props.interactionsCommandActions}
+          {...others}
+        />
+      )
     }
 
     return (
@@ -255,7 +262,12 @@ const TermDetailsPanel = props => {
 
   // Term property
   const details = props.currentProperty
-  if (details === undefined || details === null || details.id === null || details.id === undefined) {
+  if (
+    details === undefined ||
+    details === null ||
+    details.id === null ||
+    details.id === undefined
+  ) {
     return <div />
   }
 
@@ -279,7 +291,7 @@ const TermDetailsPanel = props => {
   subnet = interactions
 
   if (subnet !== null && subnet !== undefined) {
-    geneList = subnet.elements.nodes.map(node => node.data.name)
+    geneList = subnet.elements.nodes.map((node) => node.data.name)
   } else {
     const geneMap = props.network.get('geneMap')
     const label = data.Label
@@ -303,7 +315,6 @@ const TermDetailsPanel = props => {
     visualStyle.name = 'defaultStyle'
   }
 
-  
   let { network } = props
   let networkData = {}
   if (network !== undefined || network === null) {
@@ -360,7 +371,7 @@ const TermDetailsPanel = props => {
       split="horizontal"
       minSize={window.innerHeight * 0.4}
       defaultSize={window.innerHeight * 0.4}
-      onDragFinished={topHeight => handleHorizontalResize(topHeight)}
+      onDragFinished={(topHeight) => handleHorizontalResize(topHeight)}
     >
       <div className={classes.topPane}>
         <MessageBar
@@ -370,17 +381,25 @@ const TermDetailsPanel = props => {
           originalEdgeCount={props.originalEdgeCount}
           maxEdgeCount={props.maxEdgeCount}
         />
-        {getNetworkPanel(hidden, selectedExternalNetwork, interactions, selected, selectedPerm, visualStyle, raw)}
+        {getNetworkPanel(
+          hidden,
+          selectedExternalNetwork,
+          interactions,
+          selected,
+          selectedPerm,
+          visualStyle,
+          raw,
+        )}
       </div>
 
       <div className={classes.bottomPane}>
-        <D3Legend 
+        <D3Legend
           minScore={networkProps['Score min']}
           maxScore={networkProps['Score max']}
         />
-        
-        <LayoutSelector 
-          commandActions={props.interactionsCommandActions} 
+
+        <LayoutSelector
+          commandActions={props.interactionsCommandActions}
           currentSubsystem={props.currentProperty.id}
           uiState={props.uiState}
           uiStateActions={props.uiStateActions}
@@ -391,13 +410,28 @@ const TermDetailsPanel = props => {
           rawInteractions={props.rawInteractions}
           externalNetworks={props.externalNetworks}
         />
-        
-        <EdgeInfoPanel 
+
+        {hidden || selectedExternalNetwork ? (
+          <div />
+        ) : (
+          <EdgeFilter
+            filters={raw.filters}
+            commandActions={props.interactionsCommandActions}
+            commands={props.interactionsCommands}
+            filtersActions={props.filtersActions}
+            networkData={networkProps}
+            uiState={props.uiState}
+            uiStateActions={props.uiStateActions}
+          />
+        )}
+        <EdgeInfoPanel
           selectedEdge={props.rawInteractions.get('selectedEdge')}
         />
-        
+
         <div className={classes.control}>
-          <div>{getControllers(selectedExternalNetwork, networkProps, raw)}</div>
+          <div>
+            {getControllers(selectedExternalNetwork, networkProps, raw)}
+          </div>
         </div>
 
         <AppBar position="static" color="default">

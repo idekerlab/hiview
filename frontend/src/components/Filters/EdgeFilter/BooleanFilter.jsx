@@ -5,8 +5,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 
 import BaseFilter from './BaseFilter'
 
+// Special tag for DDRAM project
+const APMS_LABEL = 'New AP-MS of key DDR proteins'
+
 const filterRowStyle = {
-  padding: '1em',
+  paddingTop: '1.5em',
   width: '100%',
   height: '0.8em',
   display: 'flex',
@@ -33,7 +36,6 @@ class BooleanFilter extends BaseFilter {
     const checked = this.state.checked
 
     if (current !== next && checked) {
-      console.log('##########################>>>>>> Enterexpand', this.props)
       setTimeout(() => {
         this.filterSelected(true)
         this.props.uiStateActions.setFilterState({
@@ -46,6 +48,12 @@ class BooleanFilter extends BaseFilter {
   }
 
   render() {
+    let label = this.props.label
+
+    if(label !== undefined && label.includes('AP_MS')) {
+      label = APMS_LABEL
+    } 
+
     return (
       <div style={filterRowStyle}>
         <FormControlLabel
@@ -56,15 +64,15 @@ class BooleanFilter extends BaseFilter {
               style={{
                 width: '1em',
                 height: '1em',
-                paddingRight: '0.2em',
+                paddingRight: '0.5em',
                 color: this.state.labelColor
               }}
               checked={this.state.checked}
               onChange={this.onChecked}
-              value={this.props.label}
+              value={label}
             />
           }
-          label={this.props.label}
+          label={label}
         />
       </div>
     )

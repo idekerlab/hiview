@@ -19,6 +19,7 @@ import PrimaryEdgeSwitch from './PrimaryEdgeSwitch'
 
 import { getColor10 } from '../../../utils/color-util'
 
+
 const EDGE_GROUP_TAG = 'edge groups'
 const OTHERS_TAG = 'Others'
 
@@ -32,7 +33,7 @@ const styles = theme => ({
     position: 'relative',
     background: 'inherit',
     flexGrow: 2,
-    padding: '0.6em',
+    padding: theme.spacing(2),
   },
   title: {
     height: '2em',
@@ -148,18 +149,13 @@ class EdgeFilter extends Component {
       // Old data format.  Just render plain list
       return (
         <div className={classes.root}>
-          <Typography variant="subtitle1" className={classes.title}>
-            Interaction Features:
-          </Typography>
-          <PrimaryEdgeSwitch uiState={uiState} uiStateActions={uiStateActions} />
 
-          <List>
+          <PrimaryEdgeSwitch uiState={uiState} uiStateActions={uiStateActions} />
             {sortedNames.map((filterName, idx) => (
-              <ListItem key={filterName}>
+              <div key={filterName}>
                 {this.getFilter(idx, filterMap[filterName], filterState, uiStateActions)}
-              </ListItem>
+              </div>
             ))}
-          </List>
         </div>
       )
     }
@@ -295,8 +291,6 @@ class EdgeFilter extends Component {
       const name = filter.attributeName
       let value = defValue
       const currentState = filterState.get(name)
-
-      console.log('Node: ', name, color)
 
       if (currentState) {
         value = currentState.value

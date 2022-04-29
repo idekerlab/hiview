@@ -58,19 +58,40 @@ const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {
   return vsClone
 }
 
-const insertEdgeColorMapping = ({vs, attrName, scoreMin, scoreMax}) => {
+const insertEdgeColorMapping = ({edges, vs, attrName, scoreMin, scoreMax}) => {
   const vsClone = Object.assign(vs)
   const colorScale = getColorScaleInferno({min: scoreMin, max: scoreMax})
+  
+  assignColor(edges, attrName, colorScale)
+
+  // Standard color mapping only for DDRAM
+  // const edgeColorMapping =  {
+  //   selector: `edge[${attrName}]`,
+  //   css: {
+  //     'line-color': ele => colorScale(ele.data(attrName))
+  //   },
+  // }
   
   const edgeColorMapping =  {
     selector: `edge[${attrName}]`,
     css: {
-      'line-color': ele => colorScale(ele.data(attrName))
+      'line-color': `data(color)`
     },
   }
 
   vsClone.style.push(edgeColorMapping)
   return vsClone
+}
+
+const assignColor = (edges, attrName, colorScale) => {
+
+
+
+  edges.forEach(e => {
+    const {data} = e
+    const value = data[attrName]
+    data['color'] = colorScale(value)
+  })
 }
 
 export { insertNodeColorMapping, insertEdgeColorMapping }

@@ -151,7 +151,7 @@ const RawInteractionPanel = (props) => {
 
     // Test subnet to check it has required attributes
     const { elements } = subnet
-    const { nodes } = elements
+    const { nodes, edges } = elements
     if (
       nodes[0] === undefined 
       // nodes[0]['data'][NODE_COLOR_KEY] === undefined
@@ -175,21 +175,10 @@ const RawInteractionPanel = (props) => {
       attrNames,
     )
 
-    const currentFilters = filterState.toJSON()
-    let colorPrimaryEdge = false
-    let showPrimary = false
     const primaryEdgeName = subnet.data[MAIN_EDGE_TAG]
 
-    for (const [attributeName, filter] of Object.entries(currentFilters)) {
-      const enabled = filter.enabled
-      if (attributeName === primaryEdgeName && enabled) {
-        showPrimary = true
-      } else {
-        colorPrimaryEdge = colorPrimaryEdge || enabled
-      }
-    }
-
     insertEdgeColorMapping({
+      edges,
       vs: networkStyle,
       attrName: primaryEdgeName,
       scoreMin: 0,
@@ -215,26 +204,27 @@ const RawInteractionPanel = (props) => {
     const curFilter = filterState.toJSON()
     const filterNames = Object.keys(curFilter)
     const filterLen = filterNames.length
+
     if (filterLen === 0) {
       return
     }
 
-    let disableColors = false
-    filterNames.forEach((fName) => {
-      const { enabled } = curFilter[fName]
-      disableColors = disableColors || enabled
-    })
+    // let disableColors = false
+    // filterNames.forEach((fName) => {
+    //   const { enabled } = curFilter[fName]
+    //   disableColors = disableColors || enabled
+    // })
 
-    const newStyle = networkStyle.style
-    if (disableColors && filtersSelected === null) {
-      const lastMapping = networkStyle.style.pop()
-      setFiltersSelected(lastMapping)
-      cyReference.style().fromJson(newStyle).update()
-    } else if (!disableColors && filtersSelected !== null) {
-      networkStyle.style.push(filtersSelected)
-      setFiltersSelected(null)
-      cyReference.style().fromJson(newStyle).update()
-    }
+    // const newStyle = networkStyle.style
+    // if (disableColors && filtersSelected === null) {
+    //   const lastMapping = networkStyle.style.pop()
+    //   setFiltersSelected(lastMapping)
+    //   cyReference.style().fromJson(newStyle).update()
+    // } else if (!disableColors && filtersSelected !== null) {
+    //   networkStyle.style.push(filtersSelected)
+    //   setFiltersSelected(null)
+    //   cyReference.style().fromJson(newStyle).update()
+    // }
   }, [filterState])
 
   useEffect(() => {

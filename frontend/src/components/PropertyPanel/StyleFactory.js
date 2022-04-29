@@ -4,7 +4,7 @@ const INTERACTION_TAG = 'interaction'
 
 // Font size will be calculated based on viewport size.
 const VIEW_TO_FONT_SIZE_RATIO = 350
-const BASE_FONT_SIZE = 20
+const BASE_FONT_SIZE = 18
 const LARGE_FONT_SIZE = 30
 
 // If there are too many edge in the data, use simplified version.
@@ -97,8 +97,8 @@ const BASE_STYLE = {
   node: {
     selector: 'node',
     css: {
-      width: 100,
-      height: 40,
+      width: 82,
+      height: 22,
       shape: 'roundrectangle',
       'text-valign': 'center',
       'text-halign': 'center',
@@ -248,8 +248,8 @@ export const createStyle = originalNetwork => {
   const edgeStyle = BASE_STYLE.edge
   edgeStyle.css['z-index'] = `data(zIndex)`
 
-  const edgeColor = 'color'
-  edgeStyle.css['line-color'] = `data(${edgeColor})`
+  // const edgeColor = 'color'
+  // edgeStyle.css['line-color'] = `data(${edgeColor})`
 
   if (similarityMin !== similarityMax) {
     edgeStyle.css[
@@ -261,7 +261,7 @@ export const createStyle = originalNetwork => {
     const topRange = range * 0.95
     const maxThreshold = similarityMin + topRange
     
-    const maxWidth = 8
+    const maxWidth = 10
     const minWidth = 2
     const rangeWidth = Math.abs(maxWidth - minWidth) 
 

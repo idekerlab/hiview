@@ -3,12 +3,15 @@ import React from 'react'
 import Checkbox from '@material-ui/core/Checkbox'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 
+// Special tag for DDRAM project
+const LABEL_DDRAM = 'DAS Score Network'
+
 const filterRowStyle = {
-  padding: '1em',
+  padding: 0,
   width: '100%',
   height: '0.8em',
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
 }
 
 /**
@@ -17,7 +20,7 @@ const filterRowStyle = {
  * @returns {*}
  * @constructor
  */
-const PrimaryEdgeSwitch = props => {
+const PrimaryEdgeSwitch = (props) => {
   const { uiState, uiStateActions } = props
   const enablePrimaryEdge = uiState.get('enablePrimaryEdge')
 
@@ -30,14 +33,14 @@ const PrimaryEdgeSwitch = props => {
             style={{
               width: '1em',
               height: '1em',
-              paddingRight: '0.5em'
+              paddingRight: '0.5em',
             }}
             checked={enablePrimaryEdge}
             onChange={() => handleChange(enablePrimaryEdge, uiStateActions)}
             value="isEnabled"
           />
         }
-        label={'Show primary edge'}
+        label={LABEL_DDRAM}
       />
     </div>
   )
@@ -46,4 +49,5 @@ const PrimaryEdgeSwitch = props => {
 const handleChange = (enablePrimaryEdge, uiStateActions) => {
   uiStateActions.enablePrimaryEdge(!enablePrimaryEdge)
 }
+
 export default PrimaryEdgeSwitch
