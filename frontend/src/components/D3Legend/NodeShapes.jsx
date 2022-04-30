@@ -36,10 +36,8 @@ const captionStyle = {
   justifyContent: 'center',
 }
 
-
-const D3Legend = ({ minScore=0.0, maxScore=1.0, w, h }) => {
+const NodeShapes = ({ w, h }) => {
   
-
   let width = w
   if (w === undefined) {
     width = DEF_WIDTH
@@ -49,7 +47,6 @@ const D3Legend = ({ minScore=0.0, maxScore=1.0, w, h }) => {
   if (h === undefined) {
     height = DEF_HEIGHT
   }
-  
 
   const containerStyle = {
     width,
@@ -99,21 +96,17 @@ const D3Legend = ({ minScore=0.0, maxScore=1.0, w, h }) => {
   }
 
   useEffect(() => {
-    legendFactory({ width: w, height: h })
-  }, [w, h])
-  
-
-  useEffect(() => {
     if (
       (containerRef !== null,
       containerRef !== undefined && legendRef !== undefined,
       legendRef !== null)
     ) {
+      console.log('Ref initialized:', legendRef)
 
       legendFactory({ width, height })
     }
   }, [containerRef, legendRef])
-
+  
   let min = Number(0).toFixed(2)
   let max = Number(maxScore).toFixed(2)
 
@@ -161,4 +154,30 @@ const barStyle = {
   justifyContent: 'center',
 }
 
-export default D3Legend
+const minMaxStyle = {
+  display: 'inline-flex',
+  width: '100%',
+  alignItems: 'center',
+  color: '#333333',
+  justifyContent: 'center',
+}
+
+const minStyle = {
+  width: '2em',
+  paddingRight: '0.5em',
+}
+
+const maxStyle = {
+  width: '2em',
+  paddingLeft: '0.5em',
+}
+
+const titleStyle = {
+  color: '#555555',
+  fontFace: 'Roboto',
+  fontSize: '0.7em',
+  fontWeight: 400,
+  padding: '0.3em',
+}
+
+export default NodeShapes

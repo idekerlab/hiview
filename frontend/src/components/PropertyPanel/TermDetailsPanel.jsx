@@ -394,6 +394,7 @@ const TermDetailsPanel = (props) => {
 
       <div className={classes.bottomPane}>
         <D3Legend
+          w={props.width}
           minScore={networkProps['Score min']}
           maxScore={networkProps['Score max']}
         />

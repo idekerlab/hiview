@@ -19,7 +19,6 @@ import SearchResult from './SearchResult'
 import MainPanel from './MainPanel'
 import NotFoundPanel from './NotFoundPanel'
 
-import LegendPanel from '../LegendPanel'
 import Overlay from '../Overlay'
 
 const styles = theme => ({
@@ -53,8 +52,7 @@ const styles = theme => ({
     padding: 0
   },
   heading: {
-    fontSize: '1.2em',
-    fontWeight: 400,
+    fontSize: '0.9em',
     padding: 0
   },
   media: {
@@ -162,15 +160,15 @@ class LocalSearchPanel extends Component {
           )}
         </Card>
         <Card className={classes.expansionCard}>
-          <ExpansionPanel defaultExpanded={true} className={classes.expansion}>
+          <ExpansionPanel defaultExpanded={false} className={classes.expansion}>
             <ExpansionPanelSummary
               expandIcon={<ExpandMoreIcon />}
               aria-controls="panel1a-content"
               id="panel1a-header"
               className={classes.summaryPanel}
             >
-              <Typography variant="h2" className={classes.heading}>
-                Hierarchy: {label}
+              <Typography className={classes.heading}>
+                {label}
               </Typography>
             </ExpansionPanelSummary>
             <ExpansionPanelDetails className={classes.expandPanel}>

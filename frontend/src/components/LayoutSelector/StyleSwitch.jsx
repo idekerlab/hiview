@@ -17,7 +17,7 @@ const StyleSwitch = ({ enableCustomStyling, uiStateActions }) => {
             checked={enableCustomStyling}
           />
         }
-        label="Apply custom styling"
+        label="Visualize pleiotropy and dominant evidence for inclusion"
       />
     </FormGroup>
   )

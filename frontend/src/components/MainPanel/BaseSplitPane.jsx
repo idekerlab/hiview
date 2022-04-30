@@ -27,12 +27,20 @@ export default class BaseSplitPane extends Component {
     }
   }
 
-  componentDidMount() {
+  setWidth() {
     const width = window.innerWidth
     const leftPanelWidth = width * DEFAULT_MAIN_PANEL_WIDTH_RATIO
     this.setState({
       mainPanelWidth: leftPanelWidth,
     })
+  }
+  componentDidMount() {
+    this.setWidth()
+
+    const handleResize = () => {
+      this.setWidth()      
+    }
+    window.addEventListener('resize', handleResize)
   }
 
   handleVerticalResize = leftWidth => {
@@ -99,6 +107,7 @@ export default class BaseSplitPane extends Component {
             originalEdgeCount={this.props.rawInteractions.get('originalEdgeCount')}
             externalNetworks={this.props.externalNetworks}
             externalNetworksActions={this.props.externalNetworksActions}
+            width={window.innerWidth - this.state.mainPanelWidth}
             {...this.props}
           />
         )}

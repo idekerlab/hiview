@@ -5,12 +5,6 @@ const style = {
   color: '#555555'
 }
 
-const titleStyle = {
-  fontWeight: 500,
-  fontSize: '1.3em',
-  lineHeight: '1.4em'
-}
-
 const textStyle = {
   fontWeight: 300,
   fontSize: '1.1em',
