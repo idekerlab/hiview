@@ -7,6 +7,7 @@ import * as d3Selection from 'd3-selection'
 import * as d3Array from 'd3-array'
 import * as d3Scale from 'd3-scale'
 import * as d3ScaleChromatic from 'd3-scale-chromatic'
+import NodeShapes from './NodeShapes'
 
 // Default size of the root component
 const DEF_WIDTH = '100%'
@@ -36,10 +37,7 @@ const captionStyle = {
   justifyContent: 'center',
 }
 
-
-const D3Legend = ({ minScore=0.0, maxScore=1.0, w, h }) => {
-  
-
+const D3Legend = ({ minScore = 0.0, maxScore = 1.0, w, h }) => {
   let width = w
   if (w === undefined) {
     width = DEF_WIDTH
@@ -49,7 +47,6 @@ const D3Legend = ({ minScore=0.0, maxScore=1.0, w, h }) => {
   if (h === undefined) {
     height = DEF_HEIGHT
   }
-  
 
   const containerStyle = {
     width,
@@ -101,7 +98,6 @@ const D3Legend = ({ minScore=0.0, maxScore=1.0, w, h }) => {
   useEffect(() => {
     legendFactory({ width: w, height: h })
   }, [w, h])
-  
 
   useEffect(() => {
     if (
@@ -109,7 +105,6 @@ const D3Legend = ({ minScore=0.0, maxScore=1.0, w, h }) => {
       containerRef !== undefined && legendRef !== undefined,
       legendRef !== null)
     ) {
-
       legendFactory({ width, height })
     }
   }, [containerRef, legendRef])
@@ -119,6 +114,7 @@ const D3Legend = ({ minScore=0.0, maxScore=1.0, w, h }) => {
 
   return (
     <div style={rootStyle}>
+      <NodeShapes />
       <div ref={containerRef} style={containerStyle}>
         <div style={barStyle}>
           <svg ref={legendRef} />

@@ -1,7 +1,5 @@
 import React, { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Typography } from '@material-ui/core'
-import Box from '@material-ui/core/Box'
 
 import * as d3Selection from 'd3-selection'
 import * as d3Array from 'd3-array'
@@ -12,32 +10,7 @@ import * as d3ScaleChromatic from 'd3-scale-chromatic'
 const DEF_WIDTH = '100%'
 const DEF_HEIGHT = '1.5em'
 
-const rootStyle = {
-  width: '100%',
-  height: '100%',
-  padding: '0.2em',
-  background: '#FFFFFF',
-  display: 'flex',
-  flexDirection: 'column',
-  paddingBottom: 0,
-}
-
-const textAreaStyle = {
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  padding: 0,
-}
-
-const captionStyle = {
-  flexGrow: 1,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}
-
 const NodeShapes = ({ w, h }) => {
-  
   let width = w
   if (w === undefined) {
     width = DEF_WIDTH
@@ -49,9 +22,16 @@ const NodeShapes = ({ w, h }) => {
   }
 
   const containerStyle = {
-    width,
-    height,
+    width: '100%',
+    height: '3.5em',
     padding: 0,
+  }
+
+  const wrapper = {
+    display: 'inline-flex',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   }
 
   const containerRef = useRef(null)
@@ -60,39 +40,51 @@ const NodeShapes = ({ w, h }) => {
   /**
    * Create actual D3 element
    */
-  const legendFactory = ({ width, height }) => {
+  const legendFactory = () => {
     const parentHeight = containerRef.current.offsetHeight
     const parentWidth = containerRef.current.offsetWidth
-
-    const legendRedSelected = d3Selection.select(legendRef.current)
-
-    const svg = legendRedSelected
+    const svg = d3Selection
+      .select(legendRef.current)
       .attr('width', parentWidth)
       .attr('height', parentHeight)
-      .append('g')
 
-    const colorScale = d3Scale
-      .scaleSequential(d3ScaleChromatic.interpolateInferno)
-      .domain([0, parentWidth])
+    const PAD = 5
+    const centerY = 20 + PAD
 
-    const bars = svg
-      .selectAll('.bars')
-      .data(d3Array.range(parentWidth), function (d) {
-        return d
-      })
-      .enter()
+    svg
+      .append('ellipse')
+      .attr('cx', 40)
+      .attr('cy', centerY)
+      .attr('rx', 35)
+      .attr('ry', 15)
+      .style('stroke-width', 2)
+      .style('stroke', '#666666') // set the line colour
+      .style('fill', 'none')
+    svg
       .append('rect')
-      .attr('class', 'bars')
-      .attr('x', function (d, i) {
-        return i
-      })
-      .attr('y', 0)
-      .attr('height', parentHeight)
-      .attr('width', 2)
-      .attr('stroke', 0)
-      .style('fill', function (d, i) {
-        return colorScale(d)
-      })
+      .attr('x', 250)
+      .attr('y', PAD * 2)
+      .attr('rx', 5)
+      .attr('ry', 5)
+      .attr('height', 30)
+      .attr('width', 70)
+      .style('stroke-width', 2)
+      .style('stroke', '#666666')
+      .style('fill', 'none')
+    svg
+      .append('text')
+      .attr('x', 100)
+      .attr('y', centerY)
+      .text('Node Type A')
+      .style('font-size', '1em')
+      .attr('alignment-baseline', 'middle')
+    svg
+      .append('text')
+      .attr('x', 350)
+      .attr('y', centerY)
+      .text('Node Type B')
+      .style('font-size', '1em')
+      .attr('alignment-baseline', 'middle')
   }
 
   useEffect(() => {
@@ -106,78 +98,19 @@ const NodeShapes = ({ w, h }) => {
       legendFactory({ width, height })
     }
   }, [containerRef, legendRef])
-  
-  let min = Number(0).toFixed(2)
-  let max = Number(maxScore).toFixed(2)
 
   return (
-    <div style={rootStyle}>
+    <div style={wrapper}>
       <div ref={containerRef} style={containerStyle}>
-        <div style={barStyle}>
-          <svg ref={legendRef} />
-        </div>
-      </div>
-      <div style={textAreaStyle}>
-        <Typography component="div">
-          <Box fontSize={'1em'} fontWeight="fontWeightMedium" m={1}>
-            {min}
-          </Box>
-        </Typography>
-        <div style={captionStyle}>
-          <Typography>
-            <Box fontSize={'1em'} fontWeight="fontWeightMedium" m={1}>
-              DDR protein Association Score (DAS)
-            </Box>
-          </Typography>
-        </div>
-        <Typography component="div">
-          <Box fontSize={'1em'} fontWeight="fontWeightMedium" m={1}>
-            {max}
-          </Box>
-        </Typography>
+        <svg ref={legendRef} />
       </div>
     </div>
   )
 }
 
-D3Legend.propTypes = {
-  minScore: PropTypes.number,
-  maxScore: PropTypes.number,
+NodeShapes.propTypes = {
   w: PropTypes.number,
   h: PropTypes.number,
-}
-
-const barStyle = {
-  display: 'inline-flex',
-  width: '100%',
-  alignItems: 'center',
-  justifyContent: 'center',
-}
-
-const minMaxStyle = {
-  display: 'inline-flex',
-  width: '100%',
-  alignItems: 'center',
-  color: '#333333',
-  justifyContent: 'center',
-}
-
-const minStyle = {
-  width: '2em',
-  paddingRight: '0.5em',
-}
-
-const maxStyle = {
-  width: '2em',
-  paddingLeft: '0.5em',
-}
-
-const titleStyle = {
-  color: '#555555',
-  fontFace: 'Roboto',
-  fontSize: '0.7em',
-  fontWeight: 400,
-  padding: '0.3em',
 }
 
 export default NodeShapes
