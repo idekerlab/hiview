@@ -90,9 +90,9 @@ const LayoutSelector = (props) => {
 
   return (
     <div className={classes.root}>
-      <div className={classes.flexContainer}>
+      {/* <div className={classes.flexContainer}>
         <StyleSwitch uiStateActions={uiStateActions} enableCustomStyling={enableCustomStyling}/>
-      </div>
+      </div> */}
       <div className={classes.flexContainer}>
         <LayoutList layout={layout} handleChange={handleChange} />
         <Tooltip

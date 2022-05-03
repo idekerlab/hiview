@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { Typography } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
@@ -16,7 +16,7 @@ const DEF_HEIGHT = '1.5em'
 const rootStyle = {
   width: '100%',
   height: '100%',
-  padding: '0.2em',
+  padding: '0',
   background: '#FFFFFF',
   display: 'flex',
   flexDirection: 'column',
@@ -37,16 +37,9 @@ const captionStyle = {
   justifyContent: 'center',
 }
 
-const D3Legend = ({ minScore = 0.0, maxScore = 1.0, w, h }) => {
+const D3Legend = ({ minScore = 0.0, maxScore = 1.0, w=DEF_WIDTH, h=DEF_HEIGHT }) => {
   let width = w
-  if (w === undefined) {
-    width = DEF_WIDTH
-  }
-
   let height = h
-  if (h === undefined) {
-    height = DEF_HEIGHT
-  }
 
   const containerStyle = {
     width,
@@ -56,6 +49,8 @@ const D3Legend = ({ minScore = 0.0, maxScore = 1.0, w, h }) => {
 
   const containerRef = useRef(null)
   const legendRef = useRef(null)
+
+  const [wrapperWidth, setWrapperWidth] = useState(DEF_WIDTH)
 
   /**
    * Create actual D3 element
@@ -97,6 +92,7 @@ const D3Legend = ({ minScore = 0.0, maxScore = 1.0, w, h }) => {
 
   useEffect(() => {
     legendFactory({ width: w, height: h })
+    setWrapperWidth(w)
   }, [w, h])
 
   useEffect(() => {
@@ -114,7 +110,7 @@ const D3Legend = ({ minScore = 0.0, maxScore = 1.0, w, h }) => {
 
   return (
     <div style={rootStyle}>
-      <NodeShapes />
+      <NodeShapes w={wrapperWidth} />
       <div ref={containerRef} style={containerStyle}>
         <div style={barStyle}>
           <svg ref={legendRef} />

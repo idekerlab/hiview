@@ -20,6 +20,7 @@ import MainPanel from './MainPanel'
 import NotFoundPanel from './NotFoundPanel'
 
 import Overlay from '../Overlay'
+import UCSDLogo from '../../assets/images/ucsd-logo.svg'
 
 const styles = theme => ({
   root: {
@@ -72,6 +73,10 @@ const styles = theme => ({
   },
   flexGrow: {
     flex: '1 1 auto'
+  },
+  ucsdLogo: {
+    width: '5.5em',
+    marginRight: '0.5em'
   }
 })
 
@@ -167,6 +172,7 @@ class LocalSearchPanel extends Component {
               id="panel1a-header"
               className={classes.summaryPanel}
             >
+              <img src={UCSDLogo} alt="UCSD Logo" className={classes.ucsdLogo} />
               <Typography className={classes.heading}>
                 {label}
               </Typography>

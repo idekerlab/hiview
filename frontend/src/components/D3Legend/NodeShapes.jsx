@@ -1,52 +1,31 @@
 import React, { useRef, useEffect } from 'react'
 import PropTypes from 'prop-types'
-
 import * as d3Selection from 'd3-selection'
-import * as d3Array from 'd3-array'
-import * as d3Scale from 'd3-scale'
-import * as d3ScaleChromatic from 'd3-scale-chromatic'
 
 // Default size of the root component
-const DEF_WIDTH = '100%'
-const DEF_HEIGHT = '1.5em'
 
-const NodeShapes = ({ w, h }) => {
-  let width = w
-  if (w === undefined) {
-    width = DEF_WIDTH
-  }
+const containerStyle = {
+  display: 'inline-flex',
+  width: '100%',
+  height: '3em',
+  alignItems: 'center',
+  justifyContent: 'center',
+  padding: 0,
+}
 
-  let height = h
-  if (h === undefined) {
-    height = DEF_HEIGHT
-  }
+const HEIGHT = 48
 
-  const containerStyle = {
-    width: '100%',
-    height: '3.5em',
-    padding: 0,
-  }
-
-  const wrapper = {
-    display: 'inline-flex',
-    width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  }
-
-  const containerRef = useRef(null)
+const NodeShapes = ({ w }) => {
   const legendRef = useRef(null)
 
   /**
    * Create actual D3 element
    */
   const legendFactory = () => {
-    const parentHeight = containerRef.current.offsetHeight
-    const parentWidth = containerRef.current.offsetWidth
     const svg = d3Selection
       .select(legendRef.current)
-      .attr('width', parentWidth)
-      .attr('height', parentHeight)
+      .attr('width', w)
+      .attr('height', HEIGHT)
 
     const PAD = 5
     const centerY = 20 + PAD
@@ -62,7 +41,7 @@ const NodeShapes = ({ w, h }) => {
       .style('fill', 'none')
     svg
       .append('rect')
-      .attr('x', 250)
+      .attr('x', 180)
       .attr('y', PAD * 2)
       .attr('rx', 5)
       .attr('ry', 5)
@@ -73,37 +52,29 @@ const NodeShapes = ({ w, h }) => {
       .style('fill', 'none')
     svg
       .append('text')
-      .attr('x', 100)
+      .attr('x', 85)
       .attr('y', centerY)
-      .text('Node Type A')
+      .text('Pleiotropic')
       .style('font-size', '1em')
       .attr('alignment-baseline', 'middle')
     svg
       .append('text')
-      .attr('x', 350)
+      .attr('x', 260)
       .attr('y', centerY)
-      .text('Node Type B')
+      .text('Single assembly assignment')
       .style('font-size', '1em')
       .attr('alignment-baseline', 'middle')
   }
 
   useEffect(() => {
-    if (
-      (containerRef !== null,
-      containerRef !== undefined && legendRef !== undefined,
-      legendRef !== null)
-    ) {
-      console.log('Ref initialized:', legendRef)
-
-      legendFactory({ width, height })
+    if (legendRef !== undefined && legendRef !== null) {
+      legendFactory()
     }
-  }, [containerRef, legendRef])
+  }, [legendRef])
 
   return (
-    <div style={wrapper}>
-      <div ref={containerRef} style={containerStyle}>
-        <svg ref={legendRef} />
-      </div>
+    <div style={containerStyle}>
+      <svg ref={legendRef} />
     </div>
   )
 }

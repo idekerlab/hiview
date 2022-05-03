@@ -111,7 +111,7 @@ const EvidenceListItem = ({ evidence }) => {
               className={classes.inline}
               color="textPrimary"
             >
-              {`Shap: ${evidence.shap}`}
+              {`SHAP: ${evidence.shap}`}
             </Typography>
           </ListItemText>
           <ListItemText>
@@ -120,7 +120,7 @@ const EvidenceListItem = ({ evidence }) => {
               className={classes.inline}
               color="textPrimary"
             >
-              {`Z-Score: ${evidence['z-score']}`}
+              {`Feature Score: ${evidence['z-score']}`}
             </Typography>
           </ListItemText>
         </div>
