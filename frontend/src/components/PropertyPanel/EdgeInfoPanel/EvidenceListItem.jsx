@@ -56,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const options = {}
 
 /**
  *
@@ -67,7 +66,7 @@ const options = {}
  */
 const EvidenceListItem = ({ evidence }) => {
   const classes = useStyles()
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(true)
 
   const handleClick = () => {
     setOpen(!open)
