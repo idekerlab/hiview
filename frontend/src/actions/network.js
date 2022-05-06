@@ -29,13 +29,13 @@ export const setCurrentPath = createAction(SET_CURRENT_PATH)
 const hvDb = LocalDB.getDB()
 
 //TODO: Need to create two search mode.
-const generateIndex = networkJson => {
+const generateIndex = (networkJson) => {
   if (!networkJson) {
     throw Error('Network not loaded')
   }
 
   const nodes = networkJson.elements.nodes
-  const nodeData = nodes.map(node => node.data)
+  const nodeData = nodes.map((node) => node.data)
 
   // For individual exact match
   const geneSearchOptions = {
@@ -46,7 +46,7 @@ const generateIndex = networkJson => {
     distance: 10,
     maxPatternLength: 6,
     minMatchCharLength: 3,
-    keys: ['Label']
+    keys: ['Label'],
   }
 
   // For fuzzy term name match
@@ -58,7 +58,7 @@ const generateIndex = networkJson => {
     distance: 100,
     maxPatternLength: 40,
     minMatchCharLength: 3,
-    keys: ['Label', 'GO_term_ID']
+    keys: ['Label', 'GO_term_ID'],
   }
 
   const geneIndex = new Fuse(nodeData, geneSearchOptions)
@@ -67,10 +67,10 @@ const generateIndex = networkJson => {
   return { geneIndex, systemIndex }
 }
 
-const fetchNetwork = url => {
+const fetchNetwork = (url) => {
   return {
     type: FETCH_NETWORK,
-    url
+    url,
   }
 }
 
@@ -82,7 +82,7 @@ const receiveNetwork = (url, json, error) => {
       url,
       index: null,
       network: null,
-      error: error
+      error: error,
     }
   }
 
@@ -93,30 +93,47 @@ const receiveNetwork = (url, json, error) => {
     url,
     index,
     network: json,
-    error: null
+    error: null,
   }
 }
 
-let t0 = 0
-let t1 = 0
 export const fetchNetworkFromUrl = (url, uuid, serverType, credentials) => {
-  t0 = performance.now()
-  return dispatch => {
+  return (dispatch) => {
     dispatch(fetchNetwork(url))
     return getNetworkData(url, uuid, dispatch, serverType, credentials)
   }
 }
 
-const getNetworkData = (url, uuid, dispatch, serverType, credentials) => {
-  hvDb.hierarchy.get(uuid).then(network => {
-    if (network === undefined) {
-      console.log('Does not exist:', uuid)
+const getNetworkData = async (url, uuid, dispatch, serverType, credentials) => {
+  const network = await hvDb.hierarchy.get(uuid)
+  const newSummary = await fetchSummary(serverType, uuid)
+
+  if (network === undefined) {
+    // Simply fetch from NDEx DB
+    console.log('Network does not exist in local DB:', uuid)
+    return fetchDataFromRemote(url, uuid, dispatch, serverType, credentials)
+  } else {
+    const { summary } = network
+    if(summary === undefined || newSummary === undefined ) {
+      // Just fetch new one from NDEx
       return fetchDataFromRemote(url, uuid, dispatch, serverType, credentials)
     } else {
-      return fetchFromLocal(url, uuid, dispatch, network)
-    }
-  })
-  return false
+      // Data with summary exists.  Fetch if new version is available.
+      const { modificationTime } = summary
+      const newModificationTime = newSummary.modificationTime
+      
+      if(modificationTime === undefined || newModificationTime === undefined) {
+        return fetchDataFromRemote(url, uuid, dispatch, serverType, credentials)
+      }
+      
+      if(modificationTime < newModificationTime) {
+        return fetchDataFromRemote(url, uuid, dispatch, serverType, credentials)
+      } else {
+        console.info('Newer data not found.  Loading local cache updated on ' + new Date(modificationTime))
+        return fetchFromLocal(url, uuid, dispatch, network)
+      }
+    } 
+  }
 }
 
 const fetchFromLocal = (url, uuid, dispatch, netObj) => {
@@ -144,7 +161,7 @@ const modifyNetwork = (cyjs, attrMap) => {
   const newMap = {}
 
   const keys = Object.keys(attrMap)
-  keys.forEach(key => (newMap[attrMap[key]] = key))
+  keys.forEach((key) => (newMap[attrMap[key]] = key))
 
   const nodes = cyjs.elements.nodes
   let len = nodes.length
@@ -155,7 +172,7 @@ const modifyNetwork = (cyjs, attrMap) => {
     const newData = {}
     const originalKeys = Object.keys(data)
 
-    originalKeys.forEach(key => {
+    originalKeys.forEach((key) => {
       const newKey = key.replace(pattern, '')
       let value = data[key]
       if (value === 'false') {
@@ -180,7 +197,7 @@ const modifyNetwork = (cyjs, attrMap) => {
     const newData = {}
     const originalKeys = Object.keys(data)
 
-    originalKeys.forEach(key => {
+    originalKeys.forEach((key) => {
       const newKey = key.replace(pattern, '')
       let value = data[key]
       if (value === 'false') {
@@ -201,9 +218,9 @@ const modifyNetwork = (cyjs, attrMap) => {
   return cyjs
 }
 
-const getNetworkAttributes = cx => {
+const getNetworkAttributes = (cx) => {
   const networkAttr = cx.filter(
-    entry => entry['networkAttributes'] !== undefined
+    (entry) => entry['networkAttributes'] !== undefined,
   )
 
   // Check net attr actually exists
@@ -213,47 +230,63 @@ const getNetworkAttributes = cx => {
     networkAttr.length === 0
   ) {
     return {
-      name: '(No Name)'
+      name: '(No Name)',
     }
   }
   const attr = networkAttr[0].networkAttributes
 
   const cyjsData = {}
-  attr.forEach(entry => {
+  attr.forEach((entry) => {
     cyjsData[entry.n] = entry.v
   })
 
   return cyjsData
 }
 
-const fetchDataFromRemote = (url2, uuid, dispatch, serverType, credentials) => {
+/**
+ * 
+ * Fetch summary for time stamp comparison
+ */
+const fetchSummary = async (serverType, uuid) => {
+  const url = 'http://' + serverType + '.ndexbio.org/v2/network/' + uuid
+  const summaryUrl = `${url}/summary`
+  const response = await fetch(summaryUrl)
+  const summaryJson = await response.json()
+  return summaryJson
+}
+
+const fetchDataFromRemote = async (
+  url2,
+  uuid,
+  dispatch,
+  serverType,
+  credentials,
+) => {
   console.log('From remote::', credentials)
 
   let headers = getHeader(credentials)
   headers['Accept-Encoding'] = 'br'
-  console.log('New header::', headers)
 
   const setting = {
     method: 'GET',
     mode: 'cors',
-    headers: headers
+    headers: headers,
   }
-
-  console.log('settings::', setting)
 
   const url = 'http://' + serverType + '.ndexbio.org/v2/network/' + uuid
 
+  const summary = await fetchSummary(serverType, uuid)
+
+  console.log('Compare times', summary)
   return fetch(url, setting)
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
         throw Error(response.statusText)
       } else {
         return response.json()
       }
     })
-    .then(json => {
-      t1 = performance.now()
-      console.log('*** Remote fetch time = ', t1 - t0, json)
+    .then((json) => {
       const netAttr = getNetworkAttributes(json)
       let niceCX = utils.rawCXtoNiceCX(json)
       const attributeNameMap = {}
@@ -265,7 +298,7 @@ const fetchDataFromRemote = (url2, uuid, dispatch, serverType, credentials) => {
       const cyjs = {
         data: netAttr,
         uuid: uuid,
-        elements: elementsObj
+        elements: elementsObj,
       }
 
       let title = netAttr.name
@@ -280,16 +313,18 @@ const fetchDataFromRemote = (url2, uuid, dispatch, serverType, credentials) => {
 
       const filtered = modifyNetwork(cyjs, attributeNameMap)
 
+      // Store summary, too for time stamp comparison
+      filtered['summary'] = summary
+
       hvDb.hierarchy.put(filtered)
-      // hvDb.hierarchy.put(json)
       json = null
       return filtered
       // return json
     })
-    .then(json => createLabel2IdMap(json))
-    .then(network => addOriginalToAlias(network))
-    .then(network => dispatch(receiveNetwork(url, network, null)))
-    .catch(err => {
+    .then((json) => createLabel2IdMap(json))
+    .then((network) => addOriginalToAlias(network))
+    .then((network) => dispatch(receiveNetwork(url, network, null)))
+    .catch((err) => {
       console.log('Fetch Error: ', err)
       return dispatch(receiveNetwork(url, null, err))
     })
@@ -297,7 +332,7 @@ const fetchDataFromRemote = (url2, uuid, dispatch, serverType, credentials) => {
 
 let primaryName2prop = new Map()
 
-const createLabel2IdMap = network => {
+const createLabel2IdMap = (network) => {
   // const t2 = performance.now()
   // console.log('To JSON TIME = ', t2 - t1, network)
 
@@ -339,7 +374,7 @@ const createLabel2IdMap = network => {
  * @param network
  * @returns {*}
  */
-const addOriginalToAlias = network => {
+const addOriginalToAlias = (network) => {
   const nodes = network.elements.nodes
   let i = nodes.length
   while (i--) {
@@ -371,25 +406,25 @@ const walk = (node, layoutMap) => {
   if (children === undefined || children.length === 0) {
     return
   } else {
-    children.forEach(child => walk(child, layoutMap))
+    children.forEach((child) => walk(child, layoutMap))
   }
 }
 
-export const idMapping = json => {
+export const idMapping = (json) => {
   fetch(url, {
-    method: 'POST'
+    method: 'POST',
   })
-    .then(response => response.json())
-    .then(json => {
+    .then((response) => response.json())
+    .then((json) => {
       dispatch(receiveNetwork(url, json))
     })
 }
 
 export const DELETE_NETWORK = 'DELETE_NETWORK'
-const deleteNetwork = url => {
+const deleteNetwork = (url) => {
   return {
     type: DELETE_NETWORK,
-    url
+    url,
   }
 }
 
