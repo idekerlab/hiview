@@ -10,6 +10,8 @@ import { Tooltip } from '@material-ui/core'
 import HelpButton from './HelpButton'
 import SearchOptionDialog from './SearchOptionDialog'
 
+import UCSDLogo from '../../assets/images/ucsd-logo.svg'
+
 const baseStyle = {
   width: '100%',
   display: 'flex',
@@ -20,6 +22,16 @@ const tooltipStyle = {
   fontSize: '16px',
   fontWeight: '300',
   textAlign: 'center',
+}
+
+const ucsdLogoStyle = {
+  width: '5.3em',
+  marginLeft: '0.5em',
+  paddingRight: '0.2em',
+}
+
+const buttonStyle = {
+  padding: '0.1em',
 }
 
 // For hiding background (Use gray scale)
@@ -36,27 +48,27 @@ class MainPanel extends React.Component {
     }
   }
 
-  handleChange = event => {
+  handleChange = (event) => {
     this.setState({
       query: event.target.value,
     })
   }
 
-  handleKey = event => {
+  handleKey = (event) => {
     const query = this.state.query
     if (event.key === 'Enter' && query !== '') {
       this.search(query)
     }
   }
 
-  handleStart = event => {
+  handleStart = (event) => {
     const query = this.state.query
     if (query !== '') {
       this.search(query)
     }
   }
 
-  handleReset = event => {
+  handleReset = (event) => {
     // this.props.renderingOptionsActions.setRootColor(null)
     // this.props.renderingOptionsActions.setLeafColor(null)
 
@@ -68,12 +80,12 @@ class MainPanel extends React.Component {
     this.props.handleShowResult(false)
   }
 
-  validateQuery = text => {
+  validateQuery = (text) => {
     // Spaces, tabs, and commas will be used as valid separator.
     return text.replace(/,/g, ' ')
   }
 
-  search = q => {
+  search = (q) => {
     const searchMode = this.props.uiState.get('searchMode')
     const query = this.validateQuery(q)
     const index = this.props.network.index
@@ -93,7 +105,7 @@ class MainPanel extends React.Component {
     // this.props.renderingOptionsActions.setLeafColor(RESULT_COLOR.leaf)
   }
 
-  handleOpen = event => {
+  handleOpen = (event) => {
     const currentPanelState = this.props.uiState.get('showMainMenu')
     this.props.uiStateActions.showMainMenu(!currentPanelState)
   }
@@ -111,7 +123,7 @@ class MainPanel extends React.Component {
     })
   }
 
-  handleSearchOptionDialogClose = value => {
+  handleSearchOptionDialogClose = (value) => {
     this.props.uiStateActions.setSearchMode(value)
     this.setState({
       open: false,
@@ -121,14 +133,19 @@ class MainPanel extends React.Component {
   render() {
     return (
       <div style={baseStyle}>
-        <Tooltip arrow placement={'bottom'} title={<span style={tooltipStyle}>Open settings</span>}>
-          <IconButton aria-label="Open option panel" onClick={this.handleOpen}>
+        <img src={UCSDLogo} alt="UCSD Logo" style={ucsdLogoStyle} />
+        <Tooltip
+          arrow
+          placement={'bottom'}
+          title={<span style={tooltipStyle}>Open settings</span>}
+        >
+          <IconButton style={buttonStyle} aria-label="Open option panel" onClick={this.handleOpen}>
             <MenuIcon />
           </IconButton>
         </Tooltip>
 
         <Input
-          style={{ flexGrow: 5, height: '2em', border: 'none' }}
+          style={{ flexGrow: 2, height: '2em', border: 'none' }}
           placeholder="Enter search term."
           inputProps={{
             'aria-label': 'Description',
@@ -138,19 +155,35 @@ class MainPanel extends React.Component {
           value={this.state.query}
         />
 
-        <Tooltip arrow placement={'bottom'} title={<span style={tooltipStyle}>Start to search hierarchy</span>}>
-          <IconButton aria-label="Search nodes" onClick={this.handleStart}>
+        <Tooltip
+          arrow
+          placement={'bottom'}
+          title={<span style={tooltipStyle}>Start to search hierarchy</span>}
+        >
+          <IconButton style={buttonStyle} aria-label="Search nodes" onClick={this.handleStart}>
             <SearchIcon />
           </IconButton>
         </Tooltip>
 
-        <Tooltip arrow placement={'bottom'} title={<span style={tooltipStyle}>Clear search result</span>}>
-          <IconButton aria-label="Reset" onClick={this.handleReset}>
+        <Tooltip
+          arrow
+          placement={'bottom'}
+          title={<span style={tooltipStyle}>Clear search result</span>}
+        >
+          <IconButton style={buttonStyle} aria-label="Reset" onClick={this.handleReset}>
             <RefreshIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip arrow placement={'bottom'} title={<span style={tooltipStyle}>Search options</span>}>
-          <IconButton aria-label="Settings" onClick={this.handleSearchOptionDialogOpen}>
+        <Tooltip
+          arrow
+          placement={'bottom'}
+          title={<span style={tooltipStyle}>Search options</span>}
+        >
+          <IconButton
+            style={buttonStyle}
+            aria-label="Settings"
+            onClick={this.handleSearchOptionDialogOpen}
+          >
             <SettingsIcon />
           </IconButton>
         </Tooltip>
@@ -163,7 +196,7 @@ class MainPanel extends React.Component {
           }}
         />
 
-        <HelpButton />
+        <HelpButton style={buttonStyle} />
         <SearchOptionDialog
           searchMode={this.props.uiState.get('searchMode')}
           open={this.state.open}
