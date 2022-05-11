@@ -19,17 +19,8 @@ import {
   ListItemSecondaryAction,
   IconButton,
 } from '@material-ui/core'
-import { parseProps } from '../../../utils/edge-prop-util'
+import PathNetworkPanel from './PathNetworkPanel'
 
-const DUMMY_TEXT =
-  'Konno, N., Kijima, Y., Watano, K. et al. <a href="https://doi.org/10.1038/s41587-021-01111-2">Deep distributed computing to reconstruct extremely large lineage trees</a>. <i>Nat Biotechnol </i>(2022). https://doi.org/10.1038/s41587-021-01111-2&nbsp; [<a href="http://idekerlab.ucsd.edu/wp-content/uploads/2022/01/Konno_NatBiotechnol2022.pdf">PDF</a>]'
-
-const sanitized = DOMPurify.sanitize(DUMMY_TEXT, {
-  USE_PROFILES: { html: true },
-})
-
-// This is the special key value for encoded string
-export const NDEX_EVIDENCE_KEY = 'ndex:evidence'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -64,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
  * @param {*} param0
  * @returns
  */
-const EvidenceListItem = ({ evidence }) => {
+const EvidenceListItem = ({ evidence, selectedEdge }) => {
   const classes = useStyles()
   const [open, setOpen] = useState(true)
 
@@ -131,6 +122,9 @@ const EvidenceListItem = ({ evidence }) => {
               primary="Description:"
               secondary={parse(description)}
             />
+          </ListItem>
+          <ListItem>
+            <PathNetworkPanel />
           </ListItem>
         </List>
       </Collapse>

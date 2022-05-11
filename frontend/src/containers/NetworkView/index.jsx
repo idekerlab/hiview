@@ -42,6 +42,8 @@ import * as goActions from '../../actions/go'
 import * as localSearchActions from '../../actions/local-search'
 import * as netantActions from '../../actions/netant'
 
+import * as queryPathsActions from '../../actions/query-paths'
+
 
 /**
  * Base component for the network viewer page.
@@ -149,7 +151,9 @@ function mapDispatchToProps(dispatch) {
     ),
     goActions: bindActionCreators(goActions, dispatch),
     localSearchActions: bindActionCreators(localSearchActions, dispatch),
-    netantActions: bindActionCreators(netantActions, dispatch)
+    netantActions: bindActionCreators(netantActions, dispatch),
+    
+    queryPathsActions: bindActionCreators(queryPathsActions, dispatch)
   }
 }
 

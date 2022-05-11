@@ -11,6 +11,9 @@ import {
 } from '../../utils/vs-util'
 import CustomPopover from '../CustomPopover'
 
+import { parseProps } from '../../utils/edge-prop-util'
+import { NDEX_EVIDENCE_KEY } from './EdgeInfoPanel'
+
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
 // TODO: Remove this - this is a special case for Anton's data
@@ -30,9 +33,12 @@ const RawInteractionPanel = (props) => {
     networkAreaStyle,
     setCy,
     setHandleSvg,
-    rawInteractionsActions
+    rawInteractionsActions,
+    queryPathsActions,
+    location,
   } = props
 
+  const serverType = location.query.type
   const filterState = uiState.get('filterState')
 
   // For switching VS
@@ -76,10 +82,7 @@ const RawInteractionPanel = (props) => {
     }
 
     const edgeId = edgeIds[0]
-    if (
-      edgeProps === undefined ||
-      edgeProps === null
-    ) {
+    if (edgeProps === undefined || edgeProps === null) {
       return
     }
 
@@ -92,15 +95,48 @@ const RawInteractionPanel = (props) => {
 
       const sName = s[0].data('name')
       const tName = t[0].data('name')
-      console.log(edgeIds, edgeProps, rawEvent, s, t)
 
       const selectedEdgeData = {
         source: sName,
         target: tName,
-        edge: edgeData
+        edge: edgeData,
       }
 
       rawInteractionsActions.setSelectedEdge(selectedEdgeData)
+
+      // Query network
+
+      const evidence = edgeData[NDEX_EVIDENCE_KEY]
+      if (
+        evidence === undefined ||
+        evidence === null ||
+        !Array.isArray(evidence)
+      ) {
+        return
+      }
+
+      const evidences = evidence.map((ev) => parseProps(ev))
+
+      if(evidences === undefined || evidences.length === 0) {
+        return
+      }
+
+      const uuidMap = new Map()
+
+      evidences.forEach(ev => {
+        const { interactome_uuid } = ev
+        const key = ev['feature']
+
+        if(interactome_uuid !== undefined && interactome_uuid !== '') {
+          uuidMap.set(key, interactome_uuid)
+        }
+      })
+
+      queryPathsActions.queryPaths({
+        uuidMap,
+        serverType: serverType,
+        genes: [sName, tName],
+      })
     }
   }
 
@@ -153,7 +189,7 @@ const RawInteractionPanel = (props) => {
     const { elements } = subnet
     const { nodes, edges } = elements
     if (
-      nodes[0] === undefined 
+      nodes[0] === undefined
       // nodes[0]['data'][NODE_COLOR_KEY] === undefined
     ) {
       return
@@ -163,9 +199,7 @@ const RawInteractionPanel = (props) => {
     let attrNames = []
     if (filters !== undefined) {
       // Note: this always contains "Score"
-      const attrs = filters.filter(
-        (filter) => filter.attributeName !== 'Score',
-      )
+      const attrs = filters.filter((filter) => filter.attributeName !== 'Score')
       attrNames = attrs.map((attr) => attr.attributeName)
     }
 

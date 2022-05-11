@@ -87,6 +87,7 @@ export default class BaseSplitPane extends Component {
             currentProperty={currentProperty}
             rawInteractions={this.props.rawInteractions}
             rawInteractionsActions={this.props.rawInteractionsActions}
+            queryPathsActions={this.props.queryPathsActions}
             selection={selection}
             selectionActions={selectionActions}
             filters={filters}

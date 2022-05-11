@@ -228,6 +228,8 @@ const TermDetailsPanel = (props) => {
             networkAreaStyle={{ height: '100%', background: '#000000' }}
             setCy={setCy}
             rawInteractionsActions={props.rawInteractionsActions}
+            queryPathsActions={props.queryPathsActions}
+            location={props.location}
           />
         </div>
       )
@@ -426,7 +428,9 @@ const TermDetailsPanel = (props) => {
           />
         )}
         <EdgeInfoPanel
+          network={interactions}
           selectedEdge={props.rawInteractions.get('selectedEdge')}
+          queryPathsActions={props.queryPathsActions}
         />
 
         <div className={classes.control}>

@@ -164,9 +164,6 @@ const replaceNodeData = (nodes, docs, genesMap, geneMap) => {
   })
 
 
-  console.log("MAP-_________________________________")
-  console.log(mapping)
-
   return nodes.map(node => {
     const data = mapping[node.id]
 

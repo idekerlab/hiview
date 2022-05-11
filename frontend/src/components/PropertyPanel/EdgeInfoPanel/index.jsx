@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const EdgeInfoPanel = ({ selectedEdge }) => {
+const EdgeInfoPanel = ({ selectedEdge, network, queryPathsActions }) => {
   const classes = useStyles()
   const [listData, setListData] = useState([])
 
@@ -83,7 +83,7 @@ const EdgeInfoPanel = ({ selectedEdge }) => {
       className={classes.root}
     >
       {listData.map((entry, idx) => (
-        <EvidenceListItem key={`evidence-${idx}`} evidence={entry} />
+        <EvidenceListItem selectedEdge={selectedEdge} key={`evidence-${idx}`} evidence={entry} />
       ))}
     </List>
   )

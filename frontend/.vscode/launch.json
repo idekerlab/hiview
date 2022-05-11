@@ -21,7 +21,8 @@
       // Latest for custom UI with edge attr
       // "url": "http://localhost:3000/2f403ead-afba-11ec-b036-0660b7976219?type=test&server=https://test.ndexbio.org",
       // "url": "http://localhost:3000/456de2dc-b477-11ec-b036-0660b7976219?type=test&server=http://test.ndexbio.org",
-      "url": "http://localhost:3000/b054403b-b508-11ec-b036-0660b7976219?type=test&server=http://test.ndexbio.org",
+      // "url": "http://localhost:3000/b054403b-b508-11ec-b036-0660b7976219?type=test&server=http://test.ndexbio.org",
+      "url": "http://localhost:3000/61425af3-cfed-11ec-8896-0660b7976219?type=test&server=http://test.ndexbio.org",
       "webRoot": "${workspaceRoot}/src"
     }
   ]
