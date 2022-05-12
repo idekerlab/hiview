@@ -4,22 +4,26 @@ import {
 } from '../actions/query-paths'
 
 const defaultState = {
-  paths: new Map(),
-  currentUuid: null,
+  paths: new Map(), // Map of edge type - network pair
   loading: false
 }
 
+/**
+ * 
+ * @param {State for path between two genes} state 
+ * @param {*} action 
+ * @returns 
+ */
 export default function queryPathsState(state = defaultState, action) {
   switch (action.type) {
     case FETCH_INTERCONNECTION:
       return {
-        currentUuid: action.uuid,
-        paths: state.paths.set(action.uuid, {}),
+        paths: new Map(),
         loading: true
       }
     case RECEIVE_INTERCONNECTION:
       return {
-        paths: state.paths.set(action.uuid, action.network),
+        paths: action.paths,
         loading: false
       }
     default:

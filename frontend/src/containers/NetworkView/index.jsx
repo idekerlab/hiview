@@ -94,7 +94,8 @@ function mapStateToProps(state) {
     go: state.go,
     localSearch: state.localSearch,
     netant: state.netant,
-    credentials: state.credentials
+    credentials: state.credentials,
+    queryPaths: state.queryPaths
   }
 }
 

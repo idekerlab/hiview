@@ -25,9 +25,20 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const EdgeInfoPanel = ({ selectedEdge, network, queryPathsActions }) => {
+const EdgeInfoPanel = ({ selectedEdge, network, queryPathsActions, queryPaths }) => {
   const classes = useStyles()
   const [listData, setListData] = useState([])
+
+
+  useEffect(() => {
+
+    if(queryPaths === undefined || queryPaths === null) {
+      return
+    }
+
+    // const huMap = queryPaths.get('huMap similarity')
+    // console.log('Path data updated', queryPaths, huMap)
+  }, [queryPaths]) 
 
   useEffect(() => {
     if (selectedEdge === null || selectedEdge === undefined) {
@@ -83,7 +94,7 @@ const EdgeInfoPanel = ({ selectedEdge, network, queryPathsActions }) => {
       className={classes.root}
     >
       {listData.map((entry, idx) => (
-        <EvidenceListItem selectedEdge={selectedEdge} key={`evidence-${idx}`} evidence={entry} />
+        <EvidenceListItem selectedEdge={selectedEdge} key={`evidence-${idx}`} evidence={entry} queryPaths={queryPaths} />
       ))}
     </List>
   )

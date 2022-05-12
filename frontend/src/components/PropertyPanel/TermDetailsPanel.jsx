@@ -431,6 +431,7 @@ const TermDetailsPanel = (props) => {
           network={interactions}
           selectedEdge={props.rawInteractions.get('selectedEdge')}
           queryPathsActions={props.queryPathsActions}
+          queryPaths={props.queryPaths}
         />
 
         <div className={classes.control}>

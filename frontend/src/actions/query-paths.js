@@ -4,20 +4,21 @@ const NDEX_API = '.ndexbio.org/v2/search/network/'
 
 
 export const FETCH_INTERCONNECTION = 'FETCH_INTERCONNECTION'
-const fetchInterconnection = ({ uuid }) => {
+const fetchInterconnection = () => {
   return {
     type: FETCH_INTERCONNECTION,
-    uuid,
+    paths: new Map(),
   }
 }
 
 export const RECEIVE_INTERCONNECTION = 'RECEIVE_INTERCONNECTION'
-const receiveInterconnection = (results) => {
+const receiveInterconnection = (paths) => {
   return {
     type: RECEIVE_INTERCONNECTION,
-    network: results,
+    paths
   }
 }
+
 
 export const queryPaths = ({ uuidMap, serverType, genes = [] }) => {
   return (dispatch) => {
@@ -31,9 +32,11 @@ export const queryPaths = ({ uuidMap, serverType, genes = [] }) => {
 
 const downloadPaths = async ({ dispatch, uuidMap, url, genes }) => {
   
+  const pathMap = new Map()
   const tasks = []
   for (const [key, value] of uuidMap.entries()) {
     const task = await getInterconnection({ url, uuid: value, genes })
+    pathMap.set(key, task)
     tasks.push(task)
   }
 
@@ -41,5 +44,5 @@ const downloadPaths = async ({ dispatch, uuidMap, url, genes }) => {
 
   console.log(results)
 
-  return await dispatch(receiveInterconnection(results))
+  return await dispatch(receiveInterconnection(pathMap))
 }

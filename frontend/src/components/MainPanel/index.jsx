@@ -34,7 +34,7 @@ const MainPanel = props => {
     routeParams,
     location,
     localSearchActions,
-    localSearch,
+    localSearch
   } = props
 
   const wrapperStyle = {

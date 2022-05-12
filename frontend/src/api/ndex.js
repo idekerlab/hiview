@@ -1,3 +1,5 @@
+import { cx2cyjs } from "../utils/ndex-util"
+
 export const METHOD_GET = 'GET'
 export const METHOD_POST = 'POST'
 
@@ -19,7 +21,7 @@ const getInterconnection = async ({url, uuid, genes=[] }) => {
   const searchUrl = `${url}${uuid}/interconnectquery`
   const query = {
     searchString: genes.join(' '),
-    searchDepth: 1
+    searchDepth: 2
   }
 
   const response = await fetch(searchUrl, {
@@ -30,10 +32,8 @@ const getInterconnection = async ({url, uuid, genes=[] }) => {
     body: JSON.stringify(query)
   })
 
-  const json = await response.json()
-
-  return json
-
+  const cx = await response.json()
+  return cx2cyjs(cx)
 }
 
 export { getNetwork, getInterconnection }

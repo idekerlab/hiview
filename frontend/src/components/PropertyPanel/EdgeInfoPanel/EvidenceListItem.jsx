@@ -55,9 +55,10 @@ const useStyles = makeStyles((theme) => ({
  * @param {*} param0
  * @returns
  */
-const EvidenceListItem = ({ evidence, selectedEdge }) => {
+const EvidenceListItem = ({ evidence, selectedEdge, queryPaths}) => {
   const classes = useStyles()
   const [open, setOpen] = useState(true)
+  const { feature } = evidence
 
   const handleClick = () => {
     setOpen(!open)
@@ -72,6 +73,11 @@ const EvidenceListItem = ({ evidence, selectedEdge }) => {
     }
   } catch (err) {
     console.warn('Description text is invalid.')
+  }
+
+  let network = null
+  if(queryPaths !== undefined) {
+    network = queryPaths.paths.get(feature)
   }
 
   return (
@@ -124,7 +130,7 @@ const EvidenceListItem = ({ evidence, selectedEdge }) => {
             />
           </ListItem>
           <ListItem>
-            <PathNetworkPanel />
+            <PathNetworkPanel network={network}/>
           </ListItem>
         </List>
       </Collapse>

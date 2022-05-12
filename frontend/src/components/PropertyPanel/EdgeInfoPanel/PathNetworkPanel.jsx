@@ -49,13 +49,17 @@ const DEF_VS = [
   {
     selector: 'node',
     style: {
+      label: 'data(name)',
+      color: 'white',
       'background-color': 'red',
+      width: 20,
+      height: 20
     },
   },
   {
     selector: '.test',
     style: {
-      'width': 1000,
+      'width': 10,
     },
   },
 ]
@@ -64,10 +68,8 @@ const PathNetworkPanel = ({ network, node1, node2 }) => {
   const classes = useStyles()
 
 
-  if(network === undefined) {
-    return (
-      <div className={classes.root}></div>
-    )
+  if(network === undefined || network === null) {
+    return null
   }
 
   const modifyLayout = ({ network, node1, node2 }) => {

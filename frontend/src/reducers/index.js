@@ -33,6 +33,8 @@ import localSearch from './local-search'
 import netant from './netant'
 import credentials from './credentials'
 
+import queryPaths from './query-paths'
+
 
 // Application states
 const app_manager = combineReducers({
@@ -67,5 +69,6 @@ export default combineReducers({
   go,
   localSearch,
   netant,
-  credentials
+  credentials,
+  queryPaths
 })
