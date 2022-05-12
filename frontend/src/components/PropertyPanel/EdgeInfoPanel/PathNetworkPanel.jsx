@@ -10,8 +10,7 @@ Cytoscape.use(COSEBilkent)
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    height: '20em',
-    backgroundColor: 'red',
+    height: '15em',
   },
   subtitle: {
     padding: theme.spacing(1),
@@ -22,111 +21,110 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const BASE_STYLE = { width: '100%', height: '100%', background: '#000000' }
-
-let cyInstance = null
-
-const DUMMY = {
-  elements: {
-    nodes: [
-      {
-        data: {
-          id: 'a',
-          name: 'a1',
-        },
-      },
-      {
-        data: {
-          id: 'b',
-          name: 'b1',
-        },
-      },
-    ],
-  },
-}
+const BASE_STYLE = { width: '100%', height: '100%', background: '#FAFAFA' }
 
 const DEF_VS = [
   {
     selector: 'node',
     style: {
       label: 'data(name)',
-      color: 'white',
-      'background-color': 'red',
-      width: 20,
-      height: 20
+      color: '#333333',
+      'background-color': '#888888',
+      width: 10,
+      height: 10,
+      'font-size': 12,
     },
   },
   {
-    selector: '.test',
+    selector: 'edge',
     style: {
-      'width': 10,
+      'line-color': '#444444',
+      'line-opacity': 0.5,
+      width: 0.7,
+    },
+  },
+  {
+    selector: '.terminals',
+    style: {
+      'background-color': '#39FF14',
+      'font-size': 18,
+      'text-valign': 'bottom',
     },
   },
 ]
 
-const PathNetworkPanel = ({ network, node1, node2 }) => {
+const PathNetworkPanel = React.memo(({ network, node1, node2, uuid }) => {
   const classes = useStyles()
 
+  const [cyInstance, setCyInstance] = useState(null)
 
-  if(network === undefined || network === null) {
+  useEffect(() => {
+    console.log('NET::', network, cyInstance)
+  }, [network])
+
+  if (network === undefined || network === null) {
     return null
   }
 
-  const modifyLayout = ({ network, node1, node2 }) => {
-    const boundingBox = cyInstance.extent()
-    const { x1, x2, y1, y2, w, h } = boundingBox
+  const afterLayout = () => {
+    modifyLayout()
+  }
 
-    const PAD = w * 0.4
+  const modifyLayout = () => {
+    const boundingBox = cyInstance.extent()
+    const { x1, x2, y1, w, h } = boundingBox
+
+    const PAD = w * 0.2
     const leftX = x1 - PAD
     const y = y1 + h / 2
     const rightX = x2 + PAD
 
-    const nodes = cyInstance.nodes()
-    console.log('CY NS--------->>', nodes)
-    const n1 = nodes.first()
-    const n2 = nodes.last()
+    const n1 = cyInstance.elements(`node[name = "${node1}"]`)
+    const n2 = cyInstance.elements(`node[name = "${node2}"]`)
 
-    n1.addClass('test')
-
-
-    console.log(
-      '22------------------------------->> END cose ',
-      n1,
-      n2,
-      boundingBox,
-      cyInstance,
-    )
     n1.position({ x: leftX, y: y })
     n2.position({ x: rightX, y: y })
-    console.log('UP---------->> END cose ', n1, n2)
+    n1.addClass('terminals')
+    n2.addClass('terminals')
 
-    cyInstance.fit()
-    cyInstance.style().update()
+    setTimeout(() => {
+      cyInstance.style().update()
+      cyInstance.fit()
+    }, 500)
   }
-  const PRESET_LAYOUT = {
+
+  const preset1 = {
+    name: 'preset'
+  }
+
+  const preset2 = {
     name: 'cose-bilkent',
+    animationDuration: 0,
     nodeRepulsion: 1,
-    idealEdgeLength: 60,
+    idealEdgeLength: 80,
     gravity: 0.01,
     tile: true,
-    padding: 6,
+    padding: 5,
     nodeDimensionsIncludeLabels: true,
     stop: () => {
-      modifyLayout({ network, node1, node2 })
+      afterLayout()
     },
   }
 
   return (
     <div className={classes.root}>
       <CytoscapeComponent
+        id={`path-${uuid}`}
         elements={CytoscapeComponent.normalizeElements(network.elements)}
-        layout={PRESET_LAYOUT}
+        layout={preset2}
         style={BASE_STYLE}
         stylesheet={DEF_VS}
-        cy={(cy) => (cyInstance = cy)}
+        cy={(cy) => (setCyInstance(cy))}
       />
     </div>
   )
-}
+})
+
+PathNetworkPanel.displayName = 'PathNetworkPanel'
 
 export default PathNetworkPanel

@@ -8,19 +8,12 @@ import Collapse from '@material-ui/core/Collapse'
 
 import { makeStyles } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
-import OpenLinkIcon from '@material-ui/icons/OpenInNew'
 
-import Linkify from 'linkify-react'
 import DOMPurify from 'dompurify'
 import parse from 'html-react-parser'
 
-import {
-  Typography,
-  ListItemSecondaryAction,
-  IconButton,
-} from '@material-ui/core'
+import { Typography } from '@material-ui/core'
 import PathNetworkPanel from './PathNetworkPanel'
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     height: '6em',
   },
   inline: {
-    height: '1.2em'
+    height: '1.2em',
   },
   item2: {
     width: '70%',
@@ -47,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-
 /**
  *
  * Panel to display edge details
@@ -55,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
  * @param {*} param0
  * @returns
  */
-const EvidenceListItem = ({ evidence, selectedEdge, queryPaths}) => {
+const EvidenceListItem = ({ evidence, selectedEdge, queryPaths }) => {
   const classes = useStyles()
   const [open, setOpen] = useState(true)
   const { feature } = evidence
@@ -76,8 +68,11 @@ const EvidenceListItem = ({ evidence, selectedEdge, queryPaths}) => {
   }
 
   let network = null
-  if(queryPaths !== undefined) {
+  if (queryPaths !== undefined) {
     network = queryPaths.paths.get(feature)
+  }
+  if (queryPaths.loading) {
+    network = null
   }
 
   return (
@@ -130,7 +125,16 @@ const EvidenceListItem = ({ evidence, selectedEdge, queryPaths}) => {
             />
           </ListItem>
           <ListItem>
-            <PathNetworkPanel network={network}/>
+            {network === null || network === undefined ? (
+              <div />
+            ) : (
+              <PathNetworkPanel
+                network={network}
+                node1={selectedEdge.source}
+                node2={selectedEdge.target}
+                uuid={evidence['interactome_uuid']}
+              />
+            )}
           </ListItem>
         </List>
       </Collapse>
