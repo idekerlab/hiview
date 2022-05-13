@@ -89,60 +89,62 @@ const RawInteractionPanel = (props) => {
     const edgeData = edgeProps[edgeId]
 
     if (edgeData !== undefined) {
-      const { source, target } = edgeData
-      const s = cy.elements(`node#${source}`)
-      const t = cy.elements(`node#${target}`)
+      setTimeout(() => {
+        const { source, target } = edgeData
+        const s = cy.elements(`node#${source}`)
+        const t = cy.elements(`node#${target}`)
 
-      const sName = s[0].data('name')
-      const tName = t[0].data('name')
+        const sName = s[0].data('name')
+        const tName = t[0].data('name')
 
-      const selectedEdgeData = {
-        source: sName,
-        target: tName,
-        edge: edgeData,
-      }
-
-      rawInteractionsActions.setSelectedEdge(selectedEdgeData)
-
-      // Query network
-
-      const evidence = edgeData[NDEX_EVIDENCE_KEY]
-      if (
-        evidence === undefined ||
-        evidence === null ||
-        !Array.isArray(evidence)
-      ) {
-        return
-      }
-
-      const evidences = evidence.map((ev) => parseProps(ev))
-
-      if(evidences === undefined || evidences.length === 0) {
-        return
-      }
-
-      const uuidMap = new Map()
-
-      evidences.forEach(ev => {
-        const { interactome_uuid } = ev
-        const key = ev['feature']
-
-        if(interactome_uuid !== undefined && interactome_uuid !== '') {
-          uuidMap.set(key, interactome_uuid)
+        const selectedEdgeData = {
+          source: sName,
+          target: tName,
+          edge: edgeData,
         }
-      })
 
-      queryPathsActions.queryPaths({
-        uuidMap,
-        serverType: serverType,
-        genes: [sName, tName],
-      })
+        rawInteractionsActions.setSelectedEdge(selectedEdgeData)
+
+        // Query network
+
+        const evidence = edgeData[NDEX_EVIDENCE_KEY]
+        if (
+          evidence === undefined ||
+          evidence === null ||
+          !Array.isArray(evidence)
+        ) {
+          return
+        }
+
+        const evidences = evidence.map((ev) => parseProps(ev))
+
+        if (evidences === undefined || evidences.length === 0) {
+          return
+        }
+
+        const uuidMap = new Map()
+
+        evidences.forEach((ev) => {
+          const { interactome_uuid } = ev
+          const key = ev['feature']
+
+          if (interactome_uuid !== undefined && interactome_uuid !== '') {
+            uuidMap.set(key, interactome_uuid)
+          }
+        })
+
+        queryPathsActions.queryPaths({
+          uuidMap,
+          serverType: serverType,
+          genes: [sName, tName],
+        })
+      }, 100)
     }
   }
 
   const deselectEdges = (edgeIds) => {
     console.log('Edge deselected:', edgeIds)
-    // rawInteractionsActions.setSelectedEdge(null)
+    rawInteractionsActions.setSelectedEdge(null)
   }
 
   useEffect(() => {
