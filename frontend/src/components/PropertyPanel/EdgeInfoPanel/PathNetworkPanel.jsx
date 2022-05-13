@@ -4,6 +4,7 @@ import Cytoscape from 'cytoscape'
 import COSEBilkent from 'cytoscape-cose-bilkent'
 
 import CytoscapeComponent from 'react-cytoscapejs'
+import FitButton from './FitButton'
 
 Cytoscape.use(COSEBilkent)
 
@@ -11,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
     height: '15em',
+    paddingRight: '1em'
   },
   subtitle: {
     padding: theme.spacing(1),
@@ -21,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const BASE_STYLE = { width: '100%', height: '100%', background: '#FAFAFA' }
+const BASE_STYLE = { width: '100%', height: '100%', background: '#EEEEEE' }
 
 const DEF_VS = [
   {
@@ -66,15 +68,15 @@ const PathNetworkPanel = React.memo(({ network, node1, node2, uuid }) => {
     return null
   }
 
-  const afterLayout = () => {
-    modifyLayout()
-  }
-
   const modifyLayout = () => {
+    if(cyInstance === null) {
+      return
+    }
+
     const boundingBox = cyInstance.extent()
     const { x1, x2, y1, w, h } = boundingBox
 
-    const PAD = w * 0.2
+    const PAD = w * 0.1
     const leftX = x1 - PAD
     const y = y1 + h / 2
     const rightX = x2 + PAD
@@ -87,14 +89,8 @@ const PathNetworkPanel = React.memo(({ network, node1, node2, uuid }) => {
     n1.addClass('terminals')
     n2.addClass('terminals')
 
-    setTimeout(() => {
-      cyInstance.style().update()
-      cyInstance.fit()
-    }, 500)
-  }
-
-  const preset1 = {
-    name: 'preset'
+    cyInstance.style().update()
+    cyInstance.fit()
   }
 
   const preset2 = {
@@ -107,7 +103,7 @@ const PathNetworkPanel = React.memo(({ network, node1, node2, uuid }) => {
     padding: 5,
     nodeDimensionsIncludeLabels: true,
     stop: () => {
-      afterLayout()
+      modifyLayout()
     },
   }
 
@@ -119,8 +115,9 @@ const PathNetworkPanel = React.memo(({ network, node1, node2, uuid }) => {
         layout={preset2}
         style={BASE_STYLE}
         stylesheet={DEF_VS}
-        cy={(cy) => (setCyInstance(cy))}
+        cy={(cy) => setCyInstance(cy)}
       />
+      <FitButton cyInstance={cyInstance}/>
     </div>
   )
 })

@@ -8,7 +8,6 @@ import FitSelected from '@material-ui/icons/CenterFocusStrong'
 
 import { createStyles, makeStyles } from '@material-ui/core'
 
-import StyleSwitch from './StyleSwitch'
 import LayoutList, { LAYOUTS } from './LayoutList'
 
 const useStyles = makeStyles((theme) =>

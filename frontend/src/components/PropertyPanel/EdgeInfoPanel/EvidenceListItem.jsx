@@ -49,8 +49,8 @@ const useStyles = makeStyles((theme) => ({
  */
 const EvidenceListItem = ({ evidence, selectedEdge, queryPaths }) => {
   const classes = useStyles()
-  const [open, setOpen] = useState(true)
-  const { feature } = evidence
+  const [open, setOpen] = useState(false)
+  const { feature, feature_unit } = evidence
 
   const handleClick = () => {
     setOpen(!open)
@@ -82,10 +82,9 @@ const EvidenceListItem = ({ evidence, selectedEdge, queryPaths }) => {
         <div className={classes.item2}>
           <Typography
             variant="subtitle1"
-            // className={classes.inline}
             color="textPrimary"
           >
-            {`feature: ${evidence.feature}`}
+            {`Feature: ${feature} (Unit: ${feature_unit})`}
           </Typography>
           <Typography
             variant="subtitle2"
@@ -102,7 +101,7 @@ const EvidenceListItem = ({ evidence, selectedEdge, queryPaths }) => {
               className={classes.inline}
               color="textPrimary"
             >
-              {`SHAP: ${evidence.shap}`}
+              {`Feature Score: ${evidence['z-score']}`}
             </Typography>
           </ListItemText>
           <ListItemText>
@@ -111,7 +110,7 @@ const EvidenceListItem = ({ evidence, selectedEdge, queryPaths }) => {
               className={classes.inline}
               color="textPrimary"
             >
-              {`Feature Score: ${evidence['z-score']}`}
+              {`SHAP: ${evidence.shap}`}
             </Typography>
           </ListItemText>
         </div>
