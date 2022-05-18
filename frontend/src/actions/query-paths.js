@@ -22,7 +22,7 @@ const receiveInterconnection = (paths) => {
 
 export const queryPaths = ({ uuidMap, serverType, genes = [] }) => {
   return (dispatch) => {
-    const url = `http://${serverType}${NDEX_API}`
+    const url = `https://${serverType}${NDEX_API}`
 
     dispatch(fetchInterconnection({ uuidMap }))
 

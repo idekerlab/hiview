@@ -248,7 +248,7 @@ const getNetworkAttributes = (cx) => {
  * Fetch summary for time stamp comparison
  */
 const fetchSummary = async (serverType, uuid) => {
-  const url = 'http://' + serverType + '.ndexbio.org/v2/network/' + uuid
+  const url = 'https://' + serverType + '.ndexbio.org/v2/network/' + uuid
   const summaryUrl = `${url}/summary`
   const response = await fetch(summaryUrl)
   const summaryJson = await response.json()
@@ -273,7 +273,7 @@ const fetchDataFromRemote = async (
     headers: headers,
   }
 
-  const url = 'http://' + serverType + '.ndexbio.org/v2/network/' + uuid
+  const url = 'https://' + serverType + '.ndexbio.org/v2/network/' + uuid
 
   const summary = await fetchSummary(serverType, uuid)
 

@@ -187,11 +187,11 @@ const TopPage = props => {
                 Cytoscape
               </a>
               ,{' '}
-              <a href="http://ndexbio.org/#/" target="_blank" rel="noopener noreferrer">
+              <a href="https://ndexbio.org/#/" target="_blank" rel="noopener noreferrer">
                 NDEx
               </a>
               ,{' '}
-              <a href="http://iquery.ndexbio.org/" target="_blank" rel="noopener noreferrer">
+              <a href="https://iquery.ndexbio.org/" target="_blank" rel="noopener noreferrer">
                 IQuery
               </a>
               ,{' '}

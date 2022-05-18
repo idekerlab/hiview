@@ -62,7 +62,7 @@ class SourceSelector extends Component {
 
     this.state = {
       uuid: '',
-      serverUrl: 'http://test.ndexbio.org',
+      serverUrl: 'https://test.ndexbio.org',
       serverType: 'test',
       example: EXAMPLE_UUIDS[DEFAULT_EXAMPLE],
       openError: false,
@@ -123,7 +123,7 @@ class SourceSelector extends Component {
     } catch (e) {
       this.showUrlError()
       this.setState({
-        serverUrl: 'http://test.ndexbio.org',
+        serverUrl: 'https://test.ndexbio.org',
         serverType: 'test',
       })
       return
@@ -158,7 +158,7 @@ class SourceSelector extends Component {
 
     if (name.startsWith(GO_PREFIX)) {
       this.setState({
-        serverUrl: 'http://public.ndexbio.org',
+        serverUrl: 'https://public.ndexbio.org',
         serverType: 'public',
       })
     }
@@ -363,7 +363,7 @@ class SourceSelector extends Component {
               type={'url'}
               error={!this.state.isValidUrl}
               style={textFieldStyle}
-              placeholder="e.g. http://test.ndexbio.org"
+              placeholder="e.g. https://test.ndexbio.org"
               label="NDEx Server URL"
               margin="normal"
               value={this.state.serverUrl}

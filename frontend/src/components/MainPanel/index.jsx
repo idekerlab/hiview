@@ -8,7 +8,7 @@ import MessageBox from '../MessageBox'
 import Tour from '../Tour'
 import BrowserWarningDialog from './BrowserWarningDialog'
 
-const CXTOOL_URL = 'http://35.203.154.74:3001/ndex2cyjs/'
+const CXTOOL_URL = 'https://35.203.154.74:3001/ndex2cyjs/'
 
 /**
  *

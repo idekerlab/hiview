@@ -10,16 +10,16 @@ import CirclePackingPanel from '../CirclePackingPanel'
 import { Map } from 'immutable'
 import { getHeader } from '../AccessUtil'
 
-const MYGENE_URL = 'http://mygene.info/v3'
+const MYGENE_URL = 'https://mygene.info/v3'
 const NDEX_LINK_TAG = 'ndex_internalLink'
 
 const GO_NAMESPACE = 'GO:'
 
 const NDEX_API = '.ndexbio.org/v2/network/'
 
-const DEFAULT_SERVER = 'http://test.ndexbio.edu'
+const DEFAULT_SERVER = 'https://test.ndexbio.edu'
 const DEFAULT_TYPE = 'test'
-const DEFAULT_SUMMARY = `http://test.ndexbio.org/v2/search/network`
+const DEFAULT_SUMMARY = `https://test.ndexbio.org/v2/search/network`
 
 const Viewer = CyNetworkViewer(SigmaRenderer)
 
@@ -139,7 +139,7 @@ class NetworkPanel extends Component {
         console.log('Try ENR', runAnalysys, geneSet.size)
         if (geneSet.size < 2000 && runAnalysys) {
           this.props.enrichmentActions.runEnrichment(
-            'http://amp.pharm.mssm.edu/Enrichr/addList',
+            'https://amp.pharm.mssm.edu/Enrichr/addList',
             [...geneSet],
             selectedNodeId
           )
@@ -179,7 +179,7 @@ class NetworkPanel extends Component {
     // this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
     // Check size before
-    const summaryUrl = 'http://' + serverType + NDEX_API + linkId + '/summary'
+    const summaryUrl = 'https://' + serverType + NDEX_API + linkId + '/summary'
     // this.props.rawInteractionsActions.setLoading(
     //   'Checking summary of the interaction network...'
     // )

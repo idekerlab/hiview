@@ -46,7 +46,7 @@ export default class StartDialog extends Component {
         <h3>Please enter location of your hierarchy</h3>
 
         <TextField
-          hintText='e.g. http://test.ndexbio.org'
+          hintText='e.g. https://test.ndexbio.org'
           floatingLabelText='NDEx Server URL'
           value={this.state.serverUrl}
           onChange={this.handleUrlChange}

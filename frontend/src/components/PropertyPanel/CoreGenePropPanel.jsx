@@ -24,7 +24,7 @@ const CORE_PROPS = {
 }
 
 const PATHWAY_DB = {
-  kegg: 'http://www.kegg.jp/entry/',
+  kegg: 'https://www.kegg.jp/entry/',
   reactome: 'https://reactome.org/content/detail/',
   wikipathways: 'https://www.wikipathways.org/index.php/Pathway:'
 }

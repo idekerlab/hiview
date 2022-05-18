@@ -178,7 +178,7 @@ const Slide3 = () => {
                   Submit the gene set to{' '}
                   <strong>
                     <a
-                      href="http://iquery.ndexbio.org/"
+                      href="https://iquery.ndexbio.org/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className={classes.hiddenLink}

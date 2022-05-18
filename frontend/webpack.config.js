@@ -1,5 +1,7 @@
 const webpack = require('webpack')
 const path = require('path')
+const fs = require('fs')
+
 
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
@@ -91,6 +93,12 @@ module.exports = {
   ],
 
   devServer: {
+    https: {
+      key: fs.readFileSync('./localhost-key.pem'),
+      cert: fs.readFileSync('./localhost.pem'),
+
+      // ca: fs.readFileSync('./localhost.pem')
+    },
     historyApiFallback: true,
     host: '0.0.0.0',
     contentBase: './src',

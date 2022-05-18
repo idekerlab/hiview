@@ -274,7 +274,7 @@ class ClixoDetails extends Component {
 
 
   _handleTouchTap = id => {
-    window.open('http://amigo.geneontology.org/amigo/term/' + id);
+    window.open('https://amigo.geneontology.org/amigo/term/' + id);
   }
 }
 

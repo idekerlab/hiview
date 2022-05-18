@@ -54,7 +54,7 @@ class PropListPanel extends Component {
   }
 
   _handleTouchTap = id => {
-    window.open('http://www.yeastgenome.org/locus/' + id);
+    window.open('https://www.yeastgenome.org/locus/' + id);
   }
 
 }

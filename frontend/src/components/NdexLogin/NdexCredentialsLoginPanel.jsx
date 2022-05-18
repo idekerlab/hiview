@@ -155,7 +155,7 @@ const NdexCredentialsLoginPanel = props => {
 
         <Typography variant={'body1'}>
           Need an account?{' '}
-          <a href="http://ndexbio.org">Click here to sign up!</a>
+          <a href="https://ndexbio.org">Click here to sign up!</a>
         </Typography>
       </div>
     </div>

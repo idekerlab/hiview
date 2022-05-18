@@ -22,7 +22,7 @@ const receiveIdmap = (ids, json) => {
 
 
 const fetchIdmapfromMyGene = ids => {
-  const myGene = 'http://mygene.info/v3/query?q='
+  const myGene = 'https://mygene.info/v3/query?q='
   const geneStr = '"' + ids.join() + '"'
 
   const url = myGene + geneStr

@@ -2,7 +2,7 @@ import {METHOD_GET} from "./cyrest";
 
 export const METHOD_POST = 'POST'
 
-const NETANT_BASE_URL = 'http://secret.ndexbio.org/netant/netant/v1'
+const NETANT_BASE_URL = 'https://secret.ndexbio.org/netant/netant/v1'
 
 const postGenes = payload => {
   console.log('GENE LIST STR = ', payload)

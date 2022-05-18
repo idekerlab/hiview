@@ -167,7 +167,7 @@ const RawInteractionPanel = (props) => {
 
     const genes = Set(subnet.elements.nodes.map((node) => node.data.name))
     enrichmentActions.runEnrichment(
-      'http://amp.pharm.mssm.edu/Enrichr/addList',
+      'https://amp.pharm.mssm.edu/Enrichr/addList',
       genes,
       selectedTerm,
     )

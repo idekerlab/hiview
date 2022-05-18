@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     height: '1.2em',
   },
   item2: {
-    width: '70%',
+    width: '50%',
     display: 'flex',
     flexDirection: 'column',
     padding: 0,
@@ -84,7 +84,7 @@ const EvidenceListItem = ({ evidence, selectedEdge, queryPaths }) => {
             variant="subtitle1"
             color="textPrimary"
           >
-            {`Feature: ${feature} (Unit: ${feature_unit})`}
+            {`Feature: ${feature}`}
           </Typography>
           <Typography
             variant="subtitle2"
@@ -97,16 +97,16 @@ const EvidenceListItem = ({ evidence, selectedEdge, queryPaths }) => {
         <div>
           <ListItemText>
             <Typography
-              variant="subtitle1"
+              variant="subtitle2"
               className={classes.inline}
               color="textPrimary"
             >
-              {`Feature Score: ${evidence['z-score']}`}
+              {`Feature Score: ${evidence['z-score']} (Unit: ${feature_unit})`}
             </Typography>
           </ListItemText>
           <ListItemText>
             <Typography
-              variant="subtitle1"
+              variant="subtitle2"
               className={classes.inline}
               color="textPrimary"
             >

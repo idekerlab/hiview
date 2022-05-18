@@ -375,10 +375,10 @@ export const fetchInteractionsFromUrl = (
   // Get only top 10000 edges.
   // TODO: Adjust max size
   const urlFiltered =
-    'http://dev2.ndexbio.org/edgefilter/v1/network/' +
+    'https://dev2.ndexbio.org/edgefilter/v1/network/' +
     uuid +
     '/topNEdgeFilter?limit=10000'
-  const urlNoFilter = 'http://' + server + '.ndexbio.org/v2/network/' + uuid
+  const urlNoFilter = 'https://' + server + '.ndexbio.org/v2/network/' + uuid
 
   let networkAttr = summary.properties
   if (networkAttr === undefined) {
@@ -721,7 +721,7 @@ const receiveSummary = summary => {
 
 export const getNetworkSummary = (uuid, server, url, maxEdgeCount = 500) => {
   return dispatch => {
-    const url = 'http://' + server + NDEX_API + uuid + '/summary'
+    const url = 'https://' + server + NDEX_API + uuid + '/summary'
 
     return fetch(url)
       .then(response => {

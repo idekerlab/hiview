@@ -23,7 +23,7 @@ const styles = theme => ({
   },
 })
 
-const BASE_URL = 'http://search.ndexbio.org/?genes='
+const BASE_URL = 'https://search.ndexbio.org/?genes='
 const MAX_QUERY_LENGTH = 8170
 
 const OpenInPortalButton = props => {

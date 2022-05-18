@@ -7,7 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText'
 import OpenIcon from '@material-ui/icons/OpenInNew'
 import IconButton from '@material-ui/core/IconButton'
 
-const GENECARDS_URL = 'http://www.genecards.org/cgi-bin/carddisp.pl?gene='
+const GENECARDS_URL = 'https://www.genecards.org/cgi-bin/carddisp.pl?gene='
 
 const useStyles = makeStyles(theme => ({
   listRoot: {

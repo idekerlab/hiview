@@ -120,7 +120,7 @@ const InteractionNetworkSelector = props => {
 
     // Check size before
     const NDEX_API = '.ndexbio.org/v2/network/'
-    const url = 'http://' + serverType + NDEX_API + uuid
+    const url = 'https://' + serverType + NDEX_API + uuid
 
     props.externalNetworksActions.fetchExternalNetworkFromUrl(url, uuid, interactomeUUID)
   }

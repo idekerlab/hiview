@@ -92,7 +92,7 @@ const fetchDataFromRemote = (url, uuid, dispatch, interactomeUuid, genes) => {
       }
 
       const searchUrl =
-        'http://public.ndexbio.org/v2/search/network/' +
+        'https://public.ndexbio.org/v2/search/network/' +
         interactomeUuid +
         '/interconnectquery'
 
@@ -155,7 +155,7 @@ const sendGeneList = (genes, interactomeUuid, dispatch) => {
   // const nodeSet = new Set(nodes)
 
   const searchUrl =
-    'http://public.ndexbio.org/v2/search/network/' +
+    'https://public.ndexbio.org/v2/search/network/' +
     interactomeUuid +
     '/interconnectquery'
 

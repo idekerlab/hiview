@@ -452,3 +452,5 @@ ENV/
 
 *.cyjs
 *.sif
+
+*.pem

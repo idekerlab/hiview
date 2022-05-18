@@ -5,7 +5,7 @@ import {Map, Set} from 'immutable'
 
 const RUNNING = 'running'
 
-const SERVICE_URL = 'http://localhost:8888'
+const SERVICE_URL = 'https://localhost:8888'
 
 const defState = Map({
   serviceURL: SERVICE_URL,

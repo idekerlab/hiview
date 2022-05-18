@@ -97,7 +97,7 @@ const TitleBar = props => {
 }
 
 const _handleGeneCardsClick = gene => () => {
-  window.open(`http://www.genecards.org/cgi-bin/carddisp.pl?gene=${gene}`)
+  window.open(`https://www.genecards.org/cgi-bin/carddisp.pl?gene=${gene}`)
 }
 
 const _handlePdbClick = gene => () => {

@@ -33,7 +33,7 @@ const NdexGoogleLoginPanel = props => {
     const message =
       (err.details &&
         err.details.startsWith(
-          'Not a valid origin for the client: http://localhost:'
+          'Not a valid origin for the client: https://localhost:'
         )) ||
       (err.error && err['error']) ||
       JSON.stringify(err)
