@@ -6,7 +6,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import BaseFilter from './BaseFilter'
 
 // Special tag for DDRAM project
-const APMS_LABEL = 'New AP-MS of key DDR proteins'
+const APMS_LABEL = 'New AP-MS of 22 DDR bait proteins [ Kratz 2022, under review ]'
 
 const filterRowStyle = {
   paddingTop: '1.5em',
