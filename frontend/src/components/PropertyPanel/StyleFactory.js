@@ -1,4 +1,8 @@
 import _ from 'lodash'
+
+// In DDRAM, this property is used to show/hide primary edges
+const DDRAM_EDGE_VISIBILITY = 'primary_edge_visible'
+
 const MAIN_INTERACTION_TYPE_TAG = 'Main Feature'
 const INTERACTION_TAG = 'interaction'
 
@@ -161,6 +165,13 @@ const BASE_STYLE = {
       'z-index': e => e.data('zIndex') + 1000
     }
   },
+  edgeVisible: {
+    selector: `edge[!${DDRAM_EDGE_VISIBILITY}]`,
+    css: {
+      width: 20,
+      opacity: 0,
+    }
+  },
   members: {
     selector: '.members',
     css: {
@@ -302,8 +313,13 @@ export const createStyle = originalNetwork => {
     // This is for optional edges
     const edgeType = edge.data(INTERACTION_TAG)
     if (edgeType !== undefined) {
-      const labelText = edgeType + ': ' + formatScore(edge.data(edgeType))
-      return labelText
+      const scoreString = formatScore(edge.data(edgeType))
+      if(scoreString === 'NaN') {
+        if(edgeType === 'new_AP_MS')
+        return 'New AP-MS'
+      } else {
+        return edgeType + ': ' + scoreString
+      }
     }
 
     if (primaryScore && typeof primaryScore === 'number') {
@@ -318,6 +334,7 @@ export const createStyle = originalNetwork => {
       BASE_STYLE.nodeSelected,
       edgeStyle,
       edgeSelectedStyle,
+      BASE_STYLE.edgeVisible,
       BASE_STYLE.hidden,
       BASE_STYLE.seed,
       BASE_STYLE.members

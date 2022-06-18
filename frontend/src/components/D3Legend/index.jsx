@@ -10,7 +10,7 @@ import * as d3ScaleChromatic from 'd3-scale-chromatic'
 import NodeShapes from './NodeShapes'
 
 // Default size of the root component
-const DEF_WIDTH = '100%'
+const DEF_WIDTH = 0
 const DEF_HEIGHT = '1.5em'
 
 const rootStyle = {
@@ -117,19 +117,19 @@ const D3Legend = ({ minScore = 0.0, maxScore = 1.0, w=DEF_WIDTH, h=DEF_HEIGHT })
         </div>
       </div>
       <div style={textAreaStyle}>
-        <Typography component="div">
+        <Typography component='span'>
           <Box fontSize={'1em'} fontWeight="fontWeightMedium" m={1}>
             {min}
           </Box>
         </Typography>
         <div style={captionStyle}>
-          <Typography>
+          <Typography component={'span'}>
             <Box fontSize={'1em'} fontWeight="fontWeightMedium" m={1}>
               DDR protein Association Score (DAS)
             </Box>
           </Typography>
         </div>
-        <Typography component="div">
+        <Typography component='span'>
           <Box fontSize={'1em'} fontWeight="fontWeightMedium" m={1}>
             {max}
           </Box>
