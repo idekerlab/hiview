@@ -5,7 +5,6 @@ import OpenInPortalButton from '../OpenInPortalButton'
 import SaveAsSvgButton from '../SaveAsSvgButton'
 import SaveAsSvgButtonErrorBoundary from '../SaveAsSvgButton/SaveAsSvgButtonErrorBoundary'
 import CopyToClipboardButton from '../CopyToClipboardButton'
-import OpenInCytoscapeButton from '../OpenInCytoscapeButton'
 
 const useStyles = makeStyles(theme =>
   createStyles({
@@ -45,11 +44,6 @@ const ExportButtons = props => {
         <SaveAsSvgButtonErrorBoundary>
           <SaveAsSvgButton cy={cy} />
         </SaveAsSvgButtonErrorBoundary>
-        <OpenInCytoscapeButton
-          externalNetworks={externalNetworks}
-          rawInteractions={rawInteractions}
-          isCytoscapeRunning={false}
-        />
       </div>
     </div>
   )
