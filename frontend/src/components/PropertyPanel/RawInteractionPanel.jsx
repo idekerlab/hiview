@@ -212,13 +212,18 @@ const RawInteractionPanel = (props) => {
     )
 
     const primaryEdgeName = subnet.data[MAIN_EDGE_TAG]
+    const parentWeight = subnet.data['Children weight']
+    const threshold = Number.parseFloat(parentWeight)
 
     insertEdgeColorMapping({
+      nodes, 
       edges,
       vs: networkStyle,
       attrName: primaryEdgeName,
       scoreMin: 0,
       scoreMax: 1,
+      threshold,
+      metadata: subnet.data
     })
 
     setTooltipKeys(DDRAM_TOOLTIP_KEY)

@@ -58,11 +58,11 @@ const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {
   return vsClone
 }
 
-const insertEdgeColorMapping = ({edges, vs, attrName, scoreMin, scoreMax}) => {
+const insertEdgeColorMapping = ({nodes, edges, vs, attrName, scoreMin, scoreMax, threshold=0.0, metadata}) => {
   const vsClone = Object.assign(vs)
   const colorScale = getColorScaleInferno({min: scoreMin, max: scoreMax})
   
-  assignColor(edges, attrName, colorScale)
+  assignColor(nodes, edges, attrName, colorScale, threshold, metadata.edgeColorMap)
 
   // Standard color mapping only for DDRAM
   // const edgeColorMapping =  {
@@ -83,14 +83,77 @@ const insertEdgeColorMapping = ({edges, vs, attrName, scoreMin, scoreMax}) => {
   return vsClone
 }
 
-const assignColor = (edges, attrName, colorScale) => {
 
+const GROUP_PREFIX = 'Group:'
+const getMemberInfo = (nodes) => {
+  const groups = new Map()
+  
+  nodes.forEach(node => {
+    const {data} = node
 
+    for (let key in data) {
+      if (key.startsWith(GROUP_PREFIX)) {
+        const isMember = data[key]
+        const groupNumbers = key.split(':')
+        const groupId = groupNumbers[1]
+        const memberSet = groups.get(groupId)
+        if (isMember) {
+          if (memberSet === undefined) {
+            const memberSet = new Set()
+            memberSet.add(data.id)
+            groups.set(groupId, memberSet)
+          } else {
+            memberSet.add(data.id)
+            groups.set(groupId, memberSet)
+          }
+        }
+      }
+    }
+  })
+
+  return groups
+}
+
+const testMembership = (edge, groups) => {
+  const {data} = edge
+  const {source, target} = data
+  let test = null
+  const size = groups.size
+
+  const colors = {}
+
+  let index = 0
+  groups.forEach((value, key) => {
+    const memberSet = value
+    if (memberSet.has(source.toString()) && memberSet.has(target.toString())) {
+      if(test === null) {
+        test = getColor10(index)
+      }
+    }
+    index++
+  })
+
+  return test
+}
+
+const assignColor = (nodes, edges, attrName, colorScale, threshold=0.5, colorMap) => {
+
+  const groups = getMemberInfo(nodes)
 
   edges.forEach(e => {
     const {data} = e
     const value = data[attrName]
-    data['color'] = colorScale(value)
+    const isMember = testMembership(e, groups)
+    
+    if (isMember !== null) {
+      data['isMember'] = true
+      data['color'] = isMember
+    } else if(value<threshold) {
+      data['color'] = '#888888'
+    } else {
+      data['color'] = '#888888'
+      // data['color'] = colorScale(value)
+    }
   })
 }
 

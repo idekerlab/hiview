@@ -11,7 +11,7 @@ const CHILDREN_WT_TAG = 'Children weight'
 
 const DEF_COLOR = '#777777'
 
-const compareBy = fieldName => (a, b) => {
+const compareBy = (fieldName) => (a, b) => {
   let scoreA = a.data[fieldName]
   let scoreB = b.data[fieldName]
 
@@ -67,7 +67,7 @@ const filter = (edges, scoreName, min) => {
 
   return {
     subset,
-    subMax
+    subMax,
   }
 }
 
@@ -104,7 +104,7 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
 
   const slots = weightRange.length
   const colorScale = d3Scale
-    .scaleSequential(d3ScaleChromatic.interpolateInferno)
+    .scaleSequential(d3ScaleChromatic.interpolatePlasma)
     .domain([parentScore, maxVal])
 
   let len = slots
@@ -115,21 +115,20 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
     correctParentScore = maxVal
   }
 
-
   if (weightRange.length === 1) {
     colorMap.push({
       min: minVal,
       max: correctParentScore,
-      color: colorScale(maxVal)
+      color: colorScale(maxVal),
     })
     return colorMap
   }
-  
+
   //First entry: global minimum to Parent
   colorMap.push({
     min: minVal,
     max: correctParentScore,
-    color: DEF_COLOR
+    color: DEF_COLOR,
   })
 
   for (let idx = 0; idx < len; idx++) {
@@ -142,7 +141,7 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
       colorMap.push({
         min: v1,
         max: v2,
-        color: colorScale(v2)
+        color: colorScale(v2),
       })
     }
 
@@ -152,7 +151,7 @@ const generateColorMap = (weightRange, minVal, maxVal, parentScore) => {
       const lastEntry = {
         min: v2,
         max: maxVal,
-        color: colorScale(maxVal)
+        color: colorScale(maxVal),
       }
       colorMap.push(lastEntry)
       break
@@ -179,7 +178,7 @@ const assignColor = (colorMap, edge, primaryName, min) => {
 
   const weight = edge.data[primaryName]
 
-  if(colorMap.length === 1 && weight !== undefined && weight !== null) {
+  if (colorMap.length === 1 && weight !== undefined && weight !== null) {
     color = colorMap[0].color
   } else {
     for (let i = 0; i < colorMap.length; i++) {
@@ -239,7 +238,7 @@ export const filterEdge = (network, maxEdgeCount) => {
   let weightRange = []
   if (childrenWeight) {
     // This is the new format
-    weightRange = childrenWeight.split('|').map(val => Number(val))
+    weightRange = childrenWeight.split('|').map((val) => Number(val))
   }
 
   const originalEdges = removeZeroEdges(network.elements.edges, mainEdgeType)
@@ -293,7 +292,7 @@ export const filterEdge = (network, maxEdgeCount) => {
   // let minScore = edges[edges.length - 1].data[mainEdgeType]
   // console.log("MIN / Max ==========", minScore, maxScore, edges)
   network.data['allEdgeScoreRange'] = [minScore, maxScore]
-  weightRange = weightRange.filter(val => val > minScore)
+  weightRange = weightRange.filter((val) => val > minScore)
   // Create colors for range.  0 is always global minimum
   const colorMap = generateColorMap(weightRange, 0, maxScore, parentScore)
 
@@ -311,7 +310,7 @@ export const filterEdge = (network, maxEdgeCount) => {
     mainEdgeType,
     barCount1,
     true,
-    colorMap
+    colorMap,
   )
 
   const forHistogram = allData.result
@@ -328,7 +327,7 @@ export const filterEdge = (network, maxEdgeCount) => {
     mainEdgeType,
     barCount2,
     true,
-    colorMap
+    colorMap,
   )
   network.data['subEdgeScoreDist'] = subData.result
   network.data['maxFrequency'] = subData.maxFrequency
@@ -383,7 +382,7 @@ const createBuckets = (
   scoreFieldName,
   sliceCount = 200,
   coloring = false,
-  colorMap
+  colorMap,
 ) => {
   const colorScale = d3Scale
     .scaleSequential(d3ScaleChromatic.interpolateInferno)
@@ -506,17 +505,92 @@ export const createFilter = (network, maxEdgeCount) => {
         isPrimary: isPrimary,
         enabled: isPrimary,
         type: 'continuous',
-        threshold: th
+        threshold: th,
       })
     } else if (value.type === 'boolean') {
       filters.push({
         attributeName: key,
         isPrimary: false,
         enabled: false,
-        type: 'boolean'
+        type: 'boolean',
       })
     }
   }
 
   return [network, filters]
+}
+
+export const duplicateNodes = (network) => {
+  console.log('original network = ', network)
+
+  const { nodes, edges } = network.elements
+
+  let numNodes = nodes.length
+  const toBeDuplicated = {}
+
+  const newNodes = []
+
+  while(numNodes--) {
+    const node = nodes[numNodes]
+    const name = node.data.name
+    const groupMembership = inGroups(node)
+
+    // Member of more than one group = need to be duplicated
+    if(groupMembership.length > 1) {
+      toBeDuplicated[name] = groupMembership
+      newNodes.push(...createNode(node, groupMembership))
+    }
+  }
+
+  return newNodes
+}
+
+const createNode = (originalNode, groupMembership) => {
+  const originalData = originalNode.data
+  for (let key in originalData) {
+    if (key.startsWith(GROUP_PREFIX)) {
+      delete originalData[key]
+    }
+  }
+
+  // Use first one to the original node
+  originalData[GROUP_PREFIX + groupMembership[0]] = true
+
+  // Create new nodes for the rest of the groups
+  const newNodes = []
+
+  for (let idx = 1; idx < groupMembership.length; idx++) {
+    const newData = {
+      name: originalData.name
+    }
+    const groupId = groupMembership[idx]
+    newData[GROUP_PREFIX + groupId] = true
+    newData['id'] = originalData.id + '-G' + groupId
+
+    const newNode = {
+      data: newData,
+      position: {x: 0, y: 0}
+    }
+    newNodes.push(newNode)
+  }
+
+  return newNodes
+}
+
+const GROUP_PREFIX = 'Group:'
+const inGroups = node => {
+  const { data } = node
+  const inGroup = []
+
+  for (let key in data) {
+    if (key.startsWith(GROUP_PREFIX)) {
+      const isMember = data[key]
+      const groupNumbers = key.split(':')
+      const groupId = groupNumbers[1]
+      if (isMember) {
+        inGroup.push(groupId)
+      }
+    }
+  }
+  return inGroup
 }

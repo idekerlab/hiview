@@ -8,7 +8,8 @@ const INTERACTION_TAG = 'interaction'
 
 // Font size will be calculated based on viewport size.
 const VIEW_TO_FONT_SIZE_RATIO = 350
-const BASE_FONT_SIZE = 18
+const BASE_FONT_SIZE = 10
+// const BASE_FONT_SIZE = 18
 const LARGE_FONT_SIZE = 30
 
 // If there are too many edge in the data, use simplified version.
@@ -50,8 +51,8 @@ const MINIMAL_STYLE = [
   {
     selector: 'node',
     style: {
-      width: 5,
-      height: 5,
+      width: 10,
+      height: 10,
       shape: 'ellipse',
       color: '#FFFFFF',
       'background-color': '#FFFFFF'
@@ -71,7 +72,18 @@ const MINIMAL_STYLE = [
   {
     selector: 'edge',
     style: {
-      opacity: 0.2,
+      width: e=>e.data('isMember') ? 3 : 0.5,
+      opacity: e=> {
+
+        const isMember = e.data('isMember')
+
+        if(isMember) {
+          return 1
+        } else {
+          return 0.1
+
+        }
+      },
       'line-color': 'data(color)',
       'z-index': 'data(zIndex)'
     }
@@ -101,24 +113,29 @@ const BASE_STYLE = {
   node: {
     selector: 'node',
     css: {
-      width: 82,
-      height: 22,
-      shape: 'roundrectangle',
+      width: 20,
+      height: 20,
+      // width: 82,
+      // height: 22,
+      shape: 'ellipse',
+      // shape: 'roundrectangle',
       'text-valign': 'center',
       'text-halign': 'center',
-      color: '#FFFFFF',
+      color: '#555555',
       'text-opacity': 1,
       'text-background-color': '#000000',
-      'text-background-opacity': 0.5,
+      // 'text-background-opacity': 0.5,
+      'text-background-opacity': 0,
       'text-background-padding': 5,
       'text-background-shape': 'round-rectangle',
-      'text-outline-width': 0.4,
-      'text-outline-color': '#111111',
-      'text-outline-opacity': 1,
-      'background-opacity': 0,
-      'background-color': '#AAAAAA',
+      // 'text-outline-width': 0.4,
+      // 'text-outline-color': '#111111',
+      // 'text-outline-opacity': 1,
+      'background-opacity': 1,
+      'background-color': '#FAFAFA',
       'border-width': 0,
-      'font-size': BASE_FONT_SIZE,
+      'font-size': 4,
+      // 'font-size': BASE_FONT_SIZE,
       label: 'data(name)'
     }
   },
@@ -265,15 +282,15 @@ export const createStyle = originalNetwork => {
   if (similarityMin !== similarityMax) {
     edgeStyle.css[
       'opacity'
-    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.9, 1)`
+    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.8, 1)`
 
     // Pick top 20%
     const range = Math.abs(similarityMax - similarityMin) 
     const topRange = range * 0.95
     const maxThreshold = similarityMin + topRange
     
-    const maxWidth = 10
-    const minWidth = 2
+    const maxWidth = 6
+    const minWidth = 1.5
     const rangeWidth = Math.abs(maxWidth - minWidth) 
 
     const globalMin = Number.parseFloat(networkData[`${primaryEdgeType} min`])
@@ -286,6 +303,11 @@ export const createStyle = originalNetwork => {
       'width'
     ] = e => {
       const weight = e.data(primaryEdgeType)
+      const isMember = e.data('isMember')
+
+      if(!isMember) {
+        return 1
+      }
 
       if(weight === undefined || weight === null) {
         return minWidth
@@ -296,6 +318,7 @@ export const createStyle = originalNetwork => {
       }
 
       const computed = ((Math.abs(weight - similarityMin))/range ) * rangeWidth
+      // const computed = ((Math.abs(weight - similarityMin))/range ) * rangeWidth
       if(computed > minWidth) {
         return computed
       }

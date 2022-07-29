@@ -1,7 +1,7 @@
 import { localLayout } from './raw-interactions-layout'
 import { getHeader } from '../components/AccessUtil'
 import { createAction } from 'redux-actions'
-import { filterEdge, MAIN_EDGE_TAG, PATTERN } from './raw-interactions-util'
+import { filterEdge, MAIN_EDGE_TAG, PATTERN, duplicateNodes } from './raw-interactions-util'
 import cx2js from 'cytoscape-cx2js'
 
 import LocalDB from './local-db'
@@ -17,7 +17,6 @@ const NDEX_API = '.ndexbio.org/v2/network/'
 
 // For performance
 let tp0 = 0
-let tp1 = 0
 
 // For network density
 const calcDensity = (n, m) => {
@@ -195,7 +194,7 @@ const processCx = (cx, positions) => {
     }
   }
 
-  return {
+  const result = {
     network: {
       data,
       elements: {
@@ -205,6 +204,10 @@ const processCx = (cx, positions) => {
     },
     nodeMap: nMap
   }
+  const newNodes = duplicateNodes(result.network)
+
+  result.network.elements.nodes = [...result.network.elements.nodes, ...newNodes]
+  return result
 }
 
 const TYPE_DOUBLE = 'double'
@@ -249,8 +252,6 @@ const fetchInteractionsFromRemote = (
   credentials,
   positions
 ) => {
-  const t0 = performance.now()
-
   let originalCX = null
   let nodeMap = null
 
@@ -312,7 +313,7 @@ const fetchInteractionsFromRemote = (
       const groups = netAndFilter[2]
 
       // This is for applying new layout locally
-      // localLayout(network, groups, positions, nodeMap)
+      localLayout(network, groups, positions, nodeMap)
 
       // And this is for using given positions as-is.
       // assignPositions(netAndFilter[2], positions, nodeMap)
@@ -345,7 +346,7 @@ const getInteractions = (
 ) => {
   // Check local data
   hvDb.interactions.get(uuid).then(entry => {
-    if (entry === undefined) {
+    // if (entry === undefined) {
       return fetchInteractionsFromRemote(
         mainFeature,
         th,
@@ -356,9 +357,9 @@ const getInteractions = (
         credentials,
         positions
       )
-    } else {
-      return fetchFromDB(dispatch, entry)
-    }
+    // } else {
+      // return fetchFromDB(dispatch, entry)
+    // }
   })
 }
 export const fetchInteractionsFromUrl = (

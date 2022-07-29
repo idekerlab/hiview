@@ -1,12 +1,57 @@
 import cytoscape from 'cytoscape'
 import regCose from 'cytoscape-cose-bilkent'
 import { scaleBand } from 'd3-scale'
+import { setGroupPositions } from './raw-interactions'
 regCose(cytoscape)
 
-const SCALING_FACTOR = 2
+const SCALING_FACTOR = 1
 
-const localLayout = (network, groups, positions, nodeMap) => {
-  console.log('Running local layout:', network, positions, nodeMap, groups)
+const duplicateNodes = ({network}) => {
+
+  return network
+}
+
+
+const getNameMap = nodeMap => {
+  const nameMap = {}
+  nodeMap.forEach(node => {
+    const {data} = node
+    const name = data.name
+    nameMap[name] = node
+  })
+  return nameMap
+}
+
+const genePositionScalingX = 2
+const genePositionScalingY = 2
+const setGenePositions = ({nodeMap, positions}) => {
+  const name2node = getNameMap(nodeMap)
+
+  for(let key in positions) {
+    const position = positions[key]
+    const node = name2node[key]
+    node.position.x = position.x * genePositionScalingX
+    node.position.y = position.y * genePositionScalingY
+  }
+}
+
+/**
+ * 
+ * Modify original layout based on Circle Packing
+ * 
+ * @param {*} network 
+ * @param {*} groups 
+ * @param {*} positions - key is "name," value is {x, y}
+ * @param {*} nodeMap - key is "node id", value is node
+ */
+const localLayout = (network, groupsMap, positions, nodeMap) => {
+
+  let groups = groupsMap
+  // Case 1: gene only node - no nested structure.
+  if(groupsMap === null || groupsMap === undefined) {
+    setGenePositions({nodeMap, positions})
+    return
+  }
 
   // Headless instance of Cyjs
   const cy = cytoscape({
@@ -18,7 +63,6 @@ const localLayout = (network, groups, positions, nodeMap) => {
   const remainingGenes = []
 
   // Sort from largest to smallest
-
   const sizeMap = new Map()
   groupNames.forEach(name => {
     sizeMap.set(name, groups[name].length)
@@ -40,10 +84,9 @@ const localLayout = (network, groups, positions, nodeMap) => {
       console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!', groupName)
     } else if (memberIds.length === 1) {
       remainingGenes.push(memberIds[0])
-      // console.log('### ADD', remainingGenes)
-      // const node = nodeMap.get(memberIds[0])
-      // node.position.x = position.x * 15
-      // node.position.y = position.y * 15
+      const node = nodeMap.get(memberIds[0])
+      node.position.x = position.x * genePositionScalingX 
+      node.position.y = position.y * genePositionScalingY
     } else {
       const selectString = '#' + memberIds.join(',#')
       const memberGenes = cy.nodes(selectString)
@@ -94,25 +137,44 @@ const localLayout = (network, groups, positions, nodeMap) => {
       let layout = {}
 
       if (network.elements.nodes.length < 100000) {
+        
+        // layout = subgraph.layout({
+        //   name: 'cose',
+        //   animate: false,
+        //   // numIter: 500,
+        //   nodeOverlap: 15,
+        //   idealEdgeLength: 150,
+        //   nodeRepulsion: 4000,
+        //   // nodeDimensionsIncludeLabels: true,
+        //   boundingBox: {
+        //     x1: position.x,
+        //     y1: position.y,
+        //     w: position.r * 3,
+        //     h: position.r * 3
+        //   }
+        // })
+        // layout.run()
+        // subgraph.nodes().shift({
+        //   x: position.x * SCALING_FACTOR,
+        //   y: position.y * SCALING_FACTOR
+        // })
+        // subgraph.nodes().shift({
+        //   x: position.x * genePositionScalingX,
+        //   y: position.y * genePositionScalingY
+        // })
         layout = subgraph.layout({
-          name: 'cose',
-          animate: false,
-          // numIter: 500,
-          nodeOverlap: 15,
-          idealEdgeLength: 150,
-          nodeRepulsion: 4000,
-          // nodeDimensionsIncludeLabels: true,
+          name: 'circle',
           boundingBox: {
-            x1: position.x,
-            y1: position.y,
-            w: position.r * 3,
-            h: position.r * 3
+            x1: 0,
+            y1: 0,
+            w: position.r * 2 * 0.8 * genePositionScalingX,
+            h: position.r * 2 * 0.8 * genePositionScalingY
           }
         })
         layout.run()
         subgraph.nodes().shift({
-          x: position.x * SCALING_FACTOR,
-          y: position.y * SCALING_FACTOR
+          x: (position.x - position.r) * genePositionScalingX,
+          y: (position.y - position.r) * genePositionScalingY
         })
       } else {
         layout = subgraph.layout({
@@ -147,15 +209,10 @@ const localLayout = (network, groups, positions, nodeMap) => {
     }
   })
 
-  console.log('# ALl G nodes::', groupNodes)
-
   const box = groupNodes.boundingBox()
-  console.log('# ALl G nodes BOX::', box)
 
   // Apply layout for remaining genes
   if (remainingGenes.length !== 0) {
-    console.log('===================== Circular')
-
     const selectString = '#' + remainingGenes.join(',#')
     const memberGenes = cy.nodes(selectString)
     const connected = memberGenes.edgesWith(memberGenes)
@@ -200,7 +257,7 @@ const localLayout = (network, groups, positions, nodeMap) => {
       //   h: position.r * 2 * 15
       // }
     })
-    coseLayout.run()
+    // coseLayout.run()
 
     // subgraph2.nodes().shift({ x: x1 * 15, y: y1 * 15 })
     // subgraph2.nodes().forEach(node => {
@@ -210,9 +267,11 @@ const localLayout = (network, groups, positions, nodeMap) => {
     //     y: original.y * 1.2
     //   })
     // })
-  } else {
-    console.log('===================== Circular')
   }
+}
+
+const checkMembers = () => {
+
 }
 
 export { localLayout }
