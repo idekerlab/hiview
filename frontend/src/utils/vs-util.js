@@ -148,10 +148,11 @@ const assignColor = (nodes, edges, attrName, colorScale, threshold=0.5, colorMap
     if (isMember !== null) {
       data['isMember'] = true
       data['color'] = isMember
+      data['zIndex'] = 2000
     } else if(value<threshold) {
-      data['color'] = '#888888'
+      data['color'] = 'rgba(100,100,100,0.5)'
     } else {
-      data['color'] = '#888888'
+      data['color'] = 'rgba(100,100,100,0.5)'
       // data['color'] = colorScale(value)
     }
   })

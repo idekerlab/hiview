@@ -529,6 +529,7 @@ export const duplicateNodes = (network) => {
   const toBeDuplicated = {}
 
   const newNodes = []
+  const newEdges = []
 
   while(numNodes--) {
     const node = nodes[numNodes]
@@ -538,11 +539,63 @@ export const duplicateNodes = (network) => {
     // Member of more than one group = need to be duplicated
     if(groupMembership.length > 1) {
       toBeDuplicated[name] = groupMembership
-      newNodes.push(...createNode(node, groupMembership))
+      const gropuNodes = createNode(node, groupMembership)
+      newNodes.push(...gropuNodes)
+      newEdges.push(...addEdges({edges, originalNode: node, newNodes: gropuNodes}))
     }
   }
 
-  return newNodes
+  return {newNodes, newEdges}
+}
+
+const addEdges = ({edges, originalNode, newNodes}) => {
+  const newEdges = []
+  let numEdges = edges.length
+  while(numEdges--) {
+    const edge = edges[numEdges]
+    const {data} = edge
+    const {source, target} = data
+    const originalId = originalNode.data.id
+    if(source === originalId) {
+      newEdges.push(...createEdge(originalNode.data.id, newNodes, edge))
+    } else if(target === originalId) {
+      newEdges.push(...createEdge(originalNode.data.id, newNodes, edge))
+    }
+  }
+
+  return newEdges
+}
+const createEdge = (originalNodeId, newNodes, originalEdge) =>{
+  const edges = []
+  const edgeDataStr = JSON.stringify(originalEdge.data)
+
+  newNodes.forEach((newNode) => {
+    const newNodeId = newNode.data.id
+    const { source, target } = originalEdge.data
+    if (source === originalNodeId) {
+      const edgeData = JSON.parse(edgeDataStr)
+      
+      edgeData.source = newNodeId,
+      edgeData.target = target
+      edgeData.id = `${newNodeId}_${target}`
+      const newEdge = {
+        data: edgeData,
+      }
+      edges.push(newEdge)
+    } else if (target === originalNodeId) {
+      const edgeData = JSON.parse(edgeDataStr)
+      
+      edgeData.source = source,
+      edgeData.target = newNodeId
+      edgeData.id = `${source}_${newNodeId}`
+      const newEdge = {
+        data: edgeData,
+      }
+      edges.push(newEdge)
+    }
+  })
+
+  return edges
 }
 
 const createNode = (originalNode, groupMembership) => {

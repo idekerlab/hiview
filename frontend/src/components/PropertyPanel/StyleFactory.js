@@ -306,7 +306,7 @@ export const createStyle = originalNetwork => {
       const isMember = e.data('isMember')
 
       if(!isMember) {
-        return 1
+        return 0.5
       }
 
       if(weight === undefined || weight === null) {

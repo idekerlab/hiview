@@ -202,11 +202,16 @@ const processCx = (cx, positions) => {
         edges: [...eMap.values()]
       }
     },
-    nodeMap: nMap
+    // nodeMap: nMap
   }
-  const newNodes = duplicateNodes(result.network)
-
+  const {newNodes, newEdges} = duplicateNodes(result.network)
+  
+  newNodes.forEach(node => {
+    nMap.set(node.id, node)
+  })
   result.network.elements.nodes = [...result.network.elements.nodes, ...newNodes]
+  result.network.elements.edges = [...result.network.elements.edges, ...newEdges]
+  result['nodeMap'] = nMap
   return result
 }
 
