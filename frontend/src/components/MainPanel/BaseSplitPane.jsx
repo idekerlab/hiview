@@ -68,7 +68,7 @@ export default class BaseSplitPane extends Component {
     return (
       <SplitPane
         split="vertical"
-        minSize={window.innerWidth * 0.2}
+        minSize={window.innerWidth * 0.3}
         style={baseStyle}
         size={this.state.mainPanelWidth}
         onDragFinished={leftWidth => this.handleVerticalResize(leftWidth)}

@@ -148,12 +148,18 @@ const assignColor = (nodes, edges, attrName, colorScale, threshold=0.5, colorMap
     if (isMember !== null) {
       data['isMember'] = true
       data['color'] = isMember
-      data['zIndex'] = 2000
-    } else if(value<threshold) {
-      data['color'] = 'rgba(100,100,100,0.5)'
-    } else {
-      data['color'] = 'rgba(100,100,100,0.5)'
       // data['color'] = colorScale(value)
+      data['zIndex'] = 5000
+    } else if(value<threshold) {
+      data['color'] = 'rgba(50,50,50,0.3)'
+      // data['color'] = colorScale(value)
+    } else {
+      data['color'] = 'rgba(50,50,50,0.3)'
+      // data['color'] = colorScale(value)
+    }
+    if(data['isPleio']) {
+      data['color'] = '#FFFFFF'
+      data['zIndex'] = 8000
     }
   })
 }

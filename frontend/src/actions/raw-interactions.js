@@ -367,6 +367,7 @@ const getInteractions = (
     // }
   })
 }
+
 export const fetchInteractionsFromUrl = (
   uuid,
   server,

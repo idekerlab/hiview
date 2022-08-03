@@ -1,4 +1,5 @@
 import _ from 'lodash'
+import { node } from 'prop-types'
 
 // In DDRAM, this property is used to show/hide primary edges
 const DDRAM_EDGE_VISIBILITY = 'primary_edge_visible'
@@ -13,7 +14,7 @@ const BASE_FONT_SIZE = 10
 const LARGE_FONT_SIZE = 30
 
 // If there are too many edge in the data, use simplified version.
-const MAX_EDGE_COUNT = 10000
+const MAX_EDGE_COUNT = 100000
 
 const calcFontSize = cyNode => {
   const cy = cyNode.cy()
@@ -113,12 +114,9 @@ const BASE_STYLE = {
   node: {
     selector: 'node',
     css: {
-      width: 20,
-      height: 20,
-      // width: 82,
-      // height: 22,
+      width: 12,
+      height: 10,
       shape: 'ellipse',
-      // shape: 'roundrectangle',
       'text-valign': 'center',
       'text-halign': 'center',
       color: '#555555',
@@ -134,23 +132,33 @@ const BASE_STYLE = {
       'background-opacity': 1,
       'background-color': '#FAFAFA',
       'border-width': 0,
-      'font-size': 4,
+      'font-size': 3,
       // 'font-size': BASE_FONT_SIZE,
       label: 'data(name)'
+    }
+  },
+  nodePreio: {
+    selector: 'node[?isPleio]',
+    css: {
+      'background-color': '#FFFFFF',
+      shape: 'hexagon',
+      'border-width': 0.2,
+      'border-color': '#333333',
+      'font-weight': 700,
+      'font-size': 4,
+      width: 20,
+      height: 7,
     }
   },
   nodeSelected: {
     selector: 'node:selected',
     css: {
-      // width: n => calcNodeWidth(n),
-      // height: n => calcNodeHeight(n),
-      'font-size': n => calcFontSize(n),
       'font-weight': 500,
       'text-background-opacity': 0.9,
       'text-background-color': '#FF0000',
-      // color: '#FFFFFF',
-      // 'background-opacity': 1,
-      // 'background-color': '#FF0000'
+      color: '#FFFFFF',
+      'background-opacity': 1,
+      'background-color': '#FF0000'
     }
   },
   edge: {
@@ -160,9 +168,7 @@ const BASE_STYLE = {
       'text-rotation': 'autorotate',
       'line-color': '#555555',
       'text-opacity': 0,
-      'font-size': 65,
       color: '#FF0000',
-      opacity: 0.05,
       'curve-style': e => {
         const parallel = e.parallelEdges()
         if (parallel.size() > 1) {
@@ -179,7 +185,30 @@ const BASE_STYLE = {
     selector: 'edge:selected',
     css: {
       opacity: 1,
-      'z-index': e => e.data('zIndex') + 1000
+      'line-color': '#FF0000',
+      'z-index': e => e.data('zIndex') + 6000
+    }
+  },
+  edgeMembers: {
+    selector: `edge[?isMember]`,
+    css: {
+      opacity: 0.8,
+      'z-index': 6000
+    }
+  },
+  edgePleio: {
+    selector: `edge[?isPleio]`,
+    css: {
+      opacity: 1,
+      width: 0.5,
+      'line-style': 'dotted',
+      'curve-style': 'unbundled-bezier',
+      'z-index': 8000,
+      'source-arrow-shape': 'circle',
+      'target-arrow-shape': 'circle',
+      'source-arrow-color': '#FFFFFF',
+      'target-arrow-color': '#FFFFFF',
+      'arrow-scale': 0.25,
     }
   },
   edgeVisible: {
@@ -218,7 +247,27 @@ const BASE_STYLE = {
       width: 50,
       height: 50
     }
-  }
+  },
+  connected: {
+    selector: '.connected',
+    css: {
+      color: '#FFFFFF',
+      'text-background-opacity': 0.9,
+      'text-background-color': '#FF0000',
+      'background-opacity': 1,
+      'background-color': '#FF0000'
+    }
+  },
+  connectedEdge: {
+    selector: '.connectedEdge',
+    css: {
+      width: 3,
+      'line-color': e => {
+        return e.data('color')
+      },
+      'line-style': 'solid',
+    }
+  },
 }
 
 export const createSimplifiedStyle = () => {
@@ -255,6 +304,7 @@ export const createStyle = originalNetwork => {
     return {
       style: [
         BASE_STYLE.node,
+        BASE_STYLE.nodePreio,
         BASE_STYLE.nodeSelected,
         BASE_STYLE.hidden,
         BASE_STYLE.seed
@@ -271,6 +321,9 @@ export const createStyle = originalNetwork => {
   if (!similarityMax) {
     console.warn('Max was not defined for: ', edges[0])
     similarityMax = 1
+  } else if(similarityMax > 1) {
+    // TODO: why largert than 1? 
+    similarityMax = 1
   }
 
   const edgeStyle = BASE_STYLE.edge
@@ -282,22 +335,22 @@ export const createStyle = originalNetwork => {
   if (similarityMin !== similarityMax) {
     edgeStyle.css[
       'opacity'
-    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.8, 1)`
+    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 1)`
 
-    // Pick top 20%
     const range = Math.abs(similarityMax - similarityMin) 
-    const topRange = range * 0.95
-    const maxThreshold = similarityMin + topRange
+    // const topRange = range * 0.95
+    // const maxThreshold = similarityMin + topRange
     
-    const maxWidth = 6
-    const minWidth = 1.5
+    // Width mapping. This is local
+    const maxWidth = 7
+    const minWidth = 1
     const rangeWidth = Math.abs(maxWidth - minWidth) 
 
     const globalMin = Number.parseFloat(networkData[`${primaryEdgeType} min`])
     const globalMax = Number.parseFloat(networkData[`${primaryEdgeType} max`])
     const globalRange = Math.abs(globalMax - globalMin)
-    const globalTop = globalRange * 0.8
-    const globalTh = globalMin + globalTop
+    // const globalTop = globalRange * 0.8
+    // const globalTh = globalMin + globalTop
 
     edgeStyle.css[
       'width'
@@ -305,25 +358,32 @@ export const createStyle = originalNetwork => {
       const weight = e.data(primaryEdgeType)
       const isMember = e.data('isMember')
 
-      if(!isMember) {
-        return 0.5
-      }
+      // if(!isMember) {
+      //   return minWidth
+      // }
+      // if(e.data('isPleio') === true) {
+      //   return 20
+      // }
 
       if(weight === undefined || weight === null) {
         return minWidth
       }
 
-      if(globalTh <= weight) {
-        return maxWidth
-      }
+      // if(globalTh <= weight) {
+      //   return maxWidth
+      // }
 
-      const computed = ((Math.abs(weight - similarityMin))/range ) * rangeWidth
+      const mappedWidth = Math.log(weight / range) * rangeWidth
       // const computed = ((Math.abs(weight - similarityMin))/range ) * rangeWidth
-      if(computed > minWidth) {
-        return computed
+      // const computed = ((Math.abs(weight - similarityMin))/range ) * rangeWidth
+      
+      if(mappedWidth >= maxWidth) {
+        return maxWidth
+      } else if(mappedWidth <= minWidth) {
+        return minWidth
       }
 
-      return minWidth
+      return mappedWidth
     }
   }
 
@@ -354,13 +414,18 @@ export const createStyle = originalNetwork => {
   return {
     style: [
       BASE_STYLE.node,
+      BASE_STYLE.nodePreio,
       BASE_STYLE.nodeSelected,
       edgeStyle,
       edgeSelectedStyle,
+      BASE_STYLE.edgeMembers,
+      BASE_STYLE.edgePleio,
       BASE_STYLE.edgeVisible,
       BASE_STYLE.hidden,
       BASE_STYLE.seed,
-      BASE_STYLE.members
+      BASE_STYLE.members,
+      BASE_STYLE.connected,
+      BASE_STYLE.connectedEdge,
     ]
   }
 }

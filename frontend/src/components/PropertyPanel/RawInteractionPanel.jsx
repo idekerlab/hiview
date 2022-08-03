@@ -64,6 +64,37 @@ const RawInteractionPanel = (props) => {
   const selectNodes = (nodeIds, nodeProps, rawEvent) => {
     const node = nodeIds[0]
     const props = nodeProps[node]
+    const name = props.name
+    const { cy } = rawEvent
+    if (cy === undefined || cy === null) {
+      return
+    }
+
+    // Get CyNode
+    const selectedNode = rawEvent.target
+    const connectedEdges = selectedNode.connectedEdges('edge[?isPleio]')
+    if(connectedEdges.length > 0) {
+      connectedEdges.addClass('connectedEdge')
+      const connectedNodes = connectedEdges.connectedNodes()
+      console.log('connected', connectedNodes.addClass('connected'))
+    }
+  }
+  
+  const deselectNodes = (nodeIds, rawEvent) => {
+    console.log(rawEvent)
+    const { cy } = rawEvent
+    if (cy === undefined || cy === null) {
+      return
+    }
+
+    // remove class
+    const selectedNode = rawEvent.target
+    const connectedEdges = selectedNode.connectedEdges()
+    if(connectedEdges.length > 0) {
+      connectedEdges.removeClass('connectedEdge')
+      const connectedNodes = connectedEdges.connectedNodes()
+      console.log('connected', connectedNodes.removeClass('connected'))
+    }
   }
 
   const selectEdges = (edgeIds, edgeProps, rawEvent) => {
@@ -294,6 +325,7 @@ const RawInteractionPanel = (props) => {
   const getCustomEventHandlers = () => ({
     selectNodes,
     selectEdges,
+    deselectNodes,
     deselectEdges,
     // hoverOnNode,
     // hoverOutNode,

@@ -225,7 +225,7 @@ const TermDetailsPanel = (props) => {
             enrichmentActions={props.enrichmentActions}
             uiState={props.uiState}
             hierarchy={props.network.get('hierarchy')}
-            networkAreaStyle={{ height: '100%', background: '#000000' }}
+            networkAreaStyle={{ height: '100%', background: '#111111' }}
             setCy={setCy}
             rawInteractionsActions={props.rawInteractionsActions}
             queryPathsActions={props.queryPathsActions}
@@ -371,8 +371,8 @@ const TermDetailsPanel = (props) => {
       pane1Style={paneTop}
       pane2Style={paneBottom}
       split="horizontal"
-      minSize={window.innerHeight * 0.4}
-      defaultSize={window.innerHeight * 0.4}
+      minSize={window.innerHeight * 0.3}
+      defaultSize={window.innerHeight * 0.7}
       onDragFinished={(topHeight) => handleHorizontalResize(topHeight)}
     >
       <div className={classes.topPane}>

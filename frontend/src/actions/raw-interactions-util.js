@@ -531,20 +531,25 @@ export const duplicateNodes = (network) => {
   const newNodes = []
   const newEdges = []
 
+  // const pleioEdgeList = []
+  const pleioNodes = []
+
   while(numNodes--) {
     const node = nodes[numNodes]
     const name = node.data.name
     const groupMembership = inGroups(node)
 
-    // Member of more than one group = need to be duplicated
+    // A gene is member of more than one group = need to be duplicated
     if(groupMembership.length > 1) {
       toBeDuplicated[name] = groupMembership
-      const gropuNodes = createNode(node, groupMembership)
-      newNodes.push(...gropuNodes)
-      newEdges.push(...addEdges({edges, originalNode: node, newNodes: gropuNodes}))
+      const groupNodes = createNode(node, groupMembership)
+      pleioNodes.push(node, ...groupNodes)
+      newNodes.push(...groupNodes)
+      newEdges.push(...addEdges({edges, originalNode: node, newNodes: groupNodes}))
     }
   }
-
+  const pleioEdges = addPleiotropicEdges(pleioNodes)
+  newEdges.push(...pleioEdges)
   return {newNodes, newEdges}
 }
 
@@ -598,6 +603,55 @@ const createEdge = (originalNodeId, newNodes, originalEdge) =>{
   return edges
 }
 
+/**
+ * Add special edges between pleiotropic nodes
+ * 
+ * @param {} nodes 
+ * @returns 
+ */
+const addPleiotropicEdges = (nodes) => {
+  const pleioEdges = []
+
+  const usedNodes = new Set()
+
+  let numNodes = nodes.length
+  while(numNodes--) {
+    const source = nodes[numNodes]
+    const sourceData = source.data
+    const sourceId = sourceData.id
+    const sourceName = sourceData.name
+    
+    usedNodes.add(sourceId)
+
+    let idx = nodes.length
+    while(idx--) {
+      const target = nodes[idx]
+      const targetData = target.data
+      const targetId = targetData.id
+      const targetName = targetData.name
+      if(sourceId === targetId || sourceName !== targetName|| usedNodes.has(targetId)) {
+        continue
+      }
+
+      const newEdge = {
+        data: {
+          source: sourceId,
+          target: targetId,
+          id: `ep_${sourceId}_${targetId}`,
+          isPleio: true,
+          Score: 1.0,
+          isMember: true,
+          'primary_edge_visible': true
+        }
+      }
+
+      pleioEdges.push(newEdge)
+    }
+  }
+  return pleioEdges
+}
+
+const PLEIO_TAG = 'isPleio'
 const createNode = (originalNode, groupMembership) => {
   const originalData = originalNode.data
   for (let key in originalData) {
@@ -605,6 +659,9 @@ const createNode = (originalNode, groupMembership) => {
       delete originalData[key]
     }
   }
+
+  // Mark this as the pleio
+  originalData[PLEIO_TAG] = true
 
   // Use first one to the original node
   originalData[GROUP_PREFIX + groupMembership[0]] = true
@@ -619,6 +676,7 @@ const createNode = (originalNode, groupMembership) => {
     const groupId = groupMembership[idx]
     newData[GROUP_PREFIX + groupId] = true
     newData['id'] = originalData.id + '-G' + groupId
+    newData[PLEIO_TAG] = true
 
     const newNode = {
       data: newData,
