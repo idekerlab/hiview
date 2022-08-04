@@ -199,7 +199,7 @@ const BASE_STYLE = {
   edgePleio: {
     selector: `edge[?isPleio]`,
     css: {
-      opacity: 1,
+      opacity: 0.7,
       width: 0.5,
       'line-style': 'dotted',
       'curve-style': 'unbundled-bezier',

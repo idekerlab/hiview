@@ -4,13 +4,8 @@ import { scaleBand } from 'd3-scale'
 import { setGroupPositions } from './raw-interactions'
 regCose(cytoscape)
 
-const SCALING_FACTOR = 1
-
-const duplicateNodes = ({network}) => {
-
-  return network
-}
-
+const genePositionScalingX = 2
+const genePositionScalingY = 2
 
 const getNameMap = nodeMap => {
   const nameMap = {}
@@ -22,8 +17,6 @@ const getNameMap = nodeMap => {
   return nameMap
 }
 
-const genePositionScalingX = 2
-const genePositionScalingY = 2
 const setGenePositions = ({nodeMap, positions}) => {
   const name2node = getNameMap(nodeMap)
 
@@ -76,6 +69,7 @@ const localLayout = (network, groupsMap, positions, nodeMap) => {
   sorted.forEach(entry => {
     const groupName = entry[0]
     const position = positions[groupName]
+    const positionMembers = positions[groupName + '-members']
 
     // Member genes assigned to the group
     const memberIds = groups[groupName]
@@ -88,6 +82,28 @@ const localLayout = (network, groupsMap, positions, nodeMap) => {
       node.position.x = position.x * genePositionScalingX 
       node.position.y = position.y * genePositionScalingY
     } else {
+
+      memberIds.forEach(memberId => {
+        let node = nodeMap.get(memberId)
+        if(node === undefined) {
+          console.log('node not found', memberId)
+
+        } else {
+          const childPosition = positionMembers[node.data.name]
+          if(childPosition === undefined) {
+            node.position.x = position.x * genePositionScalingX 
+            node.position.y = position.y * genePositionScalingY
+          } else {
+            node.position.x = childPosition.x * genePositionScalingX 
+            node.position.y = childPosition.y * genePositionScalingY
+          }
+
+        }
+
+      })
+      return
+
+
       const selectString = '#' + memberIds.join(',#')
       const memberGenes = cy.nodes(selectString)
       groupNodes.merge(memberGenes)
@@ -162,20 +178,23 @@ const localLayout = (network, groupsMap, positions, nodeMap) => {
         //   x: position.x * genePositionScalingX,
         //   y: position.y * genePositionScalingY
         // })
-        layout = subgraph.layout({
-          name: 'circle',
-          boundingBox: {
-            x1: 0,
-            y1: 0,
-            w: position.r * 2 * 0.8 * genePositionScalingX,
-            h: position.r * 2 * 0.8 * genePositionScalingY
-          }
-        })
-        layout.run()
-        subgraph.nodes().shift({
-          x: (position.x - position.r) * genePositionScalingX,
-          y: (position.y - position.r) * genePositionScalingY
-        })
+
+
+
+        // layout = subgraph.layout({
+        //   name: 'circle',
+        //   boundingBox: {
+        //     x1: 0,
+        //     y1: 0,
+        //     w: position.r * 2 * 0.8 * genePositionScalingX,
+        //     h: position.r * 2 * 0.8 * genePositionScalingY
+        //   }
+        // })
+        // layout.run()
+        // subgraph.nodes().shift({
+        //   x: (position.x - position.r) * genePositionScalingX,
+        //   y: (position.y - position.r) * genePositionScalingY
+        // })
       } else {
         layout = subgraph.layout({
           name: 'grid'

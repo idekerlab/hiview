@@ -202,9 +202,8 @@ const processCx = (cx, positions) => {
         edges: [...eMap.values()]
       }
     },
-    // nodeMap: nMap
   }
-  const {newNodes, newEdges} = duplicateNodes(result.network)
+  const {newNodes, newEdges} = duplicateNodes({network: result.network, nodeMap: nMap})
   
   newNodes.forEach(node => {
     nMap.set(node.id, node)
@@ -317,7 +316,7 @@ const fetchInteractionsFromRemote = (
       const network = netAndFilter[0]
       const groups = netAndFilter[2]
 
-      // This is for applying new layout locally
+      // This applies new layout locally, and may take while
       localLayout(network, groups, positions, nodeMap)
 
       // And this is for using given positions as-is.

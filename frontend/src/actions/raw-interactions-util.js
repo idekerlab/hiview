@@ -520,9 +520,13 @@ export const createFilter = (network, maxEdgeCount) => {
   return [network, filters]
 }
 
-export const duplicateNodes = (network) => {
-  console.log('original network = ', network)
-
+/**
+ * Add extra nodes shared by multiple groups
+ * 
+ * @param {*} param0 
+ * @returns 
+ */
+export const duplicateNodes = ({network, nodeMap}) => {
   const { nodes, edges } = network.elements
 
   let numNodes = nodes.length
@@ -543,6 +547,9 @@ export const duplicateNodes = (network) => {
     if(groupMembership.length > 1) {
       toBeDuplicated[name] = groupMembership
       const groupNodes = createNode(node, groupMembership)
+      
+      addToNodeMap(nodeMap, groupNodes)
+
       pleioNodes.push(node, ...groupNodes)
       newNodes.push(...groupNodes)
       newEdges.push(...addEdges({edges, originalNode: node, newNodes: groupNodes}))
@@ -551,6 +558,21 @@ export const duplicateNodes = (network) => {
   const pleioEdges = addPleiotropicEdges(pleioNodes)
   newEdges.push(...pleioEdges)
   return {newNodes, newEdges}
+}
+
+/**
+ * 
+ * @param {*} nodeMap 
+ * @param {*} nodes 
+ * @returns 
+ */
+const addToNodeMap = (nodeMap, nodes) => {
+  for(let i = 0; i < nodes.length; i++) {
+    const node = nodes[i]
+    const id = node.data.id
+    nodeMap.set(id,node)
+  }
+  return nodeMap
 }
 
 const addEdges = ({edges, originalNode, newNodes}) => {

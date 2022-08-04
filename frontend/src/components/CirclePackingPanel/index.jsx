@@ -251,19 +251,43 @@ const extractPositions = parent => {
   }
 
   children.forEach(node => {
-    // Extract ID of current node
-    let id = node.data.data.props.name
-    if (node.data.data.props.NodeType === 'Gene') {
-      id = node.data.data.props.Label
+    // Extract ID of current subsystem
+    const {props} = node.data.data 
+    const nodeType = props.NodeType
+    let id = ''
+    if (nodeType === 'Gene') {
+      id = props.Label
+    } else {
+      id = props.name
+      // This is a subsystem, not Gene
+      const members = {}
+      extractChildren(node, members)
+      positions[`${id}-members`] = members
     }
+
     positions[id] = {
       r: node.r,
       x: node.x,
       y: node.y
     }
+
   })
 
   return positions
+}
+
+const extractChildren = (node, members) => {
+  const {children} = node
+  if (children === undefined) {
+    let id = node.data.data.props.name
+    if (node.data.data.props.NodeType === 'Gene') {
+      id = node.data.data.props.Label
+    }
+    members[id] = {r: node.r, x: node.x, y: node.y }
+    return members
+  }
+
+  children.forEach(child => extractChildren(child, members))
 }
 
 export default CirclePackingPanel
