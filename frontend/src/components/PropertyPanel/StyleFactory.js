@@ -229,7 +229,7 @@ const BASE_STYLE = {
       // height: n => calcNodeHeight(n),
       'text-background-opacity': 0.9,
       'text-background-color': '#FF0000',
-      'font-size': n => calcFontSize(n),
+      // 'font-size': n => calcFontSize(n),
       'font-weight': 500
     }
   },

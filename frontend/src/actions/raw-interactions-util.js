@@ -596,7 +596,7 @@ const createEdge = (originalNodeId, newNodes, originalEdge) =>{
   const edges = []
   const edgeDataStr = JSON.stringify(originalEdge.data)
 
-  newNodes.forEach((newNode) => {
+  newNodes.forEach(newNode => {
     const newNodeId = newNode.data.id
     const { source, target } = originalEdge.data
     if (source === originalNodeId) {
