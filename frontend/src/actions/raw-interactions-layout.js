@@ -1,11 +1,6 @@
-import cytoscape from 'cytoscape'
-import regCose from 'cytoscape-cose-bilkent'
-import { scaleBand } from 'd3-scale'
-import { setGroupPositions } from './raw-interactions'
-regCose(cytoscape)
-
-const genePositionScalingX = 1.2
-const genePositionScalingY = 1.2
+// Scale the original position
+const genePositionScalingX = 1.4
+const genePositionScalingY = 1.4
 
 const getNameMap = nodeMap => {
   const nameMap = {}
@@ -19,7 +14,6 @@ const getNameMap = nodeMap => {
 
 const setGenePositions = ({nodeMap, positions}) => {
   const name2node = getNameMap(nodeMap)
-
   for(let key in positions) {
     const position = positions[key]
     const node = name2node[key]
@@ -41,16 +35,10 @@ const localLayout = (network, groupsMap, positions, nodeMap) => {
 
   let groups = groupsMap
   // Case 1: gene only node - no nested structure.
-  if(groupsMap === null || groupsMap === undefined) {
+  if(groupsMap === null || groupsMap === undefined || Object.keys(groupsMap).length === 0) {
     setGenePositions({nodeMap, positions})
     return
   }
-
-  // Headless instance of Cyjs
-  const cy = cytoscape({
-    headless: true,
-    elements: network.elements
-  })
 
   const groupNames = Object.keys(groups)
   const remainingGenes = []
@@ -63,9 +51,6 @@ const localLayout = (network, groupsMap, positions, nodeMap) => {
 
   const sorted = [...sizeMap.entries()].sort((a, b) => b[1] - a[1])
 
-  // Empty collection for group nodes
-  const groupNodes = cy.collection()
-
   sorted.forEach(entry => {
     const groupName = entry[0]
     const position = positions[groupName]
@@ -75,7 +60,7 @@ const localLayout = (network, groupsMap, positions, nodeMap) => {
     const memberIds = groups[groupName]
 
     if (memberIds == undefined || memberIds == null || memberIds.length === 0) {
-      console.log('!!!!!!!!!!!!!!!!!!!!!!!!!!!!', groupName)
+      // Just ignore this group
     } else if (memberIds.length === 1) {
       remainingGenes.push(memberIds[0])
       const node = nodeMap.get(memberIds[0])
@@ -86,16 +71,13 @@ const localLayout = (network, groupsMap, positions, nodeMap) => {
     } else {
       memberIds.forEach(memberId => {
         let node = nodeMap.get(memberId)
-        if(node === undefined) {
-          console.log('node not found', memberId)
-        } else {
+        if(node !== undefined) {
           const {name} = node.data
           const childPosition = positionMembers[name]
           if(childPosition === undefined && position !== undefined) {
             node['position'] = {
               x: position.x * genePositionScalingX, 
               y: position.y * genePositionScalingY
-
             }
           } else {
             node['position'] = {

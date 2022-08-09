@@ -12,16 +12,7 @@ const utils = new cx2js.CyNetworkUtils()
 const cx2JsConverter = new cx2js.CxToJs(utils)
 
 const hvDb = LocalDB.getDB()
-
 const NDEX_API = '.ndexbio.org/v2/network/'
-
-// For performance
-let tp0 = 0
-
-// For network density
-const calcDensity = (n, m) => {
-  return (2 * m) / (n * (n - 1)) //  for undirected
-}
 
 // Set loading message
 export const SET_MESSAGE = 'SET_MESSAGE'
@@ -44,7 +35,6 @@ const receiveNetwork = (
   extraEdges,
   originalCX
 ) => {
-  console.log('** Total time loading:', performance.now() - tp0)
   return {
     type: RECEIVE_INTERACTIONS,
     url,
@@ -119,23 +109,6 @@ const processCx = (cx, positions) => {
       x: position.x,
       y: position.y
     }
-
-    // This is for circle-position based layout
-    //
-    // const termName = nMap.get(nodeId).data.name
-    // const circlePosition = positions[termName]
-
-    // if (circlePosition === undefined) {
-    //   nMap.get(nodeId)['position'] = {
-    //     x: position.x,
-    //     y: position.y
-    //   }
-    // } else {
-    //   nMap.get(nodeId)['position'] = {
-    //     x: circlePosition.x * 15,
-    //     y: circlePosition.y * 15
-    //   }
-    // }
   }
 
   const eMap = new Map()
@@ -310,17 +283,15 @@ const fetchInteractionsFromRemote = (
         netAndFilter,
         originalCX
       }
-
-      hvDb.interactions.put(entry)
-
+      
       const network = netAndFilter[0]
       const groups = netAndFilter[2]
-
       // This applies new layout locally, and may take while
       localLayout(network, groups, positions, nodeMap)
 
-      // And this is for using given positions as-is.
-      // assignPositions(netAndFilter[2], positions, nodeMap)
+      // Store the modified network data to local DB
+      hvDb.interactions.put(entry)
+
       return dispatch(
         receiveNetwork(
           url,
@@ -376,7 +347,6 @@ export const fetchInteractionsFromUrl = (
   credentials,
   positions
 ) => {
-  tp0 = performance.now()
 
   // Get only top 10000 edges.
   // TODO: Adjust max size
@@ -426,46 +396,16 @@ export const fetchInteractionsFromUrl = (
   }
 }
 
-const assignPositions = (groups, circlePositions, nodeMap) => {
-  Object.keys(groups).forEach(groupName => {
-    const position = circlePositions[groupName]
-    const members = groups[groupName]
-
-    members.forEach(memberId => {
-      const node = nodeMap.get(memberId)
-      if (members.length === 1) {
-        node.position.x = position.x * 15
-        node.position.y = position.y * 15
-      } else {
-        const direction1 = Math.random() > 0.5 ? 1 : -1
-        const direction2 = Math.random() > 0.5 ? 1 : -1
-        node.position.x =
-          (position.x + Math.random() * position.r * direction1) * 15
-        node.position.y =
-          (position.y + Math.random() * position.r * direction2) * 15
-      }
-      // console.log('memberID::', nodeMap.get(memberId))
-    })
-  })
-  console.log(groups, circlePositions, nodeMap)
-}
-
 const convertNetworkAttr = attr => {
   let idx = attr.length
-
-  // Store types and convert to correct data type
-  // This map should have k-v pair for edge data types
-  const typeMap = new Map()
 
   const data = {}
   while (idx--) {
     const el = attr[idx]
-
     const name = el['n']
     const value = el['v']
     data[name] = value
   }
-
   return data
 }
 
@@ -657,7 +597,6 @@ const createFilter = (network, maxEdgeCount) => {
       })
     }
   }
-
   return [network, filters]
 }
 
@@ -728,7 +667,6 @@ const receiveSummary = summary => {
 export const getNetworkSummary = (uuid, server, url, maxEdgeCount = 500) => {
   return dispatch => {
     const url = 'https://' + server + NDEX_API + uuid + '/summary'
-
     return fetch(url)
       .then(response => {
         if (!response.ok) {
@@ -741,11 +679,8 @@ export const getNetworkSummary = (uuid, server, url, maxEdgeCount = 500) => {
         return dispatch(receiveSummary(summary))
       })
       .catch(err => {
-        console.log('Network summary ERROR! ', err)
+        console.warn('Network summary ERROR! ', err)
         return dispatch(receiveSummary(null))
       })
   }
 }
-
-
-
