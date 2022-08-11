@@ -5,6 +5,8 @@ export const PATTERN = /[ -]/g
 
 const PARENT_WT_TAG = 'Parent weight'
 const CHILDREN_WT_TAG = 'Children weight'
+const PLEIO_TAG = 'isPleio'
+const GROUP_PREFIX = 'Group:'
 
 const DEF_COLOR = '#777777'
 
@@ -493,6 +495,24 @@ export const createFilter = (network, maxEdgeCount) => {
   return [network, filters]
 }
 
+const createNodeFromPosition = (positions) => {
+  const allGenes = Object.keys(positions)  
+  const duplicationMap = {}
+
+  let idx = allGenes.length
+  while(idx--) {
+    const key = allGenes[idx]
+    // gene name - group number
+    const parts = key.split('-')
+    const geneName = parts[0]
+    const groupNumber = parts[1]
+    const groupList = duplicationMap[geneName] || []
+    groupList.push(groupNumber)
+    duplicationMap[geneName] = groupList
+  }
+
+  return duplicationMap
+}
 /**
  *
  * Add extra nodes and edges shared by multiple groups
@@ -500,8 +520,11 @@ export const createFilter = (network, maxEdgeCount) => {
  * @param {*} param0
  * @returns
  */
-export const duplicateNodes = ({ network, nodeMap }) => {
+export const duplicateNodes = ({ network, nodeMap, allPositions}) => {
   const { nodes, edges } = network.elements
+  const duplicationMap = createNodeFromPosition(allPositions)
+  const originalSize = nodes.length
+  const ActualSize = Object.keys(allPositions).length
 
   let numNodes = nodes.length
 
@@ -510,23 +533,41 @@ export const duplicateNodes = ({ network, nodeMap }) => {
   const pleioNodes = []
   const groupMembers = {}
 
-  // Scan all nodes
+  // Scan all original nodes
   while (numNodes--) {
+    // Node to be tested (original node)
     const node = nodes[numNodes]
     // group IDs which have this node
-    const groupMembership = inGroups(node, groupMembers)
+    // const groupMembership = inGroups(node, groupMembers)
+    const groupMembership = duplicationMap[node.data.name]
 
     // A gene is member of more than one group = need to be duplicated
     if (groupMembership.length > 1) {
-      const groupNodes = createNode(node, groupMembership)
-
+      // Duplicated nodes from the original (does not include the original)
+      const groupNodes = createNode(node, groupMembership, allPositions)
+      // Add those to the id to node map
       addToNodeMap(nodeMap, groupNodes)
 
-      pleioNodes.push(node, ...groupNodes)
+      // Store these as pleiotropic nodes
+      pleioNodes.push(node)
+      pleioNodes.push(...groupNodes)
+
+      // Store as new nodes
       newNodes.push(...groupNodes)
-      newEdges.push(
-        ...addEdges({ edges, originalNode: node, newNodes: groupNodes }),
-      )
+
+      // Add edges for new nodes
+      const newNormalEdges = addEdges({
+        edges,
+        originalNode: node,
+        newNodes: groupNodes,
+      })
+      newEdges.push(...newNormalEdges)
+    } else {
+      // Simply copy position to the original node
+      const positionKey = `${node.data.name}-${groupMembership[0]}`
+      const newPosition = allPositions[positionKey]
+      // Add new name
+      node.data.gName = `${node.data.name}-${groupMembership[0]}`
     }
   }
   const newNodeEdges = connectPleioNodes({
@@ -536,23 +577,10 @@ export const duplicateNodes = ({ network, nodeMap }) => {
     groupMembers,
   })
   newEdges.push(...newNodeEdges)
-  // testNewNodes(newNodes)
 
-  const pleioEdges = addPleiotropicEdges(pleioNodes)
-  newEdges.push(...pleioEdges)
+  // const pleioEdges = addPleiotropicEdges(pleioNodes)
+  // newEdges.push(...pleioEdges)
   return { newNodes, newEdges }
-}
-const testNewNodes = (newNodes) => {
-  let counter = 0
-  for (let i = 0; i < newNodes.length; i++) {
-    const node = newNodes[i]
-    const { id } = node.data
-    const parts = id.split('-')
-    if (parts.length > 1) {
-      counter++
-    }
-  }
-  return counter
 }
 
 const connectPleioNodes = ({ newNodes, allEdges, nodeMap, groupMembers }) => {
@@ -569,19 +597,34 @@ const connectPleioNodes = ({ newNodes, allEdges, nodeMap, groupMembers }) => {
   }
 
   const newEdges = []
-  const visited = new Set()
-  
+
   for (let edge of allEdges) {
     const sourceId = edge.data.source
     const targetId = edge.data.target
     const s = nodeMap.get(sourceId)
     const t = nodeMap.get(targetId)
 
-    const sourceName = s.data.name
-    const targetName = t.data.name
+    const sData = s.data
+    const tData = t.data
+
+    const sourceName = sData.name
+    const targetName = tData.name
+
+    const sGroup = Object.keys(sData).filter((key) =>
+      key.startsWith(GROUP_PREFIX),
+    )
+    const tGroup = Object.keys(tData).filter((key) =>
+      key.startsWith(GROUP_PREFIX),
+    )
 
     // This only connectes pleiotropic nodes
-    if (!s.data.isPleio || !t.data.isPleio) {
+    if (
+      !s.data.isPleio ||
+      !t.data.isPleio ||
+      sGroup.length !== 1 ||
+      tGroup.length !== 1 ||
+      sGroup[0] !== tGroup[0]
+    ) {
       continue
     }
 
@@ -593,24 +636,20 @@ const connectPleioNodes = ({ newNodes, allEdges, nodeMap, groupMembers }) => {
       const sourceNodes = name2nodes[sourceName]
       const targetNodes = name2nodes[targetName]
       for (let newSource of sourceNodes) {
-        visited.add(newSource.data.id)
         for (let newTarget of targetNodes) {
-          if(visited.has(`${newSource.data.id}-${newTarget.data.id}`)) {
-            continue
-          }
-
-          // Finally, create edge
-          const newId = `${newSource.data.id}-${newTarget.data.id}`
-          visited.add(newId)
-          const newEdge = {
-            data: {
-              ...edge.data,
-              source: newSource.data.id,
-              target: newTarget.data.id,
-              id: newId,
-            },
-          }
-          newEdges.push(newEdge)
+          // if (!newSource.data.isOriginal && !newTarget.data.isOriginal) {
+            // Finally, create edge
+            const newId = `${newSource.data.id}-${newTarget.data.id}`
+            const newEdge = {
+              data: {
+                ...edge.data,
+                source: newSource.data.id,
+                target: newTarget.data.id,
+                id: newId,
+              },
+            }
+            newEdges.push(newEdge)
+          // }
         }
       }
     }
@@ -627,51 +666,57 @@ const addToNodeMap = (nodeMap, nodes) => {
   return nodeMap
 }
 
+// Copy existing edges
 const addEdges = ({ edges, originalNode, newNodes }) => {
+  const originalId = originalNode.data.id
   const newEdges = []
   let numEdges = edges.length
   while (numEdges--) {
     const edge = edges[numEdges]
     const { data } = edge
     const { source, target } = data
-    const originalId = originalNode.data.id
+
+    // Copy edge if source or target is the original node
     if (source === originalId) {
-      newEdges.push(...createEdge(originalNode.data.id, newNodes, edge))
+      newEdges.push(...createEdge(originalNode, newNodes, edge))
     } else if (target === originalId) {
-      newEdges.push(...createEdge(originalNode.data.id, newNodes, edge))
+      newEdges.push(...createEdge(originalNode, newNodes, edge))
     }
   }
 
   return newEdges
 }
-const createEdge = (originalNodeId, newNodes, originalEdge) => {
+
+const createEdge = (originalNode, newNodes, originalEdge) => {
+  const { data } = originalNode
+  const originalNodeId = data.id
+  const { source, target } = originalEdge.data
+
   const edges = []
   const edgeDataStr = JSON.stringify(originalEdge.data)
 
   newNodes.forEach((newNode) => {
     const newNodeId = newNode.data.id
-    const { source, target } = originalEdge.data
     if (source === originalNodeId) {
       const edgeData = JSON.parse(edgeDataStr)
-
-      ;(edgeData.source = newNodeId), (edgeData.target = target)
-      edgeData.id = `${newNodeId}_${target}`
+      edgeData.source = newNodeId
+      edgeData.target = target
+      edgeData.id = `${newNodeId}-${target}`
       const newEdge = {
         data: edgeData,
       }
       edges.push(newEdge)
     } else if (target === originalNodeId) {
       const edgeData = JSON.parse(edgeDataStr)
-
-      ;(edgeData.source = source), (edgeData.target = newNodeId)
-      edgeData.id = `${source}_${newNodeId}`
+      edgeData.source = source
+      edgeData.target = newNodeId
+      edgeData.id = `${source}-${newNodeId}`
       const newEdge = {
         data: edgeData,
       }
       edges.push(newEdge)
     }
   })
-
   return edges
 }
 
@@ -727,8 +772,7 @@ const addPleiotropicEdges = (nodes) => {
   return pleioEdges
 }
 
-const PLEIO_TAG = 'isPleio'
-const createNode = (originalNode, groupMembership) => {
+const createNode = (originalNode, groupMembership, positions) => {
   const originalData = originalNode.data
   for (let key in originalData) {
     if (key.startsWith(GROUP_PREFIX)) {
@@ -738,13 +782,17 @@ const createNode = (originalNode, groupMembership) => {
 
   // Mark this as the pleio
   originalData[PLEIO_TAG] = true
+  // Mark as original pleio
+  originalData['isOriginal'] = true
 
   // Use first one to the original node
   originalData[GROUP_PREFIX + groupMembership[0]] = true
+  originalData['gName'] = `${originalData.name}-${groupMembership[0]}`
 
   // Create new nodes for the rest of the groups
   const newNodes = []
 
+  // Original node will be used as the first one, so starts with 1
   for (let idx = 1; idx < groupMembership.length; idx++) {
     const newData = {
       name: originalData.name,
@@ -753,18 +801,31 @@ const createNode = (originalNode, groupMembership) => {
     newData[GROUP_PREFIX + groupId] = true
     newData['id'] = originalData.id + '-G' + groupId
     newData[PLEIO_TAG] = true
+    newData['gName'] = `${originalData.name}-${groupId}`
 
+    const positionKey = `${originalData.name}-${groupId}`
     const newNode = {
       data: newData,
-      position: { x: 0, y: 0 },
+      // position: {
+      //   x: positions[positionKey].x * 1.5,
+      //   y: positions[positionKey].y * 1.4,
+      // },
+      position: {
+        x: 0,
+        y: 0,
+      },
     }
     newNodes.push(newNode)
   }
-
   return newNodes
 }
-
-const GROUP_PREFIX = 'Group:'
+/**
+ * Flatten the group membership to an array of group ids
+ *
+ * @param {*} node
+ * @param {*} groupMembers
+ * @returns
+ */
 const inGroups = (node, groupMembers = {}) => {
   const { data } = node
   const inGroup = []

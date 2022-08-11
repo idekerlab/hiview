@@ -204,6 +204,7 @@ class NetworkPanel extends Component {
       .then(summary => {
         this.props.rawInteractionsActions.setRawSummary(summary)
         const positions = this.props.rawInteractions.get('groupPositions')
+        const allPositions = this.props.rawInteractions.get('allPositions')
         // Directly set prop from node attributes
         this.props.rawInteractionsActions.fetchInteractionsFromUrl(
           linkId,
@@ -212,7 +213,8 @@ class NetworkPanel extends Component {
           this.props.maxEdgeCount,
           summary,
           credentials,
-          positions
+          positions,
+          allPositions
         )
         // }
       })

@@ -1,4 +1,4 @@
-import { localLayout } from './raw-interactions-layout'
+import { localLayout, localLayout2 } from './raw-interactions-layout'
 import { getHeader } from '../components/AccessUtil'
 import { createAction } from 'redux-actions'
 import { filterEdge, MAIN_EDGE_TAG, PATTERN, duplicateNodes } from './raw-interactions-util'
@@ -56,7 +56,7 @@ const fetchNet = (url, settings) => {
  * @param cx
  * @returns {{data, elements: {nodes: any[], edges: any[]}}}
  */
-const processCx = (cx, positions) => {
+const processCx = (cx, allPositions) => {
   let idx = cx.length
 
   let nodes = []
@@ -176,7 +176,7 @@ const processCx = (cx, positions) => {
       }
     },
   }
-  const {newNodes, newEdges} = duplicateNodes({network: result.network, nodeMap: nMap})
+  const {newNodes, newEdges} = duplicateNodes({network: result.network, nodeMap: nMap, allPositions})
   
   newNodes.forEach(node => {
     nMap.set(node.id, node)
@@ -227,7 +227,8 @@ const fetchInteractionsFromRemote = (
   url,
   maxEdgeCount,
   credentials,
-  positions
+  positions,
+  allPositions
 ) => {
   let originalCX = null
   let nodeMap = null
@@ -265,7 +266,7 @@ const fetchInteractionsFromRemote = (
     })
     .then(cx => {
       originalCX = cx
-      const processed = processCx(originalCX, positions)
+      const processed = processCx(originalCX, allPositions)
       nodeMap = processed.nodeMap
       const newNet = processed.network
 
@@ -287,7 +288,8 @@ const fetchInteractionsFromRemote = (
       const network = netAndFilter[0]
       const groups = netAndFilter[2]
       // This applies new layout locally, and may take while
-      localLayout(network, groups, positions, nodeMap)
+      // localLayout(network, groups, allPositions, nodeMap)
+      localLayout2(allPositions, network.elements.nodes)
 
       // Store the modified network data to local DB
       hvDb.interactions.put(entry)
@@ -317,7 +319,8 @@ const getInteractions = (
   url,
   maxEdgeCount,
   credentials,
-  positions
+  positions,
+  allPositions
 ) => {
   // Check local data
   hvDb.interactions.get(uuid).then(entry => {
@@ -330,7 +333,8 @@ const getInteractions = (
         url,
         maxEdgeCount,
         credentials,
-        positions
+        positions,
+        allPositions
       )
     // } else {
       // return fetchFromDB(dispatch, entry)
@@ -345,7 +349,8 @@ export const fetchInteractionsFromUrl = (
   maxEdgeCount = 500,
   summary = {},
   credentials,
-  positions
+  positions,
+  allPositions
 ) => {
 
   // Get only top 10000 edges.
@@ -391,7 +396,8 @@ export const fetchInteractionsFromUrl = (
       url,
       maxEdgeCount,
       credentials,
-      positions
+      positions,
+      allPositions
     )
   }
 }
@@ -655,12 +661,19 @@ export const clearAll = createAction(CLEAR_ALL)
 
 
 // Check size of the network
-
 export const RECEIVE_SUMMARY = 'RECEIVE_SUMMARY'
 const receiveSummary = summary => {
   return {
     type: RECEIVE_SUMMARY,
     summary
+  }
+}
+
+export const SET_ALL_POSITIONS = 'SET_ALL_POSITIONS'
+export const setAllPositions = allPositions => {
+  return {
+    type: SET_ALL_POSITIONS,
+    payload: allPositions
   }
 }
 

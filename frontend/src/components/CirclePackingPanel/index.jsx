@@ -3,6 +3,7 @@ import { CirclePackingRenderer, CyTreeViewer } from '@cytoscape/cy-tree-viewer'
 import cyjs2tree from './cyjs2tree'
 import { Set } from 'immutable'
 import { findPath } from './path-finder'
+import {extractAll} from './position-util'
 
 const TreeViewer = CyTreeViewer(CirclePackingRenderer)
 
@@ -77,6 +78,10 @@ class CirclePackingPanel extends Component {
         this.props.networkActions.setCurrentPath(reorderedPath)
 
         const positions = extractPositions(node)
+        const allPositions = {}
+        // New position extractor
+        extractAll(node, allPositions)
+        this.props.rawInteractionsActions.setAllPositions(allPositions)
         this.props.rawInteractionsActions.setGroupPositions(positions)
         this.props.selectPrimaryNode([id], { [id]: wrappedData })
         this.props.rawInteractionsActions.clearSelectedPerm()
@@ -245,6 +250,8 @@ class CirclePackingPanel extends Component {
 
 const extractPositions = parent => {
   const positions = {}
+  const testDup = new Set()
+
   const children = parent.children
   if (children === undefined) {
     return positions
@@ -265,6 +272,11 @@ const extractPositions = parent => {
       positions[`${id}-members`] = members
     }
 
+    if (testDup.has(id)) {
+      console.log('Duplicate found:', id)
+    }
+
+    testDup.add(id)
     positions[id] = {
       r: node.r,
       x: node.x,

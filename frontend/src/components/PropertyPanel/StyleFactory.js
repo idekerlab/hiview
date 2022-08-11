@@ -342,8 +342,8 @@ export const createStyle = originalNetwork => {
     // const maxThreshold = similarityMin + topRange
     
     // Width mapping. This is local
-    const maxWidth = 7
-    const minWidth = 1
+    const maxWidth = 3
+    const minWidth = 0.5
     const rangeWidth = Math.abs(maxWidth - minWidth) 
 
     const globalMin = Number.parseFloat(networkData[`${primaryEdgeType} min`])
@@ -373,9 +373,9 @@ export const createStyle = originalNetwork => {
       //   return maxWidth
       // }
 
-      const mappedWidth = Math.log(weight / range) * rangeWidth
-      // const computed = ((Math.abs(weight - similarityMin))/range ) * rangeWidth
-      // const computed = ((Math.abs(weight - similarityMin))/range ) * rangeWidth
+      // const mappedWidth = (weight / range) * rangeWidth
+      // const mappedWidth = Math.log(weight / range) * rangeWidth
+      const mappedWidth = ((Math.abs(weight - similarityMin))/range ) * rangeWidth
       
       if(mappedWidth >= maxWidth) {
         return maxWidth

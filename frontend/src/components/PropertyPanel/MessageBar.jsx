@@ -1,11 +1,14 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
 import WarningIcon from '@material-ui/icons/ErrorOutline'
+import IconButton from '@material-ui/core/IconButton'
+import InfoIcon from '@material-ui/icons/InfoOutlined'
 
 import PathPanel from './PathPanel'
 import { makeStyles } from '@material-ui/core/styles'
+import { Grid } from '@material-ui/core'
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     padding: '0.7em',
     margin: 0,
@@ -14,10 +17,15 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     zIndex: 1300,
   },
+  titleContainer: {
+  },
   title: {
     color: '#EEEEEE',
     fontSize: '0.7em',
     borderBottom: '1px solid #EEEEEE',
+  },
+  infoButton: {
+    color: '#EEEEEE',
   },
   container: {
     paddingTop: '0.7em',
@@ -55,13 +63,31 @@ const getWarning = (originalCount, maxCount, classes) => {
   }
 }
 
-const MessageBar = props => {
+const MessageBar = (props) => {
   const classes = useStyles()
 
   return (
     <div className={classes.root}>
-      <div className={classes.title}>Data Viewer</div>
-      <div className={classes.container}>{getWarning(props.originalEdgeCount, props.maxEdgeCount, classes)}</div>
+      <Grid
+        container
+        className={classes.titleContainer}
+        spacing={0}
+        direction="row"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Grid item xs={11}>
+          <Typography className={classes.title}>Data Viewer</Typography>
+        </Grid>
+        <Grid item className={classes.infoButton} xs={1}>
+          <IconButton color={'secondary'}>
+            <InfoIcon />
+          </IconButton>
+        </Grid>
+      </Grid>
+      <div className={classes.container}>
+        {getWarning(props.originalEdgeCount, props.maxEdgeCount, classes)}
+      </div>
       <PathPanel {...props} />
     </div>
   )

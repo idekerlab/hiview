@@ -406,18 +406,19 @@ const RawInteractionPanel = (props) => {
 }
 
 const checkPresetLayout = (network) => {
-  const nodes = network.elements.nodes
-  const sampleNode = nodes[0]
+  // const nodes = network.elements.nodes
+  // const sampleNode = nodes[0]
 
-  if (!sampleNode) {
-    return 'cose-bilkent'
-  }
+  // if (!sampleNode) {
+  //   return 'cose-bilkent'
+  // }
 
-  const position = sampleNode.position
-  if (!position || (position.x === 0 && position.y === 0)) {
-    return 'cose-bilkent'
-  } else {
-    return 'preset'
-  }
+  // const position = sampleNode.position
+  // if (!position || (position.x === 0 && position.y === 0)) {
+  //   return 'cose-bilkent'
+  // } else {
+  //   return 'preset'
+  // }
+  return 'preset'
 }
 export default RawInteractionPanel

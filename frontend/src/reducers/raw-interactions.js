@@ -18,6 +18,7 @@ import {
   SET_GROUP_POSITIONS,
   CLEAR_ALL,
   SET_SELECTED_EDGE,
+  SET_ALL_POSITIONS
 } from '../actions/raw-interactions'
 import { Map, Set } from 'immutable'
 
@@ -45,7 +46,8 @@ const defState = Map({
       max: 1
     }
   },
-  groupPositions: {}
+  groupPositions: {},
+  allPositions: {}
 })
 
 export default function networkState(state = defState, action) {
@@ -146,6 +148,8 @@ export default function networkState(state = defState, action) {
 
     case SET_GROUP_POSITIONS:
       return state.set('groupPositions', action.payload)
+    case SET_ALL_POSITIONS:
+      return state.set('allPositions', action.payload)
 
     default:
       return state
