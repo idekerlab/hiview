@@ -77,12 +77,12 @@ class CirclePackingPanel extends Component {
         const reorderedPath = path.reverse()
         this.props.networkActions.setCurrentPath(reorderedPath)
 
-        const positions = extractPositions(node)
+        // const positions = extractPositions(node)
         const allPositions = {}
         // New position extractor
         extractAll(node, allPositions)
         this.props.rawInteractionsActions.setAllPositions(allPositions)
-        this.props.rawInteractionsActions.setGroupPositions(positions)
+        // this.props.rawInteractionsActions.setGroupPositions(positions)
         this.props.selectPrimaryNode([id], { [id]: wrappedData })
         this.props.rawInteractionsActions.clearSelectedPerm()
       } else {

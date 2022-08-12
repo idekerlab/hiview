@@ -502,10 +502,13 @@ const createNodeFromPosition = (positions) => {
   let idx = allGenes.length
   while(idx--) {
     const key = allGenes[idx]
+    // const value = positions[key]
     // gene name - group number
     const parts = key.split('-')
     const geneName = parts[0]
+    // const groupNumber = value.base
     const groupNumber = parts[1]
+
     const groupList = duplicationMap[geneName] || []
     groupList.push(groupNumber)
     duplicationMap[geneName] = groupList
@@ -523,8 +526,6 @@ const createNodeFromPosition = (positions) => {
 export const duplicateNodes = ({ network, nodeMap, allPositions}) => {
   const { nodes, edges } = network.elements
   const duplicationMap = createNodeFromPosition(allPositions)
-  const originalSize = nodes.length
-  const ActualSize = Object.keys(allPositions).length
 
   let numNodes = nodes.length
 
@@ -544,7 +545,7 @@ export const duplicateNodes = ({ network, nodeMap, allPositions}) => {
     // A gene is member of more than one group = need to be duplicated
     if (groupMembership.length > 1) {
       // Duplicated nodes from the original (does not include the original)
-      const groupNodes = createNode(node, groupMembership, allPositions)
+      const groupNodes = createNode(node, groupMembership)
       // Add those to the id to node map
       addToNodeMap(nodeMap, groupNodes)
 
@@ -563,9 +564,6 @@ export const duplicateNodes = ({ network, nodeMap, allPositions}) => {
       })
       newEdges.push(...newNormalEdges)
     } else {
-      // Simply copy position to the original node
-      const positionKey = `${node.data.name}-${groupMembership[0]}`
-      const newPosition = allPositions[positionKey]
       // Add new name
       node.data.gName = `${node.data.name}-${groupMembership[0]}`
     }
@@ -577,6 +575,8 @@ export const duplicateNodes = ({ network, nodeMap, allPositions}) => {
     groupMembers,
   })
   newEdges.push(...newNodeEdges)
+
+  // Edges between duplicated nodes
 
   // const pleioEdges = addPleiotropicEdges(pleioNodes)
   // newEdges.push(...pleioEdges)
@@ -772,7 +772,7 @@ const addPleiotropicEdges = (nodes) => {
   return pleioEdges
 }
 
-const createNode = (originalNode, groupMembership, positions) => {
+const createNode = (originalNode, groupMembership) => {
   const originalData = originalNode.data
   for (let key in originalData) {
     if (key.startsWith(GROUP_PREFIX)) {
@@ -803,17 +803,8 @@ const createNode = (originalNode, groupMembership, positions) => {
     newData[PLEIO_TAG] = true
     newData['gName'] = `${originalData.name}-${groupId}`
 
-    const positionKey = `${originalData.name}-${groupId}`
     const newNode = {
-      data: newData,
-      // position: {
-      //   x: positions[positionKey].x * 1.5,
-      //   y: positions[positionKey].y * 1.4,
-      // },
-      position: {
-        x: 0,
-        y: 0,
-      },
+      data: newData
     }
     newNodes.push(newNode)
   }

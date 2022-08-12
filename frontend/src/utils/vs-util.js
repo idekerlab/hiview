@@ -85,7 +85,7 @@ const insertEdgeColorMapping = ({nodes, edges, vs, attrName, scoreMin, scoreMax,
 
 
 const GROUP_PREFIX = 'Group:'
-const getMemberInfo = (nodes) => {
+const getMemberInfo = (nodes, positions) => {
   const groups = new Map()
   
   nodes.forEach(node => {
@@ -114,47 +114,45 @@ const getMemberInfo = (nodes) => {
   return groups
 }
 
-const testMembership = (edge, groups) => {
+
+const getGroupEdgeColor = (edge, groups) => {
   const {data} = edge
   const {source, target} = data
-  let test = null
-  const size = groups.size
-
-  const colors = {}
+  let color = null
 
   let index = 0
-  groups.forEach((value, key) => {
+  groups.forEach((value) => {
     const memberSet = value
     if (memberSet.has(source.toString()) && memberSet.has(target.toString())) {
-      if(test === null) {
-        test = getColor10(index)
+      if(color === null) {
+        color = getColor10(index)
       }
     }
     index++
   })
 
-  return test
+  return color
 }
 
-const assignColor = (nodes, edges, attrName, colorScale, threshold=0.5, colorMap) => {
+const assignColor = (nodes, edges, attrName, colorScale, threshold=0.5) => {
 
   const groups = getMemberInfo(nodes)
 
   edges.forEach(e => {
     const {data} = e
     const value = data[attrName]
-    const isMember = testMembership(e, groups)
+    const memberColor = getGroupEdgeColor(e, groups)
     
-    if (isMember !== null) {
+    if (memberColor !== null) {
       data['isMember'] = true
-      data['color'] = isMember
+      data['color'] = memberColor
       // data['color'] = colorScale(value)
       data['zIndex'] = 5000
     } else if(value<threshold) {
-      data['color'] = 'rgba(50,50,50,0.3)'
+      data['color'] = 'rgba(80,80,80,0.1)'
       // data['color'] = colorScale(value)
     } else {
-      data['color'] = 'rgba(50,50,50,0.3)'
+      data['color'] = 'rgba(80,80,80,0.1)'
       // data['color'] = colorScale(value)
     }
     if(data['isPleio']) {

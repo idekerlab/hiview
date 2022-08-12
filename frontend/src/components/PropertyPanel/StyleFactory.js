@@ -114,39 +114,40 @@ const BASE_STYLE = {
   node: {
     selector: 'node',
     css: {
-      width: 12,
-      height: 10,
+      width: 14,
+      height: 8,
       shape: 'ellipse',
       'text-valign': 'center',
       'text-halign': 'center',
-      color: '#555555',
+      color: '#FFFFFF',
       'text-opacity': 1,
-      'text-background-color': '#000000',
-      // 'text-background-opacity': 0.5,
-      'text-background-opacity': 0,
-      'text-background-padding': 5,
-      'text-background-shape': 'round-rectangle',
+      // 'text-background-color': '#000000',
+      // 'text-background-opacity': 1,
+      // 'text-background-opacity': 0,
+      // 'text-background-padding': 5,
+      // 'text-background-shape': 'round-rectangle',
       // 'text-outline-width': 0.4,
       // 'text-outline-color': '#111111',
       // 'text-outline-opacity': 1,
-      'background-opacity': 1,
-      'background-color': '#FAFAFA',
+      'background-opacity': 0.5,
+      'background-color': '#555555',
+      // opacity: 1,
       'border-width': 0,
       'font-size': 3,
       // 'font-size': BASE_FONT_SIZE,
-      label: 'data(name)'
+      label: 'data(name)',
+      'z-index': 10000
     }
   },
   nodePreio: {
     selector: 'node[?isPleio]',
     css: {
-      'background-color': '#FFFFFF',
       shape: 'hexagon',
-      'border-width': 0.2,
-      'border-color': '#333333',
+      'border-width': 0.3,
+      'border-color': '#FFFFFF',
       'font-weight': 700,
       'font-size': 4,
-      width: 20,
+      width: 25,
       height: 7,
     }
   },
@@ -335,7 +336,7 @@ export const createStyle = originalNetwork => {
   if (similarityMin !== similarityMax) {
     edgeStyle.css[
       'opacity'
-    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.5, 1)`
+    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.6, 1)`
 
     const range = Math.abs(similarityMax - similarityMin) 
     // const topRange = range * 0.95
