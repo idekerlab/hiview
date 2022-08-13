@@ -76,8 +76,12 @@ const insertEdgeColorMapping = ({
   }
 
   const groupColorMap = getColorMap(nodes, currentGroups)
-  assignNodeColor(nodes, groupColorMap)
-  assignColor(
+
+  // Assign color to nodes and get the map of nodes
+  const id2node = assignNodeColor(nodes, groupColorMap)
+  assignEdgeColor(
+    id2node,
+    groupColorMap,
     nodes,
     edges,
     attrName,
@@ -118,12 +122,18 @@ const getColorMap = (nodes, currentGroups) => {
   })
   return groupColorMap
 }
+
 const assignNodeColor = (nodes, groupColorMap) => {
+  const id2node = new Map()
+
   nodes.forEach((node) => {
     const { data } = node
     const { baseGroup } = data
     data['color'] = groupColorMap.get(baseGroup)
+    id2node.set(data.id, node)
   })
+
+  return id2node
 }
 
 const getGroupMembers = (nodes, positions) => {
@@ -191,23 +201,38 @@ const getGroupEdgeColor = (edge, groups) => {
   return color
 }
 
-const assignColor = (nodes, edges, attrName, colorScale, threshold = 0.5) => {
-  const groups = getMemberInfo(nodes)
+const assignEdgeColor = (id2node, groupColorMap, nodes, edges, attrName, colorScale, threshold = 0.5) => {
+  // const groups = getMemberInfo(nodes)
 
   edges.forEach((e) => {
     const { data } = e
-    const value = data[attrName]
-    const memberColor = getGroupEdgeColor(e, groups)
+    const sourceId = data.source
+    const targetId = data.target
+    const source = id2node.get(sourceId.toString())
+    const target = id2node.get(targetId.toString())
 
-    if (memberColor !== null) {
-      data['isMember'] = true
-      data['color'] = memberColor
-      data['zIndex'] = 5000
-    } else if (value < threshold) {
+    const sourceGroup = source.data.baseGroup
+    const targetGroup = target.data.baseGroup
+    if(sourceGroup !== targetGroup) {
       data['color'] = 'rgba(80,80,80,0.1)'
     } else {
-      data['color'] = 'rgba(80,80,80,0.1)'
+      data['isMember'] = true
+      data['color'] = groupColorMap.get(sourceGroup)
+      data['zIndex'] = 5000
     }
+
+    // const value = data[attrName]
+    // const memberColor = getGroupEdgeColor(e, groups)
+
+    // if (memberColor !== null) {
+    //   data['isMember'] = true
+    //   data['color'] = memberColor
+    //   data['zIndex'] = 5000
+    // } else if (value < threshold) {
+    //   data['color'] = 'rgba(80,80,80,0.1)'
+    // } else {
+    //   data['color'] = 'rgba(80,80,80,0.1)'
+    // }
     if (data['isPleio']) {
       data['color'] = '#FFFFFF'
       data['zIndex'] = 8000
