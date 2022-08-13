@@ -26,6 +26,8 @@ export const localLayout2 = (positions, nodes) => {
   for (let node of nodes) {
     const { gName } = node.data
     const position = positions[gName]
+    const {color} = position
+    node.data['color'] = color
     if(position === undefined) {
       console.log('position is undefined', gName)
     } else {

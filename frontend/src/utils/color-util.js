@@ -4,8 +4,8 @@ import * as d3Scale from 'd3-scale'
 // Preset  discrete color map (10)
 // const COLORS = d3ScaleChromatic.schemeAccent
 
-const COLORS = d3ScaleChromatic.schemeCategory10
-// const COLORS = d3ScaleChromatic.schemeTableau10
+// const COLORS = d3ScaleChromatic.schemeCategory10
+const COLORS = d3ScaleChromatic.schemeTableau10
 
 const colorMap = (idx) => COLORS[idx]
 

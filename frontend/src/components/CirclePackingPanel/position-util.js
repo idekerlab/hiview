@@ -18,8 +18,7 @@ const extractAll = (currentNode, positions = {}, topGroups, baseNode) => {
     const position = {
       x: currentNode.x,
       y: currentNode.y,
-      topGroups,
-      base: baseNode
+      base: baseNode,
     }
 
     positions[newId] = position

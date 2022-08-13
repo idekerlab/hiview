@@ -5,7 +5,7 @@ const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {
     vs === null ||
     vs === undefined ||
     keyAttrName === undefined ||
-    keyAttrName === null 
+    keyAttrName === null
     // Array.isArray(attrValues) === false ||
     // attrValues.length === 0
   ) {
@@ -15,7 +15,7 @@ const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {
   const sortedValues = attrValues.sort()
   const valueLen = sortedValues.length
   const vsClone = Object.assign(vs)
-  
+
   for (let idx = 0; idx < valueLen; idx++) {
     let color = getColor10(idx)
     const attrVal = sortedValues[idx]
@@ -34,48 +34,62 @@ const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {
 
   // Node shape mappings for pleio
   const shapeAttrSelector = {
-    selector: "node[pleio]",
+    selector: 'node[pleio]',
     css: {
-
       'background-opacity': 0.9,
       'text-background-opacity': 0,
-      'shape': (ele) => {
+      shape: (ele) => {
         const val = ele.data('pleio')
-        if(val === undefined) {
+        if (val === undefined) {
           return 'roundrectangle'
         }
 
         const numericVal = Number.parseInt(val)
-        if(Number.isInteger(numericVal) && numericVal > 1) {
+        if (Number.isInteger(numericVal) && numericVal > 1) {
           return 'ellipse'
         }
 
         return 'roundrectangle'
-      }
+      },
     },
   }
   vsClone.style.push(shapeAttrSelector)
   return vsClone
 }
 
-const insertEdgeColorMapping = ({nodes, edges, vs, attrName, scoreMin, scoreMax, threshold=0.0, metadata}) => {
+const insertEdgeColorMapping = ({
+  nodes,
+  edges,
+  vs,
+  attrName,
+  scoreMin,
+  scoreMax,
+  threshold = 0.0,
+  metadata,
+}) => {
   const vsClone = Object.assign(vs)
-  const colorScale = getColorScaleInferno({min: scoreMin, max: scoreMax})
-  
-  assignColor(nodes, edges, attrName, colorScale, threshold, metadata.edgeColorMap)
+  const colorScale = getColorScaleInferno({ min: scoreMin, max: scoreMax })
 
-  // Standard color mapping only for DDRAM
-  // const edgeColorMapping =  {
-  //   selector: `edge[${attrName}]`,
-  //   css: {
-  //     'line-color': ele => colorScale(ele.data(attrName))
-  //   },
-  // }
-  
-  const edgeColorMapping =  {
+  let currentGroups = new Set()
+  if (metadata.Group !== undefined) {
+    currentGroups = new Set(metadata.Group.split('|'))
+  }
+
+  const groupColorMap = getColorMap(nodes, currentGroups)
+  assignNodeColor(nodes, groupColorMap)
+  assignColor(
+    nodes,
+    edges,
+    attrName,
+    colorScale,
+    threshold,
+    metadata.edgeColorMap,
+  )
+
+  const edgeColorMapping = {
     selector: `edge[${attrName}]`,
     css: {
-      'line-color': `data(color)`
+      'line-color': `data(color)`,
     },
   }
 
@@ -83,13 +97,57 @@ const insertEdgeColorMapping = ({nodes, edges, vs, attrName, scoreMin, scoreMax,
   return vsClone
 }
 
+const getColorMap = (nodes, currentGroups) => {
+  const groupSet = new Set()
+
+  nodes.forEach((node) => {
+    const { data } = node
+    const { baseGroup } = data
+    groupSet.add(baseGroup)
+  })
+  const parent = [...groupSet].filter((g) => !currentGroups.has(g))[0]
+  const groupList = Array.from(groupSet)
+
+  const groupColorMap = new Map()
+  groupList.forEach((group, index) => {
+    if (group === parent) {
+      groupColorMap.set(group, 'rgba(80,80,80, 0.5)')
+    } else {
+      groupColorMap.set(group, getColor10(index))
+    }
+  })
+  return groupColorMap
+}
+const assignNodeColor = (nodes, groupColorMap) => {
+  nodes.forEach((node) => {
+    const { data } = node
+    const { baseGroup } = data
+    data['color'] = groupColorMap.get(baseGroup)
+  })
+}
+
+const getGroupMembers = (nodes, positions) => {
+  const groups = new Map()
+  const ids = Object.keys(positions)
+
+  nodes.forEach((node) => {
+    const { data } = node
+    const geneSymbol = data.name
+    const matched = ids.filter((id) => id.startsWith(geneSymbol))
+
+    groups.set(geneSymbol, matched)
+  })
+
+  return groups
+}
 
 const GROUP_PREFIX = 'Group:'
-const getMemberInfo = (nodes, positions) => {
+const getMemberInfo = (nodes) => {
   const groups = new Map()
-  
-  nodes.forEach(node => {
-    const {data} = node
+
+  nodes.forEach((node) => {
+    const { data } = node
+    const { gName, baseGroup } = data
 
     for (let key in data) {
       if (key.startsWith(GROUP_PREFIX)) {
@@ -114,17 +172,16 @@ const getMemberInfo = (nodes, positions) => {
   return groups
 }
 
-
 const getGroupEdgeColor = (edge, groups) => {
-  const {data} = edge
-  const {source, target} = data
+  const { data } = edge
+  const { source, target } = data
   let color = null
 
   let index = 0
   groups.forEach((value) => {
     const memberSet = value
     if (memberSet.has(source.toString()) && memberSet.has(target.toString())) {
-      if(color === null) {
+      if (color === null) {
         color = getColor10(index)
       }
     }
@@ -134,28 +191,24 @@ const getGroupEdgeColor = (edge, groups) => {
   return color
 }
 
-const assignColor = (nodes, edges, attrName, colorScale, threshold=0.5) => {
-
+const assignColor = (nodes, edges, attrName, colorScale, threshold = 0.5) => {
   const groups = getMemberInfo(nodes)
 
-  edges.forEach(e => {
-    const {data} = e
+  edges.forEach((e) => {
+    const { data } = e
     const value = data[attrName]
     const memberColor = getGroupEdgeColor(e, groups)
-    
+
     if (memberColor !== null) {
       data['isMember'] = true
       data['color'] = memberColor
-      // data['color'] = colorScale(value)
       data['zIndex'] = 5000
-    } else if(value<threshold) {
+    } else if (value < threshold) {
       data['color'] = 'rgba(80,80,80,0.1)'
-      // data['color'] = colorScale(value)
     } else {
       data['color'] = 'rgba(80,80,80,0.1)'
-      // data['color'] = colorScale(value)
     }
-    if(data['isPleio']) {
+    if (data['isPleio']) {
       data['color'] = '#FFFFFF'
       data['zIndex'] = 8000
     }
