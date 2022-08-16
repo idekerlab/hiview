@@ -16,7 +16,7 @@ const LARGE_FONT_SIZE = 30
 // If there are too many edge in the data, use simplified version.
 const MAX_EDGE_COUNT = 100000
 
-const calcFontSize = cyNode => {
+const calcFontSize = (cyNode) => {
   const cy = cyNode.cy()
   const ext = cy.extent()
 
@@ -27,7 +27,7 @@ const calcFontSize = cyNode => {
   return LARGE_FONT_SIZE
 }
 
-const calcNodeWidth = cyNode => {
+const calcNodeWidth = (cyNode) => {
   const nodeName = cyNode.data('name')
   const cy = cyNode.cy()
   const ext = cy.extent()
@@ -38,7 +38,7 @@ const calcNodeWidth = cyNode => {
   return nodeName.length * LARGE_FONT_SIZE
 }
 
-const calcNodeHeight = cyNode => {
+const calcNodeHeight = (cyNode) => {
   const cy = cyNode.cy()
   const ext = cy.extent()
   const size = ext.w / VIEW_TO_FONT_SIZE_RATIO
@@ -56,9 +56,9 @@ const MINIMAL_STYLE = [
       height: 10,
       shape: 'ellipse',
       color: '#FFFFFF',
-      'background-color': '#FFFFFF'
+      'background-color': '#FFFFFF',
       // label: 'data(name)'
-    }
+    },
   },
   {
     selector: 'node:selected',
@@ -67,27 +67,24 @@ const MINIMAL_STYLE = [
       'background-color': '#FF0000',
       'text-valign': 'bottom',
       'text-halign': 'right',
-      color: '#FF0000'
-    }
+      color: '#FF0000',
+    },
   },
   {
     selector: 'edge',
     style: {
-      width: e=>e.data('isMember') ? 3 : 0.5,
-      opacity: e=> {
-
+      width: (e) => (e.data('isMember') ? 3 : 0.5),
+      opacity: (e) => {
         const isMember = e.data('isMember')
 
-        if(isMember) {
+        if (isMember) {
           return 1
         } else {
           return 0.1
-
         }
       },
       'line-color': 'data(color)',
-      'z-index': 'data(zIndex)'
-    }
+    },
   },
   {
     selector: '.members',
@@ -98,16 +95,16 @@ const MINIMAL_STYLE = [
       'text-valign': 'bottom',
       'text-halign': 'right',
       width: 10,
-      height: 10
-    }
+      height: 10,
+    },
   },
   {
     selector: 'edge.hidden',
     css: {
-      opacity: 0.05
+      opacity: 0.05,
       // visibility: 'hidden'
-    }
-  }
+    },
+  },
 ]
 
 const BASE_STYLE = {
@@ -136,8 +133,8 @@ const BASE_STYLE = {
       'font-size': 3,
       // 'font-size': BASE_FONT_SIZE,
       label: 'data(name)',
-      'z-index': 10000
-    }
+      'z-index': 1000,
+    },
   },
   nodePreio: {
     selector: 'node[?isPleio]',
@@ -149,7 +146,7 @@ const BASE_STYLE = {
       'font-size': 4,
       width: 25,
       height: 7,
-    }
+    },
   },
   nodeSelected: {
     selector: 'node:selected',
@@ -159,18 +156,15 @@ const BASE_STYLE = {
       'text-background-color': '#FF0000',
       color: '#FFFFFF',
       'background-opacity': 1,
-      'background-color': '#FF0000'
-    }
+      'background-color': '#FF0000',
+    },
   },
   edge: {
     selector: 'edge',
     css: {
       width: 1,
       'text-rotation': 'autorotate',
-      'line-color': '#555555',
-      'text-opacity': 0,
-      color: '#FF0000',
-      'curve-style': e => {
+      'curve-style': (e) => {
         const parallel = e.parallelEdges()
         if (parallel.size() > 1) {
           return 'haystack'
@@ -179,23 +173,26 @@ const BASE_STYLE = {
         }
       },
       'haystack-radius': 0.7,
-      'control-point-step-size': 45
+      'control-point-step-size': 45,
+      'z-index': 'data(zIndex)',
+      'line-color': 'data(color)',
     }
   },
   edgeSelected: {
     selector: 'edge:selected',
     css: {
       opacity: 1,
+      color: '#00FF00',
+      'font-size': 5,
       'line-color': '#FF0000',
-      'z-index': e => e.data('zIndex') + 6000
-    }
+      'z-index': 19000,
+    },
   },
   edgeMembers: {
     selector: `edge[?isMember]`,
     css: {
       opacity: 0.8,
-      'z-index': 6000
-    }
+    },
   },
   edgePleio: {
     selector: `edge[?isPleio]`,
@@ -204,20 +201,20 @@ const BASE_STYLE = {
       width: 0.5,
       'line-style': 'dotted',
       'curve-style': 'unbundled-bezier',
-      'z-index': 8000,
+      'z-index': 9999,
       'source-arrow-shape': 'circle',
       'target-arrow-shape': 'circle',
       'source-arrow-color': '#FFFFFF',
       'target-arrow-color': '#FFFFFF',
       'arrow-scale': 0.25,
-    }
+    },
   },
   edgeVisible: {
     selector: `edge[!${DDRAM_EDGE_VISIBILITY}]`,
     css: {
       width: 20,
       opacity: 0,
-    }
+    },
   },
   members: {
     selector: '.members',
@@ -231,14 +228,14 @@ const BASE_STYLE = {
       'text-background-opacity': 0.9,
       'text-background-color': '#FF0000',
       // 'font-size': n => calcFontSize(n),
-      'font-weight': 500
-    }
+      'font-weight': 500,
+    },
   },
   hidden: {
     selector: 'edge.hidden',
     css: {
-      visibility: 'hidden'
-    }
+      visibility: 'hidden',
+    },
   },
   seed: {
     selector: '.seed',
@@ -246,8 +243,8 @@ const BASE_STYLE = {
       // 'background-color': '#FFFFFF',
       color: '#FF0000',
       width: 50,
-      height: 50
-    }
+      height: 50,
+    },
   },
   connected: {
     selector: '.connected',
@@ -256,18 +253,18 @@ const BASE_STYLE = {
       'text-background-opacity': 0.9,
       'text-background-color': '#FF0000',
       'background-opacity': 1,
-      'background-color': '#FF0000'
-    }
+      'background-color': '#FF0000',
+    },
   },
   connectedEdge: {
     selector: '.connectedEdge',
     css: {
       width: 3,
-      'line-color': e => {
+      'line-color': (e) => {
         return e.data('color')
       },
       'line-style': 'solid',
-    }
+    },
   },
 }
 
@@ -275,7 +272,7 @@ export const createSimplifiedStyle = () => {
   return { style: MINIMAL_STYLE }
 }
 
-export const createStyle = originalNetwork => {
+export const createStyle = (originalNetwork) => {
   const network = originalNetwork.toJS()
 
   if (network.loading) {
@@ -308,8 +305,8 @@ export const createStyle = originalNetwork => {
         BASE_STYLE.nodePreio,
         BASE_STYLE.nodeSelected,
         BASE_STYLE.hidden,
-        BASE_STYLE.seed
-      ]
+        BASE_STYLE.seed,
+      ],
     }
   }
 
@@ -322,30 +319,28 @@ export const createStyle = originalNetwork => {
   if (!similarityMax) {
     console.warn('Max was not defined for: ', edges[0])
     similarityMax = 1
-  } else if(similarityMax > 1) {
-    // TODO: why largert than 1? 
+  } else if (similarityMax > 1) {
+    // TODO: why largert than 1?
     similarityMax = 1
   }
 
   const edgeStyle = BASE_STYLE.edge
-  edgeStyle.css['z-index'] = `data(zIndex)`
-
-  // const edgeColor = 'color'
-  // edgeStyle.css['line-color'] = `data(${edgeColor})`
+  edgeStyle.css['z-index'] = 'data(zIndex)'
+  edgeStyle.css['line-color'] = `data(color)`
 
   if (similarityMin !== similarityMax) {
-    edgeStyle.css[
-      'opacity'
-    ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.6, 1)`
+    // edgeStyle.css[
+    //   'opacity'
+    // ] = `mapData(${primaryEdgeType},${similarityMin},${similarityMax}, 0.6, 1)`
 
-    const range = Math.abs(similarityMax - similarityMin) 
+    const range = Math.abs(similarityMax - similarityMin)
     // const topRange = range * 0.95
     // const maxThreshold = similarityMin + topRange
-    
+
     // Width mapping. This is local
     const maxWidth = 3
     const minWidth = 0.5
-    const rangeWidth = Math.abs(maxWidth - minWidth) 
+    const rangeWidth = Math.abs(maxWidth - minWidth)
 
     const globalMin = Number.parseFloat(networkData[`${primaryEdgeType} min`])
     const globalMax = Number.parseFloat(networkData[`${primaryEdgeType} max`])
@@ -353,20 +348,18 @@ export const createStyle = originalNetwork => {
     // const globalTop = globalRange * 0.8
     // const globalTh = globalMin + globalTop
 
-    edgeStyle.css[
-      'width'
-    ] = e => {
+    edgeStyle.css['width'] = (e) => {
       const weight = e.data(primaryEdgeType)
       const isMember = e.data('isMember')
 
       // if(!isMember) {
-      //   return minWidth
+      //   return 0.01
       // }
       // if(e.data('isPleio') === true) {
       //   return 20
       // }
 
-      if(weight === undefined || weight === null) {
+      if (weight === undefined || weight === null) {
         return minWidth
       }
 
@@ -376,11 +369,12 @@ export const createStyle = originalNetwork => {
 
       // const mappedWidth = (weight / range) * rangeWidth
       // const mappedWidth = Math.log(weight / range) * rangeWidth
-      const mappedWidth = ((Math.abs(weight - similarityMin))/range ) * rangeWidth
-      
-      if(mappedWidth >= maxWidth) {
+      const mappedWidth =
+        (Math.abs(weight - similarityMin) / range) * rangeWidth
+
+      if (mappedWidth >= maxWidth) {
         return maxWidth
-      } else if(mappedWidth <= minWidth) {
+      } else if (mappedWidth <= minWidth) {
         return minWidth
       }
 
@@ -392,15 +386,14 @@ export const createStyle = originalNetwork => {
   const edgeSelectedStyle = BASE_STYLE.edgeSelected
 
   // Reaction for edge selection
-  edgeStyle.css['label'] = edge => {
+  edgeSelectedStyle.css['label'] = (edge) => {
     const primaryScore = edge.data(primaryEdgeType)
     // This is for optional edges
     const edgeType = edge.data(INTERACTION_TAG)
     if (edgeType !== undefined) {
       const scoreString = formatScore(edge.data(edgeType))
-      if(scoreString === 'NaN') {
-        if(edgeType === 'new_AP_MS')
-        return 'New AP-MS'
+      if (scoreString === 'NaN') {
+        if (edgeType === 'new_AP_MS') return 'New AP-MS'
       } else {
         return edgeType + ': ' + scoreString
       }
@@ -427,8 +420,8 @@ export const createStyle = originalNetwork => {
       BASE_STYLE.members,
       BASE_STYLE.connected,
       BASE_STYLE.connectedEdge,
-    ]
+    ],
   }
 }
 
-const formatScore = score => Number.parseFloat(score).toFixed(5) 
+const formatScore = (score) => Number.parseFloat(score).toFixed(5)

@@ -13,7 +13,6 @@ const getVisualStyle = (minSize, maxSize) => ({
         width: 5,
         'text-opacity': 0.8,
         'text-wrap': 'wrap',
-        'z-index': 1,
         'text-margin-x': 2,
         'text-rotation': 'data(angle)',
         'min-zoomed-font-size': '0.2em'

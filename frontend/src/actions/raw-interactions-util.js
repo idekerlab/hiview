@@ -169,33 +169,6 @@ const calculateZindex = (score, edge, name) => {
   return Math.floor(score * 200)
 }
 
-const assignColor = (colorMap, edge, primaryName, min) => {
-  let color = DEF_COLOR
-  let zIndex = 0
-
-  const weight = edge.data[primaryName]
-
-  if (colorMap.length === 1 && weight !== undefined && weight !== null) {
-    color = colorMap[0].color
-  } else {
-    for (let i = 0; i < colorMap.length; i++) {
-      const mapEntry = colorMap[i]
-
-      if (mapEntry.min <= weight && weight <= mapEntry.max) {
-        color = mapEntry.color
-        break
-      }
-    }
-  }
-
-  if (color === undefined) {
-    color = DEF_COLOR
-  }
-
-  edge.data['color'] = color
-  edge.data['zIndex'] = calculateZindex(weight, edge, primaryName)
-}
-
 const getColorForRange = (colorMap, rawVal, min, max) => {
   let color = null
   const val = rawVal.toFixed(3)
@@ -675,6 +648,9 @@ const addEdges = ({ edges, originalNode, newNodes, nodeMap }) => {
       continue
     }
 
+    // This is a member edge
+    // data['isMember'] = true
+
     // Copy edge if source or target is the original node
     if (source === originalId) {
       newEdges.push(...createEdge(originalNode, newNodes, edge))
@@ -702,7 +678,7 @@ const createEdge = (originalNode, newNodes, originalEdge) => {
       edgeData.target = target
       edgeData.id = `${newNodeId}-${target}`
       edgeData.isMember = true
-      edgeData.color = '#00FF00'
+      edgeData.zIndex = 9999
       const newEdge = {
         data: edgeData,
       }
@@ -713,7 +689,7 @@ const createEdge = (originalNode, newNodes, originalEdge) => {
       edgeData.target = newNodeId
       edgeData.id = `${source}-${newNodeId}`
       edgeData.isMember = true
-      edgeData.color = '#00FF00'
+      edgeData.zIndex = 9999
       const newEdge = {
         data: edgeData,
       }

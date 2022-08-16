@@ -395,12 +395,6 @@ const TermDetailsPanel = (props) => {
       </div>
 
       <div className={classes.bottomPane}>
-        <D3Legend
-          w={props.width}
-          minScore={networkProps['Score min']}
-          maxScore={networkProps['Score max']}
-        />
-
         <LayoutSelector
           commandActions={props.interactionsCommandActions}
           currentSubsystem={props.currentProperty.id}

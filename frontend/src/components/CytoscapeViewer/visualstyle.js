@@ -21,7 +21,6 @@ const DEFAULT_STYLE = [
     style: {
       'line-color': '#EEEEEE',
       width: 1,
-      opacity: 0.4
     }
   },
   {

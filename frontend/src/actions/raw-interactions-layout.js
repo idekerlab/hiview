@@ -1,6 +1,6 @@
 // Scale the original position
-const genePositionScalingX = 1.05
-const genePositionScalingY = 1.0
+const genePositionScalingX = 1.1
+const genePositionScalingY = 1.1
 
 const getNameMap = (nodeMap) => {
   const nameMap = {}

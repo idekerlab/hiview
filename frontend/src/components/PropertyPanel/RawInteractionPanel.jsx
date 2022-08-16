@@ -179,7 +179,7 @@ const RawInteractionPanel = (props) => {
   }
 
   useEffect(() => {
-    if (cyReference) {
+    if (cyReference !== null && cyReference !== undefined) {
       setCy(cyReference)
     }
   }, [cyReference])

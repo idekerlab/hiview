@@ -119,7 +119,9 @@ const processCx = (cx, allPositions) => {
       data: {
         source: e.s,
         target: e.t,
-        id: 'e' + e['@id']
+        id: 'e' + e['@id'],
+        'zIndex': 1,
+        'color': 'teal',
       }
     }
 
