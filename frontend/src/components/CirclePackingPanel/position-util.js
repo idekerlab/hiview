@@ -20,6 +20,11 @@ const extractAll = (currentNode, positions = {}, topGroups, baseNode) => {
       y: currentNode.y,
       base: baseNode,
     }
+    
+    if(!topGroups.has(name)) {
+      // This node belongs to the current root node
+      position['isRootMember'] = true
+    }
 
     positions[newId] = position
     return positions

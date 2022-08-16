@@ -8,6 +8,7 @@ const CHILDREN_WT_TAG = 'Children weight'
 const PLEIO_TAG = 'isPleio'
 const GROUP_PREFIX = 'Group:'
 const BASE_GROUP_TAG = 'baseGroup'
+const IS_ROOT_MEMBER_TAG = 'isRootMember'
 
 const DEF_COLOR = '#777777'
 
@@ -491,7 +492,10 @@ const createNodeFromPosition = (positions) => {
  * @returns
  */
 export const duplicateNodes = ({ network, nodeMap, allPositions }) => {
+  // Get the original nodes and edges
   const { nodes, edges } = network.elements
+
+  // From the position map, create group memberships
   const { duplicationMap, topGroups } = createNodeFromPosition(allPositions)
 
   let numNodes = nodes.length
@@ -501,56 +505,125 @@ export const duplicateNodes = ({ network, nodeMap, allPositions }) => {
   const pleioNodes = []
   const groupMembers = {}
 
-  // Scan all original nodes
+  // Scan all original nodes to create duplicates
   while (numNodes--) {
     // Node to be tested (original node)
     const node = nodes[numNodes]
+    const { data } = node 
 
     // group IDs which have this node
-    // const groupMembership = inGroups(node, groupMembers)
-    const groupMembership = duplicationMap[node.data.name]
+    const groupMembership = duplicationMap[data.name]
 
-    // A gene is member of more than one group = need to be duplicated
+    // A gene is member of more than one group => need to be duplicated
     if (groupMembership.length > 1) {
       // Duplicated nodes from the original (does not include the original)
       const groupNodes = createNode(node, groupMembership, topGroups)
-      // Add those to the id to node map
+      // Add those new nodes to the id to node map
       addToNodeMap(nodeMap, groupNodes)
 
-      // Store these as pleiotropic nodes
+      // Store these as pleiotropic nodes (both original and new)
       pleioNodes.push(node)
       pleioNodes.push(...groupNodes)
 
       // Store as new nodes
-      newNodes.push(...groupNodes)
+      newNodes.push(...groupNodes)  
 
       // Add edges for new nodes
-      const newNormalEdges = addEdges({
-        edges,
-        originalNode: node,
-        newNodes: groupNodes,
-        nodeMap,
-      })
-      newEdges.push(...newNormalEdges)
+      // const newNormalEdges = addEdges({
+      //   edges,
+      //   originalNode: node,
+      //   newNodes: groupNodes,
+      //   nodeMap,
+      // })
+      // newEdges.push(...newNormalEdges)
     } else {
-      // Add new name
+      // Assing additional props
+      
+      // New name
       node.data.gName = `${node.data.name}-${groupMembership[0]}`
+      // New group number
       node.data[BASE_GROUP_TAG] = topGroups[node.data.gName]
+      // Root member or not
+      const isRoot = allPositions[node.data.gName][IS_ROOT_MEMBER_TAG]
+      if(isRoot){
+        node.data[IS_ROOT_MEMBER_TAG] = true
+      }
     }
   }
-  const newNodeEdges = connectPleioNodes({
-    newNodes: pleioNodes,
-    allEdges: edges,
-    nodeMap,
-    groupMembers,
-  })
-  newEdges.push(...newNodeEdges)
+  // const newNodeEdges = connectPleioNodes({
+  //   newNodes: pleioNodes,
+  //   allEdges: edges,
+  //   nodeMap,
+  //   groupMembers,
+  // })
+  // newEdges.push(...newNodeEdges)
 
   // Edges between duplicated nodes
   // const pleioEdges = addPleiotropicEdges(pleioNodes)
   // newEdges.push(...pleioEdges)
-  return { newNodes, newEdges }
+
+  const additionalEdges = createEdgesFromNewNodes({ newNodes, edges, nodeMap })
+  return { newNodes, newEdges: additionalEdges }
 }
+
+const createEdgesFromNewNodes = ({ newNodes, edges = [], nodeMap = {}}) => {
+  const newEdges = []
+
+  let numEdges = edges.length
+  while (numEdges--) {
+    const edge = edges[numEdges]
+    const { data } = edge
+    const source = nodeMap.get(data.source)
+    const target = nodeMap.get(data.target)
+    // Should we create new edge?
+    const sourceName = source.data.name
+    const targetName = target.data.name
+    const isSourceRoot = source.data['isRootMember']
+    const isTargetRoot = target.data['isRootMember']
+
+    // Both nodes should be in a group not in the root
+    // if(isSourceRoot || isTargetRoot) {
+    //   continue
+    //   // console.log('One is in Root not same group')
+    // }
+    // Both nodes should be in the same group
+    // if(source.data[BASE_GROUP_TAG] !== target.data[BASE_GROUP_TAG]) {
+    //   continue
+    // }
+    // Now duplicate the edge for all new nodes
+    newNodes.forEach(node => {
+      const nodeData = node.data
+      const nodeName = nodeData.name
+      if(sourceName === nodeName) {
+        const newEdgeDataStr = JSON.stringify(data)
+        const dataCopy = JSON.parse(newEdgeDataStr)
+        const newEdge = {
+          data: {
+            ...dataCopy,
+            source: nodeData.id,
+            target: target.data.id,
+            id: `${data.id}-${target.data.id}-${nodeData['gName']}`,
+          },
+        }
+        newEdges.push(newEdge)
+      } else if(targetName === nodeName) {
+        const newEdgeDataStr = JSON.stringify(data)
+        const dataCopy = JSON.parse(newEdgeDataStr)
+        const newEdge = {
+          data: {
+            ...dataCopy,
+            source: source.data.id,
+            target: nodeData.id,
+            id: `${source.data.id}-${nodeData.id}-${nodeData['gName']}`,
+          },
+        }
+        newEdges.push(newEdge)
+      }
+    })
+
+  }
+  return newEdges
+} 
 
 const connectPleioNodes = ({ newNodes, allEdges, nodeMap }) => {
   // All node names in this new set
@@ -649,7 +722,7 @@ const addEdges = ({ edges, originalNode, newNodes, nodeMap }) => {
     }
 
     // This is a member edge
-    // data['isMember'] = true
+    data['isMember'] = true
 
     // Copy edge if source or target is the original node
     if (source === originalId) {

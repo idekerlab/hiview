@@ -140,11 +140,9 @@ const BASE_STYLE = {
     selector: 'node[?isPleio]',
     css: {
       shape: 'hexagon',
-      'border-width': 0.3,
-      'border-color': '#FFFFFF',
       'font-weight': 700,
       'font-size': 4,
-      width: 25,
+      width: 26,
       height: 7,
     },
   },
@@ -176,6 +174,7 @@ const BASE_STYLE = {
       'control-point-step-size': 45,
       'z-index': 'data(zIndex)',
       'line-color': 'data(color)',
+      opacity: 0.2
     }
   },
   edgeSelected: {
@@ -183,7 +182,7 @@ const BASE_STYLE = {
     css: {
       opacity: 1,
       color: '#00FF00',
-      'font-size': 5,
+      'font-size': 6,
       'line-color': '#FF0000',
       'z-index': 19000,
     },
@@ -191,7 +190,7 @@ const BASE_STYLE = {
   edgeMembers: {
     selector: `edge[?isMember]`,
     css: {
-      opacity: 0.8,
+      opacity: 1,
     },
   },
   edgePleio: {
