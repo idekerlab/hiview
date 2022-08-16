@@ -34,6 +34,10 @@ const extractAll = (currentNode, positions = {}, topGroups, baseNode) => {
 
 const extractTopGroups = (topLevelNodes) => {
   const topGroups = new Set()
+  if(topLevelNodes === null || topLevelNodes === undefined) {
+    return topGroups
+  }
+  
   topLevelNodes.forEach((node) => {
     const { data } = node.data
     const { NodeType, props } = data

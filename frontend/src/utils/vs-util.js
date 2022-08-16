@@ -215,10 +215,11 @@ const assignEdgeColor = (id2node, groupColorMap, nodes, edges, attrName, colorSc
     const targetGroup = target.data.baseGroup
     if(sourceGroup !== targetGroup) {
       data['color'] = 'rgba(80,80,80,0.1)'
+      data['zIndex'] = 0
     } else {
       data['isMember'] = true
       data['color'] = groupColorMap.get(sourceGroup)
-      data['zIndex'] = 5000
+      data['zIndex'] = 9000
     }
 
     // const value = data[attrName]
