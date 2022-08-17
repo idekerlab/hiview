@@ -326,7 +326,7 @@ const getInteractions = (
 ) => {
   // Check local data
   hvDb.interactions.get(uuid).then(entry => {
-    // if (entry === undefined) {
+    if (entry === undefined) {
       return fetchInteractionsFromRemote(
         mainFeature,
         th,
@@ -338,9 +338,9 @@ const getInteractions = (
         positions,
         allPositions
       )
-    // } else {
-      // return fetchFromDB(dispatch, entry)
-    // }
+    } else {
+      return fetchFromDB(dispatch, entry)
+    }
   })
 }
 

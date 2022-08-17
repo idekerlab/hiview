@@ -209,7 +209,7 @@ const assignEdgeColor = (id2node, groupColorMap, edges, parent) => {
       sourceGroup === parent ||
       targetGroup === parent
     ) {
-      data['color'] = '#555555'
+      data['color'] = '#777777'
       data['isMember'] = false
       data['zIndex'] = 0
     } else {

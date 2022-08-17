@@ -566,6 +566,13 @@ export const duplicateNodes = ({ network, nodeMap, allPositions }) => {
   return { newNodes, newEdges: additionalEdges }
 }
 
+/**
+ * 
+ * Create new edges for all new nodes
+ * 
+ * @param {} param0 
+ * @returns 
+ */
 const createEdgesFromNewNodes = ({ newNodes, edges = [], nodeMap = {}}) => {
   const newEdges = []
 
