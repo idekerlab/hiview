@@ -18,7 +18,8 @@ import {
   SET_GROUP_POSITIONS,
   CLEAR_ALL,
   SET_SELECTED_EDGE,
-  SET_ALL_POSITIONS
+  SET_ALL_POSITIONS,
+  SET_PLEIO
 } from '../actions/raw-interactions'
 import { Map, Set } from 'immutable'
 
@@ -47,7 +48,8 @@ const defState = Map({
     }
   },
   groupPositions: {},
-  allPositions: {}
+  allPositions: {},
+  pleio: null
 })
 
 export default function networkState(state = defState, action) {
@@ -148,10 +150,18 @@ export default function networkState(state = defState, action) {
 
     case SET_GROUP_POSITIONS:
       return state.set('groupPositions', action.payload)
+
     case SET_ALL_POSITIONS:
       return state.set('allPositions', action.payload)
+    case SET_PLEIO:
+      if(state.get('pleio') === null) {
+        return state.set('pleio', action.payload)
+      } else {
+        return state
+      }
 
     default:
       return state
   }
 }
+

@@ -28,10 +28,6 @@ export default filterByAffribute = (cx, type, attrName, value) => {
     return []
   }
 
-  console.log('Type = ' + type)
-  console.log('Name = ' + attrName)
-  console.log('Val = ' + value)
-
   const filtered = new Set(
     attributes
       .filter(attr => attributeFilter(attr, attrName, value))
@@ -46,6 +42,5 @@ export default filterByAffribute = (cx, type, attrName, value) => {
     }
   })
 
-  console.log('Filtered Size = ' + filteredObjects.length)
   return filteredObjects
 }

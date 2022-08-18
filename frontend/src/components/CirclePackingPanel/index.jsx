@@ -3,7 +3,7 @@ import { CirclePackingRenderer, CyTreeViewer } from '@cytoscape/cy-tree-viewer'
 import cyjs2tree from './cyjs2tree'
 import { Set } from 'immutable'
 import { findPath } from './path-finder'
-import {extractAll} from './position-util'
+import {extractAll, getPleio} from './position-util'
 
 const TreeViewer = CyTreeViewer(CirclePackingRenderer)
 
@@ -82,6 +82,11 @@ class CirclePackingPanel extends Component {
         // New position extractor
         extractAll(node, allPositions)
         this.props.rawInteractionsActions.setAllPositions(allPositions)
+        
+        if(node.parent === null) {
+          const pleio = getPleio(allPositions)
+          this.props.rawInteractionsActions.setPleio(pleio)
+        }
         // this.props.rawInteractionsActions.setGroupPositions(positions)
         this.props.selectPrimaryNode([id], { [id]: wrappedData })
         this.props.rawInteractionsActions.clearSelectedPerm()

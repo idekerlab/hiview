@@ -265,6 +265,14 @@ const BASE_STYLE = {
       'line-style': 'solid',
     },
   },
+  expandedEdges: {
+    selector: 'edge[?subEdge]',
+    css: {
+      width: 1.5,
+      'line-style': 'dotted',
+      opacity: 1,
+    },
+  },
 }
 
 export const createSimplifiedStyle = () => {
@@ -419,6 +427,7 @@ export const createStyle = (originalNetwork) => {
       BASE_STYLE.members,
       BASE_STYLE.connected,
       BASE_STYLE.connectedEdge,
+      BASE_STYLE.expandedEdges,
     ],
   }
 }

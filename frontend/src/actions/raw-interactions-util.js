@@ -491,7 +491,7 @@ const createNodeFromPosition = (positions) => {
  * @param {*} param0
  * @returns
  */
-export const duplicateNodes = ({ network, nodeMap, allPositions }) => {
+export const duplicateNodes = ({ network, nodeMap, allPositions, pleio = new Set() }) => {
   // Get the original nodes and edges
   const { nodes, edges } = network.elements
 
@@ -509,7 +509,11 @@ export const duplicateNodes = ({ network, nodeMap, allPositions }) => {
   while (numNodes--) {
     // Node to be tested (original node)
     const node = nodes[numNodes]
-    const { data } = node 
+    const { data } = node
+    const isPleio = pleio.has(data.name)
+    if(isPleio) {
+      data[PLEIO_TAG] = true
+    }
 
     // group IDs which have this node
     const groupMembership = duplicationMap[data.name]

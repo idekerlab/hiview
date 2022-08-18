@@ -68,4 +68,20 @@ const findBaseGroup = (node, topGroups) => {
   }
 }
 
+export const getPleio = (allPositions) => {
+  const pleio = new Set()
+  const pleioNodes = new Set()
+
+  for (let key in allPositions) {
+    const parts = key.split('-')
+    const geneName = parts[0]
+    const isPleio = pleio.has(geneName)
+    if (isPleio) {
+      pleioNodes.add(geneName)
+    }
+    pleio.add(geneName)
+  }
+  return pleioNodes
+}
+
 export { extractAll }

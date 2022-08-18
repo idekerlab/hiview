@@ -285,7 +285,12 @@ class EdgeFilter extends Component {
     const filterType = filter.type
     const defValue = Number((filter.max - filter.min) * 0.8)
     let enabled = false
-    const color = getColor10(idx)
+    let color = getColor10(idx)
+    if(idx === 0){
+      // For DDRAM edges (lemon yellow)
+      color = '#FFF36D'
+    }
+
 
     if (filterType === FILTER_TYPES.CONTINUOUS) {
       const name = filter.attributeName

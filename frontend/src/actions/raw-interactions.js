@@ -56,7 +56,7 @@ const fetchNet = (url, settings) => {
  * @param cx
  * @returns {{data, elements: {nodes: any[], edges: any[]}}}
  */
-const processCx = (cx, allPositions) => {
+const processCx = (cx, allPositions, pleio) => {
   let idx = cx.length
 
   let nodes = []
@@ -178,7 +178,7 @@ const processCx = (cx, allPositions) => {
       }
     },
   }
-  const {newNodes, newEdges} = duplicateNodes({network: result.network, nodeMap: nMap, allPositions})
+  const {newNodes, newEdges} = duplicateNodes({network: result.network, nodeMap: nMap, allPositions, pleio})
   
   newNodes.forEach(node => {
     nMap.set(node.id, node)
@@ -230,7 +230,8 @@ const fetchInteractionsFromRemote = (
   maxEdgeCount,
   credentials,
   positions,
-  allPositions
+  allPositions,
+  pleio
 ) => {
   let originalCX = null
   let nodeMap = null
@@ -268,7 +269,7 @@ const fetchInteractionsFromRemote = (
     })
     .then(cx => {
       originalCX = cx
-      const processed = processCx(originalCX, allPositions)
+      const processed = processCx(originalCX, allPositions, pleio)
       nodeMap = processed.nodeMap
       const newNet = processed.network
 
@@ -322,11 +323,12 @@ const getInteractions = (
   maxEdgeCount,
   credentials,
   positions,
-  allPositions
+  allPositions,
+  pleio
 ) => {
   // Check local data
   hvDb.interactions.get(uuid).then(entry => {
-    if (entry === undefined) {
+    // if (entry === undefined) {
       return fetchInteractionsFromRemote(
         mainFeature,
         th,
@@ -336,11 +338,12 @@ const getInteractions = (
         maxEdgeCount,
         credentials,
         positions,
-        allPositions
+        allPositions,
+        pleio
       )
-    } else {
-      return fetchFromDB(dispatch, entry)
-    }
+    // } else {
+      // return fetchFromDB(dispatch, entry)
+    // }
   })
 }
 
@@ -352,7 +355,8 @@ export const fetchInteractionsFromUrl = (
   summary = {},
   credentials,
   positions,
-  allPositions
+  allPositions,
+  pleio
 ) => {
 
   // Get only top 10000 edges.
@@ -399,7 +403,8 @@ export const fetchInteractionsFromUrl = (
       maxEdgeCount,
       credentials,
       positions,
-      allPositions
+      allPositions,
+      pleio
     )
   }
 }
@@ -676,6 +681,14 @@ export const setAllPositions = allPositions => {
   return {
     type: SET_ALL_POSITIONS,
     payload: allPositions
+  }
+}
+
+export const SET_PLEIO = 'SET_PLEIO'
+export const setPleio = pleio => {
+  return {
+    type: SET_PLEIO,
+    payload: pleio
   }
 }
 

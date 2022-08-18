@@ -205,6 +205,7 @@ class NetworkPanel extends Component {
         this.props.rawInteractionsActions.setRawSummary(summary)
         const positions = this.props.rawInteractions.get('groupPositions')
         const allPositions = this.props.rawInteractions.get('allPositions')
+        const pleio = this.props.rawInteractions.get('pleio')
         // Directly set prop from node attributes
         this.props.rawInteractionsActions.fetchInteractionsFromUrl(
           linkId,
@@ -214,7 +215,8 @@ class NetworkPanel extends Component {
           summary,
           credentials,
           positions,
-          allPositions
+          allPositions,
+          pleio
         )
         // }
       })
