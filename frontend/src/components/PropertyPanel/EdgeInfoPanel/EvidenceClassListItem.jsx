@@ -73,7 +73,7 @@ const EvidenceClassListItem = ({
             >
               {`SHAP Score Total: ${evidenceList
                 .map((evidence) => evidence.shap)
-                .reduce((a, b) => a + b, 0)}`}
+                .reduce((a, b) => a + b, 0).toFixed(2)}`}
             </Typography>
           </ListItemText>
         </div>
