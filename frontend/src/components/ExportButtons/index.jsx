@@ -10,15 +10,12 @@ const useStyles = makeStyles(theme =>
   createStyles({
     root: {
       boxSizing: 'border-box',
+      marginLeft: theme.spacing(2),
       color: '#333333',
-      background: '#EEEEEE',
-      width: '100%',
       display: 'flex',
       flexWrap: 'wrap',
       alignItems: 'center',
-      justifyContent: 'center',
-      padding: theme.spacing(1),
-      paddingTop: 0,
+      justifyContent: 'flex-start',
       columnGap: '0.5em',
     },
     flexContainer: {

@@ -12,20 +12,10 @@ import LayoutList, { LAYOUTS } from './LayoutList'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
-    root: {
-      boxSizing: 'border-box',
-      color: '#333333',
-      background: '#EEEEEE',
-      width: '100%',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
-      padding: theme.spacing(1),
-      flexDirection: 'column',
-    },
     flexContainer: {
-      width: '100%',
+      paddingLeft: theme.spacing(1),
       display: 'flex',
+      justifyContent: 'flex-start',
       alignItems: 'center',
       gap: '0.2em',
     },
@@ -88,67 +78,43 @@ const LayoutSelector = (props) => {
   }
 
   return (
-    <div className={classes.root}>
-      {/* <div className={classes.flexContainer}>
-        <StyleSwitch uiStateActions={uiStateActions} enableCustomStyling={enableCustomStyling}/>
-      </div> */}
-      <div className={classes.flexContainer}>
-        <LayoutList layout={layout} handleChange={handleChange} />
-        <Tooltip
-          title={<div className={classes.tooltip}>Apply layout</div>}
-          arrow
-          placement="top"
+    <div className={classes.flexContainer}>
+      <Tooltip
+        title={<div className={classes.tooltip}>Fit network view</div>}
+        arrow
+        placement="top"
+      >
+        <Button
+          className={classes.button}
+          variant="outlined"
+          size="small"
+          color="default"
+          onClick={handleFit}
+          size="small"
         >
-          <Button
-            className={classes.button}
-            variant={buttonDisabled ? 'outlined' : 'contained'}
-            size="small"
-            color="primary"
-            onClick={handleClick}
-            size="small"
-            display="inline-block"
-            disabled={buttonDisabled}
-          >
-            <ApplyIcon className={classes.icon} />
-          </Button>
-        </Tooltip>
-        <Tooltip
-          title={<div className={classes.tooltip}>Fit network view</div>}
-          arrow
-          placement="top"
+          <FitContent className={classes.icon} />
+        </Button>
+      </Tooltip>
+      <Tooltip
+        title={
+          <div className={classes.tooltip}>
+            Zoom to selected genes (shift+drag to select)
+          </div>
+        }
+        arrow
+        placement="top"
+      >
+        <Button
+          className={classes.button}
+          variant="outlined"
+          size="small"
+          color="default"
+          onClick={handleFitSelected}
+          size="small"
         >
-          <Button
-            className={classes.button}
-            variant="outlined"
-            size="small"
-            color="default"
-            onClick={handleFit}
-            size="small"
-          >
-            <FitContent className={classes.icon} />
-          </Button>
-        </Tooltip>
-        <Tooltip
-          title={
-            <div className={classes.tooltip}>
-              Zoom to selected genes (shift+drag to select)
-            </div>
-          }
-          arrow
-          placement="top"
-        >
-          <Button
-            className={classes.button}
-            variant="outlined"
-            size="small"
-            color="default"
-            onClick={handleFitSelected}
-            size="small"
-          >
-            <FitSelected className={classes.icon} />
-          </Button>
-        </Tooltip>
-      </div>
+          <FitSelected className={classes.icon} />
+        </Button>
+      </Tooltip>
     </div>
   )
 }

@@ -67,6 +67,15 @@ const useStyles = makeStyles((theme) =>
     edgeFilters: {
       padding: 0,
     },
+    controllers: {
+      backgroundColor: theme.palette.background.paper,
+      height: '3.5em',
+      boxSizing: 'border-box',
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+    }
   }),
 )
 
@@ -396,18 +405,20 @@ const TermDetailsPanel = (props) => {
       </div>
 
       <div className={classes.bottomPane}>
-        <LayoutSelector
-          commandActions={props.interactionsCommandActions}
-          currentSubsystem={props.currentProperty.id}
-          uiState={props.uiState}
-          uiStateActions={props.uiStateActions}
-        />
-        <ExportButtons
-          geneList={geneList}
-          cy={cy}
-          rawInteractions={props.rawInteractions}
-          externalNetworks={props.externalNetworks}
-        />
+        <div className={classes.controllers}>
+          <LayoutSelector
+            commandActions={props.interactionsCommandActions}
+            currentSubsystem={props.currentProperty.id}
+            uiState={props.uiState}
+            uiStateActions={props.uiStateActions}
+          />
+          <ExportButtons
+            geneList={geneList}
+            cy={cy}
+            rawInteractions={props.rawInteractions}
+            externalNetworks={props.externalNetworks}
+          />
+        </div>
 
         {hidden || selectedExternalNetwork ? (
           <div />

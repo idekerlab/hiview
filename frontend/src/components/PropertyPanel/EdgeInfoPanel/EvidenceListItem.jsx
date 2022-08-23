@@ -23,7 +23,7 @@ const useStyles = makeStyles((theme) => ({
   },
   item: {
     borderTop: '1px solid #bbbbbb',
-    height: '6em',
+    height: '5em',
   },
   inline: {
     height: '1.2em',
