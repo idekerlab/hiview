@@ -4,8 +4,8 @@ import ListSubheader from '@material-ui/core/ListSubheader'
 import List from '@material-ui/core/List'
 
 import { Typography } from '@material-ui/core'
-import { parseProps } from '../../../utils/edge-prop-util'
-import EvidenceListItem from './EvidenceListItem'
+import { parseProps, convertProps } from '../../../utils/edge-prop-util'
+import EvidenceClassListItem from './EvidenceClassListItem'
 
 // This is the special key value for encoded string
 export const NDEX_EVIDENCE_KEY = 'ndex:evidence'
@@ -25,20 +25,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const EdgeInfoPanel = ({ selectedEdge, network, queryPathsActions, queryPaths }) => {
+const EdgeInfoPanel = ({
+  selectedEdge,
+  network,
+  queryPathsActions,
+  queryPaths,
+}) => {
   const classes = useStyles()
   const [listData, setListData] = useState([])
-
-
-  useEffect(() => {
-
-    if(queryPaths === undefined || queryPaths === null) {
-      return
-    }
-
-    // const huMap = queryPaths.get('huMap similarity')
-    // console.log('Path data updated', queryPaths, huMap)
-  }, [queryPaths]) 
 
   useEffect(() => {
     if (selectedEdge === null || selectedEdge === undefined) {
@@ -47,19 +41,24 @@ const EdgeInfoPanel = ({ selectedEdge, network, queryPathsActions, queryPaths })
     }
 
     const { edge } = selectedEdge
-    if(edge === undefined || edge === null) {
+    if (edge === undefined || edge === null) {
       setListData(null)
       return
     }
     const evidence = edge[NDEX_EVIDENCE_KEY]
-    if(evidence === undefined || evidence === null || !Array.isArray(evidence)) {
+    if (
+      evidence === undefined ||
+      evidence === null ||
+      !Array.isArray(evidence)
+    ) {
       setListData(null)
       return
     }
 
     const evidences = evidence.map((ev) => parseProps(ev))
+    const nestedList = convertProps(evidences)
 
-    setListData(evidences)
+    setListData(nestedList)
   }, [selectedEdge])
 
   if (
@@ -74,6 +73,7 @@ const EdgeInfoPanel = ({ selectedEdge, network, queryPathsActions, queryPaths })
 
   return (
     <List
+      dense={true}
       component="nav"
       aria-labelledby="nested-edge-property-list"
       subheader={
@@ -93,9 +93,18 @@ const EdgeInfoPanel = ({ selectedEdge, network, queryPathsActions, queryPaths })
       }
       className={classes.root}
     >
-      {listData.map((entry, idx) => (
-        <EvidenceListItem selectedEdge={selectedEdge} key={`evidence-${idx}`} evidence={entry} queryPaths={queryPaths} />
-      ))}
+      {Object.keys(listData).map((key, idx) => {
+        const entry = listData[key]
+        return (
+          <EvidenceClassListItem
+            edgeClass={key}
+            selectedEdge={selectedEdge}
+            key={`evidence-${idx}`}
+            evidenceList={entry}
+            queryPaths={queryPaths}
+          />
+        )
+      })}
     </List>
   )
 }

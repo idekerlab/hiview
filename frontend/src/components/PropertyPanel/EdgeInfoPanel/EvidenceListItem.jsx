@@ -33,10 +33,10 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     padding: 0,
-    paddingLeft: theme.spacing(1),
+    paddingLeft: theme.spacing(7),
   },
   nested: {
-    paddingLeft: theme.spacing(7),
+    paddingLeft: theme.spacing(14),
   },
 }))
 
@@ -81,17 +81,10 @@ const EvidenceListItem = ({ evidence, selectedEdge, queryPaths }) => {
         {open ? <ExpandLess /> : <ExpandMore />}
         <div className={classes.item2}>
           <Typography
-            variant="subtitle1"
+            variant="h6"
             color="textPrimary"
           >
-            {`Feature: ${feature}`}
-          </Typography>
-          <Typography
-            variant="subtitle2"
-            // className={classes.inline}
-            color="textSecondary"
-          >
-            {`Class: ${evidence.class}`}
+            {feature}
           </Typography>
         </div>
         <div>
@@ -123,7 +116,7 @@ const EvidenceListItem = ({ evidence, selectedEdge, queryPaths }) => {
               secondary={parse(description)}
             />
           </ListItem>
-          <ListItem>
+          <ListItem className={classes.nested}>
             {network === null || network === undefined ? (
               <div />
             ) : (
