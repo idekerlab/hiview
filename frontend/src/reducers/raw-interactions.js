@@ -19,7 +19,8 @@ import {
   CLEAR_ALL,
   SET_SELECTED_EDGE,
   SET_ALL_POSITIONS,
-  SET_PLEIO
+  SET_PLEIO,
+  SET_LEGEND
 } from '../actions/raw-interactions'
 import { Map, Set } from 'immutable'
 
@@ -49,7 +50,11 @@ const defState = Map({
   },
   groupPositions: {},
   allPositions: {},
-  pleio: null
+  pleio: null,
+  legend: {
+    colors: {},
+    names: {}
+  }
 })
 
 export default function networkState(state = defState, action) {
@@ -159,6 +164,10 @@ export default function networkState(state = defState, action) {
       } else {
         return state
       }
+
+    case SET_LEGEND:
+      const newLegend = {...state.get('legend'), ...action.payload}
+      return state.set('legend', newLegend)
 
     default:
       return state

@@ -462,6 +462,7 @@ const createNodeFromPosition = (positions) => {
   const allGenes = Object.keys(positions)
   const duplicationMap = {}
   const topGroups = {}
+  const group2name = {}
 
   let idx = allGenes.length
   while (idx--) {
@@ -471,7 +472,10 @@ const createNodeFromPosition = (positions) => {
     const parts = key.split('-')
     const geneName = parts[0]
     const baseGroupNumber = value.base
+    const baseGroupName = value.baseName
     const groupNumber = parts[1]
+
+    group2name[baseGroupNumber] = baseGroupName
 
     const groupList = duplicationMap[geneName] || []
     groupList.push(groupNumber)
@@ -481,7 +485,7 @@ const createNodeFromPosition = (positions) => {
     topGroups[key] = baseGroupNumber
   }
 
-  return { duplicationMap, topGroups }
+  return { duplicationMap, topGroups, group2name }
 }
 
 /**
@@ -496,7 +500,7 @@ export const duplicateNodes = ({ network, nodeMap, allPositions, pleio = new Set
   const { nodes, edges } = network.elements
 
   // From the position map, create group memberships
-  const { duplicationMap, topGroups } = createNodeFromPosition(allPositions)
+  const { duplicationMap, topGroups, group2name } = createNodeFromPosition(allPositions)
 
   let numNodes = nodes.length
 
@@ -567,7 +571,7 @@ export const duplicateNodes = ({ network, nodeMap, allPositions, pleio = new Set
   // newEdges.push(...pleioEdges)
 
   const additionalEdges = createEdgesFromNewNodes({ newNodes, edges, nodeMap })
-  return { newNodes, newEdges: additionalEdges }
+  return { newNodes, newEdges: additionalEdges, legend: group2name }
 }
 
 /**

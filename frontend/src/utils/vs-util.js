@@ -66,6 +66,8 @@ const insertEdgeColorMapping = ({
   scoreMax,
   threshold = 0.0,
   metadata,
+  rawInteractionsActions,
+  
 }) => {
   const vsClone = Object.assign(vs)
   const colorScale = getColorScaleInferno({ min: scoreMin, max: scoreMax })
@@ -76,6 +78,8 @@ const insertEdgeColorMapping = ({
   }
 
   const { groupColorMap, parent } = getColorMap(nodes, currentGroups)
+
+  rawInteractionsActions.setLegend({colors: Object.fromEntries(groupColorMap)})
 
   // Assign color to nodes and get the map of nodes
   const id2node = assignNodeColor(nodes, groupColorMap)

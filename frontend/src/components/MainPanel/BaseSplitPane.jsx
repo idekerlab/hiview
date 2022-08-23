@@ -5,7 +5,7 @@ import LeftPanel from './LeftPanel'
 import PropertyPanel from '../PropertyPanel'
 import BlankPanel from './BlankPanel'
 
-const DEFAULT_MAIN_PANEL_WIDTH_RATIO = 0.67
+const DEFAULT_MAIN_PANEL_WIDTH_RATIO = 0.50
 const DEF_MAIN_PANEL_WIDTH = 800
 const DEF_NETWORK_PANEL_HEIGHT = 600
 
@@ -68,7 +68,6 @@ export default class BaseSplitPane extends Component {
     return (
       <SplitPane
         split="vertical"
-        minSize={window.innerWidth * 0.3}
         style={baseStyle}
         size={this.state.mainPanelWidth}
         onDragFinished={leftWidth => this.handleVerticalResize(leftWidth)}

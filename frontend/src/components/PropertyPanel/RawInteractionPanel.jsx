@@ -236,11 +236,11 @@ const RawInteractionPanel = (props) => {
       attrNames = attrs.map((attr) => attr.attributeName)
     }
 
-    const vsClone = insertNodeColorMapping(
-      networkStyle,
-      NODE_COLOR_KEY,
-      attrNames,
-    )
+    // const vsClone = insertNodeColorMapping(
+    //   networkStyle,
+    //   NODE_COLOR_KEY,
+    //   attrNames,
+    // )
 
     const primaryEdgeName = subnet.data[MAIN_EDGE_TAG]
     const parentWeight = subnet.data['Children weight']
@@ -254,7 +254,8 @@ const RawInteractionPanel = (props) => {
       scoreMin: 0,
       scoreMax: 1,
       threshold,
-      metadata: subnet.data
+      metadata: subnet.data,
+      rawInteractionsActions
     })
 
     setTooltipKeys(DDRAM_TOOLTIP_KEY)

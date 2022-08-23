@@ -1,4 +1,3 @@
-import _ from 'lodash'
 import { node } from 'prop-types'
 
 // In DDRAM, this property is used to show/hide primary edges
@@ -15,6 +14,12 @@ const LARGE_FONT_SIZE = 30
 
 // If there are too many edge in the data, use simplified version.
 const MAX_EDGE_COUNT = 100000
+
+
+export const EDGE_WIDTH = {
+  min: 1,
+  max: 4
+}
 
 const calcFontSize = (cyNode) => {
   const cy = cyNode.cy()
@@ -112,8 +117,8 @@ const BASE_STYLE = {
     selector: 'node',
     css: {
       width: 14,
-      height: 8,
-      shape: 'ellipse',
+      height: 6,
+      shape: 'roundrectangle',
       'text-valign': 'center',
       'text-halign': 'center',
       color: '#FFFFFF',
@@ -139,11 +144,11 @@ const BASE_STYLE = {
   nodePreio: {
     selector: 'node[?isPleio]',
     css: {
-      shape: 'hexagon',
+      shape: 'ellipse',
       'font-weight': 700,
       'font-size': 4,
       width: 26,
-      height: 7,
+      height: 10,
     },
   },
   nodeSelected: {
@@ -345,8 +350,8 @@ export const createStyle = (originalNetwork) => {
     // const maxThreshold = similarityMin + topRange
 
     // Width mapping. This is local
-    const maxWidth = 3
-    const minWidth = 0.5
+    const maxWidth = EDGE_WIDTH.max
+    const minWidth = EDGE_WIDTH.min
     const rangeWidth = Math.abs(maxWidth - minWidth)
 
     const globalMin = Number.parseFloat(networkData[`${primaryEdgeType} min`])
@@ -384,7 +389,6 @@ export const createStyle = (originalNetwork) => {
       } else if (mappedWidth <= minWidth) {
         return minWidth
       }
-
       return mappedWidth
     }
   }

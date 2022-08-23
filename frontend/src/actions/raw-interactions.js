@@ -178,14 +178,15 @@ const processCx = (cx, allPositions, pleio) => {
       }
     },
   }
-  const {newNodes, newEdges} = duplicateNodes({network: result.network, nodeMap: nMap, allPositions, pleio})
-  
+  const {newNodes, newEdges, legend} = duplicateNodes({network: result.network, nodeMap: nMap, allPositions, pleio})
+
   newNodes.forEach(node => {
     nMap.set(node.id, node)
   })
   result.network.elements.nodes = [...result.network.elements.nodes, ...newNodes]
   result.network.elements.edges = [...result.network.elements.edges, ...newEdges]
   result['nodeMap'] = nMap
+  result['legend'] = legend
   return result
 }
 
@@ -273,6 +274,9 @@ const fetchInteractionsFromRemote = (
       nodeMap = processed.nodeMap
       const newNet = processed.network
 
+      const legend = processed.legend
+
+      dispatch(setLegend({names: legend}))
       dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
       return newNet
     })
@@ -289,9 +293,7 @@ const fetchInteractionsFromRemote = (
       }
       
       const network = netAndFilter[0]
-      const groups = netAndFilter[2]
       // This applies new layout locally, and may take while
-      // localLayout(network, groups, allPositions, nodeMap)
       localLayout2(allPositions, network.elements.nodes)
 
       // Store the modified network data to local DB
@@ -666,6 +668,13 @@ export const setGroupPositions = createAction(SET_GROUP_POSITIONS)
 export const CLEAR_ALL = 'CLEAR_ALL'
 export const clearAll = createAction(CLEAR_ALL)
 
+export const SET_LEGEND = 'SET_LEGEND'
+export const setLegend = legend => {
+  return {
+    type: SET_LEGEND,
+    payload: legend
+  }
+}
 
 // Check size of the network
 export const RECEIVE_SUMMARY = 'RECEIVE_SUMMARY'

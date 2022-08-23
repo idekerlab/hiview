@@ -382,6 +382,7 @@ const TermDetailsPanel = (props) => {
           titleColor={props.color}
           originalEdgeCount={props.originalEdgeCount}
           maxEdgeCount={props.maxEdgeCount}
+          legend={raw.legend}
         />
         {getNetworkPanel(
           hidden,

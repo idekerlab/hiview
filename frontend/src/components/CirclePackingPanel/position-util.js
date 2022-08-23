@@ -11,6 +11,7 @@ const extractAll = (currentNode, positions = {}, topGroups, baseNode) => {
     let parent = currentNode.parent
     const { Label } = currentNode.data.data
     const { name } = parent.data.data.props
+    const parentLabel = parent.data.data.Label
 
     let newId = `${Label}-${name}`
 
@@ -19,6 +20,7 @@ const extractAll = (currentNode, positions = {}, topGroups, baseNode) => {
       x: currentNode.x,
       y: currentNode.y,
       base: baseNode,
+      baseName: parentLabel,
     }
     
     if(!topGroups.has(name)) {
