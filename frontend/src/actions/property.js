@@ -33,6 +33,28 @@ export const fetchPropertyFromUrl = (id, url, propType) => {
   }
 }
 
+/**
+ * Fetch Status of MyGene.info
+ * 
+ * @param {} param0 
+ */
+export const fetchMetadata = ({myGeneUrl}) => {
+  return dispatch => {
+    return fetch(myGeneUrl)
+      .then(response => response.json())
+      .then(json => dispatch(receiveMetadata(json)))
+  }
+}
+
+export const RECEIVE_METADATA = 'RECEIVE_METADATA'
+const receiveMetadata = (json) => {
+  return {
+    type: RECEIVE_METADATA,
+    metadata: json
+  }
+} 
+
+
 export const setProperty = (id, props, propType) => {
   return {
     type: RECEIVE_PROPERTY,

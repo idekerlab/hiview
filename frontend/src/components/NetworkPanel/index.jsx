@@ -10,7 +10,7 @@ import CirclePackingPanel from '../CirclePackingPanel'
 import { Map } from 'immutable'
 import { getHeader } from '../AccessUtil'
 
-const MYGENE_URL = 'https://mygene.info/v3'
+export const MYGENE_URL = 'https://mygene.info/v3'
 const NDEX_LINK_TAG = 'ndex_internalLink'
 
 const GO_NAMESPACE = 'GO:'
@@ -75,6 +75,9 @@ class NetworkPanel extends Component {
 
   setGeneProps = geneName => {
     // Just fetch property
+    const metadataUrl = MYGENE_URL + '/metadata'
+    this.props.propertyActions.fetchMetadata({myGeneUrl: metadataUrl})
+    
     const myGeneUrl = MYGENE_URL + '/query?q='
     const qUrl = myGeneUrl + geneName + '&fields=all&size=1'
     this.props.propertyActions.fetchPropertyFromUrl(geneName, qUrl, 'gene')

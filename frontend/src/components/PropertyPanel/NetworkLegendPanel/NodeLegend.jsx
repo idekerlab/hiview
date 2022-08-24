@@ -37,7 +37,7 @@ const NodeLegend = ({ legend }) => {
   return (
     <div className={classes.root}>
       <Typography className={classes.title} variant="h5">
-        Subsystem Colors
+        Assembly Colors
       </Typography>
       {groupIds.map((key) => {
         const color = colors[key]

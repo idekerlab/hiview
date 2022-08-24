@@ -43,10 +43,10 @@ const generateIndex = (networkJson) => {
     threshold: 0.0,
     tokenize: false,
     location: 0,
-    distance: 10,
-    maxPatternLength: 6,
-    minMatchCharLength: 3,
-    keys: ['Label'],
+    distance: 100,
+    maxPatternLength: 16,
+    minMatchCharLength: 1,
+    keys: ['Label', 'name'],
   }
 
   // For fuzzy term name match
@@ -57,8 +57,8 @@ const generateIndex = (networkJson) => {
     location: 0,
     distance: 100,
     maxPatternLength: 40,
-    minMatchCharLength: 3,
-    keys: ['Label', 'GO_term_ID'],
+    minMatchCharLength: 2,
+    keys: ['Label', 'Original_Name'],
   }
 
   const geneIndex = new Fuse(nodeData, geneSearchOptions)
