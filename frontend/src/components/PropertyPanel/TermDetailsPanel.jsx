@@ -36,6 +36,7 @@ import { createStyles, makeStyles } from '@material-ui/core'
 
 import D3Legend from '../D3Legend'
 import EdgeInfoPanel from './EdgeInfoPanel'
+import ThresholdPanel from './ThresholdPanel'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -405,6 +406,7 @@ const TermDetailsPanel = (props) => {
       </div>
 
       <div className={classes.bottomPane}>
+        <ThresholdPanel threshold={data.Parent_weight}/>
         <div className={classes.controllers}>
           <LayoutSelector
             commandActions={props.interactionsCommandActions}

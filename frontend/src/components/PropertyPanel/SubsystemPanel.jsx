@@ -8,12 +8,9 @@ import InfoIcon from '@material-ui/icons/InfoOutlined'
 
 import BrowserTargets from '../../assets/browser-targets'
 
-const descriptionStyle = {
-  color: '#555555',
-  fontFamily: 'Roboto',
-}
-
 const GO_LINK = 'http://amigo.geneontology.org/amigo/term/'
+
+const PARENT_TAG = 'Parent weight'
 
 class SubsystemPanel extends Component {
   render() {
@@ -45,7 +42,7 @@ class SubsystemPanel extends Component {
         {filteredKeys.map((key, i) => {
           const label = key.replace('Display_', '').replace(/_/g, ' ')
           const value = termData[key]
-          if (!value) {
+          if (!value || label === PARENT_TAG) {
             return
           }
 
