@@ -1,20 +1,15 @@
-import { node } from 'prop-types'
-
 // In DDRAM, this property is used to show/hide primary edges
 const DDRAM_EDGE_VISIBILITY = 'primary_edge_visible'
-
 const MAIN_INTERACTION_TYPE_TAG = 'Main Feature'
 const INTERACTION_TAG = 'interaction'
 
 // Font size will be calculated based on viewport size.
 const VIEW_TO_FONT_SIZE_RATIO = 350
 const BASE_FONT_SIZE = 10
-// const BASE_FONT_SIZE = 18
 const LARGE_FONT_SIZE = 30
 
 // If there are too many edge in the data, use simplified version.
 const MAX_EDGE_COUNT = 100000
-
 
 export const EDGE_WIDTH = {
   min: 1,
@@ -116,39 +111,28 @@ const BASE_STYLE = {
   node: {
     selector: 'node',
     css: {
-      width: 14,
-      height: 6,
+      width: 21,
+      height: 8,
       shape: 'roundrectangle',
       'text-valign': 'center',
       'text-halign': 'center',
       color: '#FFFFFF',
       'text-opacity': 1,
-      // 'text-background-color': '#000000',
-      // 'text-background-opacity': 1,
-      // 'text-background-opacity': 0,
-      // 'text-background-padding': 5,
-      // 'text-background-shape': 'round-rectangle',
-      // 'text-outline-width': 0.4,
-      // 'text-outline-color': '#111111',
-      // 'text-outline-opacity': 1,
+      'text-outline-width': 0.2,
+      'text-outline-color': '#666666',
+      'text-outline-opacity': 1,
       'background-opacity': 1,
       'background-color': 'data(color)',
-      // opacity: 1,
-      'border-width': 0,
-      'font-size': 3,
-      // 'font-size': BASE_FONT_SIZE,
+      'font-size': 4,
+      'font-weight': 'bold',
       label: 'data(name)',
-      'z-index': 1000,
     },
   },
   nodePreio: {
     selector: 'node[?isPleio]',
     css: {
       shape: 'ellipse',
-      'font-weight': 700,
-      'font-size': 4,
-      width: 26,
-      height: 10,
+      height: 7,
     },
   },
   nodeSelected: {
