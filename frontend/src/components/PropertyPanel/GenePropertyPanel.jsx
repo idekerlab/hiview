@@ -2,7 +2,7 @@ import React from 'react'
 import TitleBar from './TitleBar'
 import CoreGenePropPanel from './CoreGenePropPanel'
 import { Typography, IconButton, Tooltip } from '@material-ui/core'
-import OpenIcon from '@material-ui/icons/OpenInNew'
+import CodeIcon from '@material-ui/icons/Code'
 
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { blueGrey } from '@material-ui/core/colors'
@@ -40,10 +40,12 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-start',
+    padding: theme.spacing(1),
+    paddingLeft: 0
   },
-  openIcon: {
-    // marginRight: theme.spacing(1),
-    color: '#444444',
+  codeIcon: {
+    color: '#111111',
+    marginLeft: theme.spacing(2),
   },
   wrapper: {
     background: blueGrey[50],
@@ -76,22 +78,24 @@ const GenePropertyPanel = (props) => {
     return (
       <div className={classes.description}>
         <Typography variant="h6" className={classes.title}>
-          Summary from MyGene.info (Buid: {buildDate.toLocaleDateString()})
+          Summary from MyGene.info (Build: {buildDate.toLocaleDateString()})
           <Tooltip
             title={
               <div className={classes.tooltip}>
-                Open MyGene.info entry of {name} in a new tab
+                Show MyGene.info raw data (JSON) of {name} in a new tab
               </div>
             }
             arrow
             placement="bottom"
           >
             <IconButton
+              size={'small'}
+              variant={'outlined'}
               onClick={() => handleOpen(id)}
-              className={classes.openIcon}
+              className={classes.codeIcon}
               aria-label="open MyGene entry in new tab"
             >
-              <OpenIcon />
+              <CodeIcon />
             </IconButton>
           </Tooltip>
         </Typography>
