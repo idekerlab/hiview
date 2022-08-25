@@ -495,12 +495,18 @@ const createNodeFromPosition = (positions) => {
  * @param {*} param0
  * @returns
  */
-export const duplicateNodes = ({ network, nodeMap, allPositions, pleio = new Set() }) => {
+export const duplicateNodes = ({
+  network,
+  nodeMap,
+  allPositions,
+  pleio = new Set(),
+}) => {
   // Get the original nodes and edges
   const { nodes, edges } = network.elements
 
   // From the position map, create group memberships
-  const { duplicationMap, topGroups, group2name } = createNodeFromPosition(allPositions)
+  const { duplicationMap, topGroups, group2name } =
+    createNodeFromPosition(allPositions)
 
   let numNodes = nodes.length
 
@@ -515,7 +521,7 @@ export const duplicateNodes = ({ network, nodeMap, allPositions, pleio = new Set
     const node = nodes[numNodes]
     const { data } = node
     const isPleio = pleio.has(data.name)
-    if(isPleio) {
+    if (isPleio) {
       data[PLEIO_TAG] = true
     }
 
@@ -534,7 +540,7 @@ export const duplicateNodes = ({ network, nodeMap, allPositions, pleio = new Set
       pleioNodes.push(...groupNodes)
 
       // Store as new nodes
-      newNodes.push(...groupNodes)  
+      newNodes.push(...groupNodes)
 
       // Add edges for new nodes
       // const newNormalEdges = addEdges({
@@ -546,14 +552,14 @@ export const duplicateNodes = ({ network, nodeMap, allPositions, pleio = new Set
       // newEdges.push(...newNormalEdges)
     } else {
       // Assing additional props
-      
+
       // New name
       node.data.gName = `${node.data.name}-${groupMembership[0]}`
       // New group number
       node.data[BASE_GROUP_TAG] = topGroups[node.data.gName]
       // Root member or not
       const isRoot = allPositions[node.data.gName][IS_ROOT_MEMBER_TAG]
-      if(isRoot){
+      if (isRoot) {
         node.data[IS_ROOT_MEMBER_TAG] = true
       }
     }
@@ -567,21 +573,24 @@ export const duplicateNodes = ({ network, nodeMap, allPositions, pleio = new Set
   // newEdges.push(...newNodeEdges)
 
   // Edges between duplicated nodes
-  // const pleioEdges = addPleiotropicEdges(pleioNodes)
-  // newEdges.push(...pleioEdges)
+  const pleioEdges = addPleiotropicEdges(pleioNodes)
 
   const additionalEdges = createEdgesFromNewNodes({ newNodes, edges, nodeMap })
-  return { newNodes, newEdges: additionalEdges, legend: group2name }
+  return {
+    newNodes,
+    newEdges: [...additionalEdges, ...pleioEdges],
+    legend: group2name,
+  }
 }
 
 /**
- * 
+ *
  * Create new edges for all new nodes
- * 
- * @param {} param0 
- * @returns 
+ *
+ * @param {} param0
+ * @returns
  */
-const createEdgesFromNewNodes = ({ newNodes, edges = [], nodeMap = {}}) => {
+const createEdgesFromNewNodes = ({ newNodes, edges = [], nodeMap = {} }) => {
   const newEdges = []
 
   let numEdges = edges.length
@@ -606,10 +615,10 @@ const createEdgesFromNewNodes = ({ newNodes, edges = [], nodeMap = {}}) => {
     //   continue
     // }
     // Now duplicate the edge for all new nodes
-    newNodes.forEach(node => {
+    newNodes.forEach((node) => {
       const nodeData = node.data
       const nodeName = nodeData.name
-      if(sourceName === nodeName) {
+      if (sourceName === nodeName) {
         const newEdgeDataStr = JSON.stringify(data)
         const dataCopy = JSON.parse(newEdgeDataStr)
         const newEdge = {
@@ -621,7 +630,7 @@ const createEdgesFromNewNodes = ({ newNodes, edges = [], nodeMap = {}}) => {
           },
         }
         newEdges.push(newEdge)
-      } else if(targetName === nodeName) {
+      } else if (targetName === nodeName) {
         const newEdgeDataStr = JSON.stringify(data)
         const dataCopy = JSON.parse(newEdgeDataStr)
         const newEdge = {
@@ -635,10 +644,9 @@ const createEdgesFromNewNodes = ({ newNodes, edges = [], nodeMap = {}}) => {
         newEdges.push(newEdge)
       }
     })
-
   }
   return newEdges
-} 
+}
 
 const connectPleioNodes = ({ newNodes, allEdges, nodeMap }) => {
   // All node names in this new set
@@ -825,10 +833,12 @@ const addPleiotropicEdges = (nodes) => {
         data: {
           source: sourceId,
           target: targetId,
-          id: `ep_${sourceId}_${targetId}`,
+          id: `ep_${sourceId}-${targetId}-pleio`,
           isPleio: true,
           Score: 1.0,
-          isMember: true,
+          // isMember: true,
+          color: '#00FF00',
+          zIndex: 9999,
           primary_edge_visible: true,
         },
       }

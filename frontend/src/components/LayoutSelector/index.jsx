@@ -9,6 +9,7 @@ import FitSelected from '@material-ui/icons/CenterFocusStrong'
 import { createStyles, makeStyles } from '@material-ui/core'
 
 import LayoutList, { LAYOUTS } from './LayoutList'
+import PleioEdgeSwitch from './PleioEdgeSwitch'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -36,6 +37,7 @@ const LayoutSelector = (props) => {
   const [buttonDisabled, setButtonDisabled] = useState(false)
 
   const { currentSubsystem, uiState, uiStateActions } = props
+  const showPleioEdges = uiState.get('showPleioEdges')
   const enableCustomStyling = uiState.get('enableCustomStyling')
 
   // Enable button once new sub network is loaded.
@@ -79,6 +81,10 @@ const LayoutSelector = (props) => {
 
   return (
     <div className={classes.flexContainer}>
+      <PleioEdgeSwitch
+        showPleioEdges={showPleioEdges}
+        uiStateActions={uiStateActions}
+      />
       <Tooltip
         title={<div className={classes.tooltip}>Fit network view</div>}
         arrow

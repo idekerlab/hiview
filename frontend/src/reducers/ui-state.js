@@ -11,7 +11,8 @@ import {
   ENABLE_PRIMARY_EDGE,
   SET_FILTER_STATE,
   SET_SEARCH_MODE,
-  ENABLE_CUSTOM_STYLING
+  ENABLE_CUSTOM_STYLING,
+  SHOW_PLEIO_EDGES
 } from '../actions/ui-state'
 
 import { handleActions } from 'redux-actions'
@@ -36,7 +37,8 @@ const defaultState = Map({
   enablePrimaryEdge: true,
   filterState: Map(),
   searchMode: SEARCH_MODE.EXACT,
-  enableCustomStyling: true
+  enableCustomStyling: true,
+  showPleioEdges: true
 })
 
 export default handleActions(
@@ -78,6 +80,8 @@ export default handleActions(
       state.set('searchMode', action.payload),
     [ENABLE_CUSTOM_STYLING]: (state, action) =>
       state.set('enableCustomStyling', action.payload),
+    [SHOW_PLEIO_EDGES]: (state, action) =>
+      state.set('showPleioEdges', action.payload),
   },
   defaultState
 )

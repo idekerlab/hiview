@@ -224,7 +224,7 @@ const assignEdgeColor = (id2node, groupColorMap, edges, parent) => {
 
     if (data['isPleio']) {
       data['color'] = '#FFFFFF'
-      data['zIndex'] = 8000
+      data['zIndex'] = 9900
     }
   })
 }

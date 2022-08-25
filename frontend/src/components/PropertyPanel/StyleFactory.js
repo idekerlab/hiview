@@ -106,8 +106,8 @@ const MINIMAL_STYLE = [
   {
     selector: 'edge.hidden',
     css: {
-      opacity: 0.05,
-      // visibility: 'hidden'
+      // opacity: 0.05,
+      visibility: 'hidden'
     },
   },
 ]
@@ -278,6 +278,12 @@ const BASE_STYLE = {
       opacity: 1,
     },
   },
+  hidePleio: {
+    selector: 'edge.hidePleio',
+    css: {
+      visibility: 'hidden'
+    },
+  },
 }
 
 export const createSimplifiedStyle = () => {
@@ -432,6 +438,7 @@ export const createStyle = (originalNetwork) => {
       BASE_STYLE.connected,
       BASE_STYLE.connectedEdge,
       BASE_STYLE.expandedEdges,
+      BASE_STYLE.hidePleio
     ],
   }
 }

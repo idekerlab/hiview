@@ -13,6 +13,7 @@ import CustomPopover from '../CustomPopover'
 
 import { parseProps } from '../../utils/edge-prop-util'
 import { NDEX_EVIDENCE_KEY } from './EdgeInfoPanel'
+import { showPleioEdges } from '../../actions/ui-state'
 
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
@@ -40,6 +41,37 @@ const RawInteractionPanel = (props) => {
 
   const serverType = location.query.type
   const filterState = uiState.get('filterState')
+  const showPleioEdges = uiState.get('showPleioEdges')
+
+  useEffect(() => {
+    if (cyReference === null || cyReference === undefined) {
+      return
+    }
+
+    updatePleioEdges(showPleioEdges)
+
+  }, [showPleioEdges])
+
+  const updatePleioEdges = (showPleioEdges) => {
+    const pleioEdges = cyReference.edges('edge[?isPleio]')
+    if (pleioEdges.length === 0) {
+      return
+    }
+
+    if (showPleioEdges) {
+      pleioEdges.removeClass('hidePleio')
+    } else {
+      pleioEdges.addClass('hidePleio')
+    }
+    // cyReference.resize()
+  }
+
+  // useEffect(() => {
+  //   if (cyReference === null || cyReference === undefined) {
+  //     return
+  //   }
+  //   updatePleioEdges()
+  // }, [])
 
   // For switching VS
   const enableCustomStyling = uiState.get('enableCustomStyling')
@@ -73,13 +105,13 @@ const RawInteractionPanel = (props) => {
     // Get CyNode
     const selectedNode = rawEvent.target
     const connectedEdges = selectedNode.connectedEdges('edge[?isPleio]')
-    if(connectedEdges.length > 0) {
+    if (connectedEdges.length > 0) {
       connectedEdges.addClass('connectedEdge')
       const connectedNodes = connectedEdges.connectedNodes()
       console.log('connected', connectedNodes.addClass('connected'))
     }
   }
-  
+
   const deselectNodes = (nodeIds, rawEvent) => {
     console.log(rawEvent)
     const { cy } = rawEvent
@@ -90,7 +122,7 @@ const RawInteractionPanel = (props) => {
     // remove class
     const selectedNode = rawEvent.target
     const connectedEdges = selectedNode.connectedEdges()
-    if(connectedEdges.length > 0) {
+    if (connectedEdges.length > 0) {
       connectedEdges.removeClass('connectedEdge')
       const connectedNodes = connectedEdges.connectedNodes()
       console.log('connected', connectedNodes.removeClass('connected'))
@@ -181,6 +213,9 @@ const RawInteractionPanel = (props) => {
   useEffect(() => {
     if (cyReference !== null && cyReference !== undefined) {
       setCy(cyReference)
+      setTimeout(() => {
+        updatePleioEdges(showPleioEdges)    
+      }, 100);
     }
   }, [cyReference])
 
@@ -247,7 +282,7 @@ const RawInteractionPanel = (props) => {
     const threshold = Number.parseFloat(parentWeight)
 
     insertEdgeColorMapping({
-      nodes, 
+      nodes,
       edges,
       vs: networkStyle,
       attrName: primaryEdgeName,
@@ -255,7 +290,7 @@ const RawInteractionPanel = (props) => {
       scoreMax: 1,
       threshold,
       metadata: subnet.data,
-      rawInteractionsActions
+      rawInteractionsActions,
     })
 
     setTooltipKeys(DDRAM_TOOLTIP_KEY)
