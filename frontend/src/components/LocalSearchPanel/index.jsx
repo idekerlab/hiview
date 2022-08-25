@@ -159,26 +159,6 @@ class LocalSearchPanel extends Component {
             <div />
           )}
         </Card>
-        <Card className={classes.expansionCard}>
-          <ExpansionPanel defaultExpanded={false} className={classes.expansion}>
-            <ExpansionPanelSummary
-              expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1a-content"
-              id="panel1a-header"
-              className={classes.summaryPanel}
-            >
-              <Typography className={classes.heading}>
-                {label}
-              </Typography>
-            </ExpansionPanelSummary>
-            <ExpansionPanelDetails className={classes.expandPanel}>
-              <Divider />
-              <div className={classes.title}>
-                <Overlay {...this.props} />
-              </div>
-            </ExpansionPanelDetails>
-          </ExpansionPanel>
-        </Card>
       </div>
     )
   }
