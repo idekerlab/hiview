@@ -298,6 +298,8 @@ const fetchInteractionsFromRemote = (
 
       // Store the modified network data to local DB
       hvDb.interactions.put(entry)
+      const newGroups = createNewGroups(network.elements.nodes)
+      netAndFilter[2] = newGroups
 
       return dispatch(
         receiveNetwork(
@@ -314,6 +316,24 @@ const fetchInteractionsFromRemote = (
       console.log('Raw interaction fetch ERROR! ', err)
       return dispatch(receiveNetwork(url, null, 'Error!'))
     })
+}
+
+const createNewGroups = (nodes) => {
+  const groups = {}
+  let idx = nodes.length
+  while (idx--) {
+    const node = nodes[idx]
+    const { data } = node
+    const { id, name, baseGroup } = data
+    let geneSet = null
+    geneSet = groups[name] || []
+    geneSet.push(id)
+    groups[name] = geneSet
+    geneSet = groups[baseGroup] || []
+    geneSet.push(id)
+    groups[baseGroup] = geneSet
+  }
+  return groups
 }
 
 const getInteractions = (

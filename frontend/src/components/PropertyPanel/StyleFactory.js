@@ -207,16 +207,17 @@ const BASE_STYLE = {
   members: {
     selector: '.members',
     css: {
-      // 'background-color': '#FF0000',
-      color: '#FFFFFF',
-      // 'background-opacity': 1,
+      color: '#FF0000',
+      'background-opacity': 0,
+      'text-outline-width': 0.6,
+      'text-outline-color': '#FFFFFF',
       // 'background-color': '#FF0000',
       // width: n => calcNodeWidth(n),
       // height: n => calcNodeHeight(n),
-      'text-background-opacity': 0.9,
-      'text-background-color': '#FF0000',
+      // 'text-background-opacity': 0.9,
+      // 'text-background-color': '#FFFFFF',
       // 'font-size': n => calcFontSize(n),
-      'font-weight': 500,
+      'font-size': 7.5
     },
   },
   hidden: {
