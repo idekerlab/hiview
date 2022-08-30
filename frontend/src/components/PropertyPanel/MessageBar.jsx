@@ -19,20 +19,11 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     zIndex: 1300,
   },
-  titleContainer: {
-    width: '100%',
-    height: '3em',
-    margin: 0,
-    padding: 0,
+  row: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
-    borderBottom: '1px solid #EEEEEE',
-  },
-  title: {
-    color: '#EEEEEE',
-    fontSize: '0.8em',
-    flexGrow: 1,
+    justifyContent: 'flex-start',
   },
   infoIcon: {
     color: '#EEEEEE',
@@ -82,7 +73,7 @@ const getWarning = (originalCount, maxCount, classes) => {
 
 const MessageBar = (props) => {
   const classes = useStyles()
-  const {legend} = props
+  const { legend } = props
 
   const [showLegend, setShowLegend] = useState(false)
 
@@ -93,8 +84,11 @@ const MessageBar = (props) => {
   return (
     <Fragment>
       <div className={classes.root}>
-        <div className={classes.titleContainer}>
-          <Typography className={classes.title}>Data Viewer</Typography>
+        <div className={classes.container}>
+          {getWarning(props.originalEdgeCount, props.maxEdgeCount, classes)}
+        </div>
+        <div className={classes.row}>
+          <PathPanel {...props} />
           <Button
             variant="outlined"
             size="small"
@@ -105,10 +99,6 @@ const MessageBar = (props) => {
             Legend
           </Button>
         </div>
-        <div className={classes.container}>
-          {getWarning(props.originalEdgeCount, props.maxEdgeCount, classes)}
-        </div>
-        <PathPanel {...props} />
       </div>
       <NetworkLegendPanel
         legend={legend}
