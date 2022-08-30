@@ -303,7 +303,8 @@ const TermDetailsPanel = (props) => {
   subnet = interactions
 
   if (subnet !== null && subnet !== undefined) {
-    geneList = subnet.elements.nodes.map((node) => node.data.name)
+    const namesWithDuplication = subnet.elements.nodes.map((node) => node.data.name)
+    geneList = Array.from(new Set(namesWithDuplication)).sort()
   } else {
     const geneMap = props.network.get('geneMap')
     const label = data.Label

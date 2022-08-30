@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme =>
 
 const ExportButtons = props => {
   const classes = useStyles()
-  const { geneList, rawInteractions, externalNetworks, cy } = props
+  const { geneList, cy } = props
 
   return (
     <div className={classes.root}>
