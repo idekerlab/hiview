@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
+import { ListItem, ListItemText, Popover, Collapse } from '@material-ui/core'
 
 import ExpandLess from '@material-ui/icons/ArrowDropDown'
 import ExpandMore from '@material-ui/icons/ArrowRight'
-import Collapse from '@material-ui/core/Collapse'
 
 import { makeStyles } from '@material-ui/core/styles'
 import List from '@material-ui/core/List'
@@ -38,6 +36,17 @@ const useStyles = makeStyles((theme) => ({
   nested: {
     paddingLeft: theme.spacing(14),
   },
+  popover: {
+    // pointerEvents: 'none',
+  },
+  paper: {
+    padding: theme.spacing(1),
+    width: '25em',
+  },
+  popupContent: {
+    padding: 0,
+    margin: 0,
+  },
 }))
 
 /**
@@ -50,6 +59,33 @@ const useStyles = makeStyles((theme) => ({
 const EvidenceListItem = ({ evidence, selectedEdge, queryPaths }) => {
   const classes = useStyles()
   const [open, setOpen] = useState(false)
+  const [keepOpened, setKeepOpened] = useState(true)
+  const [pointerEvents, setPointerEvents] = useState('none')
+  const [anchorEl, setAnchorEl] = useState(null)
+
+  const handlePopoverOpen = (event) => {
+    if(!open) {
+      setAnchorEl(event.currentTarget)
+    }
+  }
+
+  const handlePopoverClose = () => {
+    setAnchorEl(null)
+    setPointerEvents('none')
+    setKeepOpened(false)
+  }
+
+  const handleEnterPopover = () => {
+    setPointerEvents('auto')
+    setKeepOpened(true)
+  }
+
+  const handleLeavePopover = () => {
+    setPointerEvents('none')
+    setAnchorEl(null)
+    setKeepOpened(false)
+  }
+  const openPopover = Boolean(anchorEl)
   const { feature, feature_unit } = evidence
 
   const handleClick = () => {
@@ -75,17 +111,52 @@ const EvidenceListItem = ({ evidence, selectedEdge, queryPaths }) => {
     network = null
   }
 
+  const popoverId = `description-popover-${feature}`
   return (
     <React.Fragment>
       <ListItem className={classes.item} button onClick={handleClick}>
         {open ? <ExpandLess /> : <ExpandMore />}
         <div className={classes.item2}>
           <Typography
+            aria-owns={open ? popoverId : undefined}
+            aria-haspopup="true"
+            onMouseEnter={handlePopoverOpen}
+            onMouseLeave={handlePopoverClose}
+            onClick={handlePopoverClose}
             variant="h6"
             color="textPrimary"
           >
             {feature}
           </Typography>
+          <Popover
+            transitionDuration={0}
+            id={popoverId}
+            className={classes.popover}
+            classes={{
+              paper: classes.paper,
+            }}
+            open={openPopover}
+            anchorEl={anchorEl}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'left',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+            onClose={handlePopoverClose}
+            style={{ pointerEvents: pointerEvents }}
+          >
+            <div
+              className={classes.popupContent}
+              onMouseEnter={handleEnterPopover}
+              onMouseLeave={handleLeavePopover}
+            >
+              <Typography variant="body1">{parse(description)}</Typography>
+              <Typography variant="body2">{'(Click to open full details)'}</Typography>
+            </div>
+          </Popover>
         </div>
         <div>
           <ListItemText>
