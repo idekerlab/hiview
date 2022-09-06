@@ -58,7 +58,7 @@ const generateIndex = (networkJson) => {
     distance: 100,
     maxPatternLength: 40,
     minMatchCharLength: 2,
-    keys: ['Label', 'Original_Name'],
+    keys: ['Label', 'Display_Label', 'Original_Name'],
   }
 
   const geneIndex = new Fuse(nodeData, geneSearchOptions)
