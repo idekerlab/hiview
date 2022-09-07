@@ -86,7 +86,7 @@ export default function networkState(state = defState, action) {
       return state
         .set('summary', action.summary)
         .set('interactions', null)
-        .set('originalEdgeCount', 0)
+        .set('originalEdgeCount', action.summary.edgeCount)
     case SET_VALUE:
       const filters = state.get('filters')
       const attributeName = action.payload.attributeName

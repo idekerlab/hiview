@@ -277,7 +277,7 @@ const fetchInteractionsFromRemote = (
       const legend = processed.legend
 
       dispatch(setLegend({names: legend}))
-      dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
+      // dispatch(setOriginalEdgeCount(newNet.elements.edges.length))
       return newNet
     })
     .then(network => filterEdge(network, maxEdgeCount))
@@ -414,6 +414,7 @@ export const fetchInteractionsFromUrl = (
   }
 
   return dispatch => {
+    dispatch(getNetworkSummary(uuid, server, credentials))
     dispatch(fetchNetwork(url))
 
     return getInteractions(
