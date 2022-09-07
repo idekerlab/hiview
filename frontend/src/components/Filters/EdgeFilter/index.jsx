@@ -33,7 +33,8 @@ const styles = theme => ({
     position: 'relative',
     background: 'inherit',
     flexGrow: 2,
-    padding: theme.spacing(2),
+    padding: theme.spacing(1),
+    paddingBottom: theme.spacing(2),
   },
   title: {
     height: '2em',

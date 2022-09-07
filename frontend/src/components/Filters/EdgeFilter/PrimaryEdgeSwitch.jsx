@@ -1,7 +1,5 @@
 import React from 'react'
-
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
+import {Switch, FormControlLabel} from '@material-ui/core'
 
 // Special tag for DDRAM project
 const LABEL_DDRAM = 'DAS Score Network'
@@ -27,14 +25,14 @@ const PrimaryEdgeSwitch = (props) => {
   return (
     <div style={filterRowStyle}>
       <FormControlLabel
-        style={{ width: '95%' }}
         control={
-          <Checkbox
+          <Switch
             style={{
               width: '1em',
               height: '1em',
               paddingRight: '0.5em',
             }}
+            color={'default'}
             checked={enablePrimaryEdge}
             onChange={() => handleChange(enablePrimaryEdge, uiStateActions)}
             value="isEnabled"

@@ -1,32 +1,33 @@
-import React, { Component } from 'react'
-
-import Checkbox from '@material-ui/core/Checkbox'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
+import React from 'react'
+import { Switch, FormControlLabel } from '@material-ui/core'
 
 import BaseFilter from './BaseFilter'
 
 // Special tag for DDRAM project
-const APMS_LABEL = 'New AP-MS of 22 DDR bait proteins [ Kratz 2022, under review ]'
+const APMS_LABEL =
+  'New AP-MS of 22 DDR bait proteins [ Kratz 2022, under review ]'
+const APMS_TAG = 'AP_MS'
 
 const filterRowStyle = {
   paddingTop: '1.5em',
   width: '100%',
   height: '0.8em',
   display: 'flex',
-  alignItems: 'center'
+  alignItems: 'center',
 }
 
 class BooleanFilter extends BaseFilter {
-  onChecked = event => {
+
+  onChecked = (event) => {
     const checked = event.target.checked
     this.setState({
-      checked: checked
+      checked: checked,
     })
     this.filterSelected(checked)
     this.props.uiStateActions.setFilterState({
       name: this.props.label,
       value: true,
-      enabled: checked
+      enabled: checked,
     })
   }
 
@@ -41,7 +42,7 @@ class BooleanFilter extends BaseFilter {
         this.props.uiStateActions.setFilterState({
           name: this.props.label,
           value: true,
-          enabled: true
+          enabled: true,
         })
       }, 100)
     }
@@ -50,23 +51,22 @@ class BooleanFilter extends BaseFilter {
   render() {
     let label = this.props.label
 
-    if(label !== undefined && label.includes('AP_MS')) {
+    if (label !== undefined && label.includes(APMS_TAG)) {
       label = APMS_LABEL
-    } 
+    }
 
     return (
       <div style={filterRowStyle}>
         <FormControlLabel
-          style={{ width: '95%' }}
           control={
-            <Checkbox
+            <Switch
               disabled={this.state.disabled}
               style={{
                 width: '1em',
                 height: '1em',
                 paddingRight: '0.5em',
-                color: this.state.labelColor
               }}
+              color={'default'}
               checked={this.state.checked}
               onChange={this.onChecked}
               value={label}
