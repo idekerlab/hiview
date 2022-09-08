@@ -259,7 +259,13 @@ const BASE_STYLE = {
     selector: 'edge[?subEdge]',
     css: {
       width: 1.5,
-      'line-style': 'dotted',
+      'line-style': e => {
+        if (e.data('subtype') === 'constitutive') {
+          return 'dotted'
+        } else {
+          return 'solid'
+        }
+      },
       opacity: 1,
     },
   },

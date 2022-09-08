@@ -16,8 +16,11 @@
             
             // Anton DDRAM final with extra property
             // "url": "https://localhost:3000/8ae42011-ecfd-11ec-8fa0-0660b7976219?type=test&server=http://test.ndexbio.org",
-            "url": "https:localhost:3000/9f62788f-078c-11ed-8fa0-0660b7976219?type=test&server=http://test.ndexbio.org",
+            // "url": "https:localhost:3000/9f62788f-078c-11ed-8fa0-0660b7976219?type=test&server=http://test.ndexbio.org",
             // "url": "https://localhost:3000/424f9d89-2587-11ed-8fa0-0660b7976219?type=test&server=https://test.ndexbio.org",
+            // New data
+            "url": "https://localhost:3000/81a0f268-2560-11ed-8fa0-0660b7976219?type=test&server=https://test.ndexbio.org",
+            // "url": "https://localhost:3000/81a0f268-2560-11ed-8fa0-0660b7976219?type=test&server=https://test.ndexbio.org",
             "webRoot": "${workspaceRoot}/frontend/src"
 
         }
