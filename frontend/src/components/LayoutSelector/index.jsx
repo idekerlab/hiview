@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 
 import { Button, Tooltip } from '@material-ui/core'
 
-import ApplyIcon from '@material-ui/icons/Refresh'
 import FitContent from '@material-ui/icons/ZoomOutMap'
 import FitSelected from '@material-ui/icons/CenterFocusStrong'
 
@@ -24,8 +23,8 @@ const useStyles = makeStyles((theme) =>
       fontSize: '2em',
     },
     tooltip: {
-      fontSize: '1em',
-      fontWeight: '300',
+      fontSize: '1.5em',
+      fontWeight: '500',
       textAlign: 'center',
     },
   }),
@@ -88,7 +87,7 @@ const LayoutSelector = (props) => {
       <Tooltip
         title={<div className={classes.tooltip}>Fit network view</div>}
         arrow
-        placement="top"
+        placement="bottom"
       >
         <Button
           className={classes.button}
@@ -108,7 +107,7 @@ const LayoutSelector = (props) => {
           </div>
         }
         arrow
-        placement="top"
+        placement="bottom"
       >
         <Button
           className={classes.button}

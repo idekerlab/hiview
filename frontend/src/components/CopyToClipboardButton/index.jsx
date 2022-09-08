@@ -17,8 +17,8 @@ const useStyles = makeStyles(theme =>
       fontSize: '2em',
     },
     tooltip: {
-      fontSize: '1.2em',
-      fontWeight: '300',
+      fontSize: '1.5em',
+      fontWeight: '500',
       textAlign: 'center',
     },
   }),

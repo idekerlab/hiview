@@ -14,8 +14,8 @@ const styles = theme => ({
     fontSize: '2em',
   },
   tooltip: {
-    fontSize: '16px',
-    fontWeight: '300',
+    fontSize: '1.5em',
+    fontWeight: '500',
     textAlign: 'center',
   },
 })
