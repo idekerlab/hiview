@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
 
 import { EDGE_WIDTH } from '../StyleFactory'
+import PleioEdge from './PleioEdge'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#444444',
     width: '2em',
     textAlign: 'center',
-    margin: 'auto'
+    margin: 'auto',
   },
   wrapper: {
     flexGrow: 1,
@@ -37,6 +38,21 @@ const useStyles = makeStyles((theme) => ({
   edgeWidth: {
     backgroundColor: '#666666',
     width: '90%',
+  },
+  edgePleio: {
+    backgroundColor: 'inherit',
+    width: '90%',
+  },
+  pleioRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    height: '4em',
+    width: '100%',
+    padding: 0,
+    boxSizing: 'border-box',
+    backgroundColor: '#AAAAAA',
   },
 }))
 
@@ -61,11 +77,21 @@ const EdgeLegend = ({ legend }) => {
               <Typography variant="body2">{score}</Typography>
             </div>
             <div className={classes.wrapper}>
-              <div className={classes.edgeWidth} style={{ height: width*2 }} />
+              <div
+                className={classes.edgeWidth}
+                style={{ height: width * 2 }}
+              />
             </div>
           </div>
         )
       })}
+      
+      <Typography className={classes.title} variant="h5">
+        Edges connecting same pleiotropic genes
+      </Typography>
+      <div className={classes.pleioRow}>
+        <PleioEdge />
+      </div>
     </div>
   )
 }

@@ -16,12 +16,10 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'inherit',
     display: 'inline-flex',
     width: '100%',
-    height: '6em',
+    height: '5em',
     alignItems: 'center',
     justifyContent: 'flex-start',
-    padding: 0,
-    // border: '2px solid #F00',
-
+    padding: theme.spacing(1)
   },
   title: {
     padding: theme.spacing(1),
@@ -53,10 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const HEIGHT = 100
-const TEXT_POSITION = 100
-
-const ShapeLegend = ({ w = 500 }) => {
+const ShapeLegend = () => {
   const classes = useStyles()
   const legendRef = useRef(null)
 
@@ -66,46 +61,50 @@ const ShapeLegend = ({ w = 500 }) => {
   const legendFactory = () => {
     const svg = d3Selection
       .select(legendRef.current)
-      .attr('width', w)
-      .attr('height', HEIGHT)
+      .attr('width', '100%')
+      .attr('height', '100%')
+    
+    // Bounding box of this SVG
+    const width = svg.node().getBoundingClientRect().width
+    const height = svg.node().getBoundingClientRect().height
 
-    const PAD = 5
-    const centerY = 20 + PAD
-    const centerY2 = centerY * 2 + PAD
+    const space = width * 0.05
+    const centerX = width / 2
+    const centerY = height / 2
 
-    svg
-      .append('ellipse')
-      .attr('cx', 40)
-      .attr('cy', centerY)
-      .attr('rx', 35)
-      .attr('ry', 15)
-      .style('stroke-width', 2)
-      .style('stroke', '#666666') // set the line colour
-      .style('fill', 'none')
-    svg
-      .append('text')
-      .attr('x', TEXT_POSITION)
-      .attr('y', centerY)
-      .text('Pleiotropic')
-      .style('font-size', '1em')
-      .attr('alignment-baseline', 'middle')
+    const shapeWidth = width * 0.15
+    const shapeHeight = (height / 2) * 0.8 
     svg
       .append('rect')
-      .attr('x', PAD)
-      .attr('y', centerY2)
-      .attr('rx', 5)
-      .attr('ry', 5)
-      .attr('height', 30)
-      .attr('width', 70)
+      .attr('x', 1)
+      .attr('y', 1)
+      .attr('height', shapeHeight)
+      .attr('width', shapeWidth)
+      .style('stroke', '#555555')
       .style('stroke-width', 2)
-      .style('stroke', '#666666')
       .style('fill', 'none')
     svg
       .append('text')
-      .attr('x', TEXT_POSITION)
-      .attr('y', centerY2 + 20)
+      .attr('x', shapeWidth + space)
+      .attr('y', centerY - centerY / 2)
       .text('Single assembly assignment')
-      .style('font-size', '1em')
+      .style('font-size', '1.2em')
+      .attr('alignment-baseline', 'middle')
+    svg
+      .append('ellipse')
+      .attr('cx', shapeWidth/2 + 1)
+      .attr('cy', centerY + centerY/2)
+      .attr('rx', shapeWidth/2)
+      .attr('ry', shapeHeight/2)
+      .style('stroke-width', 2)
+      .style('stroke', '#555555')
+      .style('fill', 'none')
+    svg
+      .append('text')
+      .attr('x', shapeWidth + space)
+      .attr('y', centerY + centerY/2)
+      .text('Pleiotropic')
+      .style('font-size', '1.2em')
       .attr('alignment-baseline', 'middle')
   }
 

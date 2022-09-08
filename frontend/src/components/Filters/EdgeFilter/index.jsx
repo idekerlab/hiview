@@ -51,7 +51,6 @@ const styles = theme => ({
     height: '1.7em',
     margin: 0,
     padding: '0.3em',
-    // paddingLeft: 0
   },
 })
 
