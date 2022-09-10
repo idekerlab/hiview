@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
   },
   labelCell: {
     color: '#444444',
-    width: '4.5em',
+    width: '8.5em',
     textAlign: 'right',
     margin: 'auto',
   },
@@ -47,12 +47,12 @@ const SUBTYPES = [
     lineStyle: 'dashed',
   },
   {
-    type: 'trtd',
+    type: 'specific-to-etoposide',
     color: '#E7298A',
     lineStyle: 'solid',
   },
   {
-    type: 'ctrl',
+    type: 'specific-to-control',
     color: '#66A61E',
     lineStyle: 'solid',
   }
