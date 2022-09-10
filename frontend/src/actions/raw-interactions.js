@@ -293,6 +293,7 @@ const fetchInteractionsFromRemote = (
       }
       
       const network = netAndFilter[0]
+      // const hits = network.elements.edges.filter(edge => edge.data['new_AP_MS'] === true)
       // This applies new layout locally, and may take while
       localLayout2(allPositions, network.elements.nodes)
 

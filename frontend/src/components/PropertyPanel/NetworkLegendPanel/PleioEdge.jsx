@@ -1,19 +1,47 @@
 import React, { useRef, useEffect } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import { Typography } from '@material-ui/core'
 import * as d3Selection from 'd3-selection'
 import * as d3Shape from 'd3-shape'
 
-const containerStyle = {
-  boxSizing: 'border-box',
-  display: 'flex',
-  width: '100%',
-  height: '100%',
-  alignItems: 'center',
-  justifyContent: 'flex-start',
-  padding: '1em',
-  background: 'inherit',
-}
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    backgroundColor: '#E0E0E0',
+    marginTop: theme.spacing(2),
+  },
+  container: {
+    boxSizing: 'border-box',
+    display: 'flex',
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    padding: '1em',
+    background: 'inherit',
+  },
+  title: {
+    color: '#222222',
+    padding: theme.spacing(1),
+  },
+  edgePleio: {
+    backgroundColor: 'inherit',
+    width: '90%',
+  },
+  pleioRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    height: '4em',
+    width: '100%',
+    padding: 0,
+    boxSizing: 'border-box',
+  },
+}))
 
 const PleioEdge = () => {
+  const classes = useStyles()
   const legendRef = useRef(null)
 
   const legendFactory = () => {
@@ -65,8 +93,15 @@ const PleioEdge = () => {
   }, [legendRef])
 
   return (
-    <div style={containerStyle}>
-      <svg ref={legendRef} />
+    <div className={classes.root}>
+      <Typography className={classes.title} variant="h5">
+        Edges connecting same pleiotropic genes
+      </Typography>
+      <div className={classes.pleioRow}>
+        <div className={classes.container}>
+          <svg ref={legendRef} />
+        </div>
+      </div>
     </div>
   )
 }

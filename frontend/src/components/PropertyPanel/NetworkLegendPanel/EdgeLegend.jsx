@@ -4,6 +4,7 @@ import { Typography } from '@material-ui/core'
 
 import { EDGE_WIDTH } from '../StyleFactory'
 import PleioEdge from './PleioEdge'
+import SubEdgeTypes from './SubEdgeTypes'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -66,6 +67,9 @@ const EdgeLegend = ({ legend }) => {
   ]
   return (
     <div className={classes.root}>
+      
+      <PleioEdge />
+      
       <Typography className={classes.title} variant="h5">
         DAS Score to Edge Width
       </Typography>
@@ -85,13 +89,9 @@ const EdgeLegend = ({ legend }) => {
           </div>
         )
       })}
+
+      <SubEdgeTypes />
       
-      <Typography className={classes.title} variant="h5">
-        Edges connecting same pleiotropic genes
-      </Typography>
-      <div className={classes.pleioRow}>
-        <PleioEdge />
-      </div>
     </div>
   )
 }
