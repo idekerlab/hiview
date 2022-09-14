@@ -256,7 +256,7 @@ const BASE_STYLE = {
     },
   },
   expandedEdges: {
-    selector: 'edge[?subEdge]',
+    selector: 'edge[?subEdge][!isPleio]',
     css: {
       width: 1.5,
       'line-style': e => {

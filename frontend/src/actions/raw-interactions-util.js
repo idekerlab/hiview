@@ -835,8 +835,8 @@ const addPleiotropicEdges = (nodes) => {
           target: targetId,
           id: `ep_${sourceId}-${targetId}-pleio`,
           isPleio: true,
+          subEdge: true, // This means the edges are not primary
           Score: 1.0,
-          // isMember: true,
           color: '#00FF00',
           zIndex: 9999,
           primary_edge_visible: true,
