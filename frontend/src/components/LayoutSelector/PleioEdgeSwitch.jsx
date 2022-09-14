@@ -2,9 +2,8 @@ import { Switch, FormControlLabel, FormGroup } from '@material-ui/core'
 import React from 'react'
 
 const PleioEdgeSwitch = ({ showPleioEdges, uiStateActions }) => {
-
   const handleChange = (event) => {
-    if(showPleioEdges === true) {
+    if (showPleioEdges === true) {
       uiStateActions.showPleioEdges(false)
     } else {
       uiStateActions.showPleioEdges(true)
@@ -18,7 +17,7 @@ const PleioEdgeSwitch = ({ showPleioEdges, uiStateActions }) => {
           <Switch
             onChange={handleChange}
             name="showPleio"
-            color="primary"
+            color="default"
             checked={showPleioEdges}
           />
         }
