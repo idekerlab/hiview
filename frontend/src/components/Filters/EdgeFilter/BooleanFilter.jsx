@@ -5,7 +5,7 @@ import BaseFilter from './BaseFilter'
 
 // Special tag for DDRAM project
 const APMS_LABEL =
-  'New AP-MS of 22 DDR bait proteins [ Kratz 2022, under review ]'
+  'New AP-MS [Kratz 2022, under review]'
 const APMS_TAG = 'AP_MS'
 
 const filterRowStyle = {
