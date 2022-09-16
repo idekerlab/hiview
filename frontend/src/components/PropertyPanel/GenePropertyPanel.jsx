@@ -58,6 +58,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 const MYGENE_ID_TAG = '_id'
+const MYGENE_SYMBOL_TAG = 'symbol'
 
 const GenePropertyPanel = (props) => {
   const classes = useStyles()
@@ -136,7 +137,20 @@ const GenePropertyPanel = (props) => {
     return noDataPanel
   }
 
-  const entry = data.hits[0]
+  // Filter hits and make sure it is an exact match
+  const {hits} = data
+  let targetEntry = hits[0]
+  const geneSymbol = details.id
+  for(let idx = 0; idx < hits.length; idx++) {
+    const hit = hits[idx]
+    const hitSymbol = hit[MYGENE_SYMBOL_TAG]
+    if (hitSymbol === geneSymbol) {
+      targetEntry = hit
+      break
+    }
+  }
+
+  const entry = targetEntry
   const id = entry[MYGENE_ID_TAG]
   const { symbol, summary, name } = entry
 

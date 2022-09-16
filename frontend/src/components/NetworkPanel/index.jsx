@@ -79,7 +79,8 @@ class NetworkPanel extends Component {
     this.props.propertyActions.fetchMetadata({myGeneUrl: metadataUrl})
     
     const myGeneUrl = MYGENE_URL + '/query?q='
-    const qUrl = myGeneUrl + geneName + '&fields=all&size=1'
+    const qUrl = myGeneUrl + geneName + '&fields=all&size=5'
+    // const qUrl = myGeneUrl + geneName + '&fields=all&size=1'
     this.props.propertyActions.fetchPropertyFromUrl(geneName, qUrl, 'gene')
   }
 
