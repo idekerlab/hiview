@@ -1,9 +1,9 @@
-const extractAll = (currentNode, positions = {}, topGroups, baseNode) => {
+const extractAll = (nameMap, currentNode, positions = {}, topGroups, baseNode) => {
   // Check if current node is a leaf or not
   const children = currentNode.children
 
   if (topGroups === undefined) {
-    topGroups = extractTopGroups(children)
+    topGroups = extractTopGroups(children, nameMap)
   }
 
   if (children === undefined || children === null || children.length === 0) {
@@ -11,9 +11,12 @@ const extractAll = (currentNode, positions = {}, topGroups, baseNode) => {
     let parent = currentNode.parent
     const { Label } = currentNode.data.data
     const { name } = parent.data.data.props
-    const parentLabel = parent.data.data.Label
+    let parentLabel = parent.data.data.Label
 
     let newId = `${Label}-${name}`
+    if(!topGroups.has(baseNode)) {
+      parentLabel = parentLabel + ' (Selected)'
+    }
 
     // This is a leaf node = gene node
     const position = {
@@ -35,11 +38,11 @@ const extractAll = (currentNode, positions = {}, topGroups, baseNode) => {
   // not a leaf node, recurse
   children.forEach((child) => {
     const base = findBaseGroup(child, topGroups)
-    extractAll(child, positions, topGroups, base)
+    extractAll(nameMap, child, positions, topGroups, base)
   })
 }
 
-const extractTopGroups = (topLevelNodes) => {
+const extractTopGroups = (topLevelNodes, nameMap) => {
   const topGroups = new Set()
   if(topLevelNodes === null || topLevelNodes === undefined) {
     return topGroups
@@ -50,6 +53,7 @@ const extractTopGroups = (topLevelNodes) => {
     const { NodeType, props } = data
     if (NodeType !== 'Gene') {
       topGroups.add(props.name)
+      nameMap[props.name] = props.Label
     }
   })
   return topGroups

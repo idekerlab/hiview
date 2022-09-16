@@ -79,8 +79,18 @@ class CirclePackingPanel extends Component {
 
         // const positions = extractPositions(node)
         const allPositions = {}
+        const nameMap = {}
         // New position extractor
-        extractAll(node, allPositions)
+        extractAll(nameMap, node, allPositions)
+        // Force correct labels
+        Object.keys(allPositions).forEach(key => {
+          const position = allPositions[key]
+          const {base} = position
+          const correctName = nameMap[base]
+          if(correctName !== undefined) {
+            position.baseName = correctName
+          }
+        })
         this.props.rawInteractionsActions.setAllPositions(allPositions)
         
         if(node.parent === null) {

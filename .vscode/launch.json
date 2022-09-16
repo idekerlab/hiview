@@ -22,7 +22,10 @@
             // "url": "https://localhost:3000/81a0f268-2560-11ed-8fa0-0660b7976219?type=test&server=https://test.ndexbio.org",
             
             // Latest
-            "url": "https://localhost:3000/9f62788f-078c-11ed-8fa0-0660b7976219?type=test&server=https://test.ndexbio.org",
+            // "url": "https://localhost:3000/9f62788f-078c-11ed-8fa0-0660b7976219?type=test&server=https://test.ndexbio.org",
+            
+            // Latest with addtional property
+            "url": "https://localhost:3000/04eec9d4-3505-11ed-b7bd-0660b7976219?type=test&server=https://test.ndexbio.org",
             "webRoot": "${workspaceRoot}/frontend/src"
 
         }
