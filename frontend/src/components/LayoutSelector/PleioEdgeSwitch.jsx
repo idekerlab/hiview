@@ -21,7 +21,7 @@ const PleioEdgeSwitch = ({ showPleioEdges, uiStateActions }) => {
             checked={showPleioEdges}
           />
         }
-        label="Show edges between same pleiotropic gene nodes"
+        label="Pleiotropy"
       />
     </FormGroup>
   )
