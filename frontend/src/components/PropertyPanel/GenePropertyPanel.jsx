@@ -1,17 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import TitleBar from './TitleBar'
 import CoreGenePropPanel from './CoreGenePropPanel'
-import { Typography, IconButton, Tooltip } from '@material-ui/core'
-import CodeIcon from '@material-ui/icons/Code'
-
+import { Typography } from '@material-ui/core'
 import CircularProgress from '@material-ui/core/CircularProgress'
 import { blueGrey } from '@material-ui/core/colors'
-
 import PathPanel from './PathPanel'
-
 import { makeStyles } from '@material-ui/core/styles'
-
-import { MYGENE_URL } from '../NetworkPanel'
+import GeneSummaryPanel from './GeneSummaryPanel'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -41,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'flex-start',
     padding: theme.spacing(1),
-    paddingLeft: 0
+    paddingLeft: 0,
   },
   codeIcon: {
     color: '#111111',
@@ -59,55 +54,51 @@ const useStyles = makeStyles((theme) => ({
 
 const MYGENE_ID_TAG = '_id'
 const MYGENE_SYMBOL_TAG = 'symbol'
+const MYGENE_TAXID = 'taxid'
+const HUMAN_TAXID = 9606
 
 const GenePropertyPanel = (props) => {
   const classes = useStyles()
+  const [targetEntry, setTargetEntry] = useState(null)
+
   const details = props.currentProperty
   const { metadata } = details
 
-  const getSummaryPanel = (summary, classes, metadata, id = '', name = '') => {
-    const { build_date } = metadata
-    const buildDate = new Date(build_date)
+  useEffect(() => {
+    if (
+      details === undefined ||
+      details === null ||
+      details.data === undefined ||
+      details.data === null
+    ) {
+      return
+    }
+    const { data } = details
 
-    let message = ''
-    if (summary === undefined || (summary === null) | (summary === '')) {
-      message = '( Summary of this gene is not available from MyGene.info )'
-    } else {
-      message = summary
+    if (data.hits === undefined || data.hits.length === 0) {
+      return
     }
 
-    return (
-      <div className={classes.description}>
-        <Typography variant="h6" className={classes.title}>
-          Summary from MyGene.info (Build: {buildDate.toLocaleDateString()})
-          <Tooltip
-            title={
-              <div className={classes.tooltip}>
-                Show MyGene.info raw data (JSON) of {name} in a new tab
-              </div>
-            }
-            arrow
-            placement="bottom"
-          >
-            <IconButton
-              size={'small'}
-              variant={'outlined'}
-              onClick={() => handleOpen(id)}
-              className={classes.codeIcon}
-              aria-label="open MyGene entry in new tab"
-            >
-              <CodeIcon />
-            </IconButton>
-          </Tooltip>
-        </Typography>
-        <Typography type="body1">{message}</Typography>
-      </div>
-    )
-  }
+    const { hits } = details.data
+    let target = null
+    const geneSymbol = details.id
+    for (let idx = 0; idx < hits.length; idx++) {
+      const hit = hits[idx]
+      const hitSymbol = hit[MYGENE_SYMBOL_TAG]
+      const taxid = hit[MYGENE_TAXID]
+      if (hitSymbol === geneSymbol && taxid === HUMAN_TAXID) {
+        target = hit
+        break
+      }
+    }
+    if (target === null) {
+      console.warn(`No human gene found for ${geneSymbol}`)
+      target = hits[0]
+    }
+    setTargetEntry(target)
 
-  const handleOpen = (id) => {
-    window.open(`${MYGENE_URL}/gene/${id}`, '_blank')
-  }
+  }, [details])
+
 
   const noDataPanel = (
     <div className={classes.wrapper}>
@@ -115,7 +106,7 @@ const GenePropertyPanel = (props) => {
     </div>
   )
 
-  if (details === undefined || details === null) {
+  if (details === undefined || details === null || targetEntry === null) {
     return noDataPanel
   }
 
@@ -128,31 +119,11 @@ const GenePropertyPanel = (props) => {
     )
   }
 
-  const data = details.data
-  if (data === undefined || data === null) {
-    return noDataPanel
-  }
-
-  if (data.hits === undefined || data.hits.length === 0) {
-    return noDataPanel
-  }
-
-  // Filter hits and make sure it is an exact match
-  const {hits} = data
-  let targetEntry = hits[0]
-  const geneSymbol = details.id
-  for(let idx = 0; idx < hits.length; idx++) {
-    const hit = hits[idx]
-    const hitSymbol = hit[MYGENE_SYMBOL_TAG]
-    if (hitSymbol === geneSymbol) {
-      targetEntry = hit
-      break
-    }
-  }
-
   const entry = targetEntry
   const id = entry[MYGENE_ID_TAG]
-  const { symbol, summary, name } = entry
+  const { symbol, name } = entry
+  const { build_date } = metadata
+  const buildDate = new Date(build_date)
 
   return (
     <div className={classes.root}>
@@ -161,9 +132,7 @@ const GenePropertyPanel = (props) => {
       </div>
 
       <TitleBar title={name} geneId={id} geneSymbol={symbol} />
-
-      {getSummaryPanel(summary, classes, metadata, id, symbol)}
-
+      <GeneSummaryPanel hit={entry} symbol={symbol} buildDate={buildDate} />
       <CoreGenePropPanel geneInfo={entry} />
     </div>
   )
