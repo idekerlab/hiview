@@ -16,31 +16,11 @@ const useStyles = makeStyles((theme) => ({
     overflow: 'auto',
     background: '#FFFFFF',
   },
-  description: {
-    background: blueGrey[100],
-    paddingTop: '0.3em',
-    paddingBottom: '1em',
-    paddingLeft: '1em',
-    paddingRight: '0.7em',
-  },
   path: {
     boxSizing: 'border-box',
     background: '#222222',
     width: '100%',
-    padding: '1em',
-  },
-  title: {
-    borderBottom: '1px solid #666666',
-    marginBottom: '0.4em',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
     padding: theme.spacing(1),
-    paddingLeft: 0,
-  },
-  codeIcon: {
-    color: '#111111',
-    marginLeft: theme.spacing(2),
   },
   wrapper: {
     background: blueGrey[50],
@@ -56,6 +36,8 @@ const MYGENE_ID_TAG = '_id'
 const MYGENE_SYMBOL_TAG = 'symbol'
 const MYGENE_TAXID = 'taxid'
 const HUMAN_TAXID = 9606
+const NCBI_ID_TAG = 'entrezgene'
+const NCBI_SUMMARY_TAG = 'Entrezgene_summary'
 
 const GenePropertyPanel = (props) => {
   const classes = useStyles()
@@ -96,20 +78,51 @@ const GenePropertyPanel = (props) => {
       target = hits[0]
     }
     setTargetEntry(target)
+    
+    // const newSummary = target.summary
+    // if (newSummary === undefined || newSummary === null) {
+    //   // No summary is available. Fetch from NCBI
 
+    //   const ncbiId = target.entrezgene
+    //   const NCBI_URL = `https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=gene&id=${ncbiId}&rettype=xml`
+
+    //   fetch(NCBI_URL)
+    //     .then((response) => response.text())
+    //     .then((data) => {
+    //       // console.log(data)
+    //       const parser = new DOMParser()
+    //       const xmlDoc = parser.parseFromString(data, 'text/xml')
+    //       const newSummary =
+    //         xmlDoc.getElementsByTagName(NCBI_SUMMARY_TAG)[0].textContent
+    //       if (newSummary === undefined || newSummary.length === 0) {
+    //         return
+    //       }
+    //       const newSummaryText = newSummary[0].innerHTML
+    //       setSummary(newSummaryText)
+    //     })
+    // } else {
+    //   setSummary(summary)
+    // }
+
+    return () => {
+      setTargetEntry(null)
+    }
   }, [details])
 
-
-  const noDataPanel = (
-    <div className={classes.wrapper}>
-      <Typography variant="h6">No data</Typography>
-    </div>
-  )
-
-  if (details === undefined || details === null || targetEntry === null) {
-    return noDataPanel
+  if (details === undefined || details === null || targetEntry === null || targetEntry === undefined) {
+    return (
+      <div className={classes.wrapper}>
+        <NoDataPanel />
+      </div>
+    )
   }
 
+  const entry = targetEntry
+  const id = entry[MYGENE_ID_TAG]
+  const { symbol, summary, name } = entry
+  const { build_date } = metadata
+  const buildDate = new Date(build_date)
+  
   // Loading
   if (details.loading) {
     return (
@@ -119,23 +132,22 @@ const GenePropertyPanel = (props) => {
     )
   }
 
-  const entry = targetEntry
-  const id = entry[MYGENE_ID_TAG]
-  const { symbol, name } = entry
-  const { build_date } = metadata
-  const buildDate = new Date(build_date)
-
   return (
     <div className={classes.root}>
       <div className={classes.path}>
         <PathPanel {...props} />
       </div>
-
       <TitleBar title={name} geneId={id} geneSymbol={symbol} />
-      <GeneSummaryPanel hit={entry} symbol={symbol} buildDate={buildDate} />
+      <GeneSummaryPanel symbol={symbol} summary={summary} ncbiId={id} buildDate={buildDate} />
       <CoreGenePropPanel geneInfo={entry} />
     </div>
   )
 }
+
+const NoDataPanel = () => (
+  <div>
+    <Typography variant="h6">No data</Typography>
+  </div>
+)
 
 export default GenePropertyPanel
