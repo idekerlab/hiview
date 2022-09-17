@@ -12,6 +12,9 @@ const GO_LINK = 'http://amigo.geneontology.org/amigo/term/'
 
 const PARENT_TAG = 'Parent weight'
 
+const HIDDEN_TAGS = ['x_pos', 'y_pos', 'Vis_Shape', 'Vis_Fill_Color', 'Vis_Border_Paint']
+
+const hiddenSet = new Set(HIDDEN_TAGS)
 class SubsystemPanel extends Component {
   render() {
     let displayOrder = null
@@ -28,14 +31,11 @@ class SubsystemPanel extends Component {
     const termData = this.props.selectedTerm.data
     const keys = Object.keys(termData)
 
-    let filteredKeys = keys.filter(key => key.startsWith('Display'))
+    let filteredKeys = keys.filter(key => !hiddenSet.has(key))
 
-    // Force to add special key: name
-    filteredKeys.push('name')
-
-    if (displayOrder) {
-      filteredKeys = displayOrder
-    }
+    // if (displayOrder) {
+    //   filteredKeys = displayOrder
+    // }
 
     return (
       <List>
