@@ -1,15 +1,17 @@
 import React from 'react'
-import CardActions from '@material-ui/core/CardActions'
 import Typography from '@material-ui/core/Typography'
 import Divider from '@material-ui/core/Divider'
 
 const NotFoundPanel = () => (
-  <div>
+  <React.Fragment>
     <Divider />
-    <CardActions>
-      <Typography variant="h5">Not Found!</Typography>
-    </CardActions>
-  </div>
+    <div style={{ padding: '1em' }}>
+      <Typography variant="h5">Could not find any matches.</Typography>
+      <Typography variant="subtitle1">
+        Please try again with a different search term
+      </Typography>
+    </div>
+  </React.Fragment>
 )
 
 export default NotFoundPanel
