@@ -35,24 +35,24 @@ const progressStyle = {
   justifyContent: 'center',
   color: 'white',
   backgroundColor: 'rgba(0,0,0,0.2)',
-  zIndex: 1000
+  zIndex: 1000,
 }
 
-const name2uuid = networkName => {
+const name2uuid = (networkName) => {
   const query = {
-    searchString: networkName
+    searchString: networkName,
   }
 
   const settings = {
     method: 'POST',
     body: JSON.stringify(query),
     headers: {
-      'Content-Type': 'application/json'
-    }
+      'Content-Type': 'application/json',
+    },
   }
   fetch(DEFAULT_SUMMARY, settings)
-    .then(res => res.json())
-    .then(json => {
+    .then((res) => res.json())
+    .then((json) => {
       const firstRes = json.network[0]
       console.log(firstRes['externalId'])
       return firstRes
@@ -69,15 +69,15 @@ class NetworkPanel extends Component {
     this.state = {
       updating: false,
       networkUrl: '',
-      hoverNode: null
+      hoverNode: null,
     }
   }
 
-  setGeneProps = geneName => {
+  setGeneProps = (geneName) => {
     // Just fetch property
     const metadataUrl = MYGENE_URL + '/metadata'
-    this.props.propertyActions.fetchMetadata({myGeneUrl: metadataUrl})
-    
+    this.props.propertyActions.fetchMetadata({ myGeneUrl: metadataUrl })
+
     const myGeneUrl = MYGENE_URL + '/query?q='
     const qUrl = myGeneUrl + geneName + '&fields=all&size=10&species=human'
     // const qUrl = myGeneUrl + geneName + '&fields=all&size=1'
@@ -87,6 +87,16 @@ class NetworkPanel extends Component {
   // Main function to select current subsystem.
   // Should be called once per double-click
   selectNodes = (nodeIds, nodeProps) => {
+    // Ignore if this is a call from local search change
+    let skipUpdate = false
+    const localSearch2 = this.props.localSearch
+    if (localSearch2 !== undefined) {
+      const { results } = localSearch2
+      if(results !== null && results !== undefined && results.length > 0) {
+        skipUpdate = true
+      }
+    }
+
     // First node in the selection
     const nodeId = nodeIds[0]
 
@@ -100,13 +110,15 @@ class NetworkPanel extends Component {
     const newSelectionState = {
       networkId: 'main',
       nodeId: nodeId,
-      nodeProps: props
+      nodeProps: props,
     }
 
-    // this.props.netantActions.clearAll()
-
     // TODO is this necessary?
-    this.props.selectionActions.selectNode(newSelectionState)
+    if(!skipUpdate) {
+      this.props.selectionActions.selectNode(newSelectionState)
+    } else if(!props.isRoot) {
+      this.props.selectionActions.selectNode(newSelectionState)
+    }
 
     const nodeTypeTag = 'NodeType'
     let nodeType = props[nodeTypeTag]
@@ -126,7 +138,6 @@ class NetworkPanel extends Component {
       // Link is not available = no raw interaction available OR this is a human-curated ontology
       const selectedNode = nodeProps[nodeIds[0]]
       const subsystemName = props.name
-      console.log('Selected node: ++', selectedNode, props, subsystemName)
 
       if (subsystemName.startsWith(GO_NAMESPACE)) {
         console.info('This is a GO DAG.', selectedNode, subsystemName)
@@ -135,7 +146,6 @@ class NetworkPanel extends Component {
         const selectedNodeId = selectedNode.props.id
         const selectedNodeLabel = selectedNode.props.Label
 
-        console.log('Selected NODE = ', selectedNodeId, selectedNodeLabel)
         const geneMap = this.props.network.get('geneMap')
         const geneSet = geneMap.get(selectedNodeLabel)
 
@@ -145,11 +155,11 @@ class NetworkPanel extends Component {
           this.props.enrichmentActions.runEnrichment(
             'https://amp.pharm.mssm.edu/Enrichr/addList',
             [...geneSet],
-            selectedNodeId
+            selectedNodeId,
           )
         } else if (runAnalysys && geneSet.size >= 2000) {
           this.props.enrichmentActions.setErrorMessage(
-            'Gene set is too big (n>2000)'
+            'Gene set is too big (n>2000)',
           )
         }
       }
@@ -160,6 +170,10 @@ class NetworkPanel extends Component {
     }
 
     // Check link information type
+
+    if(skipUpdate && props.isRoot) {
+      return
+    }
 
     let linkId = ''
 
@@ -180,13 +194,9 @@ class NetworkPanel extends Component {
     const locationParams = this.props.location
     let serverType = locationParams.query.type
     const link = this.props.cxtoolUrl + linkId + '?server=' + serverType
-    // this.props.eventActions.selected(nodeProps[nodeIds[0]])
 
     // Check size before
     const summaryUrl = 'https://' + serverType + NDEX_API + linkId + '/summary'
-    // this.props.rawInteractionsActions.setLoading(
-    //   'Checking summary of the interaction network...'
-    // )
 
     // Clear selected
     this.props.externalNetworksActions.clearExternalNetwork()
@@ -195,17 +205,17 @@ class NetworkPanel extends Component {
     const headers = getHeader(credentials)
     const settings = {
       method: 'GET',
-      headers: headers
+      headers: headers,
     }
     fetch(summaryUrl, settings)
-      .then(response => {
+      .then((response) => {
         if (!response.ok) {
           throw Error(response.statusText)
         } else {
           return response.json()
         }
       })
-      .then(summary => {
+      .then((summary) => {
         this.props.rawInteractionsActions.setRawSummary(summary)
         const positions = this.props.rawInteractions.get('groupPositions')
         const allPositions = this.props.rawInteractions.get('allPositions')
@@ -220,11 +230,11 @@ class NetworkPanel extends Component {
           credentials,
           positions,
           allPositions,
-          pleio
+          pleio,
         )
         // }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log('Network summary ERROR! ', err)
       })
 
@@ -294,7 +304,7 @@ class NetworkPanel extends Component {
     commandFinished: this.commandFinished,
     hoverOnNode: this.hoverOnNode,
     hoverOutNode: this.hoverOutNode,
-    hideEdges: this.hideEdges
+    hideEdges: this.hideEdges,
   })
 
   handleBack = () => {
@@ -319,18 +329,18 @@ class NetworkPanel extends Component {
 
     if (locationParams.query.type === undefined) {
       const query = {
-        searchString: uuid
+        searchString: uuid,
       }
       const settings = {
         method: 'POST',
         body: JSON.stringify(query),
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+        },
       }
       fetch(DEFAULT_SUMMARY, settings)
-        .then(res => res.json())
-        .then(json => {
+        .then((res) => res.json())
+        .then((json) => {
           console.log(json)
           const firstRes = json.networks[0]
           const newId = firstRes['externalId']
@@ -347,7 +357,7 @@ class NetworkPanel extends Component {
             newUrl,
             newId,
             serverType,
-            credentials
+            credentials,
           )
         })
     } else {
@@ -355,7 +365,7 @@ class NetworkPanel extends Component {
         url,
         uuid,
         serverType,
-        credentials
+        credentials,
       )
     }
   }
@@ -379,17 +389,6 @@ class NetworkPanel extends Component {
     const rawSelection = selection.get('raw')
     if (rawSelection === undefined || nextRawSelection === undefined) {
       return
-    }
-
-    const newId = nextRawSelection.nodeId
-    const originalId = rawSelection.nodeId
-
-    if (newId !== originalId) {
-      // const geneName = nextRawSelection.nodeProps.name
-      // const networkProp = this.props.network
-      // const networkData = networkProp.get(this.state.networkUrl)
-      // const targetNodeId = networkData.label2id[geneName]
-      // this.props.commandActions.zoomToNode(targetNodeId)
     }
   }
 
@@ -474,7 +473,7 @@ class NetworkPanel extends Component {
       top: 0,
       right: 0,
       width: this.props.width,
-      height: this.props.height
+      height: this.props.height,
     }
 
     const circleAreaStyle = {
@@ -482,13 +481,13 @@ class NetworkPanel extends Component {
       top: 0,
       left: 0,
       width: this.props.width,
-      height: this.props.height
+      height: this.props.height,
     }
 
     // Default layout
     const rendOpts = {
       layout: 'preset',
-      sigmaOptions: this.props.renderingOptions.toJS()
+      sigmaOptions: this.props.renderingOptions.toJS(),
     }
 
     if (this.props.uiState.get('changeViewer')) {

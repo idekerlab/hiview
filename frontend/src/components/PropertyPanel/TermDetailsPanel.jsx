@@ -113,10 +113,6 @@ const TermDetailsPanel = (props) => {
   }
 
   useEffect(() => {
-    return () => {}
-  }, [])
-
-  useEffect(() => {
     const newID = props.selection.get('main').nodeId
     if (vs === null || systemID !== newID) {
       setSystemID(newID)

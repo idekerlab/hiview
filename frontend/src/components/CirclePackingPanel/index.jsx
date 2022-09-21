@@ -57,7 +57,15 @@ class CirclePackingPanel extends Component {
       }
       expandId = id
 
-      this.props.rawInteractionsActions.clearAll()
+      const currentProps = this.props
+      const {localSearch} = currentProps
+      const localSearchResults = localSearch.results
+      if(localSearchResults === null || localSearchResults.length === 0) {
+        currentProps.rawInteractionsActions.clearAll()
+      } else if(!data.isRoot) {
+        // Even if there are search results, we still need to clearif not root term
+        currentProps.rawInteractionsActions.clearAll()
+      }
 
       const wrappedData = {
         props: data
@@ -97,7 +105,6 @@ class CirclePackingPanel extends Component {
           const pleio = getPleio(allPositions)
           this.props.rawInteractionsActions.setPleio(pleio)
         }
-        // this.props.rawInteractionsActions.setGroupPositions(positions)
         this.props.selectPrimaryNode([id], { [id]: wrappedData })
         this.props.rawInteractionsActions.clearSelectedPerm()
       } else {

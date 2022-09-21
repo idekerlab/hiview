@@ -271,12 +271,6 @@ const RawInteractionPanel = (props) => {
       attrNames = attrs.map((attr) => attr.attributeName)
     }
 
-    // const vsClone = insertNodeColorMapping(
-    //   networkStyle,
-    //   NODE_COLOR_KEY,
-    //   attrNames,
-    // )
-
     const primaryEdgeName = subnet.data[MAIN_EDGE_TAG]
     const parentWeight = subnet.data['Children weight']
     const threshold = Number.parseFloat(parentWeight)
@@ -316,23 +310,6 @@ const RawInteractionPanel = (props) => {
     if (filterLen === 0) {
       return
     }
-
-    // let disableColors = false
-    // filterNames.forEach((fName) => {
-    //   const { enabled } = curFilter[fName]
-    //   disableColors = disableColors || enabled
-    // })
-
-    // const newStyle = networkStyle.style
-    // if (disableColors && filtersSelected === null) {
-    //   const lastMapping = networkStyle.style.pop()
-    //   setFiltersSelected(lastMapping)
-    //   cyReference.style().fromJson(newStyle).update()
-    // } else if (!disableColors && filtersSelected !== null) {
-    //   networkStyle.style.push(filtersSelected)
-    //   setFiltersSelected(null)
-    //   cyReference.style().fromJson(newStyle).update()
-    // }
   }, [filterState])
 
   useEffect(() => {
