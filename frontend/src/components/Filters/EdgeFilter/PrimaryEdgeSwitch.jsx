@@ -1,5 +1,5 @@
 import React from 'react'
-import {Switch, FormControlLabel} from '@material-ui/core'
+import { Switch, FormControlLabel } from '@material-ui/core'
 
 // Special tag for DDRAM project
 const LABEL_DDRAM = 'DAS Score Network'
@@ -23,24 +23,17 @@ const PrimaryEdgeSwitch = (props) => {
   const enablePrimaryEdge = uiState.get('enablePrimaryEdge')
 
   return (
-    <div style={filterRowStyle}>
-      <FormControlLabel
-        control={
-          <Switch
-            style={{
-              width: '1em',
-              height: '1em',
-              paddingRight: '0.5em',
-            }}
-            color={'default'}
-            checked={enablePrimaryEdge}
-            onChange={() => handleChange(enablePrimaryEdge, uiStateActions)}
-            value="isEnabled"
-          />
-        }
-        label={LABEL_DDRAM}
-      />
-    </div>
+    <FormControlLabel
+      control={
+        <Switch
+          color={'default'}
+          checked={enablePrimaryEdge}
+          onChange={() => handleChange(enablePrimaryEdge, uiStateActions)}
+          value="isEnabled"
+        />
+      }
+      label={LABEL_DDRAM}
+    />
   )
 }
 

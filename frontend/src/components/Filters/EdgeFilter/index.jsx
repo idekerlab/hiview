@@ -16,9 +16,9 @@ import { withStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import ViewListIcon from '@material-ui/icons/ViewList'
 import PrimaryEdgeSwitch from './PrimaryEdgeSwitch'
+import PleioEdgeSwitch from './PleioEdgeSwitch'
 
 import { getColor10 } from '../../../utils/color-util'
-
 
 const EDGE_GROUP_TAG = 'edge groups'
 const OTHERS_TAG = 'Others'
@@ -28,13 +28,12 @@ const FILTER_TYPES = {
   BOOLEAN: 'boolean',
 }
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     position: 'relative',
     background: 'inherit',
     flexGrow: 2,
-    padding: theme.spacing(1),
-    paddingBottom: theme.spacing(2),
+    padding: theme.spacing(2),
   },
   title: {
     height: '2em',
@@ -43,17 +42,12 @@ const styles = theme => ({
     overflow: 'auto',
   },
   listItemLarge: {
-    height: '1.3em',
     margin: 0,
-    padding: '0.3em',
   },
   listItem: {
-    height: '1.7em',
     margin: 0,
-    padding: '0.3em',
   },
 })
-
 
 class EdgeFilter extends Component {
   constructor(props) {
@@ -64,7 +58,7 @@ class EdgeFilter extends Component {
     }
   }
 
-  onAfterChange = value => {
+  onAfterChange = (value) => {
     console.log(value)
   }
 
@@ -72,11 +66,11 @@ class EdgeFilter extends Component {
     this.setState({ [val]: !this.state[val] })
   }
 
-  handleChange = name => event => {
+  handleChange = (name) => (event) => {
     this.setState({ [name]: event.target.checked })
   }
 
-  handleClick = event => {
+  handleClick = (event) => {
     const isOpen = this.state.open
 
     this.setState({
@@ -84,20 +78,20 @@ class EdgeFilter extends Component {
     })
   }
 
-  createCategories = edgeGroupString => {
+  createCategories = (edgeGroupString) => {
     const parts = edgeGroupString.split('|')
 
     const result = {}
     const cat2filter = {}
 
-    parts.forEach(entry => {
+    parts.forEach((entry) => {
       const subCategories = entry.split(',')
       const header = subCategories[0]
       const categories = subCategories.slice(1, subCategories.length)
 
       cat2filter[header] = new Set(categories)
 
-      categories.forEach(cat => {
+      categories.forEach((cat) => {
         result[cat.replace('-', '_')] = header
       })
     })
@@ -129,15 +123,12 @@ class EdgeFilter extends Component {
       return <div />
     }
 
-    let primaryFilter = null
     const filterNames = []
     const filterMap = {}
 
-    filters.forEach(filter => {
+    filters.forEach((filter) => {
       const isPrimary = filter.isPrimary
-      if (isPrimary) {
-        primaryFilter = filter
-      } else {
+      if (!isPrimary) {
         filterNames.push(filter.attributeName)
         filterMap[filter.attributeName] = filter
       }
@@ -149,13 +140,24 @@ class EdgeFilter extends Component {
       // Old data format.  Just render plain list
       return (
         <div className={classes.root}>
-
-          <PrimaryEdgeSwitch uiState={uiState} uiStateActions={uiStateActions} />
-            {sortedNames.map((filterName, idx) => (
-              <div key={filterName}>
-                {this.getFilter(idx, filterMap[filterName], filterState, uiStateActions)}
-              </div>
-            ))}
+          <PrimaryEdgeSwitch
+            uiState={uiState}
+            uiStateActions={uiStateActions}
+          />
+          {sortedNames.map((filterName, idx) => (
+            <div key={filterName}>
+              {this.getFilter(
+                idx,
+                filterMap[filterName],
+                filterState,
+                uiStateActions,
+              )}
+            </div>
+          ))}
+          <PleioEdgeSwitch
+            uiState={uiState}
+            uiStateActions={uiStateActions}
+            />
         </div>
       )
     }
@@ -180,7 +182,14 @@ class EdgeFilter extends Component {
     )
   }
 
-  generateFilterList = (sortedNames, filterMap, filter2cat, cat2filter, filterState, uiStateActions) => {
+  generateFilterList = (
+    sortedNames,
+    filterMap,
+    filter2cat,
+    cat2filter,
+    filterState,
+    uiStateActions,
+  ) => {
     if (!filter2cat) {
       return <List />
     }
@@ -198,7 +207,7 @@ class EdgeFilter extends Component {
 
     // Remove if no children
     const catNameSet = new Set(sortedCategoryNames)
-    sortedCategoryNames.forEach(cat => {
+    sortedCategoryNames.forEach((cat) => {
       if (filterListMap[cat] === undefined) {
         catNameSet.delete(cat)
       }
@@ -210,11 +219,18 @@ class EdgeFilter extends Component {
       <List dense={true} style={{ margin: 0, padding: 0 }}>
         {sortedCategoryNames.map((categoryName, i) => (
           <div key={i}>
-            <ListItem button onClick={d => this.handleExpand(d, categoryName)} style={{ background: '#EEEEEE' }}>
+            <ListItem
+              button
+              onClick={(d) => this.handleExpand(d, categoryName)}
+              style={{ background: '#EEEEEE' }}
+            >
               <ListItemIcon>
                 <ViewListIcon />
               </ListItemIcon>
-              <ListItemText primary={categoryName.replace(/_/g, ' ')} style={{ fontSize: '1.2em' }} />
+              <ListItemText
+                primary={categoryName.replace(/_/g, ' ')}
+                style={{ fontSize: '1.2em' }}
+              />
               {this.state.open ? <ExpandLess /> : <ExpandMore />}
             </ListItem>
             <Collapse in={this.state[categoryName]} unmountOnExit>
@@ -226,7 +242,14 @@ class EdgeFilter extends Component {
     )
   }
 
-  getExistingFilters = (allFilterNames, cat2filter, filter2cat, filterMap, filterState, uiStateActions) => {
+  getExistingFilters = (
+    allFilterNames,
+    cat2filter,
+    filter2cat,
+    filterMap,
+    filterState,
+    uiStateActions,
+  ) => {
     const newFilters = {}
 
     // All filters without parent categories will be here.
@@ -239,7 +262,12 @@ class EdgeFilter extends Component {
         // This one does not have parent category
         const newFilterListItem = (
           <ListItem key={filterName}>
-            {this.getFilter(idx, filterMap[filterName], filterState, uiStateActions)}
+            {this.getFilter(
+              idx,
+              filterMap[filterName],
+              filterState,
+              uiStateActions,
+            )}
           </ListItem>
         )
 
@@ -259,7 +287,12 @@ class EdgeFilter extends Component {
         }
         const filterListItem = (
           <ListItem key={filterName}>
-            {this.getFilter(idx, filterMap[filterName], filterState, uiStateActions)}
+            {this.getFilter(
+              idx,
+              filterMap[filterName],
+              filterState,
+              uiStateActions,
+            )}
           </ListItem>
         )
         listForCategory.push(filterListItem)
@@ -286,11 +319,10 @@ class EdgeFilter extends Component {
     const defValue = Number((filter.max - filter.min) * 0.8)
     let enabled = false
     let color = getColor10(idx)
-    if(idx === 0){
+    if (idx === 0) {
       // For DDRAM edges (lemon yellow)
       color = '#FFF36D'
     }
-
 
     if (filterType === FILTER_TYPES.CONTINUOUS) {
       const name = filter.attributeName

@@ -403,7 +403,7 @@ const TermDetailsPanel = (props) => {
       </div>
 
       <div className={classes.bottomPane}>
-        <ThresholdPanel threshold={data.Parent_weight}/>
+        {/* <ThresholdPanel threshold={data.Parent_weight}/> */}
         <div className={classes.controllers}>
           <LayoutSelector
             commandActions={props.interactionsCommandActions}

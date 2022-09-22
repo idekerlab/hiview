@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react'
-
 import { Button, Tooltip } from '@material-ui/core'
-
 import FitContent from '@material-ui/icons/ZoomOutMap'
 import FitSelected from '@material-ui/icons/CenterFocusStrong'
-
 import { createStyles, makeStyles } from '@material-ui/core'
-
-import LayoutList, { LAYOUTS } from './LayoutList'
-import PleioEdgeSwitch from './PleioEdgeSwitch'
+import { LAYOUTS } from './LayoutList'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -36,7 +31,6 @@ const LayoutSelector = (props) => {
   const [buttonDisabled, setButtonDisabled] = useState(false)
 
   const { currentSubsystem, uiState, uiStateActions } = props
-  const showPleioEdges = uiState.get('showPleioEdges')
   const enableCustomStyling = uiState.get('enableCustomStyling')
 
   // Enable button once new sub network is loaded.
@@ -80,10 +74,6 @@ const LayoutSelector = (props) => {
 
   return (
     <div className={classes.flexContainer}>
-      <PleioEdgeSwitch
-        showPleioEdges={showPleioEdges}
-        uiStateActions={uiStateActions}
-      />
       <Tooltip
         title={<div className={classes.tooltip}>Fit network view</div>}
         arrow
@@ -95,7 +85,6 @@ const LayoutSelector = (props) => {
           size="small"
           color="default"
           onClick={handleFit}
-          size="small"
         >
           <FitContent className={classes.icon} />
         </Button>
@@ -115,7 +104,6 @@ const LayoutSelector = (props) => {
           size="small"
           color="default"
           onClick={handleFitSelected}
-          size="small"
         >
           <FitSelected className={classes.icon} />
         </Button>

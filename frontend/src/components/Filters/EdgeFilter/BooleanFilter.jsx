@@ -9,9 +9,7 @@ const APMS_LABEL =
 const APMS_TAG = 'AP_MS'
 
 const filterRowStyle = {
-  paddingTop: '1.5em',
   width: '100%',
-  height: '0.8em',
   display: 'flex',
   alignItems: 'center',
 }
