@@ -48,7 +48,6 @@ class SubsystemPanel extends Component {
 
           return (
             <ListItem button onClick={this.handleClick(value)} key={i}>
-              <ListItemIcon>{value.toString().startsWith('GO:') ? <OpenIcon /> : <InfoIcon />}</ListItemIcon>
               <ListItemText primary={value} secondary={label} />
             </ListItem>
           )

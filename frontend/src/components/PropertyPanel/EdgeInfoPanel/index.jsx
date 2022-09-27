@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { ListSubheader, List, Tooltip, Typography } from '@material-ui/core'
-import InfoIcon from '@material-ui/icons/Info'
+import InfoIcon from '@material-ui/icons/InfoOutlined'
 import { parseProps, convertProps } from '../../../utils/edge-prop-util'
 import EvidenceClassListItem from './EvidenceClassListItem'
 
@@ -97,7 +97,7 @@ const EdgeInfoPanel = ({
               arrow
               title={<Typography style={{padding: '1em'}} variant={'body1'}>{TITLE_TOOLTIP}</Typography>}
             >
-              <InfoIcon fontSize="small" />
+              <InfoIcon fontSize="large" />
             </Tooltip>
             <Typography
               variant="subtitle1"
