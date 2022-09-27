@@ -408,7 +408,7 @@ const RawInteractionPanel = (props) => {
         eventHandlers={getCustomEventHandlers()}
         rendererOptions={{
           layout: checkPresetLayout(subnet),
-          tooltipKeys,
+          tooltipKeys: [],
         }}
         command={props.commands}
         setRendererReference={setCyReference}
