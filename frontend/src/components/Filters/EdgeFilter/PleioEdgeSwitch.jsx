@@ -1,9 +1,14 @@
 import React from 'react'
-import { Switch, FormControlLabel, FormGroup } from '@material-ui/core'
+import {
+  Tooltip,
+  Typography,
+  Switch,
+  FormControlLabel,
+} from '@material-ui/core'
 
-const PleioEdgeSwitch = ({ uiState, uiStateActions }) => {
+const PleioEdgeSwitch = ({ tooltip, uiState, uiStateActions }) => {
   const showPleioEdges = uiState.get('showPleioEdges')
-  
+
   const handleChange = (event) => {
     if (showPleioEdges === true) {
       uiStateActions.showPleioEdges(false)
@@ -13,7 +18,7 @@ const PleioEdgeSwitch = ({ uiState, uiStateActions }) => {
   }
 
   return (
-    <FormGroup>
+    <Tooltip title={<Typography variant="body1">{tooltip}</Typography>} arrow>
       <FormControlLabel
         control={
           <Switch
@@ -25,7 +30,7 @@ const PleioEdgeSwitch = ({ uiState, uiStateActions }) => {
         }
         label="Pleiotropy"
       />
-    </FormGroup>
+    </Tooltip>
   )
 }
 

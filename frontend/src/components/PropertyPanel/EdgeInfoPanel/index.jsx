@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import ListSubheader from '@material-ui/core/ListSubheader'
-import List from '@material-ui/core/List'
-
-import { Typography } from '@material-ui/core'
+import { ListSubheader, List, Tooltip, Typography } from '@material-ui/core'
+import InfoIcon from '@material-ui/icons/Info'
 import { parseProps, convertProps } from '../../../utils/edge-prop-util'
 import EvidenceClassListItem from './EvidenceClassListItem'
 
 // This is the special key value for encoded string
 export const NDEX_EVIDENCE_KEY = 'ndex:evidence'
+
+const TITLE_TOOLTIP =
+  'SHapley Additive eXplanations, grouped by class of evidence (physical, co-expression, co-abundance, co-dependency). Click any interaction in the DAS network to see an explanation of the DAS score. The explanation comes in the form of Shapley values  [Lundberg, Scott M., and Su-In Lee. "A unified approach to interpreting model predictions." Advances in neural information processing systems 30 (2017)]. These SHAP scores shown indicate the contribution of the respective input feature to the DAS score. SHAP and DAS scores are on the same scale. Only the most important SHAP scores are shown (those that are more than one standard deviation from the mean). For features embedded with node2vec [], we also show the subnetwork supporting the interaction [Grover, Aditya, and Jure Leskovec. "node2vec: Scalable feature learning for networks." Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining. 2016.]. Note that you can expand each class to see explanations at a higher granularity.'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -23,6 +24,15 @@ const useStyles = makeStyles((theme) => ({
   nested: {
     paddingLeft: theme.spacing(6),
   },
+  row: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  title: {
+    paddingLeft: theme.spacing(1)
+  }
 }))
 
 const EdgeInfoPanel = ({
@@ -82,13 +92,21 @@ const EdgeInfoPanel = ({
           component="div"
           id="nested-list-subheader"
         >
-          <Typography
-            variant="subtitle1"
-            className={classes.inline}
-            color="textPrimary"
-          >
-            {`Selected evidence: ${selectedEdge.source} - ${selectedEdge.target}`}
-          </Typography>
+          <div className={classes.row}>
+            <Tooltip
+              arrow
+              title={<Typography style={{padding: '1em'}} variant={'body1'}>{TITLE_TOOLTIP}</Typography>}
+            >
+              <InfoIcon fontSize="small" />
+            </Tooltip>
+            <Typography
+              variant="subtitle1"
+              className={classes.title}
+              color="textPrimary"
+            >
+              {`Selected evidence: ${selectedEdge.source} - ${selectedEdge.target}`}
+            </Typography>
+          </div>
         </ListSubheader>
       }
       className={classes.root}

@@ -1,11 +1,15 @@
 import React from 'react'
-import { Switch, FormControlLabel } from '@material-ui/core'
+import {
+  Tooltip,
+  Typography,
+  Switch,
+  FormControlLabel,
+} from '@material-ui/core'
 
 import BaseFilter from './BaseFilter'
 
 // Special tag for DDRAM project
-const APMS_LABEL =
-  'New AP-MS [Kratz 2022, under review]'
+const APMS_LABEL = 'New AP-MS'
 const APMS_TAG = 'AP_MS'
 
 const filterRowStyle = {
@@ -15,7 +19,6 @@ const filterRowStyle = {
 }
 
 class BooleanFilter extends BaseFilter {
-
   onChecked = (event) => {
     const checked = event.target.checked
     this.setState({
@@ -47,7 +50,7 @@ class BooleanFilter extends BaseFilter {
   }
 
   render() {
-    let label = this.props.label
+    let { label, tooltip } = this.props
 
     if (label !== undefined && label.includes(APMS_TAG)) {
       label = APMS_LABEL
@@ -55,23 +58,28 @@ class BooleanFilter extends BaseFilter {
 
     return (
       <div style={filterRowStyle}>
-        <FormControlLabel
-          control={
-            <Switch
-              disabled={this.state.disabled}
-              style={{
-                width: '1em',
-                height: '1em',
-                paddingRight: '0.5em',
-              }}
-              color={'default'}
-              checked={this.state.checked}
-              onChange={this.onChecked}
-              value={label}
-            />
-          }
-          label={label}
-        />
+        <Tooltip
+          title={<Typography variant="body1">{tooltip}</Typography>}
+          arrow
+        >
+          <FormControlLabel
+            control={
+              <Switch
+                disabled={this.state.disabled}
+                style={{
+                  width: '1em',
+                  height: '1em',
+                  paddingRight: '0.5em',
+                }}
+                color={'default'}
+                checked={this.state.checked}
+                onChange={this.onChecked}
+                value={label}
+              />
+            }
+            label={label}
+          />
+        </Tooltip>
       </div>
     )
   }

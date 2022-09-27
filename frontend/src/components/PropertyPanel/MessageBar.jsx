@@ -1,12 +1,10 @@
 import React, { useState, Fragment } from 'react'
-import Typography from '@material-ui/core/Typography'
+import {Button, Tooltip, Typography} from '@material-ui/core'
 import WarningIcon from '@material-ui/icons/ErrorOutline'
-import Button from '@material-ui/core/Button'
-
 import InfoIcon from '@material-ui/icons/ExpandMoreOutlined'
+import { makeStyles } from '@material-ui/core/styles'
 
 import PathPanel from './PathPanel'
-import { makeStyles } from '@material-ui/core/styles'
 import NetworkLegendPanel from './NetworkLegendPanel'
 
 const useStyles = makeStyles((theme) => ({
@@ -70,6 +68,7 @@ const getWarning = (originalCount, maxCount, classes) => {
     )
   }
 }
+const TOOLTIP_TEXT = 'Show a legend of the current network.'
 
 const MessageBar = (props) => {
   const classes = useStyles()
@@ -89,15 +88,25 @@ const MessageBar = (props) => {
         </div>
         <div className={classes.row}>
           <PathPanel {...props} />
-          <Button
-            variant="outlined"
-            size="small"
-            className={classes.legendButton}
-            startIcon={<InfoIcon />}
-            onClick={handleInfoClick}
+
+          <Tooltip
+            arrow
+            title={
+              <Typography variant={'body1'}>
+                {TOOLTIP_TEXT}
+              </Typography>
+            }
           >
-            Legend
-          </Button>
+            <Button
+              variant="outlined"
+              size="small"
+              className={classes.legendButton}
+              startIcon={<InfoIcon />}
+              onClick={handleInfoClick}
+            >
+              Legend
+            </Button>
+          </Tooltip>
         </div>
       </div>
       <NetworkLegendPanel

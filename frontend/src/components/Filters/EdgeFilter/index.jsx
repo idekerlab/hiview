@@ -1,20 +1,21 @@
 import React, { Component } from 'react'
 
-import List from '@material-ui/core/List'
-
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import Collapse from '@material-ui/core/Collapse'
+import {
+  Typography,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Collapse,
+} from '@material-ui/core'
 import ExpandLess from '@material-ui/icons/ExpandLess'
 import ExpandMore from '@material-ui/icons/ExpandMore'
+import ViewListIcon from '@material-ui/icons/ViewList'
+import { withStyles } from '@material-ui/core/styles'
 
 import ContinuousFilter from './ContinuousFilter'
 import BooleanFilter from './BooleanFilter'
 
-import { withStyles } from '@material-ui/core/styles'
-import Typography from '@material-ui/core/Typography'
-import ViewListIcon from '@material-ui/icons/ViewList'
 import PrimaryEdgeSwitch from './PrimaryEdgeSwitch'
 import PleioEdgeSwitch from './PleioEdgeSwitch'
 
@@ -26,6 +27,14 @@ const OTHERS_TAG = 'Others'
 const FILTER_TYPES = {
   CONTINUOUS: 'continuous',
   BOOLEAN: 'boolean',
+}
+
+const TOOLTIP_TEXTS = {
+  PRIMARY:
+    'Show the DAS score network. You can click on "DAS score" to download the fully connected DAS network of DDRAM.',
+  AP_MS: '[Kratz et al, 2022; under review]',
+  PLEIO:
+    'Show connection between multiple instances of a pleiotropic protein. Connections are only shows for instances at or below the current assembly.',
 }
 
 const styles = (theme) => ({
@@ -143,6 +152,7 @@ class EdgeFilter extends Component {
           <PrimaryEdgeSwitch
             uiState={uiState}
             uiStateActions={uiStateActions}
+            tooltip={TOOLTIP_TEXTS.PRIMARY}
           />
           {sortedNames.map((filterName, idx) => (
             <div key={filterName}>
@@ -155,9 +165,10 @@ class EdgeFilter extends Component {
             </div>
           ))}
           <PleioEdgeSwitch
+            tooltip={TOOLTIP_TEXTS.PLEIO}
             uiState={uiState}
             uiStateActions={uiStateActions}
-            />
+          />
         </div>
       )
     }
@@ -355,17 +366,18 @@ class EdgeFilter extends Component {
       )
     } else if (filterType === FILTER_TYPES.BOOLEAN) {
       return (
-        <BooleanFilter
-          key={filter.attributeName}
-          label={filter.attributeName}
-          enabled={enabled}
-          filtersActions={this.props.filtersActions}
-          commandActions={this.props.commandActions}
-          selected={this.state.selected}
-          color={color}
-          uiStateActions={uiStateActions}
-          currentSystem={currentSystem}
-        />
+          <BooleanFilter
+            key={filter.attributeName}
+            label={filter.attributeName}
+            enabled={enabled}
+            filtersActions={this.props.filtersActions}
+            commandActions={this.props.commandActions}
+            selected={this.state.selected}
+            color={color}
+            uiStateActions={uiStateActions}
+            currentSystem={currentSystem}
+            tooltip={TOOLTIP_TEXTS.AP_MS}
+          />
       )
     }
   }
