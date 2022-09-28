@@ -1,54 +1,43 @@
 import React, { Component } from 'react'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import OpenIcon from '@material-ui/icons/OpenInNew'
-import InfoIcon from '@material-ui/icons/InfoOutlined'
 
 import BrowserTargets from '../../assets/browser-targets'
 
 const GO_LINK = 'http://amigo.geneontology.org/amigo/term/'
 
-const PARENT_TAG = 'Parent weight'
-
-const HIDDEN_TAGS = ['x_pos', 'y_pos', 'Vis_Shape', 'Vis_Fill_Color', 'Vis_Border_Paint']
+const HIDDEN_TAGS = [
+  'x_pos',
+  'y_pos',
+  'Vis_Shape',
+  'Vis_Fill_Color',
+  'Vis_Border_Paint',
+]
 
 const hiddenSet = new Set(HIDDEN_TAGS)
 class SubsystemPanel extends Component {
   render() {
-    let displayOrder = null
-    const networkData = this.props.networkData
-    if (networkData) {
-      const displayOrderStr = networkData.Display
-      if (displayOrderStr) {
-        displayOrder = displayOrderStr.split('|')
-        displayOrder = displayOrder.map(key => ('Display_' + key).replace(/ /g, '_'))
-      }
-    }
+    const { selectedTerm } = this.props
 
     // This contains all property for the term
-    const termData = this.props.selectedTerm.data
+    const termData = selectedTerm.data
     const keys = Object.keys(termData)
-
-    let filteredKeys = keys.filter(key => !hiddenSet.has(key))
-
-    // if (displayOrder) {
-    //   filteredKeys = displayOrder
-    // }
+    let filteredKeys = keys.filter((key) => !hiddenSet.has(key))
+    // Sort the keys
+    filteredKeys = filteredKeys.sort()
 
     return (
       <List>
         {filteredKeys.map((key, i) => {
-          const label = key.replace('Display_', '').replace(/_/g, ' ')
           const value = termData[key]
-          if (!value || label === PARENT_TAG) {
+          if (!value) {
             return
           }
 
           return (
             <ListItem button onClick={this.handleClick(value)} key={i}>
-              <ListItemText primary={value} secondary={label} />
+              <ListItemText primary={value} secondary={key} />
             </ListItem>
           )
         })}
@@ -56,7 +45,7 @@ class SubsystemPanel extends Component {
     )
   }
 
-  handleClick = value => () => {
+  handleClick = (value) => () => {
     if (value.toString().startsWith('GO')) {
       window.open(GO_LINK + value.toString(), BrowserTargets.GeneOntology)
     }

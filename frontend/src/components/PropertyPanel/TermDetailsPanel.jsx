@@ -455,9 +455,6 @@ const TermDetailsPanel = (props) => {
         {selectedTab === 0 && (
           <SubsystemPanel
             selectedTerm={props.currentProperty}
-            networkData={networkData}
-            title={title}
-            description={'N/A'}
           />
         )}
         {selectedTab === 1 && <GeneList genes={geneList} {...allProps} />}
