@@ -13,7 +13,6 @@ const APMS_LABEL = 'New AP-MS'
 const APMS_TAG = 'AP_MS'
 
 const filterRowStyle = {
-  width: '100%',
   display: 'flex',
   alignItems: 'center',
 }

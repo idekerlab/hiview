@@ -20,6 +20,7 @@ import PrimaryEdgeSwitch from './PrimaryEdgeSwitch'
 import PleioEdgeSwitch from './PleioEdgeSwitch'
 
 import { getColor10 } from '../../../utils/color-util'
+import { DownloadButton } from './DownloadButton'
 
 const EDGE_GROUP_TAG = 'edge groups'
 const OTHERS_TAG = 'Others'
@@ -30,11 +31,12 @@ const FILTER_TYPES = {
 }
 
 const TOOLTIP_TEXTS = {
+  DOWNLOAD: 'Download fully connected DAS score network',
   PRIMARY:
     'Show the DAS score network. You can click on "DAS score" to download the fully connected DAS network of DDRAM.',
   AP_MS: '[Kratz et al, 2022; under review]',
   PLEIO:
-    'Show connection between multiple instances of a pleiotropic protein. Connections are only shows for instances at or below the current assembly.',
+    'Show connection between multiple instances of a pleiotropic protein. Connections are only shown for instances at or below the current assembly.',
 }
 
 const styles = (theme) => ({
@@ -55,6 +57,12 @@ const styles = (theme) => ({
   },
   listItem: {
     margin: 0,
+  },
+  filterRow: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
   },
 })
 
@@ -149,11 +157,17 @@ class EdgeFilter extends Component {
       // Old data format.  Just render plain list
       return (
         <div className={classes.root}>
-          <PrimaryEdgeSwitch
-            uiState={uiState}
-            uiStateActions={uiStateActions}
-            tooltip={TOOLTIP_TEXTS.PRIMARY}
-          />
+          <div className={classes.filterRow}>
+            <PrimaryEdgeSwitch
+              uiState={uiState}
+              uiStateActions={uiStateActions}
+              tooltip={TOOLTIP_TEXTS.PRIMARY}
+            />
+            <DownloadButton
+              url={'http://www.google.com/'}
+              tooltip={TOOLTIP_TEXTS.DOWNLOAD}
+            />
+          </div>
           {sortedNames.map((filterName, idx) => (
             <div key={filterName}>
               {this.getFilter(
@@ -366,18 +380,18 @@ class EdgeFilter extends Component {
       )
     } else if (filterType === FILTER_TYPES.BOOLEAN) {
       return (
-          <BooleanFilter
-            key={filter.attributeName}
-            label={filter.attributeName}
-            enabled={enabled}
-            filtersActions={this.props.filtersActions}
-            commandActions={this.props.commandActions}
-            selected={this.state.selected}
-            color={color}
-            uiStateActions={uiStateActions}
-            currentSystem={currentSystem}
-            tooltip={TOOLTIP_TEXTS.AP_MS}
-          />
+        <BooleanFilter
+          key={filter.attributeName}
+          label={filter.attributeName}
+          enabled={enabled}
+          filtersActions={this.props.filtersActions}
+          commandActions={this.props.commandActions}
+          selected={this.state.selected}
+          color={color}
+          uiStateActions={uiStateActions}
+          currentSystem={currentSystem}
+          tooltip={TOOLTIP_TEXTS.AP_MS}
+        />
       )
     }
   }
