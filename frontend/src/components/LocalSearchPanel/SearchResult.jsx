@@ -18,9 +18,10 @@ class SearchResult extends Component {
     // Creates basic structure only with original nodes
     resultArray.forEach(entry => {
       if (!entry.Hidden) {
-        nestedList[entry.Label] = {
+        const {NodeType, Label, id} = entry
+        nestedList[`${Label}-${NodeType}`] = {
           props: entry,
-          color: id2color.get(entry.id),
+          color: id2color.get(id),
           children: {
             [entry.id]: entry,
           },
