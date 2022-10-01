@@ -12,7 +12,8 @@ import {
   SET_FILTER_STATE,
   SET_SEARCH_MODE,
   ENABLE_CUSTOM_STYLING,
-  SHOW_PLEIO_EDGES
+  SHOW_PLEIO_EDGES,
+  SET_NODE_STYLE
 } from '../actions/ui-state'
 
 import { handleActions } from 'redux-actions'
@@ -22,6 +23,15 @@ export const SEARCH_MODE = {
   EXACT: 'exact',
   PREFIX: 'prefix',
   FUZZY: 'fuzzy'
+}
+
+// Change coloring
+export const NODE_STYLE = {
+  MEMBERSHIP: 'Cluster membership',
+  CURATION: 'Curation status',
+  DOMINANT_EVIDENCE: 'Dominant evidence type',
+  PLEIO: 'Pleiotropy',
+  BAIT_PREY: 'Bait / Prey',
 }
 
 const defaultState = Map({
@@ -38,7 +48,8 @@ const defaultState = Map({
   filterState: Map(),
   searchMode: SEARCH_MODE.EXACT,
   enableCustomStyling: true,
-  showPleioEdges: true
+  showPleioEdges: true,
+  nodeStyle: NODE_STYLE.MEMBERSHIP
 })
 
 export default handleActions(
@@ -82,6 +93,8 @@ export default handleActions(
       state.set('enableCustomStyling', action.payload),
     [SHOW_PLEIO_EDGES]: (state, action) =>
       state.set('showPleioEdges', action.payload),
+    [SET_NODE_STYLE]: (state, action) =>
+      state.set('nodeStyle', action.payload)
   },
   defaultState
 )

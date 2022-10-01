@@ -29,6 +29,9 @@ export const ENABLE_CUSTOM_STYLING = 'ENABLE_CUSTOM_STYLING'
 // Show / Hide pleiotropic edges
 export const SHOW_PLEIO_EDGES = 'SHOW_PLEIO_EDGES'
 
+// Current node coloring style
+export const SET_NODE_STYLE = 'SET_NODE_STYLE'
+
 export const showAppBar = createAction(SHOW_APP_BAR)
 export const showCommands = createAction(SHOW_COMMANDS)
 export const showResult = createAction(SHOW_RESULT)
@@ -57,3 +60,5 @@ export const setSearchMode = createAction(SET_SEARCH_MODE)
 export const enableCustomStyling = createAction(ENABLE_CUSTOM_STYLING)
 
 export const showPleioEdges = createAction(SHOW_PLEIO_EDGES)
+
+export const setNodeStyle = createAction(SET_NODE_STYLE)

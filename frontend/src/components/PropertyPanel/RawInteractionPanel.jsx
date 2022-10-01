@@ -5,21 +5,18 @@ import LoadingPanel from './LoadingPanel'
 import { Set } from 'immutable'
 import { MAIN_EDGE_TAG } from '../../actions/raw-interactions-util'
 
-import {
-  insertEdgeColorMapping,
-  insertNodeColorMapping,
-} from '../../utils/vs-util'
+import { insertEdgeColorMapping, applyNodeColoring } from '../../utils/vs-util'
 import CustomPopover from '../CustomPopover'
 
 import { parseProps } from '../../utils/edge-prop-util'
 import { NDEX_EVIDENCE_KEY } from './EdgeInfoPanel'
-import { showPleioEdges } from '../../actions/ui-state'
+
+import { NODE_STYLE } from '../../reducers/ui-state'
 
 const Viewer = CyNetworkViewer(CytoscapeJsRenderer)
 
 // TODO: Remove this - this is a special case for Anton's data
 const DDRAM_TOOLTIP_KEY = ['pleio', 'systems', 'dominantEvidence']
-const NODE_COLOR_KEY = 'dominantEvidence'
 
 const RawInteractionPanel = (props) => {
   const {
@@ -42,6 +39,39 @@ const RawInteractionPanel = (props) => {
   const serverType = location.query.type
   const filterState = uiState.get('filterState')
   const showPleioEdges = uiState.get('showPleioEdges')
+  const nodeStyle = uiState.get('nodeStyle')
+
+  const [styleMap, setStyleMap] = useState({})
+
+  useEffect(() => {
+    console.log('initialization', styleMap)
+  }, [])
+
+  const applyStyle = (styleName) => {
+    if (cyReference === null || cyReference === undefined) {
+      return
+    }
+
+    let style = styleMap[styleName]
+    if(style !== undefined) {
+      // Already exists. Apply as-is
+      cyReference.style().fromJson(style).update()
+      return
+    }
+
+    // Update the style
+    const copiedStyle = JSON.parse(JSON.stringify(networkStyle))
+    const newStyle = applyNodeColoring({ styleName, vs: copiedStyle })
+    cyReference.style().fromJson(newStyle).update()
+    setStyleMap({ ...styleMap, [styleName]: newStyle })
+  }
+
+  useEffect(() => {
+    if(nodeStyle === null) {
+      return
+    }
+    applyStyle(nodeStyle)
+  }, [nodeStyle])
 
   useEffect(() => {
     if (cyReference === null || cyReference === undefined) {
@@ -49,7 +79,6 @@ const RawInteractionPanel = (props) => {
     }
 
     updatePleioEdges(showPleioEdges)
-
   }, [showPleioEdges])
 
   const updatePleioEdges = (showPleioEdges) => {
@@ -63,23 +92,11 @@ const RawInteractionPanel = (props) => {
     } else {
       pleioEdges.addClass('hidePleio')
     }
-    // cyReference.resize()
   }
-
-  // useEffect(() => {
-  //   if (cyReference === null || cyReference === undefined) {
-  //     return
-  //   }
-  //   updatePleioEdges()
-  // }, [])
 
   // For switching VS
   const enableCustomStyling = uiState.get('enableCustomStyling')
-
-  // True if any of the individual filter is selected
-  const [filtersSelected, setFiltersSelected] = useState(null)
   const [originalVS, setOriginalVS] = useState(null)
-
   const [vsUpdated, setVsUpdated] = useState(false)
 
   // These attributes will be rendered as tooltip text
@@ -88,9 +105,6 @@ const RawInteractionPanel = (props) => {
   // Cytoscape.js reference
   const [cyReference, setCyReference] = useState(null)
   const [openPopover, setOpenPopover] = useState(false)
-
-  // Selected edge in raw interaction network
-  // const [selectedInteraction, setSelectedInteraction] = useState(null)
 
   // Custom event handler for node click / tap
   const selectNodes = (nodeIds, nodeProps, rawEvent) => {
@@ -214,8 +228,8 @@ const RawInteractionPanel = (props) => {
     if (cyReference !== null && cyReference !== undefined) {
       setCy(cyReference)
       setTimeout(() => {
-        updatePleioEdges(showPleioEdges)    
-      }, 100);
+        updatePleioEdges(showPleioEdges)
+      }, 100)
     }
   }, [cyReference])
 
@@ -240,10 +254,10 @@ const RawInteractionPanel = (props) => {
   }, [uiState.get('runEnrichment'), subnet])
 
   useEffect(() => {
-    if (originalVS === null) {
-      const clone = JSON.parse(JSON.stringify(networkStyle))
-      setOriginalVS(clone)
-    }
+    // if (originalVS === null) {
+    //   const clone = JSON.parse(JSON.stringify(networkStyle))
+    //   setOriginalVS(clone)
+    // }
 
     if (vsUpdated) {
       return
@@ -256,33 +270,25 @@ const RawInteractionPanel = (props) => {
     // Test subnet to check it has required attributes
     const { elements } = subnet
     const { nodes, edges } = elements
-    if (
-      nodes[0] === undefined
-      // nodes[0]['data'][NODE_COLOR_KEY] === undefined
-    ) {
-      return
-    }
+    // if (
+    //   nodes[0] === undefined
+    //   // nodes[0]['data'][NODE_COLOR_KEY] === undefined
+    // ) {
+    //   return
+    // }
 
-    // Update visual style if necessary
-    let attrNames = []
-    if (filters !== undefined) {
-      // Note: this always contains "Score"
-      const attrs = filters.filter((filter) => filter.attributeName !== 'Score')
-      attrNames = attrs.map((attr) => attr.attributeName)
-    }
-
-    const primaryEdgeName = subnet.data[MAIN_EDGE_TAG]
-    const parentWeight = subnet.data['Children weight']
-    const threshold = Number.parseFloat(parentWeight)
+    // // Update visual style if necessary
+    // let attrNames = []
+    // if (filters !== undefined) {
+    //   // Note: this always contains "Score"
+    //   const attrs = filters.filter((filter) => filter.attributeName !== 'Score')
+    //   attrNames = attrs.map((attr) => attr.attributeName)
+    // }
 
     insertEdgeColorMapping({
       nodes,
       edges,
       vs: networkStyle,
-      attrName: primaryEdgeName,
-      scoreMin: 0,
-      scoreMax: 1,
-      threshold,
       metadata: subnet.data,
       rawInteractionsActions,
     })
@@ -291,36 +297,39 @@ const RawInteractionPanel = (props) => {
 
     // Modify style only once
     setVsUpdated(true)
-  }, [networkStyle, enableCustomStyling, filterState])
+    const clone = JSON.parse(JSON.stringify(networkStyle.style))
+    setOriginalVS(clone)
+    setStyleMap({[NODE_STYLE.MEMBERSHIP]: clone})
+  }, [networkStyle])
 
-  useEffect(() => {
-    // No need to change if original styling (no edge mapping) is used.
-    if (
-      networkStyle === originalVS ||
-      networkStyle === null ||
-      cyReference === null
-    ) {
-      return
-    }
+  // useEffect(() => {
+  //   // No need to change if original styling (no edge mapping) is used.
+  //   if (
+  //     networkStyle === originalVS ||
+  //     networkStyle === null ||
+  //     cyReference === null
+  //   ) {
+  //     return
+  //   }
 
-    const curFilter = filterState.toJSON()
-    const filterNames = Object.keys(curFilter)
-    const filterLen = filterNames.length
+  //   const curFilter = filterState.toJSON()
+  //   const filterNames = Object.keys(curFilter)
+  //   const filterLen = filterNames.length
 
-    if (filterLen === 0) {
-      return
-    }
-  }, [filterState])
+  //   if (filterLen === 0) {
+  //     return
+  //   }
+  // }, [filterState])
 
-  useEffect(() => {
-    if (cyReference !== null) {
-      let newStyle = networkStyle.style
-      if (!enableCustomStyling) {
-        newStyle = originalVS.style
-      }
-      cyReference.style().fromJson(newStyle).update()
-    }
-  }, [enableCustomStyling])
+  // useEffect(() => {
+  //   if (cyReference !== null) {
+  //     let newStyle = networkStyle.style
+  //     if (!enableCustomStyling) {
+  //       newStyle = originalVS.style
+  //     }
+  //     cyReference.style().fromJson(newStyle).update()
+  //   }
+  // }, [enableCustomStyling])
 
   const commandFinished = (lastCommand, status = {}) => {
     commandActions.clearCommand()
@@ -419,19 +428,7 @@ const RawInteractionPanel = (props) => {
 }
 
 const checkPresetLayout = (network) => {
-  // const nodes = network.elements.nodes
-  // const sampleNode = nodes[0]
-
-  // if (!sampleNode) {
-  //   return 'cose-bilkent'
-  // }
-
-  // const position = sampleNode.position
-  // if (!position || (position.x === 0 && position.y === 0)) {
-  //   return 'cose-bilkent'
-  // } else {
-  //   return 'preset'
-  // }
   return 'preset'
 }
+
 export default RawInteractionPanel

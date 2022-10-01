@@ -28,7 +28,8 @@
             // "url": "https://localhost:3000/04eec9d4-3505-11ed-b7bd-0660b7976219?type=test&server=https://test.ndexbio.org",
             
             // "url": "https://localhost:3000/557b9f2f-347b-11ed-b7bd-0660b7976219?type=test&server=http://test.ndexbio.org",
-            "url": "https://localhost:3000/e5b4530a-3b61-11ed-b7bd-0660b7976219?type=test&server=http://test.ndexbio.org",
+            // "url": "https://localhost:3000/e5b4530a-3b61-11ed-b7bd-0660b7976219?type=test&server=http://test.ndexbio.org",
+            "url": "https://localhost:3000/04eec9d4-3505-11ed-b7bd-0660b7976219?type=test&server=https://test.ndexbio.org",
             "webRoot": "${workspaceRoot}/frontend/src"
 
         }

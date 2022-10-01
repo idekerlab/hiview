@@ -37,6 +37,7 @@ import { createStyles, makeStyles } from '@material-ui/core'
 import D3Legend from '../D3Legend'
 import EdgeInfoPanel from './EdgeInfoPanel'
 import ThresholdPanel from './ThresholdPanel'
+import NodeStyleSelector from './NodeStyleSelector'
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -76,7 +77,7 @@ const useStyles = makeStyles((theme) =>
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-start',
-    }
+    },
   }),
 )
 
@@ -299,7 +300,9 @@ const TermDetailsPanel = (props) => {
   subnet = interactions
 
   if (subnet !== null && subnet !== undefined) {
-    const namesWithDuplication = subnet.elements.nodes.map((node) => node.data.name)
+    const namesWithDuplication = subnet.elements.nodes.map(
+      (node) => node.data.name,
+    )
     geneList = Array.from(new Set(namesWithDuplication)).sort()
   } else {
     const geneMap = props.network.get('geneMap')
@@ -432,6 +435,10 @@ const TermDetailsPanel = (props) => {
             uiStateActions={props.uiStateActions}
           />
         )}
+        <NodeStyleSelector
+          uiState={props.uiState}
+          uiStateActions={props.uiStateActions}
+        />
         <EdgeInfoPanel
           network={interactions}
           selectedEdge={props.rawInteractions.get('selectedEdge')}
@@ -453,9 +460,7 @@ const TermDetailsPanel = (props) => {
         </AppBar>
 
         {selectedTab === 0 && (
-          <SubsystemPanel
-            selectedTerm={props.currentProperty}
-          />
+          <SubsystemPanel selectedTerm={props.currentProperty} />
         )}
         {selectedTab === 1 && <GeneList genes={geneList} {...allProps} />}
       </div>

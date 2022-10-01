@@ -1,4 +1,54 @@
-import { getColor10, getColorScaleInferno } from './color-util'
+import {getColorAccent, getColor10, getColorScaleInferno } from './color-util'
+import { NODE_STYLE } from '../reducers/ui-state'
+
+const findSelector = (style, selectorName) => {
+  return style.find((s) => s.selector === selectorName)
+}
+
+const applyNodeColoring = ({ styleName, vs }) => {
+  const { style } = vs
+  
+  // Create a deep copy of the style
+  const cloneVs = JSON.parse(JSON.stringify(style))
+
+  const nodeSelector = findSelector(cloneVs, 'node')
+  nodeSelector.css['background-color'] = getStylePresets(styleName)
+  console.log('Updating style', styleName, vs)
+  return cloneVs
+}
+
+const NODE_TAGS = {
+  dominantDataType: 'dominantDataType',
+  apmsType: 'APMSType',
+}
+
+const getStylePresets = (styleName) => {
+  let colorMappingFunction = null
+
+  if(styleName === NODE_STYLE.MEMBERSHIP) {
+    // Use original mapping
+    colorMappingFunction = 'data(color)'
+    return
+  }
+
+  if (styleName === NODE_STYLE.BAIT_PREY) {
+    const types = ['bait', 'prey', 'none']
+    colorMappingFunction = (n) => {
+      const type = n.data('APMSType')
+      return getColorAccent(types.indexOf(type))
+    }
+  } else if (styleName === NODE_STYLE.DOMINANT_EVIDENCE) {
+    const types = ['Codependency', 'Coabundance', 'Coexpression', 'Physical']
+    colorMappingFunction = (n) => {
+      const type = n.data(NODE_TAGS.dominantDataType)
+      return getColorAccent(types.indexOf(type))
+    }
+  } else {
+    colorMappingFunction = 'green'
+  }
+
+  return colorMappingFunction
+}
 
 const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {
   if (
@@ -61,16 +111,10 @@ const insertEdgeColorMapping = ({
   nodes,
   edges,
   vs,
-  attrName,
-  scoreMin,
-  scoreMax,
-  threshold = 0.0,
   metadata,
   rawInteractionsActions,
-  
 }) => {
   const vsClone = Object.assign(vs)
-  const colorScale = getColorScaleInferno({ min: scoreMin, max: scoreMax })
 
   let currentGroups = new Set()
   if (metadata.Group !== undefined) {
@@ -79,7 +123,9 @@ const insertEdgeColorMapping = ({
 
   const { groupColorMap, parent } = getColorMap(nodes, currentGroups)
 
-  rawInteractionsActions.setLegend({colors: Object.fromEntries(groupColorMap)})
+  rawInteractionsActions.setLegend({
+    colors: Object.fromEntries(groupColorMap),
+  })
 
   // Assign color to nodes and get the map of nodes
   const id2node = assignNodeColor(nodes, groupColorMap)
@@ -229,4 +275,4 @@ const assignEdgeColor = (id2node, groupColorMap, edges, parent) => {
   })
 }
 
-export { insertNodeColorMapping, insertEdgeColorMapping }
+export { insertNodeColorMapping, insertEdgeColorMapping, applyNodeColoring }

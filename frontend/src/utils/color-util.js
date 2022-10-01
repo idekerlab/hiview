@@ -6,11 +6,17 @@ import * as d3Scale from 'd3-scale'
 
 // const COLORS = d3ScaleChromatic.schemeCategory10
 const COLORS = d3ScaleChromatic.schemeTableau10
+const COLORS_ACCENT = d3ScaleChromatic.schemeAccent
 
 const colorMap = (idx) => COLORS[idx]
 
 const getColor10 = (idx) => {
   const colorSpaceSize = COLORS.length
+  return colorMap(idx % colorSpaceSize)
+}
+
+const getColorAccent = (idx) => {
+  const colorSpaceSize = COLORS_ACCENT.length
   return colorMap(idx % colorSpaceSize)
 }
 
@@ -20,4 +26,4 @@ const getColorScaleInferno = ({ min = 0, max = 1 }) => {
     .domain([min, max])
 }
 
-export { getColor10, getColorScaleInferno }
+export {getColorAccent, getColor10, getColorScaleInferno }
