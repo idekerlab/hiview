@@ -11,6 +11,7 @@ const BASE_GROUP_TAG = 'baseGroup'
 const IS_ROOT_MEMBER_TAG = 'isRootMember'
 
 const DEF_COLOR = '#777777'
+import { NODE_STYLE, NODE_TAGS } from '../reducers/ui-state'
 
 const compareBy = (fieldName) => (a, b) => {
   let scoreA = a.data[fieldName]
@@ -881,6 +882,14 @@ const createNode = (originalNode, groupMembership, topGroups) => {
     newData[PLEIO_TAG] = true
     newData['gName'] = `${originalData.name}-${groupId}`
     newData[BASE_GROUP_TAG] = topGroups[newData.gName]
+    const keys = Object.keys(NODE_TAGS)
+    keys.forEach((key) => {
+      const tag = NODE_TAGS[key]
+      const val = originalData[tag]
+      if(val !== null && val !== undefined) {
+        newData[tag] = val
+      }
+    })
 
     const newNode = {
       data: newData,

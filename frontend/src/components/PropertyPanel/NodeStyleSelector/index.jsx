@@ -5,7 +5,7 @@ import {
   Radio,
   RadioGroup,
   FormControlLabel,
-  Typography
+  Typography,
 } from '@material-ui/core'
 
 import { makeStyles } from '@material-ui/core/styles'
@@ -26,6 +26,10 @@ const useStyles = makeStyles((theme) => ({
     // fontSize: '1.5em',
     fontWeight: 500,
   },
+  title: {
+    padding: 0,
+    margin: 0,
+  },
 }))
 
 const NodeStyleSelector = ({ uiState, uiStateActions }) => {
@@ -39,7 +43,9 @@ const NodeStyleSelector = ({ uiState, uiStateActions }) => {
 
   return (
     <FormControl component="fieldset" className={classes.root}>
-      <FormLabel component="legend">Node Coloring:</FormLabel>
+      <FormLabel className={classes.title} component="legend">
+        {<Typography variant="h6">Node Coloring:</Typography>}
+      </FormLabel>
       <RadioGroup
         aria-label="node-style"
         name="node-style"
@@ -52,7 +58,9 @@ const NodeStyleSelector = ({ uiState, uiStateActions }) => {
             key={styleName}
             value={NODE_STYLE[styleName]}
             control={<Radio />}
-            label={<Typography variant={'body1'}>{NODE_STYLE[styleName]}</Typography>}
+            label={
+              <Typography variant={'body1'}>{NODE_STYLE[styleName]}</Typography>
+            }
           />
         ))}
       </RadioGroup>

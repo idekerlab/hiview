@@ -52,22 +52,23 @@ const RawInteractionPanel = (props) => {
       return
     }
 
-    let style = styleMap[styleName]
-    if(style !== undefined) {
-      // Already exists. Apply as-is
-      cyReference.style().fromJson(style).update()
-      return
-    }
+    // let style = styleMap[styleName]
+    // if (style !== undefined) {
+    //   // Already exists. Apply as-is
+    //   cyReference.style().fromJson(style).update()
+    //   return
+    // }
 
     // Update the style
-    const copiedStyle = JSON.parse(JSON.stringify(networkStyle))
-    const newStyle = applyNodeColoring({ styleName, vs: copiedStyle })
+    // const copiedStyle = JSON.parse(JSON.stringify(networkStyle))
+
+    const newStyle = applyNodeColoring({ styleName, style: originalVS.style })
     cyReference.style().fromJson(newStyle).update()
     setStyleMap({ ...styleMap, [styleName]: newStyle })
   }
 
   useEffect(() => {
-    if(nodeStyle === null) {
+    if (nodeStyle === null) {
       return
     }
     applyStyle(nodeStyle)
@@ -297,10 +298,35 @@ const RawInteractionPanel = (props) => {
 
     // Modify style only once
     setVsUpdated(true)
-    const clone = JSON.parse(JSON.stringify(networkStyle.style))
-    setOriginalVS(clone)
-    setStyleMap({[NODE_STYLE.MEMBERSHIP]: clone})
+
+    // Save original style
+    setOriginalVS({...networkStyle})
+
+    // const clone = JSON.parse(JSON.stringify(networkStyle.style))
+    // const fMap = extractFunctionMaps(networkStyle.style)
+    setStyleMap({ [NODE_STYLE.MEMBERSHIP]: [...networkStyle.style] })
   }, [networkStyle])
+
+  const extractFunctionMaps = (style) => {
+    const functionMaps = {}
+    style.forEach((entry) => {
+      const { selector, css } = entry
+      const keys = Object.keys(css)
+      keys.forEach((key) => {
+        const value = css[key]
+        if (typeof value === 'function') {
+          if (functionMaps[selector] === undefined) {
+            functionMaps[selector] = {}
+          }
+          functionMaps[selector][key] = value
+        }
+      })
+
+    })
+    return functionMaps
+  }
+
+
 
   // useEffect(() => {
   //   // No need to change if original styling (no edge mapping) is used.

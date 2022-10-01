@@ -6,7 +6,7 @@ import * as d3Scale from 'd3-scale'
 
 // const COLORS = d3ScaleChromatic.schemeCategory10
 const COLORS = d3ScaleChromatic.schemeTableau10
-const COLORS_ACCENT = d3ScaleChromatic.schemeAccent
+const COLORS_ACCENT = d3ScaleChromatic.schemeDark2
 
 const colorMap = (idx) => COLORS[idx]
 

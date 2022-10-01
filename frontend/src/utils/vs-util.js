@@ -1,41 +1,38 @@
-import {getColorAccent, getColor10, getColorScaleInferno } from './color-util'
-import { NODE_STYLE } from '../reducers/ui-state'
+import {getColorAccent, getColor10 } from './color-util'
+import { NODE_STYLE, NODE_TAGS } from '../reducers/ui-state'
 
 const findSelector = (style, selectorName) => {
   return style.find((s) => s.selector === selectorName)
 }
 
-const applyNodeColoring = ({ styleName, vs }) => {
-  const { style } = vs
+const applyNodeColoring = ({ styleName, style }) => {
   
   // Create a deep copy of the style
-  const cloneVs = JSON.parse(JSON.stringify(style))
-
-  const nodeSelector = findSelector(cloneVs, 'node')
-  nodeSelector.css['background-color'] = getStylePresets(styleName)
-  console.log('Updating style', styleName, vs)
-  return cloneVs
+  const cloneStyle = [...style]
+  const nodeSelector = findSelector(cloneStyle, 'node')
+  const nodeColorMapping = getStylePresets(styleName)
+  if(nodeColorMapping !== null) {
+    nodeSelector.css['background-color'] = nodeColorMapping
+  }
+  return cloneStyle
 }
 
-const NODE_TAGS = {
-  dominantDataType: 'dominantDataType',
-  apmsType: 'APMSType',
-}
 
+const defColor = 'rgba(30,30,30,0.5)'
 const getStylePresets = (styleName) => {
   let colorMappingFunction = null
 
   if(styleName === NODE_STYLE.MEMBERSHIP) {
     // Use original mapping
-    colorMappingFunction = 'data(color)'
-    return
+    return 'data(color)'
   }
 
   if (styleName === NODE_STYLE.BAIT_PREY) {
     const types = ['bait', 'prey', 'none']
+    const colors = ['red', 'blue', defColor]
     colorMappingFunction = (n) => {
-      const type = n.data('APMSType')
-      return getColorAccent(types.indexOf(type))
+      const type = n.data(NODE_TAGS.apmsType)
+      return colors[types.indexOf(type)]
     }
   } else if (styleName === NODE_STYLE.DOMINANT_EVIDENCE) {
     const types = ['Codependency', 'Coabundance', 'Coexpression', 'Physical']
@@ -43,8 +40,18 @@ const getStylePresets = (styleName) => {
       const type = n.data(NODE_TAGS.dominantDataType)
       return getColorAccent(types.indexOf(type))
     }
-  } else {
-    colorMappingFunction = 'green'
+  } else if (styleName === NODE_STYLE.PLEIO) {
+    colorMappingFunction = (n) => {
+      const type = n.data(NODE_TAGS.pleioType)
+      return type ? getColorAccent(5) : defColor
+    }
+
+  } else if (styleName === NODE_STYLE.CURATION) {
+    const types = ['Curated', 'Uncurated']
+    colorMappingFunction = (n) => {
+      const type = n.data(NODE_TAGS.curatedType)
+      return type === types[0] ? getColorAccent(5) : defColor
+    }
   }
 
   return colorMappingFunction

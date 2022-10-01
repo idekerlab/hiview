@@ -34,6 +34,13 @@ export const NODE_STYLE = {
   BAIT_PREY: 'Bait / Prey',
 }
 
+export const NODE_TAGS = {
+  dominantDataType: 'dominantDataType',
+  apmsType: 'APMSType',
+  pleioType: 'pleiotropy',
+  curatedType: 'curationStatus',
+}
+
 const defaultState = Map({
   showMainMenu: false,
   showAppBar: true,
