@@ -21,7 +21,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const NetworkLegendPanel = ({ legend, showLegend, setShowLegend }) => {
+const NetworkLegendPanel = ({
+  legend,
+  showLegend,
+  setShowLegend,
+  nodeStyle,
+}) => {
   const classes = useStyles()
 
   const handleClick = () => {
@@ -33,14 +38,10 @@ const NetworkLegendPanel = ({ legend, showLegend, setShowLegend }) => {
   }
 
   return (
-    <Paper
-      className={classes.root}
-      variant="outlined"
-      onClick={handleClick}
-    >
+    <Paper className={classes.root} variant="outlined" onClick={handleClick}>
       <ShapeLegend />
-      <NodeLegend legend={legend}/>
-      <EdgeLegend legend={legend}/>
+      <NodeLegend legend={legend} nodeStyle={nodeStyle} />
+      <EdgeLegend legend={legend} />
     </Paper>
   )
 }

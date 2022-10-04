@@ -31,6 +31,7 @@ const RawInteractionPanel = (props) => {
     networkAreaStyle,
     setCy,
     setHandleSvg,
+    rawInteractions,
     rawInteractionsActions,
     queryPathsActions,
     location,
@@ -44,7 +45,7 @@ const RawInteractionPanel = (props) => {
   const [styleMap, setStyleMap] = useState({})
 
   useEffect(() => {
-    console.log('initialization', styleMap)
+    console.log('initialization', styleMap, rawInteractions)
   }, [])
 
   const applyStyle = (styleName) => {
@@ -62,7 +63,13 @@ const RawInteractionPanel = (props) => {
     // Update the style
     // const copiedStyle = JSON.parse(JSON.stringify(networkStyle))
 
-    const newStyle = applyNodeColoring({ styleName, style: originalVS.style })
+    const currentLegend = rawInteractions.get('legend')
+    const newStyle = applyNodeColoring({
+      styleName,
+      style: originalVS.style,
+      rawInteractions,
+      rawInteractionsActions,
+    })
     cyReference.style().fromJson(newStyle).update()
     setStyleMap({ ...styleMap, [styleName]: newStyle })
   }
@@ -300,7 +307,7 @@ const RawInteractionPanel = (props) => {
     setVsUpdated(true)
 
     // Save original style
-    setOriginalVS({...networkStyle})
+    setOriginalVS({ ...networkStyle })
 
     // const clone = JSON.parse(JSON.stringify(networkStyle.style))
     // const fMap = extractFunctionMaps(networkStyle.style)
@@ -321,12 +328,9 @@ const RawInteractionPanel = (props) => {
           functionMaps[selector][key] = value
         }
       })
-
     })
     return functionMaps
   }
-
-
 
   // useEffect(() => {
   //   // No need to change if original styling (no edge mapping) is used.

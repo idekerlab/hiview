@@ -113,6 +113,7 @@ const MessageBar = (props) => {
         legend={legend}
         showLegend={showLegend}
         setShowLegend={setShowLegend}
+        nodeStyle={props.uiState.get('nodeStyle')}
       />
     </Fragment>
   )

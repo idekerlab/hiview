@@ -53,7 +53,8 @@ const defState = Map({
   pleio: null,
   legend: {
     colors: {},
-    names: {}
+    names: {},
+    nodeColors: {}
   }
 })
 

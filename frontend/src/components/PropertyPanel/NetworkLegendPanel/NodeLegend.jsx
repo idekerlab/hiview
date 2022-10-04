@@ -1,6 +1,9 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Typography } from '@material-ui/core'
+import BaseNodeColors from './BaseNodeColors'
+import { NODE_STYLE } from '../../../reducers/ui-state'
+import ExtraNodeColors from './ExtraNodeColors'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,31 +33,18 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-const NodeLegend = ({ legend }) => {
+const NodeLegend = ({ legend, nodeStyle }) => {
   const classes = useStyles()
-  const { colors, names } = legend
-  const groupIds = Object.keys(colors)
   return (
     <div className={classes.root}>
       <Typography className={classes.title} variant="h5">
-        Assembly Colors
+        {nodeStyle}
       </Typography>
-      {groupIds.map((key) => {
-        const color = colors[key]
-        const name = names[key]
-        return (
-          <div className={classes.row} key={key}>
-            <div
-              key={key}
-              className={classes.colorCell}
-              style={{ backgroundColor: color }}
-            />
-            <Typography variant="body1" className={classes.label}>
-              {name}
-            </Typography>
-          </div>
-        )
-      })}
+      {nodeStyle === NODE_STYLE.MEMBERSHIP ? (
+        <BaseNodeColors legend={legend} />
+      ) : (
+        <ExtraNodeColors legend={legend} nodeStyle={nodeStyle} />
+      )}
     </div>
   )
 }

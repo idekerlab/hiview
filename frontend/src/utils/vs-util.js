@@ -1,60 +1,122 @@
-import {getColorAccent, getColor10 } from './color-util'
+import { getColorAccent, getColor10 } from './color-util'
 import { NODE_STYLE, NODE_TAGS } from '../reducers/ui-state'
 
 const findSelector = (style, selectorName) => {
   return style.find((s) => s.selector === selectorName)
 }
 
-const applyNodeColoring = ({ styleName, style }) => {
-  
+const applyNodeColoring = ({
+  styleName,
+  style,
+  rawInteractions,
+  rawInteractionsActions,
+}) => {
+  const legend = rawInteractions.get('legend')
+
   // Create a deep copy of the style
   const cloneStyle = [...style]
   const nodeSelector = findSelector(cloneStyle, 'node')
-  const nodeColorMapping = getStylePresets(styleName)
-  if(nodeColorMapping !== null) {
+  const nodeColorMapping = getStylePresets({
+    styleName,
+    rawInteractionsActions,
+    legend,
+  })
+  if (nodeColorMapping !== null) {
     nodeSelector.css['background-color'] = nodeColorMapping
   }
   return cloneStyle
 }
 
-
 const defColor = 'rgba(30,30,30,0.5)'
-const getStylePresets = (styleName) => {
+const accentColor = getColorAccent(1)
+
+const getStylePresets = ({ styleName, rawInteractionsActions, legend }) => {
   let colorMappingFunction = null
 
-  if(styleName === NODE_STYLE.MEMBERSHIP) {
+  if (styleName === NODE_STYLE.MEMBERSHIP) {
     // Use original mapping
     return 'data(color)'
   }
 
   if (styleName === NODE_STYLE.BAIT_PREY) {
     const types = ['bait', 'prey', 'none']
-    const colors = ['red', 'blue', defColor]
+    const colors = [getColorAccent(1), getColorAccent(3), defColor]
+
+    const mapping = types.map((type, index) => {
+      return {
+        value: type,
+        color: colors[index],
+      }
+    })
+    storeLegend({ styleName, mapping, rawInteractionsActions, legend })
+
     colorMappingFunction = (n) => {
       const type = n.data(NODE_TAGS.apmsType)
       return colors[types.indexOf(type)]
     }
   } else if (styleName === NODE_STYLE.DOMINANT_EVIDENCE) {
     const types = ['Codependency', 'Coabundance', 'Coexpression', 'Physical']
+    const mapping = types.map((type, index) => {
+      return {
+        value: type,
+        color: getColorAccent(index+1),
+      }
+    })
+    storeLegend({ styleName, mapping, rawInteractionsActions, legend })
+
     colorMappingFunction = (n) => {
       const type = n.data(NODE_TAGS.dominantDataType)
-      return getColorAccent(types.indexOf(type))
+      return getColorAccent(types.indexOf(type) +1)
     }
   } else if (styleName === NODE_STYLE.PLEIO) {
+    const mapping = [
+      {
+        value: NODE_TAGS.pleioType,
+        color: accentColor,
+      },
+      {
+        value: 'none',
+        color: defColor,
+      },
+    ]
+    storeLegend({ styleName, mapping, rawInteractionsActions, legend })
     colorMappingFunction = (n) => {
       const type = n.data(NODE_TAGS.pleioType)
-      return type ? getColorAccent(5) : defColor
+      return type ? accentColor : defColor
     }
-
   } else if (styleName === NODE_STYLE.CURATION) {
     const types = ['Curated', 'Uncurated']
+    const mapping = [
+      {
+        value: types[0],
+        color: accentColor,
+      },
+      {
+        value: types[1],
+        color: defColor,
+      },
+    ]
+    storeLegend({ styleName, mapping, rawInteractionsActions, legend })
     colorMappingFunction = (n) => {
       const type = n.data(NODE_TAGS.curatedType)
-      return type === types[0] ? getColorAccent(5) : defColor
+      return type === types[0] ? accentColor : defColor
     }
   }
 
   return colorMappingFunction
+}
+const storeLegend = ({
+  styleName,
+  rawInteractionsActions,
+  legend,
+  mapping,
+}) => {
+  rawInteractionsActions.setLegend({
+    nodeColors: {
+      ...legend.nodeColors,
+      [styleName]: mapping,
+    },
+  })
 }
 
 const insertNodeColorMapping = (vs, keyAttrName, attrValues) => {

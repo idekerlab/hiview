@@ -234,6 +234,7 @@ const TermDetailsPanel = (props) => {
             hierarchy={props.network.get('hierarchy')}
             networkAreaStyle={{ height: '100%', background: '#111111' }}
             setCy={setCy}
+            rawInteractions={props.rawInteractions}
             rawInteractionsActions={props.rawInteractionsActions}
             queryPathsActions={props.queryPathsActions}
             location={props.location}
@@ -393,6 +394,7 @@ const TermDetailsPanel = (props) => {
           originalEdgeCount={props.originalEdgeCount}
           maxEdgeCount={props.maxEdgeCount}
           legend={raw.legend}
+          uiState={props.uiState}
         />
         {getNetworkPanel(
           hidden,
