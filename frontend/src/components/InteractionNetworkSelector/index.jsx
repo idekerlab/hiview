@@ -13,6 +13,7 @@ import OpenInPortalButton from '../OpenInPortalButton'
 import OpenInNetAntButton from '../OpenInNetAntButton'
 import SaveAsSvgButton from '../SaveAsSvgButton'
 import SaveAsSvgButtonErrorBoundary from '../SaveAsSvgButton/SaveAsSvgButtonErrorBoundary'
+import { getNdexNetworkUrl } from '../../utils/url-util'
 
 // Base style
 const styles = theme => ({
@@ -119,8 +120,7 @@ const InteractionNetworkSelector = props => {
     let serverType = locationParams.query.type
 
     // Check size before
-    const NDEX_API = '.ndexbio.org/v2/network/'
-    const url = 'https://' + serverType + NDEX_API + uuid
+    const url = getNdexNetworkUrl({ uuid, serverType })
 
     props.externalNetworksActions.fetchExternalNetworkFromUrl(url, uuid, interactomeUUID)
   }

@@ -9,17 +9,11 @@ import CirclePackingPanel from '../CirclePackingPanel'
 
 import { Map } from 'immutable'
 import { getHeader } from '../AccessUtil'
+import { getNdexNetworkSummaryUrl } from '../../utils/url-util'
 
 export const MYGENE_URL = 'https://mygene.info/v3'
 const NDEX_LINK_TAG = 'ndex_internalLink'
-
 const GO_NAMESPACE = 'GO:'
-
-const NDEX_API = '.ndexbio.org/v2/network/'
-
-const DEFAULT_SERVER = 'https://test.ndexbio.edu'
-const DEFAULT_TYPE = 'test'
-const DEFAULT_SUMMARY = `https://test.ndexbio.org/v2/search/network`
 
 const Viewer = CyNetworkViewer(SigmaRenderer)
 
@@ -38,31 +32,7 @@ const progressStyle = {
   zIndex: 1000,
 }
 
-const name2uuid = (networkName) => {
-  const query = {
-    searchString: networkName,
-  }
-
-  const settings = {
-    method: 'POST',
-    body: JSON.stringify(query),
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  }
-  fetch(DEFAULT_SUMMARY, settings)
-    .then((res) => res.json())
-    .then((json) => {
-      const firstRes = json.network[0]
-      console.log(firstRes['externalId'])
-      return firstRes
-    })
-}
-
-// TODO: better filter?
-
 let last = null
-
 class NetworkPanel extends Component {
   constructor(props) {
     super(props)
@@ -92,7 +62,7 @@ class NetworkPanel extends Component {
     const localSearch2 = this.props.localSearch
     if (localSearch2 !== undefined) {
       const { results } = localSearch2
-      if(results !== null && results !== undefined && results.length > 0) {
+      if (results !== null && results !== undefined && results.length > 0) {
         skipUpdate = true
       }
     }
@@ -114,9 +84,9 @@ class NetworkPanel extends Component {
     }
 
     // TODO is this necessary?
-    if(!skipUpdate) {
+    if (!skipUpdate) {
       this.props.selectionActions.selectNode(newSelectionState)
-    } else if(!props.isRoot) {
+    } else if (!props.isRoot) {
       this.props.selectionActions.selectNode(newSelectionState)
     }
 
@@ -171,7 +141,7 @@ class NetworkPanel extends Component {
 
     // Check link information type
 
-    if(skipUpdate && props.isRoot) {
+    if (skipUpdate && props.isRoot) {
       return
     }
 
@@ -196,7 +166,7 @@ class NetworkPanel extends Component {
     const link = this.props.cxtoolUrl + linkId + '?server=' + serverType
 
     // Check size before
-    const summaryUrl = 'https://' + serverType + NDEX_API + linkId + '/summary'
+    const summaryUrl = getNdexNetworkSummaryUrl({serverType, uuid: linkId})
 
     // Clear selected
     this.props.externalNetworksActions.clearExternalNetwork()
@@ -318,56 +288,11 @@ class NetworkPanel extends Component {
     let serverType = locationParams.query.type
     const credentials = this.props.credentials
 
-    if (serverType === undefined) {
-      serverType = 'test'
-    }
-
-    const url = this.props.cxtoolUrl + uuid + '?server=' + serverType
-    this.setState({ networkUrl: url })
-
-    const { fetchNetworkFromUrl } = this.props.networkActions
-
-    if (locationParams.query.type === undefined) {
-      const query = {
-        searchString: uuid,
-      }
-      const settings = {
-        method: 'POST',
-        body: JSON.stringify(query),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-      fetch(DEFAULT_SUMMARY, settings)
-        .then((res) => res.json())
-        .then((json) => {
-          console.log(json)
-          const firstRes = json.networks[0]
-          const newId = firstRes['externalId']
-          const newUrl = this.props.cxtoolUrl + newId + '?server=' + serverType
-
-          this.props.networkActions.setUuid(newId)
-          this.props.networkActions.setServer(DEFAULT_SERVER)
-
-          // Encode parameters in URL
-          const newLocationUrl = `/${newId}?type=${serverType}&server=${DEFAULT_SERVER}`
-          browserHistory.push(newLocationUrl)
-
-          this.props.networkActions.fetchNetworkFromUrl(
-            newUrl,
-            newId,
-            serverType,
-            credentials,
-          )
-        })
-    } else {
-      this.props.networkActions.fetchNetworkFromUrl(
-        url,
-        uuid,
-        serverType,
-        credentials,
-      )
-    }
+    this.props.networkActions.fetchNetworkFromUrl(
+      {uuid,
+      serverType,
+      credentials}
+    )
   }
 
   componentWillReceiveProps(nextProps) {

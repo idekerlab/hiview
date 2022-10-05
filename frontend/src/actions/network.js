@@ -4,6 +4,7 @@ import { getHeader } from '../components/AccessUtil'
 
 import Fuse from 'fuse.js'
 import LocalDB from './local-db'
+import { getNdexNetworkUrl } from '../utils/url-util'
 
 const utils = new CyNetworkUtils()
 const cx2js = new CxToJs(utils)
@@ -67,10 +68,9 @@ const generateIndex = (networkJson) => {
   return { geneIndex, systemIndex }
 }
 
-const fetchNetwork = (url) => {
+const fetchNetwork = () => {
   return {
     type: FETCH_NETWORK,
-    url,
   }
 }
 
@@ -97,62 +97,11 @@ const receiveNetwork = (url, json, error) => {
   }
 }
 
-export const fetchNetworkFromUrl = (url, uuid, serverType, credentials) => {
+export const fetchNetworkFromUrl = ({ uuid, serverType, credentials }) => {
   return (dispatch) => {
-    dispatch(fetchNetwork(url))
-    return getNetworkData(url, uuid, dispatch, serverType, credentials)
+    dispatch(fetchNetwork())
+    return fetchDataFromRemote({ uuid, dispatch, serverType, credentials })
   }
-}
-
-const getNetworkData = async (url, uuid, dispatch, serverType, credentials) => {
-  const network = await hvDb.hierarchy.get(uuid)
-  const newSummary = await fetchSummary(serverType, uuid)
-
-  if (network === undefined) {
-    // Simply fetch from NDEx DB
-    console.log('Network does not exist in local DB:', uuid)
-    return fetchDataFromRemote(url, uuid, dispatch, serverType, credentials)
-  } else {
-    const { summary } = network
-    if(summary === undefined || newSummary === undefined ) {
-      // Just fetch new one from NDEx
-      return fetchDataFromRemote(url, uuid, dispatch, serverType, credentials)
-    } else {
-      // Data with summary exists.  Fetch if new version is available.
-      const { modificationTime } = summary
-      const newModificationTime = newSummary.modificationTime
-      
-      if(modificationTime === undefined || newModificationTime === undefined) {
-        return fetchDataFromRemote(url, uuid, dispatch, serverType, credentials)
-      }
-      
-      if(modificationTime < newModificationTime) {
-        return fetchDataFromRemote(url, uuid, dispatch, serverType, credentials)
-      } else {
-        console.info('Newer data not found.  Loading local cache updated on ' + new Date(modificationTime))
-        return fetchFromLocal(url, uuid, dispatch, network)
-      }
-    } 
-  }
-}
-
-const fetchFromLocal = (url, uuid, dispatch, netObj) => {
-  // Set network title
-  const networkData = netObj.data
-
-  if (networkData !== null && networkData !== undefined) {
-    let title = networkData.name
-    if (!title) {
-      title = 'N/A (' + uuid + ')'
-    }
-
-    // Set title prop
-    dispatch(setTitle(title))
-  }
-
-  const network = createLabel2IdMap(netObj)
-  addOriginalToAlias(network)
-  return dispatch(receiveNetwork(url, network, null))
 }
 
 const modifyNetwork = (cyjs, attrMap) => {
@@ -244,26 +193,23 @@ const getNetworkAttributes = (cx) => {
 }
 
 /**
- * 
+ *
  * Fetch summary for time stamp comparison
  */
 const fetchSummary = async (serverType, uuid) => {
-  const url = 'https://' + serverType + '.ndexbio.org/v2/network/' + uuid
+  const url = getNdexNetworkUrl({serverType, uuid})
   const summaryUrl = `${url}/summary`
   const response = await fetch(summaryUrl)
   const summaryJson = await response.json()
   return summaryJson
 }
 
-const fetchDataFromRemote = async (
-  url2,
+const fetchDataFromRemote = async ({
   uuid,
   dispatch,
   serverType,
   credentials,
-) => {
-  console.log('From remote::', credentials)
-
+}) => {
   let headers = getHeader(credentials)
   headers['Accept-Encoding'] = 'br'
 
@@ -273,8 +219,7 @@ const fetchDataFromRemote = async (
     headers: headers,
   }
 
-  const url = 'https://' + serverType + '.ndexbio.org/v2/network/' + uuid
-
+  const url = getNdexNetworkUrl({ uuid, serverType })
   const summary = await fetchSummary(serverType, uuid)
 
   console.log('Compare times', summary)

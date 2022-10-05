@@ -2,17 +2,13 @@ import { localLayout, localLayout2 } from './raw-interactions-layout'
 import { getHeader } from '../components/AccessUtil'
 import { createAction } from 'redux-actions'
 import { filterEdge, MAIN_EDGE_TAG, PATTERN, duplicateNodes } from './raw-interactions-util'
-import cx2js from 'cytoscape-cx2js'
 
 import LocalDB from './local-db'
+import { getNdexFilterUrl, getNdexNetworkSummaryUrl, getNdexNetworkUrl } from '../utils/url-util'
 
 const THRESHOLD_TAG = 'Main Feature Default Cutoff'
-// For CX --> cyjs conversion
-const utils = new cx2js.CyNetworkUtils()
-const cx2JsConverter = new cx2js.CxToJs(utils)
 
 const hvDb = LocalDB.getDB()
-const NDEX_API = '.ndexbio.org/v2/network/'
 
 // Set loading message
 export const SET_MESSAGE = 'SET_MESSAGE'
@@ -207,21 +203,6 @@ const typeConverter = (dataType, value) => {
   return value
 }
 
-const fetchFromDB = (dispatch, entry) => {
-  const netAndFilter = entry.netAndFilter
-
-  return dispatch(
-    receiveNetwork(
-      entry.url,
-      netAndFilter[0],
-      netAndFilter[1],
-      netAndFilter[2],
-      netAndFilter[3],
-      entry.originalCX
-    )
-  )
-}
-
 const fetchInteractionsFromRemote = (
   mainFeature,
   th,
@@ -235,7 +216,6 @@ const fetchInteractionsFromRemote = (
   pleio
 ) => {
   let originalCX = null
-  let nodeMap = null
 
   const query = [
     {
@@ -271,7 +251,7 @@ const fetchInteractionsFromRemote = (
     .then(cx => {
       originalCX = cx
       const processed = processCx(originalCX, allPositions, pleio)
-      nodeMap = processed.nodeMap
+      // nodeMap = processed.nodeMap
       const newNet = processed.network
 
       const legend = processed.legend
@@ -372,7 +352,7 @@ const getInteractions = (
 
 export const fetchInteractionsFromUrl = (
   uuid,
-  server,
+  serverType,
   originalUrl,
   maxEdgeCount = 500,
   summary = {},
@@ -384,11 +364,8 @@ export const fetchInteractionsFromUrl = (
 
   // Get only top 10000 edges.
   // TODO: Adjust max size
-  const urlFiltered =
-    'https://dev2.ndexbio.org/edgefilter/v1/network/' +
-    uuid +
-    '/topNEdgeFilter?limit=10000'
-  const urlNoFilter = 'https://' + server + '.ndexbio.org/v2/network/' + uuid
+  const urlFiltered = getNdexFilterUrl({uuid, serverType, limit: 10000})
+  const urlNoFilter = getNdexNetworkUrl({uuid, serverType})
 
   let networkAttr = summary.properties
   if (networkAttr === undefined) {
@@ -415,7 +392,7 @@ export const fetchInteractionsFromUrl = (
   }
 
   return dispatch => {
-    dispatch(getNetworkSummary(uuid, server, credentials))
+    dispatch(getNetworkSummary(uuid, serverType, credentials))
     dispatch(fetchNetwork(url))
 
     return getInteractions(
@@ -723,9 +700,9 @@ export const setPleio = pleio => {
   }
 }
 
-export const getNetworkSummary = (uuid, server, url, maxEdgeCount = 500) => {
+export const getNetworkSummary = (uuid, serverType, url, maxEdgeCount = 500) => {
   return dispatch => {
-    const url = 'https://' + server + NDEX_API + uuid + '/summary'
+    const url = getNdexNetworkSummaryUrl({serverType, uuid})
     return fetch(url)
       .then(response => {
         if (!response.ok) {
