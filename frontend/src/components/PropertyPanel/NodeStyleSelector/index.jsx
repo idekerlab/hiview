@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 const TOOLTIIP_TEXT = {
   [NODE_STYLE.CURATION]:
     'Proteins are colored orange when found in systematic lists describing DNA damage repair',
+  [NODE_STYLE.DOMINANT_EVIDENCE]: 'Dominant evidence class (Coabundance, Codependency, Coexpression, Physical) for a given protein calculated by choosing evidence class with highest cumulative score'
 }
 
 const NodeStyleSelector = ({ uiState, uiStateActions }) => {
