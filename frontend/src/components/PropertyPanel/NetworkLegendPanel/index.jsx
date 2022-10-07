@@ -5,7 +5,6 @@ import { Paper } from '@material-ui/core'
 
 import NodeLegend from './NodeLegend'
 import EdgeLegend from './EdgeLegend'
-import ShapeLegend from './ShapeLegend'
 
 const useStyles = makeStyles((theme) => ({
   root: {

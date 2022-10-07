@@ -27,7 +27,7 @@ export const SEARCH_MODE = {
 
 // Change coloring
 export const NODE_STYLE = {
-  MEMBERSHIP: 'Cluster membership',
+  MEMBERSHIP: 'Assembly membership',
   CURATION: 'Curation status',
   DOMINANT_EVIDENCE: 'Dominant evidence type',
   PLEIO: 'Pleiotropy',
