@@ -39,7 +39,6 @@ const NetworkLegendPanel = ({
 
   return (
     <Paper className={classes.root} variant="outlined" onClick={handleClick}>
-      <ShapeLegend />
       <NodeLegend legend={legend} nodeStyle={nodeStyle} />
       <EdgeLegend legend={legend} />
     </Paper>

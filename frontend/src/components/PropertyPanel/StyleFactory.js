@@ -113,7 +113,7 @@ const BASE_STYLE = {
     css: {
       width: 21,
       height: 8,
-      shape: 'roundrectangle',
+      shape: 'ellipse',
       'text-valign': 'center',
       'text-halign': 'center',
       color: '#FFFFFF',
@@ -126,13 +126,6 @@ const BASE_STYLE = {
       'font-size': 4,
       'font-weight': 'bold',
       label: 'data(name)',
-    },
-  },
-  nodePreio: {
-    selector: 'node[?isPleio]',
-    css: {
-      shape: 'ellipse',
-      height: 7,
     },
   },
   nodeSelected: {
@@ -311,7 +304,7 @@ export const createStyle = (originalNetwork) => {
     return {
       style: [
         BASE_STYLE.node,
-        BASE_STYLE.nodePreio,
+        // BASE_STYLE.nodePreio,
         BASE_STYLE.nodeSelected,
         BASE_STYLE.hidden,
         BASE_STYLE.seed,
@@ -416,7 +409,6 @@ export const createStyle = (originalNetwork) => {
   return {
     style: [
       BASE_STYLE.node,
-      BASE_STYLE.nodePreio,
       BASE_STYLE.nodeSelected,
       edgeStyle,
       edgeSelectedStyle,
