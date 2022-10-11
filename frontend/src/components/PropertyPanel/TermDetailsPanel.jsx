@@ -457,7 +457,7 @@ const TermDetailsPanel = (props) => {
         <AppBar position="static" color="default">
           <Tabs value={selectedTab} onChange={handleChange}>
             <Tab label="Assembly Details" />
-            <Tab label="Assigned Genes" />
+            <Tab label="Assigned Proteins" />
           </Tabs>
         </AppBar>
 
