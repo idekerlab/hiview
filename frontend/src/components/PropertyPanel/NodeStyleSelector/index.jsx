@@ -15,21 +15,24 @@ import { NODE_STYLE } from '../../../reducers/ui-state'
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    width: '100%',
     color: '#AAAAAA',
     '& > * + *': {
       marginTop: theme.spacing(1),
     },
     padding: theme.spacing(2),
   },
+  group: {
+    padding: 0,
+    margin: 0,
+  },
   label: {
     color: '#666666',
-    // fontSize: '1.5em',
     fontWeight: 500,
   },
   title: {
     padding: 0,
     margin: 0,
+    color: '#666666',
   },
   row: {
     display: 'flex',
@@ -71,9 +74,10 @@ const NodeStyleSelector = ({ uiState, uiStateActions }) => {
   return (
     <FormControl component="fieldset" className={classes.root}>
       <FormLabel className={classes.title} component="legend">
-        {<Typography variant="h6">Protein Properties</Typography>}
+        <Typography variant="h6">Protein Properties</Typography>
       </FormLabel>
       <RadioGroup
+        className={classes.group}
         aria-label="node-style"
         name="node-style"
         value={selection}

@@ -43,11 +43,17 @@ const styles = (theme) => ({
   root: {
     position: 'relative',
     background: 'inherit',
-    flexGrow: 2,
     padding: theme.spacing(2),
+    paddingTop: 0
   },
   title: {
     height: '2em',
+  },
+  title2: {
+    margin: 0,
+    padding: 0,
+    color: '#666666',
+    marginBottom: theme.spacing(1),
   },
   list: {
     overflow: 'auto',
@@ -157,6 +163,9 @@ class EdgeFilter extends Component {
       // Old data format.  Just render plain list
       return (
         <div className={classes.root}>
+              <Typography variant="h6" className={classes.title2}>
+                Protein Interactions
+              </Typography>
           <div className={classes.filterRow}>
             <PrimaryEdgeSwitch
               uiState={uiState}

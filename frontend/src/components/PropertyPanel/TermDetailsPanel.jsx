@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 
-import { Tabs, Tab, AppBar } from '@material-ui/core'
+import { Tabs, Tab, AppBar, Typography } from '@material-ui/core'
 import { blueGrey } from '@material-ui/core/colors'
 
 import RawInteractionPanel from './RawInteractionPanel'
@@ -16,27 +16,13 @@ import * as StyleFactory from './StyleFactory'
 import LayoutSelector from '../LayoutSelector'
 import ExportButtons from '../ExportButtons'
 import EmptyInteractionPanel from './EmptyInteractionPanel.jsx'
-import MaxEdgePanel from './MaxEdgePanel'
 import MessageBar from './MessageBar'
-
-import CrossFilter from '../CrossFilter'
 import SplitPane from 'react-split-pane'
 import LoadingPanel from './LoadingPanel'
-import AutoLoadThresholdPanel from './AutoLoadThresholdPanel'
-import InteractionNetworkSelector from '../InteractionNetworkSelector'
 import CytoscapeViewer from '../CytoscapeViewer'
-
-import ExpansionPanel from '@material-ui/core/ExpansionPanel'
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary'
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails'
-import Typography from '@material-ui/core/Typography'
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
-
 import { createStyles, makeStyles } from '@material-ui/core'
 
-import D3Legend from '../D3Legend'
 import EdgeInfoPanel from './EdgeInfoPanel'
-import ThresholdPanel from './ThresholdPanel'
 import NodeStyleSelector from './NodeStyleSelector'
 
 const useStyles = makeStyles((theme) =>
@@ -77,6 +63,17 @@ const useStyles = makeStyles((theme) =>
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'flex-start',
+    },
+    stylePanel: {
+      boxSizing: 'border-box',
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'top',
+      justifyContent: 'flex-start',
+    },
+    stylePanelElement: {
+      // flexGrow: 1
+      // width: '20%'
     },
   }),
 )
@@ -424,23 +421,27 @@ const TermDetailsPanel = (props) => {
           />
         </div>
 
-        {hidden || selectedExternalNetwork ? (
-          <div />
-        ) : (
-          <EdgeFilter
-            filters={raw.filters}
-            commandActions={props.interactionsCommandActions}
-            commands={props.interactionsCommands}
-            filtersActions={props.filtersActions}
-            networkData={networkProps}
+        <div className={classes.stylePanel}>
+          {hidden || selectedExternalNetwork ? (
+            <div />
+          ) : (
+            <EdgeFilter
+              className={classes.stylePanelElement}
+              filters={raw.filters}
+              commandActions={props.interactionsCommandActions}
+              commands={props.interactionsCommands}
+              filtersActions={props.filtersActions}
+              networkData={networkProps}
+              uiState={props.uiState}
+              uiStateActions={props.uiStateActions}
+            />
+          )}
+          <NodeStyleSelector
+            // className={classes.stylePanelElement}
             uiState={props.uiState}
             uiStateActions={props.uiStateActions}
           />
-        )}
-        <NodeStyleSelector
-          uiState={props.uiState}
-          uiStateActions={props.uiStateActions}
-        />
+        </div>
         <EdgeInfoPanel
           network={interactions}
           selectedEdge={props.rawInteractions.get('selectedEdge')}
