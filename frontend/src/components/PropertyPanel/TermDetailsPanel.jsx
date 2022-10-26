@@ -431,7 +431,7 @@ const TermDetailsPanel = (props) => {
               commandActions={props.interactionsCommandActions}
               commands={props.interactionsCommands}
               filtersActions={props.filtersActions}
-              networkData={networkProps}
+              networkData={networkData}
               uiState={props.uiState}
               uiStateActions={props.uiStateActions}
             />

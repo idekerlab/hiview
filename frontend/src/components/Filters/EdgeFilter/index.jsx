@@ -38,13 +38,17 @@ const TOOLTIP_TEXTS = {
   PLEIO:
     'Show connection between multiple instances of a pleiotropic protein. Connections are only shown for instances at or below the current assembly.',
 }
+const NDEX_LINK_TAGS = {
+  APMS_LINK: 'ndex:apms_network',
+  SCORE_LINK: 'ndex:score_network',
+}
 
 const styles = (theme) => ({
   root: {
     position: 'relative',
     background: 'inherit',
     padding: theme.spacing(2),
-    paddingTop: 0
+    paddingTop: 0,
   },
   title: {
     height: '2em',
@@ -134,12 +138,22 @@ class EdgeFilter extends Component {
     let edgeGroupsText = null
     let categories = {}
 
+    const links = {}
+
     if (networkData !== undefined) {
       edgeGroupsText = networkData[EDGE_GROUP_TAG]
 
       if (edgeGroupsText !== undefined) {
         categories = this.createCategories(edgeGroupsText)
       }
+
+      Object.keys(NDEX_LINK_TAGS).map(key => {
+        const linkTag = NDEX_LINK_TAGS[key]
+        const rawString = networkData[linkTag]
+        const linkObject = JSON.parse(rawString)
+        links[linkTag] = linkObject
+
+      })
     }
 
     if (!filters || filters.length === 0 || !Array.isArray(filters)) {
@@ -163,9 +177,9 @@ class EdgeFilter extends Component {
       // Old data format.  Just render plain list
       return (
         <div className={classes.root}>
-              <Typography variant="h6" className={classes.title2}>
-                Protein Interactions
-              </Typography>
+          <Typography variant="h6" className={classes.title2}>
+            Protein Interactions
+          </Typography>
           <div className={classes.filterRow}>
             <PrimaryEdgeSwitch
               uiState={uiState}
@@ -173,18 +187,22 @@ class EdgeFilter extends Component {
               tooltip={TOOLTIP_TEXTS.PRIMARY}
             />
             <DownloadButton
-              url={'http://www.google.com/'}
-              tooltip={TOOLTIP_TEXTS.DOWNLOAD}
+              url={links[NDEX_LINK_TAGS.SCORE_LINK].url}
+              tooltip={links[NDEX_LINK_TAGS.SCORE_LINK].tooltip}
             />
           </div>
           {sortedNames.map((filterName, idx) => (
-            <div key={filterName}>
+            <div key={filterName} className={classes.filterRow}>
               {this.getFilter(
                 idx,
                 filterMap[filterName],
                 filterState,
                 uiStateActions,
               )}
+              <DownloadButton
+                url={links[NDEX_LINK_TAGS.APMS_LINK].url}
+                tooltip={links[NDEX_LINK_TAGS.APMS_LINK].tooltip}
+              />
             </div>
           ))}
           <PleioEdgeSwitch
