@@ -71,7 +71,7 @@ const NodeStyleSelector = ({ uiState, uiStateActions }) => {
   return (
     <FormControl component="fieldset" className={classes.root}>
       <FormLabel className={classes.title} component="legend">
-        {<Typography variant="h6">Node Coloring:</Typography>}
+        {<Typography variant="h6">Protein Properties</Typography>}
       </FormLabel>
       <RadioGroup
         aria-label="node-style"
