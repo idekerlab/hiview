@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -7,37 +8,30 @@ import BrowserTargets from '../../assets/browser-targets'
 
 const GO_LINK = 'http://amigo.geneontology.org/amigo/term/'
 
-const HIDDEN_TAGS = [
-  'x_pos',
-  'y_pos',
-  'Vis_Shape',
-  'Vis_Fill_Color',
-  'Vis_Border_Paint',
-]
+// This contains filter information as serialized 
+const ATTR_TAG = 'ndex:node_attrs_legend'
 
-const hiddenSet = new Set(HIDDEN_TAGS)
 class SubsystemPanel extends Component {
   render() {
-    const { selectedTerm } = this.props
+    const { selectedTerm, networkData } = this.props
 
     // This contains all property for the term
     const termData = selectedTerm.data
-    const keys = Object.keys(termData)
-    let filteredKeys = keys.filter((key) => !hiddenSet.has(key))
-    // Sort the keys
-    filteredKeys = filteredKeys.sort()
+    const attrLegendStr = networkData[ATTR_TAG]
+    const attrLegend = JSON.parse(attrLegendStr)
+    const attrKeys = Object.keys(attrLegend)
+    const sortedKeys = attrKeys.sort()
 
     return (
       <List>
-        {filteredKeys.map((key, i) => {
+        {sortedKeys.map((key, i) => {
           const value = termData[key]
           if (!value) {
             return
           }
-
           return (
             <ListItem button onClick={this.handleClick(value)} key={i}>
-              <ListItemText primary={value} secondary={key} />
+              <ListItemText primary={value} secondary={attrLegend[key].displayName} />
             </ListItem>
           )
         })}

@@ -463,7 +463,7 @@ const TermDetailsPanel = (props) => {
         </AppBar>
 
         {selectedTab === 0 && (
-          <SubsystemPanel selectedTerm={props.currentProperty} />
+          <SubsystemPanel networkData={networkData} selectedTerm={props.currentProperty} />
         )}
         {selectedTab === 1 && <GeneList genes={geneList} {...allProps} />}
       </div>
