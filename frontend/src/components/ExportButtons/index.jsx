@@ -35,7 +35,6 @@ const ExportButtons = props => {
     <div className={classes.root}>
       <div className={classes.flexContainer}>
         <CopyToClipboardButton genes={geneList} />
-        <OpenInPortalButton genes={geneList} />
       </div>
       <div className={classes.flexContainer}>
         <SaveAsSvgButtonErrorBoundary>
