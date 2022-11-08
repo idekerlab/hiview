@@ -21,7 +21,7 @@ const getInterconnection = async ({url, uuid, genes=[] }) => {
   const searchUrl = `${url}${uuid}/interconnectquery`
   const query = {
     searchString: genes.join(' '),
-    searchDepth: 2
+    searchDepth: 4
   }
 
   const response = await fetch(searchUrl, {

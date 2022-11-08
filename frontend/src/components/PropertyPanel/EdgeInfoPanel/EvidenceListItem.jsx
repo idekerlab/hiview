@@ -64,7 +64,7 @@ const EvidenceListItem = ({ evidence, selectedEdge, queryPaths }) => {
   const [anchorEl, setAnchorEl] = useState(null)
 
   const handlePopoverOpen = (event) => {
-    if(!open) {
+    if (!open) {
       setAnchorEl(event.currentTarget)
     }
   }
@@ -154,7 +154,9 @@ const EvidenceListItem = ({ evidence, selectedEdge, queryPaths }) => {
               onMouseLeave={handleLeavePopover}
             >
               <Typography variant="body1">{parse(description)}</Typography>
-              <Typography variant="body2">{'(Click to open full details)'}</Typography>
+              <Typography variant="body2">
+                {'(Click to open full details)'}
+              </Typography>
             </div>
           </Popover>
         </div>
@@ -188,21 +190,40 @@ const EvidenceListItem = ({ evidence, selectedEdge, queryPaths }) => {
             />
           </ListItem>
           <ListItem className={classes.nested}>
-            {network === null || network === undefined ? (
-              <div />
-            ) : (
-              <PathNetworkPanel
-                network={network}
-                node1={selectedEdge.source}
-                node2={selectedEdge.target}
-                uuid={evidence['interactome_uuid']}
-              />
-            )}
+            {getPathPanel({
+              network,
+              selectedEdge,
+              uuid: evidence['interactome_uuid'],
+            })}
           </ListItem>
         </List>
       </Collapse>
     </React.Fragment>
   )
+}
+
+const getPathPanel = ({ network, selectedEdge, uuid }) => {
+  if (network === null || network === undefined) {
+    return <div />
+  } else if (network.elements.edges.length === 0) {
+    return (
+      <div>
+        {
+          `( ${selectedEdge.source} and ${selectedEdge.target} 
+          cannot be connected by a 1-step interconnect. 
+          Please explore alternative network query types in NDEx. )`
+        }
+      </div>)
+  } else {
+    return (
+      <PathNetworkPanel
+        network={network}
+        node1={selectedEdge.source}
+        node2={selectedEdge.target}
+        uuid={uuid}
+      />
+    )
+  }
 }
 
 export default EvidenceListItem

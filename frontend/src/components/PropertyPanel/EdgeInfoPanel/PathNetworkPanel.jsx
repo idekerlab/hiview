@@ -57,12 +57,8 @@ const DEF_VS = [
 
 const PathNetworkPanel = React.memo(({ network, node1, node2, uuid }) => {
   const classes = useStyles()
-
   const [cyInstance, setCyInstance] = useState(null)
 
-  useEffect(() => {
-    console.log('NET::', network, cyInstance)
-  }, [network])
 
   if (network === undefined || network === null) {
     return null
