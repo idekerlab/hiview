@@ -23,7 +23,22 @@ const getInterconnection = async ({url, uuid, genes=[] }) => {
     searchString: genes.join(' '),
     searchDepth: 4
   }
+  return getCyjs({searchUrl, query})
+}
 
+const getNeighborhood = async ({url, uuid, genes=[] }) => {
+
+  const searchUrl = `${url}${uuid}/query`
+  const query = {
+    searchString: genes.join(' '),
+    searchDepth: 2,
+    directOnly: false
+  }
+
+  return getCyjs({searchUrl, query})
+}
+
+const getCyjs = async ({searchUrl, query}) => {
   const response = await fetch(searchUrl, {
     method: METHOD_POST,
     headers: {
@@ -34,6 +49,7 @@ const getInterconnection = async ({url, uuid, genes=[] }) => {
 
   const cx = await response.json()
   return cx2cyjs(cx)
+
 }
 
-export { getNetwork, getInterconnection }
+export { getNetwork, getInterconnection, getNeighborhood }
