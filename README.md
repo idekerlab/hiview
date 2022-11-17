@@ -7,13 +7,17 @@ DDRAM is a data-driven, multi-scale map describing the organisation of 605 indiv
 
 The DDR Association Score (DAS) network is the integration of 114 input features of physical interaction, co-dependency, co-abundance, co-expression. Protein assemblies in DDRAM, and the assignment of individual proteins to their respective assemblies, are the result of hierarchical clustering of the DAS network.
 
-HiView<sub>DDRAM</sub> displays the hierarchical structure of DDRAM on the left panel in a _data view_ using a circle=packing layout, and the underlying DAS network on the right side in the _network view_ panel.
+HiView<sub>DDRAM</sub> displays the hierarchical structure of DDRAM on the left panel in a _data view_ using a circle-packing layout, and the underlying DAS network in the right panel in the _network view_.
 
 Interactions in the DAS network can be explained using the SHAP scores.
 
 Certain protein interactions and properties are under the users control.
 
-Proteins in the current assembly can be queried for term enrichment against selected pathway databases in enrichr.
+There is an extensive help system in the form of a *guided tour*, *tool tips* and this *documentation*.
+
+Proteins in the current assembly can be queried for term enrichment against selected pathway databases _via_ Enrichr [Xie 2021; PMID: 33780170].
+
+HiView<sub>DDRAM</sub> reads and dsiplays data structures stored in NDEx. Tools exist to make the data structures representing multi-scale maps other than DDRAM.
 
 ## SHAP framework
 A strength of HiView<sub>DDRAM</sub> is the ability to explain any interaction in the DAS network using SHAP scores. Simply selected any interaction in the DAS network. An explanation will appear below the controls of the _network view_
