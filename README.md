@@ -6,11 +6,6 @@ _HiView_ (http://hiview.ucsd.edu/) is a web application for visualizing hierarch
 
 Users can upload their own ontologies using the [ddramutils](https://github.com/idekerlab/ddramutils) and then view them on HiView. 
 
-## Updates
-* 12/4/2018 - v1.5 release
-* 6/11/2018 - v1 in beta
-* 9/20/2017 - Updated for new version
-
 ## Publication
 (TBD)
 
