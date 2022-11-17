@@ -10,7 +10,7 @@ The DDR Association Score (DAS) network is the integration of 114 input features
 ### Layout of HiView<sub>DDRAM</sub> has four main components: model and data view, search and control panel.
 HiView<sub>DDRAM</sub> displays the hierarchical structure of DDRAM on the left panel in a _model view_ using a circle-packing layout, and the underlying DAS network in the right panel in the _data view_ using a network layout that corresponds to the circle-packing layout.
 
-Below the data view is the _control panel_ where certain protein interactions and properties are under the users control. The control panel also contains the SHAP framework and convenience functions (copying protein names, exporting the current network as a vector image).
+Below the data view is the _control panel_ where certain protein interactions and properties are under the users control. The control panel also contains the SHapley Additive eXplanations (SHAP) framework and convenience functions (copying protein names, exporting the current network as a vector image).
 
 Proteins can be found through the  _search panel_. The search supports multiple proteins in the same search (space- or comma-separated); found proteins are distinguished by color).
 
@@ -20,9 +20,8 @@ There is an extensive help system in the form of a *guided tour*, *tool tips* an
 
 HiView<sub>DDRAM</sub> reads and displays data structures stored in NDEx. A toolkit and documentation exist to make the data structures representing multi-scale maps other than DDRAM and to upload them into NDEx for display in HiView<sub>DDRAM</sub>: [ddramutils](https://github.com/idekerlab/ddramutils).
 
-## SHAP framework
-A strength of HiView<sub>DDRAM</sub> is the ability to explain any interaction in the DAS network using SHAP scores. Simply selected any interaction in the DAS network. An explanation will appear below the controls of the _data view_.
-
+## SHAP framework to explain protein interaction strength (DAS scores)
+A strength of HiView<sub>DDRAM</sub> is the ability to explain any interaction in the DAS network using SHapley Additive eXplanations (SHAP) scores, grouped by class of evidence (physical, co-expression, co-abundance, co-dependency). Click any interaction in the DAS network to see an explanation of the DAS score; it will appear below the controls of the _data view_. The explanation comes in the form of Shapley values [Lundberg, Scott M., and Su-In Lee. "A unified approach to interpreting model predictions." Advances in neural information processing systems 30 (2017)]. These SHAP scores shown indicate the contribution of the respective input feature to the DAS score. SHAP and DAS scores are on the same scale. Only the most important SHAP scores are shown (those that are more than one standard deviation from the mean). For features embedded with node2vec [], we also show the subnetwork supporting the interaction [Grover, Aditya, and Jure Leskovec. "node2vec: Scalable feature learning for networks." Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining. 2016.]. Note that you can expand each class to see explanations at a higher granularity.
 
 ## Quick start guide for users
 Go to http://hiview.ucsd.edu, and click the **EXAMPLES** button to select a pre-computed ontology. Press **START**, and you will be taken to a visualization of that ontology. 
