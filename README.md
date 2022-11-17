@@ -28,7 +28,7 @@ For features embedded with _node2vec_, we also show the subnetwork supporting th
 
 ### Automatic gene set enrichment analysys by Enrichr
 
-When a user selects a subsystem, HiView can automatically perform gene set enrichment analysis using the [Enrichr](http://amp.pharm.mssm.edu/Enrichr/) web service.  By default, this option is turned off.  To enable this option, turn on the **Automatically run gene set analysis with Enricher** function in the Control Panel (_hamburger_ icon left to the search panel). Enrichment results are displayed on a separate bottom panel.
+Proteins in the current assembly can be queried for term enrichment against selected pathway databases _via_ Enrichr [Xie 2021; PMID: 33780170]. By default, this option is turned off.  To enable it, turn on the **Automatically run gene set analysis with Enricher** function in the Control Panel (_hamburger_ icon left to the search panel). Enrichment results are displayed on a separate bottom panel.
 
 ----
 
