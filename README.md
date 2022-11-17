@@ -18,16 +18,13 @@ Interactions in the DAS network can be explained using the SHAP scores.
 
 There is an extensive help system in the form of a *guided tour*, *tool tips* and this *documentation*. The data view has a context-sensitive _legend_.
 
-HiView<sub>DDRAM</sub> reads and displays data structures stored in NDEx. Tools exist to make the data structures representing multi-scale maps other than DDRAM and to upload them into NDEx for display in HiView<sub>DDRAM</sub>.
+HiView<sub>DDRAM</sub> reads and displays data structures stored in NDEx. A toolkit and documentation exist to make the data structures representing multi-scale maps other than DDRAM and to upload them into NDEx for display in HiView<sub>DDRAM</sub>: [ddramutils](https://github.com/idekerlab/ddramutils).
 
 ## SHAP framework
-A strength of HiView<sub>DDRAM</sub> is the ability to explain any interaction in the DAS network using SHAP scores. Simply selected any interaction in the DAS network. An explanation will appear below the controls of the _network view_
+A strength of HiView<sub>DDRAM</sub> is the ability to explain any interaction in the DAS network using SHAP scores. Simply selected any interaction in the DAS network. An explanation will appear below the controls of the _data view_.
 
-We developed an interactive web-based system (ccmi.org/ddram) to enable the research community to access and analyze the DDRAM resource (STAR Methods). The system offers facilities for visualization, search, and enrichment analysis (HiView, Figure 7) as well as data export. Visually, the collection of protein assemblies at different scales of analysis is represented as a kaleidoscopic series of nested circles (see also Figure 3F). For each assembly (circle), the supporting network of DAS scores is shown in a separate pane on the right. Individual protein interactions in the network can be selected to reveal the most supportive data types as determined with the SHAP method (see above), increasing the transparency with which any given protein is assigned to a particular assembly. Users can opt to color proteins by their assembly assignments or by alternate information, such as the predominant evidence type supporting the inclusion of the protein, whether a protein is involved in multiple assemblies, whether it is an AP-MS bait or prey, or whether it was previously documented in DDR.
 
-_HiView_ (http://hiview.ucsd.edu/) is a web application for visualizing hierarchical structure and the data that supports this structure. Hierarchical structure is stored and represented by a data structure called an ontology. 
-
-Users can upload their own ontologies using the [ddramutils](https://github.com/idekerlab/ddramutils) and then view them on HiView. 
+Users can upload their own ontologies using the  and then view them on HiView. 
 
 
 ## Quick start guide for users
