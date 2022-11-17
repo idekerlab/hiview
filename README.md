@@ -20,7 +20,8 @@ There is an extensive help system in the form of a *guided tour*, *tool tips* an
 
 HiView<sub>DDRAM</sub> reads and displays data structures stored in NDEx. A toolkit and documentation exist to make the data structures representing multi-scale maps other than DDRAM and to upload them into NDEx for display in HiView<sub>DDRAM</sub>: [ddramutils](https://github.com/idekerlab/ddramutils).
 
-## SHAP framework to explain protein interaction strength (DAS scores)
+### SHAP framework to explain protein interaction strength (DAS scores)
+
 A strength of HiView<sub>DDRAM</sub> is the ability to explain any interaction in the DAS network using SHapley Additive eXplanations (SHAP) scores, grouped by class of evidence (physical, co-expression, co-abundance, co-dependency). Click any interaction in the DAS network to see an explanation of the DAS score; it will appear below the controls of the _data view_. The explanation comes in the form of Shapley values [Lundberg, Scott M., and Su-In Lee. "A unified approach to interpreting model predictions." Advances in neural information processing systems 30 (2017)]. These SHAP scores shown indicate the contribution of the respective input feature to the DAS score. SHAP and DAS scores are on the same scale. Only the most important SHAP scores are shown (those that are more than one standard deviation from the mean).
 
 For features embedded with _node2vec_, we also show the subnetwork supporting the interaction [Grover, Aditya, and Jure Leskovec. "node2vec: Scalable feature learning for networks." Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining. 2016.]. Note that you can expand each class to see explanations at a higher granularity.
