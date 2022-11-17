@@ -1,9 +1,12 @@
 # HiView (a universal viewer for hierarchical data)
 ![](/docs/images/DDRAM_1-0_-_2022-11-13_19-31-38.png)
 
-## What is HiView?
+## What is HiView<sub>DDRAM</sub>?
+
+DNA Damage Response Assemblies Map
+
 ## SHAP framework
-A strength of HiView<sub>DDRAM</sub> is the ability to explain any interaction in the _network view_ using SHAP scores.
+A strength of HiView<sub>DDRAM</sub> is the ability to explain any interaction in the DAS network using SHAP scores.
 
 We developed an interactive web-based system (ccmi.org/ddram) to enable the research community to access and analyze the DDRAM resource (STAR Methods). The system offers facilities for visualization, search, and enrichment analysis (HiView, Figure 7) as well as data export. Visually, the collection of protein assemblies at different scales of analysis is represented as a kaleidoscopic series of nested circles (see also Figure 3F). For each assembly (circle), the supporting network of DAS scores is shown in a separate pane on the right. Individual protein interactions in the network can be selected to reveal the most supportive data types as determined with the SHAP method (see above), increasing the transparency with which any given protein is assigned to a particular assembly. Users can opt to color proteins by their assembly assignments or by alternate information, such as the predominant evidence type supporting the inclusion of the protein, whether a protein is involved in multiple assemblies, whether it is an AP-MS bait or prey, or whether it was previously documented in DDR.
 
