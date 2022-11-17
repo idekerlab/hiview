@@ -4,7 +4,7 @@
 ## What is HiView?
 _HiView_ (http://hiview.ucsd.edu/) is a web application for visualizing hierarchical structure and the data that supports this structure. Hierarchical structure is stored and represented by a data structure called an ontology. 
 
-Users can upload their own ontologies using the ddot Python package ([source code](https://github.com/michaelkyu/ddot) and [tutorial](https://github.com/michaelkyu/ddot/blob/master/examples/Tutorial.ipynb)) and then view them on HiView. 
+Users can upload their own ontologies using the [ddramutils](https://github.com/idekerlab/ddramutils) and then view them on HiView. 
 
 ## Updates
 * 12/4/2018 - v1.5 release
