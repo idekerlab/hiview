@@ -6,7 +6,8 @@ HiView<sub>DDRAM</sub> is an interactive webware for exploration of the DNA Dama
 DDRAM is a data-driven, multi-scale map describing the organisation of 605 individual DDR proteins into 109 named assemblies, and the nested relationship between these assemblies.
 
 The DDR Association Score (DAS) network is the integration of 114 input features of physical interaction, co-dependency, co-abundance, co-expression on a genome-wide scale. Protein assemblies in DDRAM, and the assignment of individual proteins to their respective assemblies, are the result of hierarchical clustering of the DAS network.
-### Model and data view, control and search panel.
+
+### Layout of HiView<sub>DDRAM</sub> has four main components: model and data view, search and control panel.
 HiView<sub>DDRAM</sub> displays the hierarchical structure of DDRAM on the left panel in a _model view_ using a circle-packing layout, and the underlying DAS network in the right panel in the _data view_ using a network layout that corresponds to the circle-packing layout.
 
 Below the data view is the _control panel_ where certain protein interactions and properties are under the users control. The control panel also contains the SHAP frameworki and convenience functions (copying protein names, exporting the current network as a vector image).
