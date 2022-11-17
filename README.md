@@ -3,15 +3,20 @@
 
 HiView<sub>DDRAM</sub> is an interactive webware for exploration of the DNA Damage Response Assemblies Map (DDRAM).
 
-DDRAM is a data-driven, multi-scale map describing the organisation of 605 individual DDR proteins into 109 named assemblies, and the nested relationship of assemblies.
+DDRAM is a data-driven, multi-scale map describing the organisation of 605 individual DDR proteins into 109 named assemblies, and the nested relationship between these assemblies.
 
-The DDR Association Score (DAS) score network is the integration of 114 input features of physical interaction, co-dependency, co-abundance, co-expression. Protein assemblies in DDRAM are the result of hierarchical clustering of the DAS network.
+The DDR Association Score (DAS) network is the integration of 114 input features of physical interaction, co-dependency, co-abundance, co-expression. Protein assemblies in DDRAM, and the assignment of individual proteins to their respective assemblies, are the result of hierarchical clustering of the DAS network.
 
-HiView<sub>DDRAM</sub> displays the structure of DDRAM on the left panel in a _data view_ and the underlying DAS network on the right side in the _network view_ panel.
+HiView<sub>DDRAM</sub> displays the hierarchical structure of DDRAM on the left panel in a _data view_ using a circle=packing layout, and the underlying DAS network on the right side in the _network view_ panel.
 
+Interactions in the DAS network can be explained using the SHAP scores.
+
+Certain protein interactions and properties are under the users control.
+
+Proteins in the current assembly can be queried for term enrichment against selected pathway databases in enrichr.
 
 ## SHAP framework
-A strength of HiView<sub>DDRAM</sub> is the ability to explain any interaction in the DAS network using SHAP scores.
+A strength of HiView<sub>DDRAM</sub> is the ability to explain any interaction in the DAS network using SHAP scores. Simply selected any interaction in the DAS network. An explanation will appear below the controls of the _network view_
 
 We developed an interactive web-based system (ccmi.org/ddram) to enable the research community to access and analyze the DDRAM resource (STAR Methods). The system offers facilities for visualization, search, and enrichment analysis (HiView, Figure 7) as well as data export. Visually, the collection of protein assemblies at different scales of analysis is represented as a kaleidoscopic series of nested circles (see also Figure 3F). For each assembly (circle), the supporting network of DAS scores is shown in a separate pane on the right. Individual protein interactions in the network can be selected to reveal the most supportive data types as determined with the SHAP method (see above), increasing the transparency with which any given protein is assigned to a particular assembly. Users can opt to color proteins by their assembly assignments or by alternate information, such as the predominant evidence type supporting the inclusion of the protein, whether a protein is involved in multiple assemblies, whether it is an AP-MS bait or prey, or whether it was previously documented in DDR.
 
