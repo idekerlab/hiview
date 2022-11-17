@@ -1,5 +1,5 @@
 # HiView (a universal viewer for hierarchical data)
-![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-top-v15-1.png)
+![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/DDRAM_1.0_-_2022-11-13_19.31.38.png)
 
 ## What is HiView?
 _HiView_ (http://hiview.ucsd.edu/) is a web application for visualizing hierarchical structure and the data that supports this structure. Hierarchical structure is stored and represented by a data structure called an ontology. 
