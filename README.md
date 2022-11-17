@@ -1,9 +1,14 @@
-# HiView (a universal viewer for hierarchical data)
+# HiView<sub>DDRAM</sub>: Interactive visualization of the DNA Damage Response Assemblies Map
 ![](/docs/images/DDRAM_1-0_-_2022-11-13_19-31-38.png)
 
-## What is HiView<sub>DDRAM</sub>?
+HiView<sub>DDRAM</sub> is an interactive webware for exploration of the DNA Damage Response Assemblies Map (DDRAM).
 
-DNA Damage Response Assemblies Map
+DDRAM is a data-driven, multi-scale map describing the organisation of 605 individual DDR proteins into 109 named assemblies, and the nested relationship of assemblies.
+
+The DDR Association Score (DAS) score network is the integration of 114 input features of physical interaction, co-dependency, co-abundance, co-expression. Protein assemblies in DDRAM are the result of hierarchical clustering of the DAS network.
+
+HiView<sub>DDRAM</sub> displays the structure of DDRAM on the left panel in a _data view_ and the underlying DAS network on the right side in the _network view_ panel.
+
 
 ## SHAP framework
 A strength of HiView<sub>DDRAM</sub> is the ability to explain any interaction in the DAS network using SHAP scores.
