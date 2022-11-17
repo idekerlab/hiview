@@ -31,12 +31,6 @@ In a circle-packing diagram, hierarchical relations are intuitively represented 
 
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-cp.png)
 
-### Main panel: Node-link diagram
-
-In a node-link diagram, hierarchical relations are represented by directed edges and drawn compactly with a 2D layout algorithm.
-
-![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-nl.png)
-
 ### Side Panel: Interaction network diagram
 
 The Side Panel allows you to visualize how data (in the form of gene-gene interaction networks) support the existence of each subsystem and their hierarchical organization. The Side Panel contains several visual components:
