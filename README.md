@@ -5,19 +5,19 @@ HiView<sub>DDRAM</sub> is an interactive webware for exploration of the DNA Dama
 
 DDRAM is a data-driven, multi-scale map describing the organisation of 605 individual DDR proteins into 109 named assemblies, and the nested relationship between these assemblies.
 
-The DDR Association Score (DAS) network is the integration of 114 input features of physical interaction, co-dependency, co-abundance, co-expression. Protein assemblies in DDRAM, and the assignment of individual proteins to their respective assemblies, are the result of hierarchical clustering of the DAS network.
+The DDR Association Score (DAS) network is the integration of 114 input features of physical interaction, co-dependency, co-abundance, co-expression on a genome-wide scale. Protein assemblies in DDRAM, and the assignment of individual proteins to their respective assemblies, are the result of hierarchical clustering of the DAS network.
+### Model and data view, control and search panel.
+HiView<sub>DDRAM</sub> displays the hierarchical structure of DDRAM on the left panel in a _model view_ using a circle-packing layout, and the underlying DAS network in the right panel in the _data view_ using a network layout that corresponds to the circle-packing layout.
 
-HiView<sub>DDRAM</sub> displays the hierarchical structure of DDRAM on the left panel in a _data view_ using a circle-packing layout, and the underlying DAS network in the right panel in the _network view_.
+Below the data view is the _control panel_ where certain protein interactions and properties are under the users control. The control panel also contains the SHAP frameworki and convenience functions (copying protein names, exporting the current network as a vector image).
+
+_search panel_
 
 Interactions in the DAS network can be explained using the SHAP scores.
 
-Certain protein interactions and properties are under the users control.
-
 There is an extensive help system in the form of a *guided tour*, *tool tips* and this *documentation*.
 
-Proteins in the current assembly can be queried for term enrichment against selected pathway databases _via_ Enrichr [Xie 2021; PMID: 33780170].
-
-HiView<sub>DDRAM</sub> reads and dsiplays data structures stored in NDEx. Tools exist to make the data structures representing multi-scale maps other than DDRAM.
+HiView<sub>DDRAM</sub> reads and displays data structures stored in NDEx. Tools exist to make the data structures representing multi-scale maps other than DDRAM and to upload them into NDEx for display in HiView<sub>DDRAM</sub>.
 
 ## SHAP framework
 A strength of HiView<sub>DDRAM</sub> is the ability to explain any interaction in the DAS network using SHAP scores. Simply selected any interaction in the DAS network. An explanation will appear below the controls of the _network view_
