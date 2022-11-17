@@ -25,21 +25,7 @@ A strength of HiView<sub>DDRAM</sub> is the ability to explain any interaction i
 
 For features embedded with _node2vec_, we also show the subnetwork supporting the interaction [Grover, Aditya, and Jure Leskovec. "node2vec: Scalable feature learning for networks." Proceedings of the 22nd ACM SIGKDD international conference on Knowledge discovery and data mining. 2016.]. Note that you can expand each class to see explanations at a higher granularity.
 
-## Quick start guide for users
-Go to http://hiview.ucsd.edu, and click the **EXAMPLES** button to select a pre-computed ontology. Press **START**, and you will be taken to a visualization of that ontology. 
-
-![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-step1.png)
-
-### Control Panel
-
-To open the Control Panel, double-click on the **"hamburger"** button at the top-left of the screen (i.e., the icon with three horizontal lines). The Control Panel allows the following configurations:
-
-1. Configuring the color of circles in the circle-packing diagram.
-1. Configuring node size, label size, and edge thickness in the node-link diagram.
-1. Enabling gene set enrichment analysis.
-
-
-#### Automatic gene set enrichment analysys by Enrichr
+### Automatic gene set enrichment analysys by Enrichr
 
 When a user selects a subsystem, HiView can automatically perform gene set enrichment analysis using the [Enrichr](http://amp.pharm.mssm.edu/Enrichr/) web service.  By default, this option is turned off.  To enable this option, turn on the **Automatically run gene set analysis with Enricher** function in the Control Panel (_hamburger_ icon left to the search panel). Enrichment results are displayed on a separate bottom panel.
 
