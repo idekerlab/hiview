@@ -24,59 +24,23 @@ HiView<sub>DDRAM</sub> reads and displays data structures stored in NDEx. A tool
 A strength of HiView<sub>DDRAM</sub> is the ability to explain any interaction in the DAS network using SHAP scores. Simply selected any interaction in the DAS network. An explanation will appear below the controls of the _data view_.
 
 
-Users can upload their own ontologies using the  and then view them on HiView. 
-
-
 ## Quick start guide for users
 Go to http://hiview.ucsd.edu, and click the **EXAMPLES** button to select a pre-computed ontology. Press **START**, and you will be taken to a visualization of that ontology. 
 
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-step1.png)
 
-HiView's visualization is separated into two panels (see screenshots below):
-
-1. The Main Panel shows the ontology's hierarchical structure. This panel shows either a "circle-packing" diagram (the default) or a node-link diagram. The diagram that is shown can be switched in the Control Panel (see below).
-   
-1. The Side Panel shows the data that supports the hierarchical structure. To activate this panel, double-click on any subsystem node in the Main Panel.
-
-### Main panel: Circle-packing diagram
-
-In a circle-packing diagram, hierarchical relations are intuitively represented by drawing small circles nested within larger ones (like physical compartments of the cell).
-
-![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-cp.png)
-
-### Side Panel: Interaction network diagram
-
-The Side Panel allows you to visualize how data (in the form of gene-gene interaction networks) support the existence of each subsystem and their hierarchical organization. The Side Panel contains several visual components:
-
-1. A gene-gene functional similarity network, consisting of genes in the selected subsytem
-1. A histogram of the gene similarities
-1. Checkboxes to toggle the visualization of other gene interaction types
-1. A list of other attributes about the selected subsystem.
-
-![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-networkpanel.png)
-
 ### Control Panel
 
 To open the Control Panel, double-click on the **"hamburger"** button at the top-left of the screen (i.e., the icon with three horizontal lines). The Control Panel allows the following configurations:
 
-1. Switching between the circle-packing (the default diagram) and the node-link diagram.
 1. Configuring the color of circles in the circle-packing diagram.
 1. Configuring node size, label size, and edge thickness in the node-link diagram.
 1. Enabling gene set enrichment analysis.
 
-#### Options for Circle-Packing diagram
-
-![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-control1.png)
-
-#### Options for Node-Link diagram
-
-![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-control2.png)
 
 #### Automatic gene set enrichment analysys by Enrichr
 
-When a user selects a subsystem, HiView can automatically perform gene set enrichment analysis using the [Enrichr](http://amp.pharm.mssm.edu/Enrichr/) web service.  By default, this option is turned off.  To enable this option, turn on the **Automatically run gene set analysis with Enricher** function in the Control Panel. Enrichment results are displayed on a separate bottom panel.
-
-![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-v15-enrichment.png)
+When a user selects a subsystem, HiView can automatically perform gene set enrichment analysis using the [Enrichr](http://amp.pharm.mssm.edu/Enrichr/) web service.  By default, this option is turned off.  To enable this option, turn on the **Automatically run gene set analysis with Enricher** function in the Control Panel (_hamburger_ icon left to the search panel). Enrichment results are displayed on a separate bottom panel.
 
 ----
 
