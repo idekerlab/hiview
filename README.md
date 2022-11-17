@@ -10,13 +10,13 @@ The DDR Association Score (DAS) network is the integration of 114 input features
 ### Layout of HiView<sub>DDRAM</sub> has four main components: model and data view, search and control panel.
 HiView<sub>DDRAM</sub> displays the hierarchical structure of DDRAM on the left panel in a _model view_ using a circle-packing layout, and the underlying DAS network in the right panel in the _data view_ using a network layout that corresponds to the circle-packing layout.
 
-Below the data view is the _control panel_ where certain protein interactions and properties are under the users control. The control panel also contains the SHAP frameworki and convenience functions (copying protein names, exporting the current network as a vector image).
+Below the data view is the _control panel_ where certain protein interactions and properties are under the users control. The control panel also contains the SHAP framework and convenience functions (copying protein names, exporting the current network as a vector image).
 
-_search panel_
+Proteins can be found through the  _search panel_. The search supports multiple proteins in the same search (space- or comma-separated); found proteins are distinguished by color).
 
 Interactions in the DAS network can be explained using the SHAP scores.
 
-There is an extensive help system in the form of a *guided tour*, *tool tips* and this *documentation*.
+There is an extensive help system in the form of a *guided tour*, *tool tips* and this *documentation*. The data view has a context-sensitive _legend_.
 
 HiView<sub>DDRAM</sub> reads and displays data structures stored in NDEx. Tools exist to make the data structures representing multi-scale maps other than DDRAM and to upload them into NDEx for display in HiView<sub>DDRAM</sub>.
 
