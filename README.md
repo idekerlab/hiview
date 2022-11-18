@@ -1,6 +1,6 @@
 # HiView (a universal viewer for hierarchical data)
 
-###  This is the documentation for HiView classic. [Click here for DDRAM documenation](https://github.com/idekerlab/hiview/tree/ddram-revise)
+##  This is the documentation for HiView classic. [Click here for DDRAM documenation](https://github.com/idekerlab/hiview/tree/ddram-revise)
 
 ![](https://raw.githubusercontent.com/idekerlab/hiview/master/docs/images/hiview-top-v15-1.png)
 
