@@ -119,11 +119,11 @@ const useStyles = makeStyles({
 const version = '1.5'
 
 const handleClickGh = () => {
-  window.open('https://github.com/idekerlab/hiview')
+  window.open('https://github.com/idekerlab/hiview/tree/ddram-revise')
 }
 
 const handleClickHelp = () => {
-  window.open('https://github.com/idekerlab/hiview/blob/master/README.md')
+  window.open('https://github.com/idekerlab/hiview/blob/ddram-revise/README.md')
 }
 
 const TopPage = props => {
@@ -216,7 +216,7 @@ const TopPage = props => {
               </span>{' '}
               and refer to the HiView{' '}
               <a
-                href="https://github.com/idekerlab/hiview/blob/master/README.md"
+                href="https://github.com/idekerlab/hiview/blob/ddram-revise/README.md"
                 target="_blank"
                 rel="noopener noreferrer"
               >

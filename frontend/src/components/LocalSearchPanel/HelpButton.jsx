@@ -11,7 +11,7 @@ import { checkFirstTimeVisitor } from '../Tour/check-visitor'
 
 const HelpButton = () => {
   const OVERVIEW_URL = 'https://github.com/idekerlab/hiview/wiki/HiView-User-Guide'
-  const USER_GUIDE_URL = 'https://github.com/idekerlab/hiview/blob/master/README.md'
+  const USER_GUIDE_URL = 'https://github.com/idekerlab/hiview/tree/ddram-revise'
   const [anchorEl, setAnchorEl] = useState(null)
   const [tourOpen, setTourOpen] = useState(false)
 
@@ -69,9 +69,7 @@ const HelpButton = () => {
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        <MenuItem onClick={handleTour}>Take the tour</MenuItem>
-        <MenuItem onClick={handleUserGuide}>HiView User Guide</MenuItem>
-        <MenuItem onClick={handleOverview}>HiView Overview</MenuItem>
+        <MenuItem onClick={handleUserGuide}>HiView / DDRAM User Guide</MenuItem>
       </Menu>
       <Tour open={tourOpen} setOpen={setTourOpen} />
     </>
