@@ -2,7 +2,6 @@ const webpack = require('webpack')
 const path = require('path')
 const fs = require('fs')
 
-
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
@@ -10,12 +9,12 @@ module.exports = {
   context: path.join(__dirname, './src'),
 
   entry: {
-    app: './index.jsx'
+    app: './index.jsx',
   },
 
   output: {
     path: path.join(__dirname, 'build'),
-    filename: '[name].bundle.js'
+    filename: '[name].bundle.js',
   },
 
   module: {
@@ -24,63 +23,63 @@ module.exports = {
         test: /\.(js|jsx)?$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
-        }
+          loader: 'babel-loader',
+        },
       },
       {
         test: /\.css$/,
         exclude: [
           path.resolve(__dirname, 'node_modules/rc-slider/'),
-          path.resolve(__dirname, 'node_modules/react-contextmenu/')
+          path.resolve(__dirname, 'node_modules/react-contextmenu/'),
         ],
         use: [
           {
-            loader: 'style-loader'
+            loader: 'style-loader',
           },
           {
             loader: 'css-loader',
             options: {
-              modules: true
-            }
-          }
-        ]
+              modules: true,
+            },
+          },
+        ],
       },
       {
         test: /\.css/,
         include: [
           path.resolve(__dirname, 'node_modules/rc-slider/'),
-          path.resolve(__dirname, 'node_modules/react-contextmenu/')
+          path.resolve(__dirname, 'node_modules/react-contextmenu/'),
         ],
         use: [
           {
-            loader: 'style-loader'
+            loader: 'style-loader',
           },
           {
             loader: 'css-loader',
             options: {
-              modules: false
-            }
-          }
-        ]
+              modules: false,
+            },
+          },
+        ],
       },
       {
         test: /\.(png|jpg|jpeg|gif)$/,
         exclude: /node_modules/,
-        use: [{ loader: 'url-loader' }]
+        use: [{ loader: 'url-loader' }],
       },
       {
         test: /\.(woff|woff2|eot|ttf|svg)$/,
         use: [
           {
-            loader: 'file-loader'
-          }
-        ]
-      }
-    ]
+            loader: 'file-loader',
+          },
+        ],
+      },
+    ],
   },
 
   resolve: {
-    extensions: ['.js', '.jsx']
+    extensions: ['.js', '.jsx'],
   },
 
   plugins: [
@@ -88,21 +87,21 @@ module.exports = {
 
     new HtmlWebpackPlugin({
       inject: true,
-      template: 'index.html'
-    })
+      template: 'index.html',
+    }),
   ],
 
   devServer: {
-    https: {
-      key: fs.readFileSync('./localhost-key.pem'),
-      cert: fs.readFileSync('./localhost.pem'),
+    // https: {
+    //   key: fs.readFileSync('./localhost-key.pem'),
+    //   cert: fs.readFileSync('./localhost.pem'),
 
-      // ca: fs.readFileSync('./localhost.pem')
-    },
+    //   // ca: fs.readFileSync('./localhost.pem')
+    // },
     historyApiFallback: true,
     host: '0.0.0.0',
     contentBase: './src',
     hot: true,
-    port: 3000
-  }
+    port: 3000,
+  },
 }

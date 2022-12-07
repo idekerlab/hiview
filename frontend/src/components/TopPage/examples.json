@@ -2,17 +2,10 @@
   "examples": [
     {
       "name": "DDRAM",
-      "uuid": "90b49f92-286b-11eb-890f-0660b7976219",
+      "uuid": "92b825be-404b-11ed-b7bd-0660b7976219",
       "server": "test.ndexbio.org",
       "serverType": "test",
-      "description": "DNA Damage Response and repair Map"
-    },
-    {
-      "name": "NeST",
-      "uuid": "274fcd6c-1adc-11ea-a741-0660b7976219",
-      "server": "test.ndexbio.org",
-      "serverType": "test",
-      "description": "Nested Systems in Tumors"
+      "description": "DNA Damage Response Assemblies Map"
     }
   ]
 }

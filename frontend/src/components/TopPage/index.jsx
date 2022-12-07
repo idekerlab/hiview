@@ -116,7 +116,7 @@ const useStyles = makeStyles({
   },
 })
 
-const version = '2.7'
+const version = '1.5'
 
 const handleClickGh = () => {
   window.open('https://github.com/idekerlab/hiview')
@@ -149,7 +149,7 @@ const TopPage = props => {
       <AppBar position="fixed" className={classes.bar}>
         <Toolbar classes={{ root: classes.toolbar }}>
           <Typography variant="h4" color="inherit">
-            HiView {version}
+            HiView/DDRAM {version}
           </Typography>
 
           <div className={classes.barButtons}>
@@ -169,16 +169,19 @@ const TopPage = props => {
             <Typography variant="h1" className={classes.h1}>
               HiView
             </Typography>
-            <Typography variant="h3" className={classes.h3}>
-              Universal browser for hierarchical data
-            </Typography>
           </div>
 
           <div style={{ width: '45em', maxWidth: '90vw', margin: '4em 0' }}>
             <Typography style={{ fontSize: '1.2em', textAlign: 'justify' }}>
-              HiView is a web-based tool for visualizing hierarchical models and the underlying interaction data that
-              support them. In hierarchical models, biological entities are grouped in systems and their subsystems
-              across multiple scales.
+              HiView is a web-based tool for visualizing hierarchical models 
+              and the underlying interaction data that support them. In 
+              hierarchical models, biological entities are grouped in systems 
+              and their subsystems across multiple scales. The page you are 
+              reading is intended for specification of custom data sets, i.e. 
+              for connecting HiView to your own uploaded maps. If you are 
+              rather interested in exploring the DNA Damage Response Assemblies 
+              Map (DDRAM) [Kratz 2022, under review], please go to 
+               <a href="https://ccmi.org/ddram"> ccmi.org/ddram</a> and click <strong><i>Open in HiView</i></strong>.
             </Typography>
             <br />
             <Typography style={{ fontSize: '1.2em' }}>
@@ -268,7 +271,7 @@ const TopPage = props => {
 
       <footer className={classes.footer}>
         <a className={classes.noDecoration} href="https://github.com/idekerlab/hiview" target="_blank">
-          &copy; 2017-2020 University of California, San Diego Trey Ideker Lab
+          &copy; 2017-2022 University of California, San Diego Trey Ideker Lab
         </a>
       </footer>
     </div>
