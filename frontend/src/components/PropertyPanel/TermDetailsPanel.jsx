@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 
 import { Tabs, Tab, AppBar, Typography } from '@material-ui/core'
-import { blueGrey } from '@material-ui/core/colors'
+import { red } from '@material-ui/core/colors'
 
 import RawInteractionPanel from './RawInteractionPanel'
 import SubsystemPanel from './SubsystemPanel'
@@ -75,6 +75,10 @@ const useStyles = makeStyles((theme) =>
       // flexGrow: 1
       // width: '20%'
     },
+    warning: {
+      color: red[500],
+      padding: theme.spacing(1),
+    }
   }),
 )
 
@@ -406,6 +410,12 @@ const TermDetailsPanel = (props) => {
 
       <div className={classes.bottomPane}>
         {/* <ThresholdPanel threshold={data.Parent_weight}/> */}
+        <div className={classes.warning}>
+          <Typography color="red" variant="h5">
+            Click on any interaction to display an explanation of its DAS score,
+            panel in the lower right (on small displays: scroll down!).
+          </Typography>
+        </div>
         <div className={classes.controllers}>
           <LayoutSelector
             commandActions={props.interactionsCommandActions}
@@ -463,7 +473,10 @@ const TermDetailsPanel = (props) => {
         </AppBar>
 
         {selectedTab === 0 && (
-          <SubsystemPanel networkData={networkData} selectedTerm={props.currentProperty} />
+          <SubsystemPanel
+            networkData={networkData}
+            selectedTerm={props.currentProperty}
+          />
         )}
         {selectedTab === 1 && <GeneList genes={geneList} {...allProps} />}
       </div>
