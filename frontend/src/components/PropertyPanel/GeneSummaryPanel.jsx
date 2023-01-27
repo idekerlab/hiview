@@ -32,7 +32,7 @@ const MYGENE_ID_TAG = '_id'
 const NCBI_ID_TAG = 'entrezgene'
 const NCBI_SUMMARY_TAG = 'Entrezgene_summary'
 
-const GeneSummaryPanel = ({ symbol, ncbiId, summary, buildDate }) => {
+const GeneSummaryPanel = ({ symbol, ncbiId, summary, buildDate, altSymbol }) => {
   const classes = useStyles()
 
   let message = ''

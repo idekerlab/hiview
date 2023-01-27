@@ -50,13 +50,14 @@ const useStyles = makeStyles(theme =>
 )
 
 const TitleBar = props => {
+  const { geneSymbol, altSymbol, title } = props
   const classes = useStyles()
 
   return (
     <div className={classes.container}>
       <div className={classes.buttons}>
         <Typography variant="h4" className={classes.geneSymbol}>
-          {props.geneSymbol}
+          {altSymbol === undefined ? geneSymbol : altSymbol}
         </Typography>
         <Button
           variant="outlined"

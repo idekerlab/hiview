@@ -36,6 +36,7 @@ const MYGENE_ID_TAG = '_id'
 const MYGENE_SYMBOL_TAG = 'symbol'
 const MYGENE_TAXID = 'taxid'
 const HUMAN_TAXID = 9606
+const ALIAS = 'alias'
 const NCBI_ID_TAG = 'entrezgene'
 const NCBI_SUMMARY_TAG = 'Entrezgene_summary'
 
@@ -63,14 +64,35 @@ const GenePropertyPanel = (props) => {
 
     const { hits } = details.data
     let target = null
+
+    // This is the original gene symbol
     const geneSymbol = details.id
+
     for (let idx = 0; idx < hits.length; idx++) {
       const hit = hits[idx]
       const hitSymbol = hit[MYGENE_SYMBOL_TAG]
       const taxid = hit[MYGENE_TAXID]
+      const aliases = hit[ALIAS]
       if (hitSymbol === geneSymbol && taxid === HUMAN_TAXID) {
         target = hit
         break
+      } else if (taxid === HUMAN_TAXID) {
+        if (aliases !== undefined && aliases !== null) {
+          if (Array.isArray(aliases)) {
+            const alias = aliases.filter((alias) => alias === geneSymbol)
+            if (alias.length > 0) {
+              target = hit
+              target.altSymbol = `${geneSymbol} (alias of ${target.symbol})`
+              break
+            }
+          } else {
+            if (aliases === geneSymbol) {
+              target = hit
+              target.altSymbol = `${geneSymbol} (alias of ${target.symbol})`
+              break
+            }
+          }
+        }
       }
     }
     if (target === null) {
@@ -78,7 +100,7 @@ const GenePropertyPanel = (props) => {
       target = hits[0]
     }
     setTargetEntry(target)
-    
+
     // const newSummary = target.summary
     // if (newSummary === undefined || newSummary === null) {
     //   // No summary is available. Fetch from NCBI
@@ -109,7 +131,12 @@ const GenePropertyPanel = (props) => {
     }
   }, [details])
 
-  if (details === undefined || details === null || targetEntry === null || targetEntry === undefined) {
+  if (
+    details === undefined ||
+    details === null ||
+    targetEntry === null ||
+    targetEntry === undefined
+  ) {
     return (
       <div className={classes.wrapper}>
         <NoDataPanel />
@@ -119,10 +146,10 @@ const GenePropertyPanel = (props) => {
 
   const entry = targetEntry
   const id = entry[MYGENE_ID_TAG]
-  const { symbol, summary, name } = entry
+  const { symbol, summary, name, altSymbol } = entry
   const { build_date } = metadata
   const buildDate = new Date(build_date)
-  
+
   // Loading
   if (details.loading) {
     return (
@@ -137,8 +164,14 @@ const GenePropertyPanel = (props) => {
       <div className={classes.path}>
         <PathPanel {...props} />
       </div>
-      <TitleBar title={name} geneId={id} geneSymbol={symbol} />
-      <GeneSummaryPanel symbol={symbol} summary={summary} ncbiId={id} buildDate={buildDate} />
+      <TitleBar title={name} geneId={id} geneSymbol={symbol} altSymbol={altSymbol} />
+      <GeneSummaryPanel
+        symbol={symbol}
+        summary={summary}
+        ncbiId={id}
+        buildDate={buildDate}
+        altSymbol={altSymbol}
+      />
       <CoreGenePropPanel geneInfo={entry} />
     </div>
   )
