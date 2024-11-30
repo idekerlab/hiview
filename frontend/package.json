@@ -60,7 +60,7 @@
     "cytoscape-cx2js": "^0.5.5",
     "cytoscape-svg": "^0.3.1",
     "d3-array": "^2.0.3",
-    "d3-color": "^1.2.3",
+    "d3-color": "^3.1.0",
     "d3-hierarchy": "^1.1.8",
     "d3-interpolate": "^1.3.2",
     "d3-scale": "^3.0.0",
